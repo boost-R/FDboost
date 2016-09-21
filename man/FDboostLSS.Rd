@@ -43,7 +43,7 @@ and some attributes. The list is named like the parameters, e.g. mu and sigma,
 if the parameters mu and sigma are modelled. Each list-element is an object of class \code{FDboost}.
 }
 \description{
-Function for fitting GAMLSS (generalized additive models for location, scale and shape)
+Function for fitting generalized additive models for location, scale and shape (GAMLSS)
 with functional data using component-wise gradient boosting, for details see
 Brockhaus et al. (2015a).
 }

@@ -81,7 +81,7 @@ check_y_family <- function(y, family){
 #################################################################################
 #' Model-based Gradient Boosting for Functional GAMLSS
 #' 
-#' Function for fitting GAMLSS (generalized additive models for location, scale and shape) 
+#' Function for fitting generalized additive models for location, scale and shape (GAMLSS)  
 #' with functional data using component-wise gradient boosting, for details see 
 #' Brockhaus et al. (2015a). 
 #' 

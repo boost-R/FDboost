@@ -47,6 +47,6 @@ For issues, bugs, feature requests etc. please use the [GitHub Issues](https://g
 
   To be able to use the `install_github()` command, one needs to install `devtools` first:
   ```r
-  install.packages("devtools")
+  install.packages("devtools", build_vignettes = TRUE)
   ```
 

@@ -32,7 +32,8 @@ Suggests:
     fda,
     fields,
     maps,
-    mapdata
+    mapdata,
+    knitr
 License: GPL-2
 Packaged: 2016-06-20 13:44:03 UTC; brockhaus
 Collate:
@@ -49,3 +50,4 @@ Collate:
 RoxygenNote: 5.0.1
 BugReports: https://github.com/fdboost/FDboost/issues
 URL: https://github.com/fdboost/FDboost
+VignetteBuilder: knitr

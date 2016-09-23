@@ -7,11 +7,13 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{rotating}
-%%\usepackage[nolists]{endfloat}
-%%\usepackage{Sweave}
+\usepackage{authblk}
+\usepackage[left=25mm, right=25mm, top=20mm, bottom=20mm]{geometry}
+%\usepackage[nolists]{endfloat}
 
+%\VignetteEngine{knitr::knitr}
+%\VignetteDepends{FDboost, fda, fields, maps, mapdata}
 %\VignetteIndexEntry{FDboost FLAM viscosity}
-%\VignetteDepends{FDboost}
 
 \newcommand{\Rpackage}[1]{{\normalfont\fontseries{b}\selectfont #1}}
 \newcommand{\Robject}[1]{\texttt{#1}}
@@ -30,21 +32,12 @@
 \IfFileExists{upquote.sty}{\RequirePackage{upquote}}{}
 \usepackage{relsize}
 
-\DefineVerbatimEnvironment{Sinput}{Verbatim}{baselinestretch=1}
-\DefineVerbatimEnvironment{Soutput}{Verbatim}{fontfamily=courier,
-                                              baselinestretch=1,
-                                              fontshape=it,
-                                              fontsize=\relsize{-1}}
-\DefineVerbatimEnvironment{Scode}{Verbatim}{}
-\newenvironment{Schunk}{}{}
-
 \renewcommand{\baselinestretch}{1}
-
-\SweaveOpts{eps=FALSE, width=6, height=6}
+\setlength\parindent{0pt}
 
 
 \hypersetup{%
-  pdftitle = {FLAM viscosity},
+  pdftitle = {FLAM canada},
   pdfsubject = {package vignette},
   pdfauthor = {Sarah Brockhaus},
 %% change colorlinks to false for pretty printing
@@ -60,19 +53,20 @@
 
 \setkeys{Gin}{width=\textwidth}
 
-\title{Viscosity: function-on-scalar regression}
-\author{Sarah Brockhaus$^1$}
+\title{Canadian climate: function-on-function regression}
+\author{Sarah Brockhaus 
+\thanks{E-mail: sarah.brockhaus@stat.uni-muenchen.de}}
+\affil{\textit{Institut f\"ur Statistik, \\
+Ludwig-Maximilians-Universit\"at M\"unchen, \\ 
+Ludwigstra{\ss}e 33, D-80539 M\"unchen, Germany.}}
 \date{}
 \maketitle
 
-\noindent$^1$ Institut f\"ur Statistik \\
-           Ludwig-Maximilians-Universit\"at M\"unchen \\
-           Ludwigstra{\ss}e 33, D-80539 M\"unchen, Germany \\
-           \texttt{sarah.brockhaus@stat.uni-muenchen.de}
-           \newline
-
-
 The results of this vignette together with more explanations can be found in Brockhaus et al. (2015). 
+
+<<ops, echo=FALSE>>=
+opts_chunk$set(comment=NA, warning=FALSE, message=FALSE)
+@
 
 \section{Descriptive analysis}
 
@@ -91,8 +85,8 @@ funplotLogscale <- function(x, y, ylim = NULL, col=1, add=FALSE, ...){
     plot(x, rep(1, length(x)), col = "white", ylim = ylim, yaxt = "n",
          ylab = "", xlab = "",...)
     
-    mtext("time [s]", 1, line=2, cex=1.5)
-    mtext("viscosity [mPas]", 2, line=2, cex=1.5)
+    mtext("time [s]", 1, line=2)#, cex=1.5)
+    mtext("viscosity [mPas]", 2, line=2)#, cex=1.5)
     
     abline(h = log(1*10^(0:9)), col="gray")
     axis(2, at = log(1*10^(0:9)), labels=1*10^(0:9))
@@ -155,30 +149,22 @@ for(v in 1:length(vars)){
 names(viscosity)
 @
 
+Plot the data
 
-<<plot-data, echo=TRUE>>=
-pdf("vis.pdf")
-par(mfrow=c(1,1), mar=c(3, 3, 1, 2), cex=1.5)
+<<plot-data, echo=TRUE, fig.width=4, fig.height=3, fig.cap='Viscostiy over time with temperature of tools ($T_C$) and temerature of resin ($T_A$) color coded.', fig.align='center'>>=
+par(mfrow=c(1,1), mar=c(3, 3, 1, 2))#, cex=1.5)
 mycol <- gray(seq(0, 0.8, l=4), alpha=0.8)[c(1,3,2,4)]
 int_T_CA <- with(viscosity, paste(T_C,"-", T_A, sep=""))
 with(viscosity, funplotLogscale(time, vis, 
                                 col=getCol2(int_T_CA, cols=mycol[4:1])))
 legend("bottomright", fill=mycol, 
        legend=c("T_C low, T_A low", "T_C low, T_A high", 
-                "T_C high, T_A low", "T_C high, T_A high"))
-dev.off()
+                "T_C high, T_A low", "T_C high, T_A high"), cex = 0.8)
 @
 
-Plot the data
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[width=0.5\textwidth]{vis}
-\end{center}
-\caption{Viscostiy over time with temperature of tools ($T_C$) and temerature of resin ($T_A$) color coded.}
-\end{figure}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
 
 \section{Model with all main effects and interactions of first order}
 
@@ -265,6 +251,8 @@ The effects $T_A$, $T_C$ and their interaction are selected into the model.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\newpage
+
 \section{Model with selected effects}
 
 Estimate the model containig only the selected effects $T_C$, $T_A$, and their interaction.
@@ -333,25 +321,25 @@ smoothIntercept <- mod1$predictOffset(newdata$time) + intercept
 @
 
 Plot the centered coefficient functions.
-<<plot-selected-model, echo = TRUE>>=
-pdf("visMod.pdf")
-par(mfrow=c(1,1), mar=c(3, 3, 1, 2), cex=1.5)
+<<plot-selected-model, echo = 11:16, fig.cap='Viscosity over time and estimated coefficient functions. On the left hand side the viscosity measures are plotted over time with temperature of tools ($T_C$) and temperature of resin ($T_A$) color-coded. On the right hand side the estimated coefficient functions are plotted.', fig.height=4, fig.width=10>>=
+par(mfrow=c(1,2), mar=c(3, 3, 1, 2))#, cex=1.5)
+
+mycol <- gray(seq(0, 0.8, l=4), alpha=0.8)[c(1,3,2,4)]
+int_T_CA <- with(viscosity, paste(T_C,"-", T_A, sep=""))
+with(viscosity, funplotLogscale(time, vis, 
+                                col=getCol2(int_T_CA, cols=mycol[4:1])))
+legend("bottomright", fill=mycol, 
+       legend=c("T_C low, T_A low", "T_C low, T_A high", 
+                "T_C high, T_A low", "T_C high, T_A high"))
+
 mycol <- gray(seq(0, 0.5, l=3), alpha=0.8)
 funplotLogscale(mod1$yind, pred2[3:4,], col=mycol[1], ylim=c(-0.5,6), lty=2, lwd=2)
 lines(mod1$yind, pred3[2,], col=mycol[2], lty=3, lwd=2)
 lines(mod1$yind, pred4[4,], col=mycol[3], lty=4, lwd=2)
 legend("topright", lty=2:4, lwd=2, col=mycol,
        legend=c("effect T_C high", "effect T_A high", "effect T_C, T_A high"))
-dev.off()
-@
 
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[width=0.45\textwidth]{vis}
-\includegraphics[width=0.45\textwidth]{visMod}
-\end{center}
-\caption{Viscosity over time and estimated coefficient functions. On the left hand side the viscosity measures are plotted over time with temperature of tools ($T_C$) and temperature of resin ($T_A$) color-coded. On the right hand side the estimated coefficient functions are plotted.}
-\end{figure} 
+@
 
 \section*{References}
 \begin{itemize}

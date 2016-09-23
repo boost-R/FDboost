@@ -7,11 +7,13 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{rotating}
+\usepackage{authblk}
+\usepackage[left=25mm, right=25mm, top=20mm, bottom=20mm]{geometry}
 %\usepackage[nolists]{endfloat}
-%\usepackage{Sweave}
 
+%\VignetteEngine{knitr::knitr}
+%\VignetteDepends{FDboost, fda, fields, maps, mapdata}
 %\VignetteIndexEntry{FDboost FLAM Canada}
-%\VignetteDepends{FDboost, fda, fields, maps, mapdata}  
 
 \newcommand{\Rpackage}[1]{{\normalfont\fontseries{b}\selectfont #1}}
 \newcommand{\Robject}[1]{\texttt{#1}}
@@ -30,17 +32,8 @@
 \IfFileExists{upquote.sty}{\RequirePackage{upquote}}{}
 \usepackage{relsize}
 
-\DefineVerbatimEnvironment{Sinput}{Verbatim}{baselinestretch=1}
-\DefineVerbatimEnvironment{Soutput}{Verbatim}{fontfamily=courier,
-                                              baselinestretch=1,
-                                              fontshape=it,
-                                              fontsize=\relsize{-1}}
-\DefineVerbatimEnvironment{Scode}{Verbatim}{}
-\newenvironment{Schunk}{}{}
-
 \renewcommand{\baselinestretch}{1}
-
-\SweaveOpts{eps=FALSE, width=6, height=6}
+\setlength\parindent{0pt}
 
 
 \hypersetup{%
@@ -61,27 +54,30 @@
 \setkeys{Gin}{width=\textwidth}
 
 \title{Canadian climate: function-on-function regression}
-\author{Sarah Brockhaus$^1$}
+\author{Sarah Brockhaus 
+\thanks{E-mail: sarah.brockhaus@stat.uni-muenchen.de}}
+\affil{\textit{Institut f\"ur Statistik, \\
+Ludwig-Maximilians-Universit\"at M\"unchen, \\ 
+Ludwigstra{\ss}e 33, D-80539 M\"unchen, Germany.}}
 \date{}
 \maketitle
 
-\noindent$^1$ Institut f\"ur Statistik \\
-           Ludwig-Maximilians-Universit\"at M\"unchen \\
-           Ludwigstra{\ss}e 33, D-80539 M\"unchen, Germany \\
-           \texttt{sarah.brockhaus@stat.uni-muenchen.de}
-           \newline
+% \noindent$^1$ 
+%            \newline
 
-The analysis is based on the analysis in the online appendix of Scheipl et al. (2015). 
+\noindent The analysis is based on the analysis in the online appendix of Scheipl et al. (2015). 
 The results of this vigentte can be found in the web appendix of Brockhaus et al. (2015). 
 
 \section{Load and plot data}
-Load FDboost package.
-<<pkg-attach, echo = FALSE, fig=FALSE>>=
+
+
+<<pkg-attach, echo = FALSE, warning=FALSE, message=FALSE>>=
+# Load FDboost package
 library(FDboost)
 @
 
 Load data and choose the time-interval.
-<<load-data, echo = TRUE>>=
+<<load-data, echo = TRUE, warning=FALSE, message=FALSE>>=
 library(fda)
 data("CanadianWeather", package = "fda")
 
@@ -109,38 +105,34 @@ dataM$month.s <- 1:12
 
 Plot the data
 
-\begin{figure}
-\begin{center}
-<<plot-data, echo=TRUE, fig = TRUE, height=6, width=10>>=
-#pdf("CanadaDesk.pdf")
-#par(mfrow=c(1,2), mar=c(3,3,1,1), cex=1.5)
+<<plot-data, echo=TRUE, fig.cap='Monthly average temperature and log-precipitation at 35 locations in Canada. Regions are coded by colors and different line types.', fig.height=5, fig.width=10, fig.pos='!htbp'>>=
+
 par(mfrow=c(1,2))
 
 # plot precipitation
 with(dataM, {
-  matplot(t(l10precip), type = "l", lty = as.numeric(region), col = as.numeric(region),
+  matplot(t(l10precip), type = "l", lty = as.numeric(region), 
+          col = as.numeric(region),
           xlab = "", ylab = "",
-          ylim = c(-1.2, 1), cex.axis = 1, cex.lab = 1)
+          ylim = c(-1.2, 1))#, cex.axis = 1, cex.lab = 1)
   legend("bottom", col = 1:4, lty = 1:4, legend = levels(region),
          cex = 1, bty = "n")
 })
-mtext("time [month]", 1, line = 2, cex = 1.5)
-mtext("log(precipitation) [mm]", 2, line = 2, cex = 1.5)
+mtext("time [month]", 1, line = 2)#, cex = 1.5)
+mtext("log(precipitation) [mm]", 2, line = 2)#, cex = 1.5)
 
 # plot temperature
 with(dataM, {
-  matplot(t(tempRaw), type = "l", lty = as.numeric(region), col = as.numeric(region),
-          xlab = "", ylab = "", 
-          cex.axis = 1, cex.lab = 1)
+  matplot(t(tempRaw), type = "l", lty = as.numeric(region), 
+          col = as.numeric(region),
+          xlab = "", ylab = "")#, 
+#          cex.axis = 1, cex.lab = 1)
 })
-mtext("time [month]", 1, line = 2, cex = 1.5)
-mtext("temperature [C]", 2, line = 2, cex = 1.5)
-#dev.off()
+mtext("time [month]", 1, line = 2)#, cex = 1.5)
+mtext("temperature [C]", 2, line = 2)#, cex = 1.5)
 @
-\caption{Monthly average temperature and log-precipitation at 35 locations in Canada. Regions are coded by colors and different line types.}
-\end{center}
-\end{figure} 
 
+\clearpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -153,7 +145,7 @@ We consider the following linear regression model:
 where $Y_i(t)$ is the log-precipitation over month $t=1, \ldots, 12$, $I(\cdot)$ is the indicator function, $\mbox{rg}_i$ is the region of the $i^{th}$ station, $\beta_k(t)$ are the smooth effects per region, $\mbox{temp}_i (s)$ is the temperature over the month  $s=1, \ldots, 12$, $\beta(s,t)$ is the coefficient surface and $e_i(t)$ are smooth spatially correlated residual curves.
 \\\\
 Set up design matrix and penalty-matrix for spatially correlated residual curves. 
-<<setup-model, echo = TRUE>>=
+<<setup-model, echo = TRUE, message=FALSE, warning=FALSE>>=
 locations <- cbind(dataM$lon, dataM$lat)
 ### fix location names s.t. they correspond to levels in places
 rownames(locations) <- as.character(dataM$place)
@@ -197,7 +189,7 @@ if(FALSE){
 @
 
 Fit the model.
-<<fit-model, echo = TRUE>>=
+<<fit-model, echo = TRUE, message=FALSE>>=
 # use bolsc() base-learner with precision matrix as penalty matrix
 set.seed(210114)
 mod3 <- FDboost(l10precip ~ bols(region, df = 2.5, contrasts.arg = "contr.dummy") 
@@ -227,22 +219,12 @@ mod3 <- mod3[mstop(cvMod3)] # 47
 # summary(mod3)
 @
 
-% \begin{figure}
-% \begin{center}
-% <<ccv-bootstrap-plot, echo = TRUE, fig = TRUE, height=6, width=10, eval=FALSE>>=
-%  par(mfrow=c(1,2), mar=c(4,4,2,1))
-%  plot(cvMod3)
-%@
-% \end{center}
-% \caption{Optimal stopping iteration for model determined by 25-fold bootstrap.}
-% \end{figure}
 
 Base-learner for smooth residuals is not selected into the model. Look at effects of region and temperature.
-%modCanada3.pdf
 
-<<plot-bootstrap-model1a, echo = TRUE>>=
-pdf("modCanada3.pdf")
-par(mar = c(4,4,2,1), cex = 1.5, cex.main = 0.9)
+<<plot-bootstrap-model1a, echo = TRUE, fig.cap='Coefficients for model with 49 boosting iterations (determinded by 25 fold bootstrap). The estimated coefficients for the four climatic regions are plotted with color coded regions (left panel).  The coefficient function for the functional effect of temperature is colored in red for positive values and in blue for negative values (right panel).', fig.pos='!htbp', fig.height=5, fig.width=10>>=
+
+par(mfrow=c(1,2))#, mar = c(7,4,7,1))#, cex = 1.5, cex.main = 0.9)
 predRegion <- predict(mod3, which = 1, 
                       newdata = list(region = factor(c("Arctic", "Atlantic",
                                                    "Continental", "Pacific")),
@@ -250,23 +232,16 @@ predRegion <- predict(mod3, which = 1,
 matplot(seq(1, 12, l = 20), t(predRegion), col = 1:4, 
         type = "l", lwd = 2, lty = 1:4,
         main = "region", ylab = "", xlab = "")
-mtext("t, time [month]", 1, line = 2, cex = 1.5)
+mtext("t, time [month]", 1, line = 2)#, cex = 1.5)
 
 legend("bottom", lty = 1:4, legend = levels(dataM$region), col = 1:4, bty = "n", lwd = 2)
 
 ## plot the effect of temperature
+# par(mar = c(4,4,7,1))
 plot(mod3, which = 2, pers = TRUE, main = "temperature", zlab = "",
      xlab = "s, time [month]", ylab = "t, time [month]")
-dev.off()
 @
 
-\begin{figure}
-\begin{center} 
-\includegraphics[width=0.4\textwidth, page=1]{modCanada3}
-\includegraphics[width=0.4\textwidth, page=2]{modCanada3}
-\caption{Coefficients for model with 49 boosting iterations (determinded by 25 fold bootstrap). The estimated coefficients for the four climatic regions are plotted with color coded regions (left panel).  The coefficient function for the functional effect of temperature is colored in red for positive values and in blue for negative values (right panel).}
-\end{center}
-\end{figure} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -289,24 +264,9 @@ mstop(cvMod3curves)
 mod3 <- mod3[mStop]
 @
 
-% \begin{figure}
-% \begin{center}
-%<<cv-curves-plot, echo = TRUE, fig = TRUE, height=6, width=10, eval=FALSE>>=
-%  par(mfrow=c(1,2), mar=c(4,4,2,1))
-%  plot(cvMod3curves)
-@
-% \end{center}
-% \caption{Optimal stopping iteration for model determined by 
-% leaving-one-curve-out cross-validation.}
-% \end{figure} 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 Plot the coefficient functions for the effects of temperature and region.
-<<plot-bootstrap-model1b, echo = TRUE>>=
-pdf("modCanada3curves.pdf")
-par(mar=c(4,4,2,1), cex = 1.5, cex.main = 0.9)
+<<plot-bootstrap-model1b, echo = TRUE, fig.cap='Coefficients for model with 750 boosting iterations (determinded by leaving-one-curve-out cross-validation). The estimated coefficients for the four climatic regions are plotted with color coded regions (left panel).  The coefficient function for the functional effect of temperature is colored in red for positive values and in blue for negative values (right panel).', fig.pos='!htbp', fig.height=5, fig.width=10>>=
+par(mfrow=c(1,2))
 predRegion <- predict(mod3, which=1, 
                       newdata = list(region = factor(c("Arctic", "Atlantic",
                                                    "Continental", "Pacific")),
@@ -314,26 +274,18 @@ predRegion <- predict(mod3, which=1,
 matplot(seq(1, 12, l=20), t(predRegion), col = 1:4, 
         type = "l", lwd = 2, lty = 1:4,
         main = "region", ylab = "", xlab = "")
-mtext("t, time [month]", 1, line = 2, cex = 1.5)
+mtext("t, time [month]", 1, line = 2)#, cex = 1.5)
 #plot(mod, which=1, lwd=2, lty=1, col=c(2,3,4,1))
 legend("bottom", lty = 1:4, legend = levels(dataM$region), col = 1:4, bty = "n", lwd = 2)
 
 ## plot the effect of temperature
 plot(mod3, which = 2, pers = TRUE, main = "temperature", zlab = "",
      xlab = "s, time [month]", ylab = "t, time [month]")
-dev.off()
 @
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.4\textwidth, page=1]{modCanada3curves.pdf}
-\includegraphics[width=0.4\textwidth, page=2]{modCanada3curves.pdf}
-\caption{Coefficients for model with 750 boosting iterations (determinded by leaving-one-curve-out cross-validation). The estimated coefficients for the four climatic regions are plotted with color coded regions (left panel).  The coefficient function for the functional effect of temperature is colored in red for positive values and in blue for negative values (right panel).}
-\end{center}
-\end{figure} 
 
 
 Prepare data for plot of smooth residual curves. The stations a roughly ordered. 
-<<plot-bootstrap-model2, echo = TRUE>>= 
+<<plot-bootstrap-model2_prep, echo = TRUE>>= 
 ord <- c("Dawson", "Whitehorse", "Yellowknife", "Uranium City", "Churchill",
          "Edmonton",  "Pr. Albert", "The Pas", "Calgary", "Regina", "Winnipeg",
          "Thunder Bay",
@@ -354,8 +306,7 @@ response <- dataM$l10precip[ind, ]
 @
 
 Plot the smooth residual curves.
-<<plot-bootstrap-model2, echo = TRUE>>= 
-pdf("modCanada3resiCurves.pdf", width=7, height=10)
+<<plot-bootstrap-model2, echo = TRUE, fig.cap='The estimated smooth spatially correlated residual curves (lines) and the residuals (circles) are plotted with regions color-coded. The locations of the weather stations are given in the map at the bottom.', warning=FALSE, message=FALSE, fig.height=9.5>>= 
 par(mar = c(2.55, 2.05, 2.05, 1.05), oma=c(0, 0, 0, 0))
 layout(rbind(matrix(1:36, 6, 6), rep(37, 6), rep(37, 6)))
 for(i in 1:35) {
@@ -379,17 +330,7 @@ if(require(maps) & require(mapdata)){
        labels = as.character(i), cex = 0.8)
  }
 }
-dev.off()
 @
-
-\begin{figure}[hp]
-\begin{center}
-\includegraphics[width=0.9\textwidth]{modCanada3resiCurves}
-\end{center}
-\caption{The estimated smooth spatially correlated residual curves (lines) and the residuals (circles) are plotted with regions color-coded. 
-The locations of the weather stations are given in the map at the bottom.}
-\end{figure} 
-
 
 
 \section*{References}

@@ -7,11 +7,13 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{rotating}
-%%\usepackage[nolists]{endfloat}
-%%\usepackage{Sweave}
+\usepackage{authblk}
+\usepackage[left=25mm, right=25mm, top=20mm, bottom=20mm]{geometry}
+%\usepackage[nolists]{endfloat}
 
+%\VignetteEngine{knitr::knitr}
+%\VignetteDepends{FDboost, fda, fields, maps, mapdata}
 %\VignetteIndexEntry{FDboost FLAM fuel}
-%\VignetteDepends{FDboost}
 
 \newcommand{\Rpackage}[1]{{\normalfont\fontseries{b}\selectfont #1}}
 \newcommand{\Robject}[1]{\texttt{#1}}
@@ -30,21 +32,12 @@
 \IfFileExists{upquote.sty}{\RequirePackage{upquote}}{}
 \usepackage{relsize}
 
-\DefineVerbatimEnvironment{Sinput}{Verbatim}{baselinestretch=1}
-\DefineVerbatimEnvironment{Soutput}{Verbatim}{fontfamily=courier,
-                                              baselinestretch=1,
-                                              fontshape=it,
-                                              fontsize=\relsize{-1}}
-\DefineVerbatimEnvironment{Scode}{Verbatim}{}
-\newenvironment{Schunk}{}{}
-
 \renewcommand{\baselinestretch}{1}
-
-\SweaveOpts{eps=FALSE, width=6, height=6}
+\setlength\parindent{0pt}
 
 
 \hypersetup{%
-  pdftitle = {FLAM fossil fuels},
+  pdftitle = {FLAM canada},
   pdfsubject = {package vignette},
   pdfauthor = {Sarah Brockhaus},
 %% change colorlinks to false for pretty printing
@@ -60,23 +53,26 @@
 
 \setkeys{Gin}{width=\textwidth}
 
-\title{Spectral data of fossil fuels: scalar-on-function regression}
-\author{Sarah Brockhaus$^1$}
+\title{Canadian climate: function-on-function regression}
+\author{Sarah Brockhaus 
+\thanks{E-mail: sarah.brockhaus@stat.uni-muenchen.de}}
+\affil{\textit{Institut f\"ur Statistik, \\
+Ludwig-Maximilians-Universit\"at M\"unchen, \\ 
+Ludwigstra{\ss}e 33, D-80539 M\"unchen, Germany.}}
 \date{}
 \maketitle
-
-\noindent$^1$ Institut f\"ur Statistik \\
-           Ludwig-Maximilians-Universit\"at M\"unchen \\
-           Ludwigstra{\ss}e 33, D-80539 M\"unchen, Germany \\
-           \texttt{sarah.brockhaus@stat.uni-muenchen.de}
-           \newline
 
 The dataset was originally analyzed by Fuchs et al. (2015). 
 The results of this vignette together with more explanations can be found in Brockhaus et al. (2015).  
 
+<<ops, echo=FALSE>>=
+opts_chunk$set(comment=NA, warning=FALSE, message=FALSE)
+@
+
+
 \section{Load and plot data}
 Load FDboost package.
-<<pkg-attach, echo = FALSE, fig=FALSE>>=
+<<pkg-attach, echo = FALSE, warning=FALSE, message=FALSE>>=
 library(FDboost)
 @
 
@@ -213,39 +209,15 @@ mod <- mod[mopt] # 198
 @
 
 Plot the coefficient functions.
-\begin{figure}
-\begin{center}
-<<model-spec-plot, echo=TRUE, fig = TRUE, width=10, heigth=5>>=
+
+<<model-spec-plot, echo=TRUE, fig.cap='Coefficient estimates for the effects of the two spectra.', fig.height=4, fig.width=10>>=
 par(mfrow=c(1,2))
 plot(mod, which=1, lwd=2, lty=5, rug=FALSE,
      ylab="", xlab="wavelength [nm]")
 
 plot(mod, which=2, lwd=2, lty=5, rug=FALSE, 
      ylab="", xlab="wavelength [nm]")
-
-# plot with bootstrapped coefficient functions
-if(FALSE){
-  pdf("spec_valCoef.pdf")
-  par(mar=c(5, 3, 1, 1), cex.axis=1.5, cex.lab=1.5)
-  plot(mod, which=1, lwd=2, col="white", main="", lty=5, rug=FALSE,
-     ylab="", xlab="wavelength [nm]", ylim=range(val$coefCV[[1]]$value) )
-  plotPredCoef(val, terms=FALSE, commonRange=TRUE, which=1, add=TRUE)
-  plot(mod, which=1, lwd=2, col=4, main="", lty=5, rug=FALSE, add=TRUE)
-
-  legend("topright", legend=c("data", "BS", "mean BS", "5, 95% BS"), 
-       lty=c(5,1,1,2), col=c(4,8,1,2), cex=1.5,
-       lwd=c(2,1,2,2))
-
-  plot(mod, which=2, lwd=2, col="white", main="", lty=5, rug=FALSE, 
-     ylab="", xlab="wavelength [nm]", ylim=range(val$coefCV[[2]]$value) )
-  plotPredCoef(val, terms=FALSE, commonRange=TRUE, which=2, add=TRUE)
-  plot(mod, which=2, lwd=2, col=4, main="", lty=5, rug=FALSE, add=TRUE)
-  dev.off()
-}
 @
-\end{center}
-\caption{Coefficient estimates for the effects of the two spectra.}
-\end{figure}
 
 % The gray lines show the estimates in the 50 bootstrap folds, the black line gives the mean estimated coefficient function over the bootstrap folds, the dashed red lines point-wise 5\% and 95\% values, the dotdashed blue lines give the estimated coefficients for the model on the whole dataset.
 

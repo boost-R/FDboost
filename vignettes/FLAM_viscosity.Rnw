@@ -65,7 +65,7 @@ Ludwigstra{\ss}e 33, D-80539 M\"unchen, Germany.}}
 The results of this vignette together with more explanations can be found in Brockhaus et al. (2015). 
 
 <<ops, echo=FALSE>>=
-opts_chunk$set(comment=NA, warning=FALSE, message=FALSE)
+knitr::opts_chunk$set(comment=NA, warning=FALSE, message=FALSE)
 @
 
 \section{Descriptive analysis}

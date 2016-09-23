@@ -50,3 +50,4 @@ Collate:
 RoxygenNote: 5.0.1
 BugReports: https://github.com/fdboost/FDboost/issues
 URL: https://github.com/fdboost/FDboost
+VignetteBuilder: knitr

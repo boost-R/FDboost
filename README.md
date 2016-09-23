@@ -33,7 +33,7 @@ For issues, bugs, feature requests etc. please use the [GitHub Issues](https://g
 - Latest **patch version** (patched version of CRAN package; under development) from GitHub:
   ```r
   library("devtools")
-  install_github("fdboost/FDboost")
+  install_github("fdboost/FDboost", build_vignettes = TRUE)
   library("FDboost")
   ```
 
@@ -47,6 +47,6 @@ For issues, bugs, feature requests etc. please use the [GitHub Issues](https://g
 
   To be able to use the `install_github()` command, one needs to install `devtools` first:
   ```r
-  install.packages("devtools", build_vignettes = TRUE)
+  install.packages("devtools")
   ```
 

@@ -1857,12 +1857,21 @@ update.FDboost <- function(object, weights = NULL, oobweights = NULL, risk = NUL
   if(is.null(extras$data)){
     
     data <- as.list(object$data)
-    yind <- all.vars(as.formula(object$timeformula))[[1]]
-    data[[yind]] <- object$yind
+    
+    # check if y is scalar
+    isScalar <- length(object$yind)==1
+    
+    if(!isScalar){ 
+      
+      yind <- all.vars(as.formula(object$timeformula))[[1]]
+      data[[yind]] <- object$yind
+      
+    }
+    
     yname <- all.vars(as.formula(object$formulaFDboost))[1]
     data[[yname]] <- object$response
     
-    if(length(object$response) != length(object$yind)){
+    if(!isScalar && length(object$response) != length(object$yind)){
       # format long to wide
       stopifnot(!is.null(object$id))
       data[[yname]] <- matrix(data[[yname]], ncol = length(object$yind), byrow = FALSE)

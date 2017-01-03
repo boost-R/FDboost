@@ -474,58 +474,54 @@ X_bsignal <- function(mf, vary, args) {
 #' function that takes \eqn{s} as the first and \code{t} as the second argument and returns 
 #' \code{TRUE} for combinations of values (s,t) if \eqn{s} falls into the integration range for 
 #' the given \eqn{t}.  
-#' @param pve proportion of variance explained: used to choose the number of functional principal components (FPCs).
-#' @param npc prespecified value for the number of FPCs (if given, this overrides \code{pve}).
-#' @param npc.max maximal number K of FPCs to use, regardless of \code{decomppars}; defaults to 15. 
+#' @param pve proportion of variance explained by the first K functional principal components (FPCs): 
+#' used to choose the number of functional principal components (FPCs).
+#' @param npc prespecified value for the number K of FPCs (if given, this overrides \code{pve}).
+#' @param npc.max maximal number K of FPCs to use; defaults to 15. 
 #' @param getEigen save the eigenvalues and eigenvectors, defaults to \code{TRUE}. 
 #' 
 #' @aliases bconcurrent bhist bfpc 
 #' 
-#' @details \code{bsignal} implements a base-learner for functional covariates to  
+#' @details \code{bsignal()} implements a base-learner for functional covariates to  
 #' estimate an effect of the form \eqn{\int x_i(s)\beta(s)ds}. Defaults to a cubic  
 #' B-spline basis with first difference penalties for \eqn{\beta(s)} and numerical 
 #' integration over the entire range by using trapezoidal Riemann weights. 
-#' If \code{bsignal} is used within \code{FDboost}, the base-learner of 
+#' If \code{bsignal()} is used within \code{FDboost()}, the base-learner of 
 #' \code{timeformula} is attached, resulting in an effect varying over the index
-#' of the response \eqn{\int x_i(s)\beta(s, t)ds}. 
+#' of the response \eqn{\int x_i(s)\beta(s, t)ds} if \code{timeformula = bbs(t)}. 
 #' The functional variable must be observed on one common grid \code{s}.  
 #' 
-#' \code{bconcurrent} implements a concurrent effect for a functional covariate
+#' \code{bconcurrent()} implements a concurrent effect for a functional covariate
 #' on a functional response, i.e., an effect of the form \eqn{x_i(t)\beta(t)} for
 #' a functional response \eqn{Y_i(t)} and concurrently observed covariate \eqn{x_i(t)}. 
-#' \code{bconcurrent} can only be used if \eqn{Y(t)} and \eqn{x(s)} are observed over
+#' \code{bconcurrent()} can only be used if \eqn{Y(t)} and \eqn{x(s)} are observed over
 #' the same domain \eqn{s,t \in [T1, T2]}.  
-#' Note that in the case of \code{bhist} the argument \code{index} is treated
-#' like a variable and thus has to be given as variable in \code{newdata}, 
-#' if \code{predict.FDboost} is with argument \code{newdata}.  
 #'
-#' \code{bhist} implements a base-learner for functional covariates with 
+#' \code{bhist()} implements a base-learner for functional covariates with 
 #' flexible integration limits \code{l(t)}, \code{r(t)} and the possibility to
 #' standardize the effect by \code{1/t} or the length of the integration interval. 
-#' The effect is \eqn{stand * \int_{l(t)}^{r_{t}} x(s)\beta(t,s)ds}. 
+#' The effect is \eqn{stand * \int_{l(t)}^{r_{t}} x(s)\beta(t,s)ds}, where \eqn{stand} is 
+#' the chosen standardization which defaults to 1. 
 #' The base-learner defaults to a historical effect of the form 
 #' \eqn{\int_{T1}^{t} x_i(s)\beta(t,s)ds}, 
 #' where \eqn{T1} is the minimal index of \eqn{t} of the response \eqn{Y(t)}. 
-#' \code{bhist} can only be used if \eqn{Y(t)} and \eqn{x(s)} are observed over
-#' the same domain \eqn{s,t \in [T1, T2]}. 
-#' The functional variable must be observed on one common grid \code{s}, 
-#' see Brockhaus et al. (2016) for details on historical effects.   
+#' The functional covariate must be observed on one common grid \code{s}.  
+#' See Brockhaus et al. (2016) for details on historical effects.   
 #' 
-#' \code{bfpc} is a base-learner for a linear effect of functional covariates based on 
+#' \code{bfpc()} is a base-learner for a linear effect of functional covariates based on 
 #' functional principal component analysis (FPCA). 
 #' For the funcitonal linear effect \eqn{\int x_i(s)\beta(s)ds} the functional covariate 
-#' and the coefficient function are represented by a FPC basis. 
+#' and the coefficient function are both represented by a FPC basis. 
 #' The functional covariate
 #' \eqn{x(s)} is decomposed into \eqn{x(s) \approx \sum_{k=1}^K \xi_{ik} \Phi_k(s)} using 
 #' \code{\link[refund]{fpca.sc}} for the truncated Karhunen-Loeve decomposition. 
 #' Then \eqn{\beta(s)} is represented in the function
-#' space spanned by \eqn{\Phi_k(s)}, see Scheipl et al. (2015) for details. 
+#' space spanned by \eqn{\Phi_k(s)}, k=1,...,K, see Scheipl et al. (2015) for details. 
 #' The implementation is similar to \code{\link[refund]{ffpc}}.  
-#' This is an experimental base-learner and not well tested yet. 
 #' 
 #' It is recommended to use centered functional covariates with 
-#' \eqn{\sum_i x_i(s) = 0} for all \eqn{s} in \code{bsignal}-, 
-#' \code{bhist}- and \code{bconcurrent}-terms. 
+#' \eqn{\sum_i x_i(s) = 0} for all \eqn{s} in \code{bsignal()}-, 
+#' \code{bhist()}- and \code{bconcurrent()}-terms. 
 #' For centered covariates, the effects are centered per time-point of the response. 
 #' If all effects are centered, the functional intercept 
 #' can be interpreted as the global mean function. 
@@ -533,14 +529,14 @@ X_bsignal <- function(mf, vary, args) {
 #' The base-learners for functional covariates cannot deal with any missing 
 #' values in the covariates.
 #' 
-#' @return Equally to the base-learners of package mboost: 
+#' @return Equally to the base-learners of package \code{mboost}: 
 #' 
 #' An object of class \code{blg} (base-learner generator) with a 
-#' \code{dpp} function (dpp, data pre-processing). 
+#' \code{dpp()} function (dpp, data pre-processing). 
 #' 
-#' The call of \code{dpp} returns an object of class 
-#' \code{bl} (base-learner) with a \code{fit} function. The call to 
-#' \code{fit} finally returns an object of class \code{bm} (base-model).
+#' The call of \code{dpp()} returns an object of class 
+#' \code{bl} (base-learner) with a \code{fit()} function. The call to 
+#' \code{fit()} finally returns an object of class \code{bm} (base-model).
 #' 
 #' @seealso \code{\link{FDboost}} for the model fit. 
 #' @keywords models

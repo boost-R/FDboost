@@ -432,7 +432,7 @@ Generalized linear array models with applications to multidimensional smoothing.
 Journal of the Royal Statistical Society, Series B-Statistical Methodology, 68(2), 259-280.
 
 Scheipl, F., Staicu, A.-M. and Greven, S. (2015):  
-Functional Additive Mixed Models, Journal of Computational and Graphical Statistics, 24(2), 477-501.
+Functional additive mixed models, Journal of Computational and Graphical Statistics, 24(2), 477-501.
 }
 \seealso{
 Note that \link{FDboost} calls \code{\link[mboost]{mboost}} directly.  

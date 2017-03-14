@@ -221,7 +221,7 @@
 #' Journal of the Royal Statistical Society, Series B-Statistical Methodology, 68(2), 259-280.
 #' 
 #' Scheipl, F., Staicu, A.-M. and Greven, S. (2015):  
-#' Functional Additive Mixed Models, Journal of Computational and Graphical Statistics, 24(2), 477-501.
+#' Functional additive mixed models, Journal of Computational and Graphical Statistics, 24(2), 477-501.
 #' 
 #' @examples 
 #' ######## Example for function-on-scalar-regression 

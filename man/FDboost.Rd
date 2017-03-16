@@ -291,17 +291,25 @@ fuelSubset$uvvis.lambda <- with(fuelSubset, (uvvis.lambda - min(uvvis.lambda)) /
 fuelSubset$nir.lambda <- with(fuelSubset, (nir.lambda - min(nir.lambda)) / 
                                           (max(nir.lambda) - min(nir.lambda) )) 
 
-## possibility 1: as FLAM model with the scalar response 
-## adds a penalty over the index of the response
-## thus, mod2f and mod2 have different panlties 
-mod2f <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.ident = FALSE) 
-               + bsignal(NIR, nir.lambda, knots = 40, df = 4, check.ident = FALSE), 
-               timeformula = ~bols(1), data = fuelSubset, control = boost_control(mstop = 200))
-
-## possibility 2: with scalar response 
+## model fit with scalar response 
+## include no intercept as all base-learners are centered around 0
 mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.ident = FALSE) 
                + bsignal(NIR, nir.lambda, knots = 40, df = 4, check.ident = FALSE), 
                timeformula = NULL, data = fuelSubset, control = boost_control(mstop = 200)) 
+               
+## additionally include a non-linear effect of the scalar variable h2o 
+mod2s <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.ident = FALSE) 
+               + bsignal(NIR, nir.lambda, knots = 40, df = 4, check.ident = FALSE) 
+               + bbs(h2o, df = 4), 
+               timeformula = NULL, data = fuelSubset, control = boost_control(mstop = 200)) 
+               
+## alternative model fit as FLAM model with scalar response; as timeformula = ~ bols(1)  
+## adds a penalty over the index of the response, i.e., here a ridge penalty
+## thus, mod2f and mod2 have different penalties 
+mod2f <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.ident = FALSE) 
+               + bsignal(NIR, nir.lambda, knots = 40, df = 4, check.ident = FALSE), 
+               timeformula = ~ bols(1), data = fuelSubset, control = boost_control(mstop = 200))
+               
 \dontrun{   
   ## bootstrap to find optimal mstop takes some time
   set.seed(123)      

@@ -294,17 +294,25 @@
 #' fuelSubset$nir.lambda <- with(fuelSubset, (nir.lambda - min(nir.lambda)) / 
 #'                                           (max(nir.lambda) - min(nir.lambda) )) 
 #' 
-#' ## possibility 1: as FLAM model with the scalar response 
-#' ## adds a penalty over the index of the response
-#' ## thus, mod2f and mod2 have different panlties 
-#' mod2f <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.ident = FALSE) 
-#'                + bsignal(NIR, nir.lambda, knots = 40, df = 4, check.ident = FALSE), 
-#'                timeformula = ~bols(1), data = fuelSubset, control = boost_control(mstop = 200))
-#' 
-#' ## possibility 2: with scalar response 
+#' ## model fit with scalar response 
+#' ## include no intercept as all base-learners are centered around 0
 #' mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.ident = FALSE) 
 #'                + bsignal(NIR, nir.lambda, knots = 40, df = 4, check.ident = FALSE), 
 #'                timeformula = NULL, data = fuelSubset, control = boost_control(mstop = 200)) 
+#'                
+#' ## additionally include a non-linear effect of the scalar variable h2o 
+#' mod2s <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.ident = FALSE) 
+#'                + bsignal(NIR, nir.lambda, knots = 40, df = 4, check.ident = FALSE) 
+#'                + bbs(h2o, df = 4), 
+#'                timeformula = NULL, data = fuelSubset, control = boost_control(mstop = 200)) 
+#'                
+#' ## alternative model fit as FLAM model with scalar response; as timeformula = ~ bols(1)  
+#' ## adds a penalty over the index of the response, i.e., here a ridge penalty
+#' ## thus, mod2f and mod2 have different penalties 
+#' mod2f <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.ident = FALSE) 
+#'                + bsignal(NIR, nir.lambda, knots = 40, df = 4, check.ident = FALSE), 
+#'                timeformula = ~ bols(1), data = fuelSubset, control = boost_control(mstop = 200))
+#'                
 #' \dontrun{   
 #'   ## bootstrap to find optimal mstop takes some time
 #'   set.seed(123)      
@@ -863,6 +871,38 @@ FDboost <- function(formula,          ### response ~ xvars
   
   ## find variables that are defined in environment(formula) but not in environment(fm) or in data 
   fm_vars <- all.vars(fm) # all variables of fm 
+  
+  ## for bhist() the limits argument can be a function; in this case those function arguments should not be included 
+  terms_fm_bhist <- terms(formula, specials = "bhist")
+  if( ! is.null(attr(terms_fm_bhist,  "specials")[[1]]) ){
+    
+    places_bhist <- attr(terms_fm_bhist,  "specials")$bhist
+    
+    vars_arg_limits_not_unique <- c()
+    for(pl in seq_along(places_bhist)){ ## loop over all bhist-bl
+      
+      ## get the limits argument
+      arg_limits <- eval( as.call(attr(terms_fm_bhist, "variables")[[places_bhist[pl] + 1]])$limits )
+      
+      if( is.function(arg_limits) ){
+        ## get the names of the arguments of the limits-function 
+        vars_arg_limits <- names(formals(arg_limits))
+        ## check whether the variables uniquely occur in the limits-function
+        var_occur <- table(all.vars( attr(terms_fm_bhist, "variables")[[places_bhist[pl] + 1]], unique = FALSE))[vars_arg_limits] == 1
+        vars_arg_limits_not_unique <- c(vars_arg_limits_not_unique, vars_arg_limits[var_occur])
+      }
+    }
+    
+    if(length(vars_arg_limits_not_unique) > 0){
+      delete_var <- table(all.vars(fm, unique = FALSE))[unique(vars_arg_limits_not_unique)] <= 
+        table(vars_arg_limits_not_unique)[unique(vars_arg_limits_not_unique)]
+      fm_vars <- fm_vars[! fm_vars %in% names(delete_var)[delete_var]]
+    }
+    rm(vars_arg_limits_not_unique, places_bhist, arg_limits)
+
+  }
+  
+  
   ## vars_envir_formula <- fm_vars[ ! fm_vars %in% c(names(data), "dresponse" , "ONEx", "ONEtime", yind) ]
   # variables that exist in environment(fm) 
   vars1 <- sapply(fm_vars, exists, envir = environment(fm), inherits = FALSE)   

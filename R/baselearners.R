@@ -559,7 +559,7 @@ X_bsignal <- function(mf, vary, args) {
 #' Electronic Journal of Statistics, 10(1), 495-526. 
 #'  
 #' @examples 
-#' ######## Example for scalar-on-function-regression with bsignal  
+#' ######## Example for scalar-on-function-regression with bsignal()  
 #' data("fuelSubset", package = "FDboost")
 #' 
 #' ## center the functional covariates per observed wavelength
@@ -572,10 +572,12 @@ X_bsignal <- function(mf, vary, args) {
 #'                                   (max(uvvis.lambda) - min(uvvis.lambda) ))
 #' fuelSubset$nir.lambda <- with(fuelSubset, (nir.lambda - min(nir.lambda)) /
 #'                                 (max(nir.lambda) - min(nir.lambda) ))
-#'                                 
-#' mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots=40, df=4, check.ident=FALSE) 
-#'                + bsignal(NIR, nir.lambda, knots=40, df=4, check.ident=FALSE), 
-#'                timeformula=NULL, data=fuelSubset) 
+#'
+#' ## model fit with scalar response and two functional linear effects 
+#' ## include no intercept as all base-learners are centered around 0                                                                  
+#' mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.ident = FALSE) 
+#'                + bsignal(NIR, nir.lambda, knots = 40, df=4, check.ident = FALSE), 
+#'                timeformula = NULL, data = fuelSubset) 
 #' summary(mod2) 
 #' ## plot(mod2)
 #' 
@@ -587,7 +589,7 @@ X_bsignal <- function(mf, vary, args) {
 #' 
 #' #########
 #' # model with linear functional effect, use bsignal()
-#' # Y(t) = f(t)  + \int X1(s)\beta(s,t)ds + eps
+#' # Y(t) = f(t) + \int X1(s)\beta(s,t)ds + eps
 #' set.seed(2121)
 #' data1 <- pffrSim(scenario = "ff", n = 40)
 #' data1$X1 <- scale(data1$X1, scale = FALSE)
@@ -596,8 +598,8 @@ X_bsignal <- function(mf, vary, args) {
 #' dat_list$s <- attr(data1, "xindex")
 #' 
 #' ## model fit by FDboost 
-#' m1 <- FDboost(Y ~ 1 + bsignal(x= X1, s = s, knots = 5), 
-#'               timeformula = ~ bbs(t, knots = 5), data=dat_list, 
+#' m1 <- FDboost(Y ~ 1 + bsignal(x = X1, s = s, knots = 5), 
+#'               timeformula = ~ bbs(t, knots = 5), data = dat_list, 
 #'               control = boost_control(mstop = 21))
 #' 
 #' ## search optimal mSTOP
@@ -609,7 +611,7 @@ X_bsignal <- function(mf, vary, args) {
 #' ## model fit by pffr
 #' t <- attr(data1, "yindex")
 #' s <- attr(data1, "xindex")
-#' m1_pffr <- pffr(Y ~ ff(X1, xind=s), yind=t, data=data1)
+#' m1_pffr <- pffr(Y ~ ff(X1, xind = s), yind = t, data = data1)
 #' 
 #' \dontrun{
 #'   par(mfrow = c(2, 2))
@@ -2151,8 +2153,9 @@ hyper_bbsc <- function(Z, ...){
 #' @author Sarah Brockhaus, Almond Stoecker 
 #' 
 #' @examples 
+#' #### simulate data with functional response and scalar covariate (functional ANOVA)
 #' n <- 60   ## number of cases
-#' Gy <- 27  ## number of observation poionts per response trajectory 
+#' Gy <- 27  ## number of observation poionts per response curve 
 #' dat <- list()
 #' dat$t <- (1:Gy-1)^2/(Gy-1)^2
 #' set.seed(123)
@@ -2161,24 +2164,29 @@ hyper_bbsc <- function(Z, ...){
 #' # dat$z1 <- runif(n)
 #' # dat$z1 <- dat$z1 - mean(dat$z1)
 #' 
-#' mut <- matrix(2*sin(pi*dat$t), ncol=Gy, nrow=n, byrow=TRUE) + 
-#'         outer(dat$z1, dat$t, function(z1, t) z1*cos(pi*t) ) ## true linear predictor
-#'         ## function(z1, t) z1*cos(4*pi*t)
+#' # mean and standard deviation for the functional response 
+#' mut <- matrix(2*sin(pi*dat$t), ncol = Gy, nrow = n, byrow = TRUE) + 
+#'         outer(dat$z1, dat$t, function(z1, t) z1*cos(pi*t) ) # true linear predictor
 #' sigma <- 0.1
 #' 
-#' ## draw respone y_i(t) ~ N(mu_i(t), sigma)
+#' # draw respone y_i(t) ~ N(mu_i(t), sigma)
 #' dat$y <- apply(mut, 2, function(x) rnorm(mean = x, sd = sigma, n = n)) 
 #' 
-#' ## fit model 
-#' m1 <- FDboost(y ~ 1 + bolsc(z1_fac, df=1), timeformula = ~ bbs(t, df = 6), data=dat)
+#' ## fit function-on-scalar model with a linear effect of z1
+#' m1 <- FDboost(y ~ 1 + bolsc(z1_fac, df = 1), timeformula = ~ bbs(t, df = 6), data = dat)
 #' 
-#' ## look for optimal mSTOP using cvrisk() or validateFDboost()
+#' # look for optimal mSTOP using cvrisk() or validateFDboost()
+#'  \dontrun{
+#' cvm <- cvrisk(m1, grid = 1:500)
+#' m1[mstop(cvm)]
+#' }
+#' m1[200] # use 200 boosting iterations 
 #' 
-#' ## plot estimated coefficients 
-#' plot(dat$t, 2*sin(pi*dat$t), col = 2, type = "l")
+#' # plot true and estimated coefficients 
+#' plot(dat$t, 2*sin(pi*dat$t), col = 2, type = "l", main = "intercept")
 #' plot(m1, which = 1, lty = 2, add = TRUE)
 #' 
-#' plot(dat$t, 1*cos(pi*dat$t), col = 2, type = "l")
+#' plot(dat$t, 1*cos(pi*dat$t), col = 2, type = "l", main = "effect of z1")
 #' lines(dat$t, -1*cos(pi*dat$t), col = 2, type = "l")
 #' plot(m1, which = 2, lty = 2, col = 1, add = TRUE)
 #' 

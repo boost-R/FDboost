@@ -172,7 +172,7 @@ The base-learners for functional covariates cannot deal with any missing
 values in the covariates.
 }
 \examples{
-######## Example for scalar-on-function-regression with bsignal  
+######## Example for scalar-on-function-regression with bsignal()  
 data("fuelSubset", package = "FDboost")
 
 ## center the functional covariates per observed wavelength
@@ -185,10 +185,12 @@ fuelSubset$uvvis.lambda <- with(fuelSubset, (uvvis.lambda - min(uvvis.lambda)) /
                                   (max(uvvis.lambda) - min(uvvis.lambda) ))
 fuelSubset$nir.lambda <- with(fuelSubset, (nir.lambda - min(nir.lambda)) /
                                 (max(nir.lambda) - min(nir.lambda) ))
-                                
-mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots=40, df=4, check.ident=FALSE) 
-               + bsignal(NIR, nir.lambda, knots=40, df=4, check.ident=FALSE), 
-               timeformula=NULL, data=fuelSubset) 
+
+## model fit with scalar response and two functional linear effects 
+## include no intercept as all base-learners are centered around 0                                                                  
+mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.ident = FALSE) 
+               + bsignal(NIR, nir.lambda, knots = 40, df=4, check.ident = FALSE), 
+               timeformula = NULL, data = fuelSubset) 
 summary(mod2) 
 ## plot(mod2)
 
@@ -200,7 +202,7 @@ if(require(refund)){
 
 #########
 # model with linear functional effect, use bsignal()
-# Y(t) = f(t)  + \\int X1(s)\\beta(s,t)ds + eps
+# Y(t) = f(t) + \\int X1(s)\\beta(s,t)ds + eps
 set.seed(2121)
 data1 <- pffrSim(scenario = "ff", n = 40)
 data1$X1 <- scale(data1$X1, scale = FALSE)
@@ -209,8 +211,8 @@ dat_list$t <- attr(data1, "yindex")
 dat_list$s <- attr(data1, "xindex")
 
 ## model fit by FDboost 
-m1 <- FDboost(Y ~ 1 + bsignal(x= X1, s = s, knots = 5), 
-              timeformula = ~ bbs(t, knots = 5), data=dat_list, 
+m1 <- FDboost(Y ~ 1 + bsignal(x = X1, s = s, knots = 5), 
+              timeformula = ~ bbs(t, knots = 5), data = dat_list, 
               control = boost_control(mstop = 21))
 
 ## search optimal mSTOP
@@ -222,7 +224,7 @@ m1 <- FDboost(Y ~ 1 + bsignal(x= X1, s = s, knots = 5),
 ## model fit by pffr
 t <- attr(data1, "yindex")
 s <- attr(data1, "xindex")
-m1_pffr <- pffr(Y ~ ff(X1, xind=s), yind=t, data=data1)
+m1_pffr <- pffr(Y ~ ff(X1, xind = s), yind = t, data = data1)
 
 \dontrun{
   par(mfrow = c(2, 2))

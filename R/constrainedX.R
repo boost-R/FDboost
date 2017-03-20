@@ -87,9 +87,9 @@
     stop("Set intercept = TRUE in base-learners used with %Xc%.")
   }
   
-  #if(any(!used_bl %in% c("bols", "brandom", "bbs")) ){
-  #  warning("%Xc% is intended to combine base-learners bols, brandom and bbs.")
-  #}
+  if(any(!used_bl %in% c("bols", "brandom", "bbs")) ){
+    warning("%Xc% is intended to combine base-learners bols, brandom and bbs.")
+  }
   
   stopifnot(!any(colnames(mboost_intern(bl1, fun = "model.frame.blg")) %in%
                    colnames(mboost_intern(bl2, fun = "model.frame.blg"))))

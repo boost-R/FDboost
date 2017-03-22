@@ -12,11 +12,11 @@
   A list with the following 10 variables.
   \describe{
     \item{\code{power}}{factor variable with levels \emph{high} and \emph{low}}
-    \item{\code{game\_outcome}}{factor variable with levels \emph{gain} and \emph{loss}}
+    \item{\code{game_outcome}}{factor variable with levels \emph{gain} and \emph{loss}}
     \item{\code{control}}{factor variable with levels \emph{high} and \emph{low}}
-    \item{\code{time\_long}}{time points in long format}
+    \item{\code{time_long}}{time points in long format}
     \item{\code{subject}}{factor variable with 23 levels}
-    \item{\code{curveid}}{id for identification of each curve}
+    \item{\code{curveid}}{numeric; id for identification of each curve}
     \item{\code{EEG}}{AsIs matrix; EEG signal in wide format}
     \item{\code{EMG}}{AsIs matrix; EMG signal in wide format}
     \item{\code{s}}{time points for the functional covariate}

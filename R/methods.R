@@ -1332,6 +1332,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
   }
 }
 
+
 # help function to color perspective plots - col1 positive values, col2 negative values
 getColPersp <- function(z, col1 = "tomato", col2 = "lightblue"){
   nrz <- nrow(z)

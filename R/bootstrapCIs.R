@@ -44,6 +44,8 @@
 #' it is also recommended to use \code{levels = NULL} in order to
 #' let the function return the raw results and then manually compute
 #' confidence intervals.
+#' If a baselearner is not selected in any fold, the function
+#' treats its effect as constant zero.
 #' 
 #'  
 #' @return a list containing the elements \code{raw_results}, the 
@@ -77,7 +79,8 @@
 #'}
 #'               
 #' \dontrun{             
-#' bootCIs <- bootstrapCI(m1)               
+#' # a short example with not so meaningful number of folds
+#' bootCIs <- bootstrapCI(m1, B_inner = 3, B_outer = 5)               
 #' }
 #' 
 #' ## now speed things up by defining the inner resampling
@@ -144,6 +147,7 @@
 #' 
 #' ## run with a larger number of outer bootstrap samples
 #' ## and only 10-fold for validation of each outer fold
+#' ## WARNING: This may take very long!
 #' \dontrun{
 #' bootCIs <- bootstrapCI(mod2, B_outer = 1000, B_inner = 10)
 #' }
@@ -230,7 +234,7 @@ bootstrapCI <- function(object, which = NULL,
   
   coefs <- lapply(results, "[[", "coefs")
   mstops <- sapply(results, "[[", "ms")
-  
+  offsets <- t(sapply(coefs, function(x) x$offset$value))
   
   
   ########## format coefficients #########
@@ -249,13 +253,25 @@ bootstrapCI <- function(object, which = NULL,
   # reduce lists for non surface effects
   listOfCoefs[!isSurface] <- lapply(listOfCoefs[!isSurface], function(x) do.call("rbind", x))
   
+  listOfCoefs <- c(offsets = list(offsets), listOfCoefs)
+  isSurface <- c(FALSE, isSurface)
+
   # add information about the values of the covariate
   # and change format
-  for(i in 1:length(coefs[[1]]$smterms)){
+  for(i in 1:length(listOfCoefs)){
     
-    atx <- coefs[[1]]$smterms[[i]]$x
+    if(i!=1){
+      
+      atx <- coefs[[1]]$smterms[[i-1]]$x # i-1 because of the offset
+      
+    }else{
+      
+      atx <- coefs[[1]]$offset$x
+      
+    }
+    
     aty <- NA
-    if(isSurface[i]) aty <- coefs[[1]]$smterms[[i]]$y
+    if(isSurface[i]) aty <- coefs[[1]]$smterms[[i-1]]$y # i-1 because of the offset
 
     # format functional factors
     if(is.list(listOfCoefs[[i]]) & is.factor(atx)){
@@ -398,7 +414,7 @@ plot.bootstrapCI <- function(x, ...)
 {
 
   stopifnot(class(x)=="bootstrapCI")
-  if(!requireNamespace(ggplot2)) stop("Please install ggplot2.")
+  if(!requireNamespace("ggplot2")) stop("Please install ggplot2.")
   
   ### prepare objects
   
@@ -485,7 +501,7 @@ plot.bootstrapCI <- function(x, ...)
     switch(type,
            
            line = function(obj) 
-             ggplot() + 
+             ggplot(obj) + 
              geom_line(data = obj[obj$what=="raw",], 
                        aes(x = x, y = value, group = group),
                        alpha = 0.67, colour = "grey50") + 

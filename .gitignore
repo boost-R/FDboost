@@ -2,6 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-.log
-.tex
-.gz
+/vignettes/*.log
+/vignettes/*.tex
+/vignettes/*.gz

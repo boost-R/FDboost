@@ -223,8 +223,10 @@ bootstrapCI <- function(object, which = NULL,
                                     
                                     ms <- mstop( resampling_fun_inner(mod) )
                                     coefs <- coef( mod[ms], which = which )
+                                    #selc <- selected(mod[ms])
                                     
-                                    return(list(coefs = coefs, ms = ms))
+                                    return(list(coefs = coefs, ms = ms#, selc = selc
+                                                ))
                                     
                                   }
                                   
@@ -235,23 +237,47 @@ bootstrapCI <- function(object, which = NULL,
   coefs <- lapply(results, "[[", "coefs")
   mstops <- sapply(results, "[[", "ms")
   offsets <- t(sapply(coefs, function(x) x$offset$value))
+  # selects <- sort(unique(c(unlist(sapply(results, "[[", "selc")))))
   
   
   ########## format coefficients #########
   # number of baselearners
-  nrEffects <- length(coefs[[1]]$smterms)
+  nrEffects <- #length(selects)
+    max(sapply(1:length(coefs), function(i) length(coefs[[i]]$smterms)))
   
   # extract values
   listOfCoefs <- lapply(1:nrEffects, function(i) lapply(1:length(coefs), 
                                                         function(j) coefs[[j]]$smterms[[i]]$value))
   
-  names(listOfCoefs) <- names(object$baselearner)
+  # check for intercept
+  withIntercept <- any(names(coefs[[1]])=="intercept")
+  
+  if(withIntercept){
+    
+    listOfCoefs <- c(intercept = list(sapply(coefs, "[[", "intercept")), listOfCoefs)
+    nrEffects <- nrEffects + 1
+    
+  }
+  
+  names(listOfCoefs) <- names(object$baselearner)#[selects]
   
   # check for effect surfaces
-  isSurface <- sapply(1:nrEffects, function(i) !is.null(coefs[[1]]$smterms[[i]]$y) )
+  isSurface <- sapply(1:(nrEffects-withIntercept), function(i) !is.null(coefs[[1]]$smterms[[i]]$y) )
   
+  if(withIntercept){ 
+    
+    isSurface <- c(FALSE, isSurface)
+    nonIntercept <- c(FALSE, rep(TRUE, length(isSurface)-1))
+  
+  }else{
+    
+    nonIntercept <- rep(TRUE, length(isSurface))
+    
+  }
+    
   # reduce lists for non surface effects
-  listOfCoefs[!isSurface] <- lapply(listOfCoefs[!isSurface], function(x) do.call("rbind", x))
+  listOfCoefs[!isSurface & nonIntercept] <- 
+    lapply(listOfCoefs[!isSurface & nonIntercept], function(x) do.call("rbind", x))
   
   listOfCoefs <- c(offsets = list(offsets), listOfCoefs)
   isSurface <- c(FALSE, isSurface)
@@ -260,9 +286,11 @@ bootstrapCI <- function(object, which = NULL,
   # and change format
   for(i in 1:length(listOfCoefs)){
     
-    if(i!=1){
+    if(i==1 & withIntercept) next
+    
+    if(i != (1 + withIntercept)){
       
-      atx <- coefs[[1]]$smterms[[i-1]]$x # i-1 because of the offset
+      atx <- coefs[[1]]$smterms[[i-1-withIntercept]]$x # i-1 because of the offset
       
     }else{
       
@@ -271,7 +299,7 @@ bootstrapCI <- function(object, which = NULL,
     }
     
     aty <- NA
-    if(isSurface[i]) aty <- coefs[[1]]$smterms[[i-1]]$y # i-1 because of the offset
+    if(isSurface[i]) aty <- coefs[[1]]$smterms[[i-1-withIntercept]]$y # i-1 because of the offset
 
     # format functional factors
     if(is.list(listOfCoefs[[i]]) & is.factor(atx)){

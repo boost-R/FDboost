@@ -15,8 +15,8 @@
     \item{\code{game_outcome}}{factor variable with levels \emph{gain} and \emph{loss}}
     \item{\code{control}}{factor variable with levels \emph{high} and \emph{low}}
     \item{\code{subject}}{factor variable with 23 levels}
-    \item{\code{EEG}}{AsIs matrix; EEG signal in wide format}
-    \item{\code{EMG}}{AsIs matrix; EMG signal in wide format}
+    \item{\code{EEG}}{matrix; EEG signal in wide format}
+    \item{\code{EMG}}{matrix; EMG signal in wide format}
     \item{\code{s}}{time points for the functional covariate}
     \item{\code{t}}{time points for the functional response}
   }

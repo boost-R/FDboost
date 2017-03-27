@@ -1,0 +1,315 @@
+
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{amstext}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage[round]{natbib}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{authblk}
+\usepackage[left=25mm, right=25mm, top=20mm, bottom=20mm]{geometry}
+%\usepackage[nolists]{endfloat}
+
+%\VignetteEngine{knitr::knitr}
+%\VignetteDepends{FDboost, fda, fields, maps, mapdata}
+%\VignetteIndexEntry{FDboost FLAM fuel}
+
+\newcommand{\Rpackage}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\newcommand{\Robject}[1]{\texttt{#1}}
+\newcommand{\Rclass}[1]{\textit{#1}}
+\newcommand{\Rcmd}[1]{\texttt{#1}}
+\newcommand{\Roperator}[1]{\texttt{#1}}
+\newcommand{\Rarg}[1]{\texttt{#1}}
+\newcommand{\Rlevel}[1]{\texttt{#1}}
+
+\newcommand{\RR}{\textsf{R}}
+\renewcommand{\S}{\textsf{S}}
+\newcommand{\df}{\mbox{df}}
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage{graphicx,ae,fancyvrb}
+\IfFileExists{upquote.sty}{\RequirePackage{upquote}}{}
+\usepackage{relsize}
+
+\renewcommand{\baselinestretch}{1}
+\setlength\parindent{0pt}
+
+
+\hypersetup{%
+  pdftitle = {FLAM canada},
+  pdfsubject = {package vignette},
+  pdfauthor = {Sarah Brockhaus},
+%% change colorlinks to false for pretty printing
+  colorlinks = {true},
+  linkcolor = {blue},
+  citecolor = {blue},
+  urlcolor = {red},
+  hyperindex = {true},
+  linktocpage = {true},
+}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\setkeys{Gin}{width=\textwidth}
+
+\title{Canadian climate: function-on-function regression}
+\author{Sarah Brockhaus 
+\thanks{E-mail: sarah.brockhaus@stat.uni-muenchen.de}}
+\affil{\textit{Institut f\"ur Statistik, \\
+Ludwig-Maximilians-Universit\"at M\"unchen, \\ 
+Ludwigstra{\ss}e 33, D-80539 M\"unchen, Germany.}}
+\date{}
+\maketitle
+
+The dataset was originally analyzed by Fuchs et al. (2015). 
+The results of this vignette together with more explanations can be found in Brockhaus et al. (2015).  
+
+
+
+
+\section{Load and plot data}
+Load FDboost package.
+
+
+Load data and compute the first derivative.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{data}\hlstd{(fuelSubset)}
+\hlstd{fuel} \hlkwb{<-} \hlstd{fuelSubset}
+\hlkwd{str}\hlstd{(fuel)}
+\end{alltt}
+\begin{verbatim}
+List of 7
+ $ heatan      : num [1:129] 26.8 27.5 23.8 18.2 17.5 ...
+ $ h2o         : num [1:129] 2.3 3 2 1.85 2.39 ...
+ $ nir.lambda  : num [1:231] 800 803 805 808 810 ...
+ $ NIR         : num [1:129, 1:231] 0.2818 0.2916 -0.0042 -0.034 -0.1804 ...
+ $ uvvis.lambda: num [1:134] 250 256 261 267 273 ...
+ $ UVVIS       : num [1:129, 1:134] 0.145 -1.584 -0.814 -1.311 -1.373 ...
+ $ h2o.fit     : num [1:129] 2.58 3.43 1.83 2.03 3.07 ...
+\end{verbatim}
+\begin{alltt}
+\hlcom{# # normalize the wavelength to 0-1}
+\hlcom{# fuel$nir.lambda0 <- (fuel$nir.lambda - min(fuel$nir.lambda)) / }
+\hlcom{#   (max(fuel$nir.lambda) - min(fuel$nir.lambda)) }
+\hlcom{# fuel$uvvis.lambda0 <- (fuel$uvvis.lambda - min(fuel$uvvis.lambda)) / }
+\hlcom{#   (max(fuel$uvvis.lambda) - min(fuel$uvvis.lambda))}
+
+\hlcom{# compute first derivatives as first order differences}
+\hlstd{fuel}\hlopt{$}\hlstd{dUVVIS} \hlkwb{<-} \hlkwd{t}\hlstd{(}\hlkwd{apply}\hlstd{(fuel}\hlopt{$}\hlstd{UVVIS,} \hlnum{1}\hlstd{, diff))}
+\hlstd{fuel}\hlopt{$}\hlstd{dNIR} \hlkwb{<-} \hlkwd{t}\hlstd{(}\hlkwd{apply}\hlstd{(fuel}\hlopt{$}\hlstd{NIR,} \hlnum{1}\hlstd{, diff))}
+
+\hlcom{# get the wavelength for the derivatives}
+\hlstd{fuel}\hlopt{$}\hlstd{duvvis.lambda} \hlkwb{<-} \hlstd{fuel}\hlopt{$}\hlstd{uvvis.lambda[}\hlopt{-}\hlnum{1}\hlstd{]}
+\hlstd{fuel}\hlopt{$}\hlstd{dnir.lambda} \hlkwb{<-} \hlstd{fuel}\hlopt{$}\hlstd{nir.lambda[}\hlopt{-}\hlnum{1}\hlstd{]}
+\hlcom{# fuel$duvvis.lambda0 <- fuel$uvvis.lambda0[-1]}
+\hlcom{# fuel$dnir.lambda0 <- fuel$nir.lambda0[-1]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Compute the model to predict humidity. 
+The predicted humidity is contained already in the dataset \emph{fuel}.
+
+\section{Model to predict humidity}
+
+We consider the following regression model to predict the humidity.
+\[
+E(Y_i) = \int \mbox{NIR}_i(s_1)\beta_1(s_1)ds_1 + \int \mbox{UVVIS}_i(s_2)\beta_2(s_2)ds_2
+ + \int \mbox{dNIR}_i(s_3)\beta_1(s_3)ds_3 + \int \mbox{dUVVIS}_i(s_4)\beta_2(s_4)ds_4,
+\]
+with $Y_i$ being the humidity and NIR, UVVIS are the spectra and dNIR, dUVVIS the respective derivatives, measured over $s_1,\ldots, s_4$ respectively.
+The optimal stopping iteration is determined by 10-fold bootstrap.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{modH2O} \hlkwb{<-} \hlkwd{FDboost}\hlstd{(h2o} \hlopt{~} \hlkwd{bsignal}\hlstd{(UVVIS, uvvis.lambda,} \hlkwc{knots}\hlstd{=}\hlnum{40}\hlstd{,} \hlkwc{df}\hlstd{=}\hlnum{4}\hlstd{)}
+                    \hlopt{+} \hlkwd{bsignal}\hlstd{(NIR, nir.lambda,} \hlkwc{knots}\hlstd{=}\hlnum{40}\hlstd{,} \hlkwc{df}\hlstd{=}\hlnum{4}\hlstd{)}
+                    \hlopt{+} \hlkwd{bsignal}\hlstd{(dUVVIS, duvvis.lambda,} \hlkwc{knots}\hlstd{=}\hlnum{40}\hlstd{,} \hlkwc{df}\hlstd{=}\hlnum{4}\hlstd{)}
+                    \hlopt{+} \hlkwd{bsignal}\hlstd{(dNIR, dnir.lambda,} \hlkwc{knots}\hlstd{=}\hlnum{40}\hlstd{,} \hlkwc{df}\hlstd{=}\hlnum{4}\hlstd{),}
+                    \hlkwc{timeformula}\hlstd{=}\hlopt{~}\hlkwd{bols}\hlstd{(}\hlnum{1}\hlstd{),} \hlkwc{data}\hlstd{=fuel)}
+
+\hlkwd{set.seed}\hlstd{(}\hlnum{212}\hlstd{)}
+\hlstd{cvmH2O} \hlkwb{<-} \hlkwd{suppressWarnings}\hlstd{(}\hlkwd{cvrisk}\hlstd{(modH2O,} \hlkwc{grid}\hlstd{=}\hlkwd{seq}\hlstd{(}\hlnum{100}\hlstd{,} \hlnum{5000}\hlstd{,} \hlkwc{by}\hlstd{=}\hlnum{100}\hlstd{),}
+                              \hlkwc{folds}\hlstd{=}\hlkwd{cv}\hlstd{(} \hlkwd{model.weights}\hlstd{(modH2O),}
+                              \hlkwc{type} \hlstd{=} \hlstr{"bootstrap"}\hlstd{,} \hlkwc{B} \hlstd{=} \hlnum{10}\hlstd{),} \hlkwc{mc.cores}\hlstd{=}\hlnum{10}\hlstd{))}
+
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlkwd{plot}\hlstd{(cvmH2O)}
+
+\hlstd{modH2O[}\hlkwd{mstop}\hlstd{(cvmH2O)]}
+\hlcom{#modH2O[2400]}
+
+\hlcom{#### create new variable of predicted h2o}
+\hlstd{h2o.fit} \hlkwb{<-} \hlstd{modH2O}\hlopt{$}\hlkwd{fitted}\hlstd{()}
+
+\hlkwd{plot}\hlstd{(fuel}\hlopt{$}\hlstd{h2o, h2o.fit)}
+\hlkwd{abline}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+%' \section{Plot of data}
+%' <<plot-data, echo=TRUE, fig = FALSE>>=
+%' # pdf("NIR_UVVIS.pdf", width=7, height=7)
+%' jpeg("NIR_UVVIS.jpg", width=1500, height=1500)
+%' par(mfrow=c(2,2), mar=c(4, 4, 1, 1), cex=1.5)
+%' 
+%' # generate colors depending on heat value for equidistant cuts
+%' quants <- seq(from=min(fuel$heatan), to=max(fuel$heatan), l=11) 
+%' cats <- cut(fuel$heatan, quants, include.lowest = TRUE)
+%' pall <- heat.colors(12, alpha = 0.5)[1:10]
+%' cols <- pall[cats]
+%' 
+%' ## plot heatan
+%' with(fuel, hist(heatan, breaks=quants, col=pall, 
+%'                 xlab="heat value [MJ]", main=""))
+%' 
+%' ## plot heat values versus predicted humidity
+%' with(fuel, plot(heatan~h2o, col=cols, pch=20, lwd=2,
+%'                 xlab="predicted humidity [%]", ylab="heat value [MJ]"))
+%' with(fuel, points(heatan~h2o, col=1))
+%' 
+%' ## plot the two spectra
+%' with(fuel, matplot(uvvis.lambda, t(UVVIS), col=cols,
+%'       lwd=1, lty=1, ylab="UV-VIS", xlab="wavelength [nm]", type="l"))
+%' with(fuel, matplot(nir.lambda, t(NIR), col=cols,
+%'       lwd=1, lty=1, ylab="NIR", xlab="wavelength [nm]", type="l"))
+%' dev.off()
+%' @
+%' 
+%' \begin{figure}[h]
+%' \begin{center}
+%' \includegraphics[width=1\textwidth]{NIR_UVVIS}
+%' \caption{The coloring of all plots is according to the heat value  in mega Joule (mJ), with red meaning low heat value and yellow meaning high heat value. The histogram at the top left can be used as a legend. The scatter plot at the top right shows the heat value depending on the predicted humidity. The lower panel shows the UVVIS and the NIR spectra. }
+%' \end{center}
+%' \end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Model to predict heat value}
+
+We consider the following regression model to predict the heat values.
+\[ 
+E(Y_i) = \int \mbox{NIR}_i(s_1)\beta_1(s_1)ds_1 + \int \mbox{UVVIS}_i(s_2)\beta_2(s_2)ds_2,
+\]
+with $Y_i$ being the heat value and NIR and UVVIS are the spectra, measured over $s_1$ and $s_2$ respectively. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{formula} \hlkwb{<-} \hlkwd{formula}\hlstd{(heatan} \hlopt{~} \hlkwd{bsignal}\hlstd{(UVVIS, uvvis.lambda,} \hlkwc{knots}\hlstd{=}\hlnum{40}\hlstd{,} \hlkwc{df}\hlstd{=}\hlnum{4.41}\hlstd{)}
+                   \hlopt{+} \hlkwd{bsignal}\hlstd{(NIR, nir.lambda,} \hlkwc{knots}\hlstd{=}\hlnum{40}\hlstd{,} \hlkwc{df}\hlstd{=}\hlnum{4.41}\hlstd{))}
+
+\hlcom{## do a model fit:}
+\hlstd{mod} \hlkwb{<-} \hlkwd{FDboost}\hlstd{(formula,} \hlkwc{timeformula}\hlstd{=}\hlopt{~}\hlkwd{bols}\hlstd{(}\hlnum{1}\hlstd{),} \hlkwc{data}\hlstd{=fuel)}
+\hlstd{mod} \hlkwb{<-} \hlstd{mod[}\hlnum{198}\hlstd{]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The optimal stopping iteration is determined by 50-fold bootstrap. We compute in each bootstrap-sample the coefficient functions to get an idea of the variability of the estimates.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{## get optimal mstop and do bootstrapping for coefficient estimates}
+\hlkwd{set.seed}\hlstd{(}\hlnum{2703}\hlstd{)}
+\hlstd{val} \hlkwb{<-} \hlkwd{validateFDboost}\hlstd{(mod,}
+                       \hlkwc{folds}\hlstd{=}\hlkwd{cv}\hlstd{(}\hlkwd{model.weights}\hlstd{(mod),} \hlkwc{type} \hlstd{=} \hlstr{"bootstrap"}\hlstd{,} \hlkwc{B} \hlstd{=} \hlnum{50}\hlstd{),}
+                       \hlkwc{grid} \hlstd{=} \hlnum{10}\hlopt{:}\hlnum{500}\hlstd{,} \hlkwc{mc.cores}\hlstd{=}\hlnum{10}\hlstd{)}
+
+\hlstd{mopt} \hlkwb{<-} \hlstd{val}\hlopt{$}\hlstd{grid[}\hlkwd{which.min}\hlstd{(}\hlkwd{colMeans}\hlstd{(val}\hlopt{$}\hlstd{oobrisk))]}
+\hlkwd{print}\hlstd{(mopt)}
+
+\hlcom{## use optimal mstop}
+\hlstd{mod} \hlkwb{<-} \hlstd{mod[mopt]} \hlcom{# 198}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Plot the coefficient functions.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlkwd{plot}\hlstd{(mod,} \hlkwc{which}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{5}\hlstd{,} \hlkwc{rug}\hlstd{=}\hlnum{FALSE}\hlstd{,}
+     \hlkwc{ylab}\hlstd{=}\hlstr{""}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"wavelength [nm]"}\hlstd{)}
+
+\hlkwd{plot}\hlstd{(mod,} \hlkwc{which}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{5}\hlstd{,} \hlkwc{rug}\hlstd{=}\hlnum{FALSE}\hlstd{,}
+     \hlkwc{ylab}\hlstd{=}\hlstr{""}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"wavelength [nm]"}\hlstd{)}
+\end{alltt}
+\end{kframe}\begin{figure}
+\includegraphics[width=\maxwidth]{figure/model-spec-plot-1} \caption[Coefficient estimates for the effects of the two spectra]{Coefficient estimates for the effects of the two spectra.}\label{fig:model-spec-plot}
+\end{figure}
+
+
+\end{knitrout}
+
+% The gray lines show the estimates in the 50 bootstrap folds, the black line gives the mean estimated coefficient function over the bootstrap folds, the dashed red lines point-wise 5\% and 95\% values, the dotdashed blue lines give the estimated coefficients for the model on the whole dataset.
+
+\section*{References}
+\begin{itemize}
+\item[] Brockhaus S, Scheipl, F., Hothor, T., and Greven, S. (2015), The functional linear array model, 
+        \textit{Statistical Modelling}, 15(3), 279--300. 
+\item[] Fuchs, K., Scheipl, F., and Greven, S. (2015), 
+        Penalized scalar-on-functions regression with interaction term,  
+        \textit{Computational Statistics and Data Analysis}, 81, 38--51.
+\end{itemize}
+
+
+\end{document}

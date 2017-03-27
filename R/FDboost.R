@@ -427,7 +427,7 @@
 #'                   
 #'                 
 #' @export
-#' @import methods Matrix mboost  
+#' @import methods Matrix mboost
 #' @importFrom grDevices heat.colors rgb
 #' @importFrom graphics abline barplot contour legend lines matplot par persp plot points
 #' @importFrom utils getS3method 

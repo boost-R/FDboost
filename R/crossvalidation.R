@@ -122,7 +122,9 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   names_variables <- names_variables[names_variables != "ONEtime"]
   if(!any(class(object) == "FDboostLong")) names_variables <- c(object$yname, "integration_weights", names_variables)
   
-  length_variables <- lapply(dathelp[names_variables], NROW)
+  length_variables <- if("FDboostScalar" %in% class(object)) 
+    lapply(dathelp[names_variables], length) else
+      lapply(dathelp[names_variables], NROW)
   names_variables_long <- names_variables[ length_variables == length(object$id) ]
   nothmatrix <- ! sapply(dathelp[names_variables_long], function(x) any(class(x) == "hmatrix" ))
   names_variables_long <- names_variables_long[ nothmatrix ]

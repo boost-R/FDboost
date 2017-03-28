@@ -28,29 +28,28 @@
 #' Argument is overwritten, when a custom \code{resampling_fun_inner}
 #' is supplied.
 #' @param levels the confidence levels required. If NULL, the 
-#' raw results are returned.
-#' @param plot logical; whether or not to plot the results.
+#' raw results are returned. 
 #'
 #' @author David Ruegamer, Sarah Brockhaus
 #' 
 #' @note Note that parallelization can be achieved by defining
 #' the \code{resampling_fun_outer} or \code{_inner} accordingly.
-#' See e.g. \code{\link{cvrisk}} on how to parallelize resampling
+#' See, e.g., \code{\link{cvrisk}} on how to parallelize resampling
 #' functions or the examples below. Also note that by defining
 #' a custum inner or outer resampling function the respective
 #' argument \code{B_inner} or \code{B_outer} is ignored.
-#' For models with complex baselearners, e.g. created by combining
+#' For models with complex baselearners, e.g., created by combining
 #' several baselearners with the Kronecker or row-wise tensor product,
 #' it is also recommended to use \code{levels = NULL} in order to
 #' let the function return the raw results and then manually compute
 #' confidence intervals.
 #' If a baselearner is not selected in any fold, the function
-#' treats its effect as constant zero.
+#' treats its effect as constantly zero.
 #' 
 #'  
 #' @return a list containing the elements \code{raw_results}, the 
 #' \code{quantiles} and \code{mstops}. 
-#' In both list elements, each baselearner
+#' In \code{raw_results} and \code{quantiles}, each baselearner
 #' selected with \code{which} in turn corresponds to a list
 #' element. The quantiles are given as vector, matrix or list of
 #' matrices depending on the nature of the effect. In case of functional
@@ -158,8 +157,7 @@ bootstrapCI <- function(object, which = NULL,
                         resampling_fun_inner = NULL,
                         B_outer = 100,
                         B_inner = 25,
-                        levels = c(0.05, 0.95), 
-                        plot = TRUE)
+                        levels = c(0.05, 0.95))
 {
   
   ########## check for scalar response #########
@@ -239,7 +237,6 @@ bootstrapCI <- function(object, which = NULL,
   offsets <- t(sapply(coefs, function(x) x$offset$value))
   # selects <- sort(unique(c(unlist(sapply(results, "[[", "selc")))))
   
-  
   ########## format coefficients #########
   # number of baselearners
   nrEffects <- #length(selects)
@@ -317,6 +314,16 @@ bootstrapCI <- function(object, which = NULL,
     
     attr(listOfCoefs[[i]], "x") <- atx
     if(!is.na(sum(aty))) attr(listOfCoefs[[i]], "y") <- aty
+
+    # add all plotting infos as attribute
+    if(names(listOfCoefs)[i] != "offsets"){
+      my_plot_info <- coefs[[1]]$smterms[[i-1-withIntercept]]
+    }else{
+      my_plot_info <- coefs[[1]]$offset
+    }
+    my_plot_info$value <- NA
+    attr(listOfCoefs[[i]], "plot_info") <- my_plot_info 
+    
     
   }
 
@@ -410,7 +417,8 @@ bootstrapCI <- function(object, which = NULL,
               B_outer = B_outer,
               B_inner = B_inner,
               which = which,
-              levels = levels)
+              levels = levels, 
+              yind = object$yind)
   
   class(ret) <- "bootstrapCI"
   
@@ -532,7 +540,7 @@ plot.bootstrapCI <- function(x, ...)
              ggplot(obj) + 
              geom_line(data = obj[obj$what=="raw",], 
                        aes(x = x, y = value, group = group),
-                       alpha = 0.67, colour = "grey50") + 
+                       alpha = 0.67, colour = "grey50", linetype = 1) + 
              geom_line(data = obj[obj$what=="quantile",],
                        aes(x = x, y = value, group = group),
                        colour = "red", linetype = "dashed", size = 1.1) + 
@@ -542,7 +550,7 @@ plot.bootstrapCI <- function(x, ...)
              ggplot(obj) + 
              geom_line(data = obj[obj$what=="raw",], 
                        aes(x = x, y = value, group = group),
-                       alpha = 0.67, colour = "grey50") + 
+                       alpha = 0.67, colour = "grey50", linetype = 1) + 
              geom_line(data = obj[obj$what=="quantile",],
                        aes(x = x, y = value, group = group),
                        colour = "red", linetype = "dashed", size = 1.1) + 

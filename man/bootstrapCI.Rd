@@ -6,7 +6,7 @@
 \usage{
 bootstrapCI(object, which = NULL, resampling_fun_outer = NULL,
   resampling_fun_inner = NULL, B_outer = 100, B_inner = 25,
-  levels = c(0.05, 0.95), plot = TRUE)
+  levels = c(0.05, 0.95))
 }
 \arguments{
 \item{object}{a fitted model object of class \code{FDboost}, 
@@ -44,13 +44,11 @@ is supplied.}
 
 \item{levels}{the confidence levels required. If NULL, the 
 raw results are returned.}
-
-\item{plot}{logical; whether or not to plot the results.}
 }
 \value{
 a list containing the elements \code{raw_results}, the 
 \code{quantiles} and \code{mstops}. 
-In both list elements, each baselearner
+In \code{raw_results} and \code{quantiles}, each baselearner
 selected with \code{which} in turn corresponds to a list
 element. The quantiles are given as vector, matrix or list of
 matrices depending on the nature of the effect. In case of functional
@@ -65,15 +63,17 @@ Function to compute bootstrap confidence intervals
 \note{
 Note that parallelization can be achieved by defining
 the \code{resampling_fun_outer} or \code{_inner} accordingly.
-See e.g. \code{\link{cvrisk}} on how to parallelize resampling
+See, e.g., \code{\link{cvrisk}} on how to parallelize resampling
 functions or the examples below. Also note that by defining
 a custum inner or outer resampling function the respective
 argument \code{B_inner} or \code{B_outer} is ignored.
-For models with complex baselearners, e.g. created by combining
+For models with complex baselearners, e.g., created by combining
 several baselearners with the Kronecker or row-wise tensor product,
 it is also recommended to use \code{levels = NULL} in order to
 let the function return the raw results and then manually compute
 confidence intervals.
+If a baselearner is not selected in any fold, the function
+treats its effect as constantly zero.
 }
 \examples{
 if(require(refund)){
@@ -95,7 +95,8 @@ m1 <- FDboost(Y ~ 1 + bsignal(x = X1, s = s, knots = 5),
 }
               
 \dontrun{             
-bootCIs <- bootstrapCI(m1)               
+# a short example with not so meaningful number of folds
+bootCIs <- bootstrapCI(m1, B_inner = 3, B_outer = 5)               
 }
 
 ## now speed things up by defining the inner resampling
@@ -162,6 +163,7 @@ bootCIs <- bootstrapCI(mod2)
 
 ## run with a larger number of outer bootstrap samples
 ## and only 10-fold for validation of each outer fold
+## WARNING: This may take very long!
 \dontrun{
 bootCIs <- bootstrapCI(mod2, B_outer = 1000, B_inner = 10)
 }

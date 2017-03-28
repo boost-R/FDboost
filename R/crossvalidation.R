@@ -1421,35 +1421,14 @@ plot.validateFDboost <- function(x, riskopt=c("mean", "median"),
 #' @rdname plot.validateFDboost
 #' @export
 #' 
-plotPredCoef <- function(x, which=NULL, pers=TRUE,
-                         commonRange=TRUE, showNumbers=FALSE, showQuantiles=TRUE,
-                         ask=TRUE, 
-                         terms=TRUE,         
-                         probs=c(0.05, 0.5, 0.95), # quantiles of variables to use for plotting
-                         ylim=NULL, ...){
+plotPredCoef <- function(x, which = NULL, pers = TRUE,
+                         commonRange = TRUE, showNumbers = FALSE, showQuantiles = TRUE,
+                         ask = TRUE, 
+                         terms = TRUE,         
+                         probs = c(0.05, 0.5, 0.95), # quantiles of variables to use for plotting
+                         ylim = NULL, ...){
   
-  stopifnot(any(class(x)=="validateFDboost"))
-  
-  ### Get further arguments passed to the different plot-functions
-  dots <- list(...)
-  
-  getArguments <- function(x, dots=dots){
-    if(any(names(dots) %in% names(x))){
-      dots[names(dots) %in% names(x)]
-    }else list()
-  }
-  
-  #argsPlot <- getArguments(x=formals(graphics::plot.default), dots=dots)
-  argsPlot <- getArguments(x=c(formals(graphics::plot.default), par()), dots=dots)
-  argsMatplot  <- getArguments(x=c(formals(graphics::matplot), par()), dots=dots)
-  argsFunplot  <- getArguments(x=c(formals(funplot), par()), dots=dots)
-
-  argsPersp <- getArguments(x=formals(getS3method("persp", "default")), dots=dots)
-  
-  plotWithArgs <- function(plotFun, args, myargs){        
-    args <- c(myargs[!names(myargs) %in% names(args)], args)        
-    do.call(plotFun, args)            
-  }    
+  stopifnot(any(class(x) == "validateFDboost"))
   
   if(is.null(which)) which <- 1:length(x$coefCV)
   
@@ -1519,248 +1498,286 @@ plotPredCoef <- function(x, which=NULL, pers=TRUE,
       # coef() of a certain term
       temp <- x$coefCV[l][[1]]
       
-      if(!is.null(temp$numberLevels)){
-        ## TODO: make plots for all levels of temp$numberLevels
-        ## temp$dim <- temp[[1]]$dim
-        temp <- temp[[1]]
-        warning("Of the composed base-learner ", l, " only the first effect is plotted.")
-      }
+      plot_bootstrapped_coef(temp = temp, l = l, 
+                             offset = attr(x$coefCV, "offset"), yind = x$yind, 
+                             pers = pers, 
+                             showNumbers = showNumbers, showQuantiles = showQuantiles, 
+                             probs = probs, ylim = ylim, ...)
       
-      # set the range for each effect individually
-      if(FALSE) ylim <- range(temp$value)
-      
-      ## plot the estimated offset
-      if(l==1 && length(x$yind)>1){
-        myMat <- attr(x$coefCV, "offset")
-        
-        if(showQuantiles){ 
-          
-          timeHelp <- seq(min(x$yind), max(x$yind), length=nrow(myMat))
-          plotWithArgs(matplot, args=argsMatplot, 
-                       myargs=list(x=timeHelp, y=myMat, type="l", xlab=temp$xlab,
-                                   main=temp$main, ylab="coef", ylim=NULL, 
-                                   col=rgb(0.6,0.6,0.6, alpha=0.5)))
-          
-          if(showNumbers){
-            matplot(timeHelp, myMat, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
-          }
-          lines(timeHelp, rowMeans(myMat), col=1, lwd=2)
-          lines(timeHelp, apply(myMat, 1, quantile, 0.95), col=2, lwd=2, lty=2)
-          lines(timeHelp, apply(myMat, 1, quantile, 0.05), col=2, lwd=2, lty=2)
-          
-        }else{
-          
-          plotWithArgs(matplot, args=argsMatplot, 
-                       myargs=list(x=timeHelp, y=myMat, type="l", xlab=temp$xlab,
-                                   main=temp$main, ylab="coef", ylim=NULL))
-          
-          if(showNumbers){
-            matplot(timeHelp, myMat, add=TRUE, ...)
-          }
-        }
-      }
-      
-      if(temp$dim==1){
-        # impute vector of 0 if effect was never chosen
-        temp$value[sapply(temp$value, function(x) length(x)==1)] <- list(rep(0, 40))
-        myMat <- sapply(temp$value, function(x) x) # as one matrix
-        
-        if(showQuantiles){
-          
-          plotWithArgs(matplot, args=argsMatplot, 
-                       myargs=list(x=temp$x, y=myMat, type="l", xlab=temp$xlab,
-                                   main=temp$main, ylab="coef", ylim=ylim, 
-                                   col=rgb(0.6,0.6,0.6, alpha=0.5)))
-          
-          if(showNumbers){
-            matplot(temp$x, myMat, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
-          }
-          
-          lines(temp$x, rowMeans(myMat), col=1, lwd=2)
-          lines(temp$x, apply(myMat, 1, quantile, 0.95), col=2, lwd=2, lty=2)
-          lines(temp$x, apply(myMat, 1, quantile, 0.05), col=2, lwd=2, lty=2)
-          
-        }else{
-          
-          plotWithArgs(matplot, args=argsMatplot, 
-                       myargs=list(x=temp$x, y=myMat, type="l", xlab=temp$xlab,
-                                   main=temp$main, ylab="coef", ylim=ylim))
-          
-          if(showNumbers){
-            matplot(temp$x, myMat, add=TRUE, ...)
-          }
-          
-        }
-      }
-      
-      if(temp$dim==2){
-        
-        if(!is.factor(temp$x)){
-          quantx <- quantile(temp$x, probs=probs, type=1)
-        } else quantx <- temp$x
-        
-        quanty <- quantile(temp$y, probs=probs, type=1)
-        
-        # set lower triangular matrix to NA for historic effect
-        if(grepl("bhist", temp$main)){
-          for(k in 1:length(temp$value)){
-            temp$value[[k]][outer(1:nrow(temp$value[[k]]), 1:ncol(temp$value[[k]]), "<=")==FALSE] <- NA
-          }
-        }
-        
-        if(!is.factor(temp$x)){ # temp$x is metric
-          
-          # impute matrix of 0 if effect was never chosen
-          temp$value[sapply( temp$value, function(x){ is.null(dim(x)) || dim(x)[2]==1 })] <- list(matrix(0, ncol=20, nrow=20))
-          
-          # plot coefficient surfaces at different pointwise quantiles
-          if(pers){ 
-            matvec <- sapply(temp$value, c)
-            for(k in 1:length(probs)){
-              tempZ <- matrix(apply(matvec, 1, quantile, probs=probs[k], na.rm=TRUE), ncol=length(temp$x))
-
-              plotWithArgs(persp, args=argsPersp, 
-                           myargs=list(x=temp$x, y=temp$y, z=tempZ,
-                                       ticktype="detailed", theta=30, phi=30,
-                                       xlab=paste("\n", temp$xlab), ylab=paste("\n", temp$ylab), 
-                                       zlab=paste("\n", "coef"), 
-                                       zlim=if(is.null(ylim)) range(matvec, na.rm=TRUE) else ylim,  
-                                       main=paste(temp$main, " at ", probs[k]*100, "%-quantile", sep=""), 
-                                       col=getColPersp(tempZ)))
-            }  
-          }else{ # do 2-dim plots
-            
-            for(j in 1:length(quanty)){ 
-              
-              myCol <- sapply(temp$value, function(x) x[, quanty[j]==temp$y]) # first column
-              
-              if(showQuantiles){ 
-                plotWithArgs(matplot, args=argsMatplot, 
-                             myargs=list(x=temp$y, y=myCol, type="l", xlab=temp$ylab,
-                                         main=paste(temp$main, " at ", probs[j]*100, "% of ", temp$xlab, sep=""), 
-                                         ylab="coef", ylim=ylim, 
-                                         col=rgb(0.6,0.6,0.6, alpha=0.5)))
-
-                if(showNumbers){
-                  matplot(temp$y, myCol, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
-                }
-                lines(temp$y, rowMeans(myCol), col=1, lwd=2)
-                lines(temp$y, apply(myCol, 1, quantile, 0.95, na.rm = TRUE), col=2, lwd=2, lty=2)
-                lines(temp$y, apply(myCol, 1, quantile, 0.05, na.rm = TRUE), col=2, lwd=2, lty=2)
-                
-              }else{
-                plotWithArgs(matplot, args=argsMatplot, 
-                             myargs=list(x=temp$y, y=myCol, type="l", xlab=temp$ylab,
-                                         main=paste(temp$main, " at ", probs[j]*100, "% of ", temp$xlab, sep=""), 
-                                         ylab="coef", ylim=ylim))
-                if(showNumbers){
-                  matplot(temp$y, myCol, add=TRUE, ...)
-                }
-              }
-              
-            } # end loop over quanty
-            
-            for(j in 1:length(quantx)){  
-              myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x, ]) # first column
-              
-              if(showQuantiles){
-                
-                plotWithArgs(matplot, args=argsMatplot, 
-                             myargs=list(x=temp$x, y=myRow, type="l", xlab=temp$xlab,
-                                         main=paste(temp$main, " at ", probs[j]*100, "% of ", temp$ylab, sep=""), 
-                                         ylab="coef", ylim=ylim, 
-                                         col=rgb(0.6,0.6,0.6, alpha=0.5)))
-                if(showNumbers){
-                  matplot(temp$x, myRow, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
-                }
-                lines(temp$x, rowMeans(myRow), col=1, lwd=2)
-                lines(temp$x, apply(myRow, 1, quantile, 0.95, na.rm = TRUE), col=2, lwd=2, lty=2)
-                lines(temp$x, apply(myRow, 1, quantile, 0.05, na.rm = TRUE), col=2, lwd=2, lty=2)
-                
-              }else{
-                plotWithArgs(matplot, args=argsMatplot, 
-                             myargs=list(x=temp$x, y=myRow, type="l", xlab=temp$xlab,
-                                         main=paste(temp$main, " at ", probs[j]*100, "% of ", temp$ylab, sep=""), 
-                                         ylab="coef", ylim=ylim))                
-                if(showNumbers){
-                  matplot(temp$x, myRow, add=TRUE, ...)
-                }
-              }
-            }
-            
-          } # end else
-          
-        }else{ # temp$x is factor
-          for(j in 1:length(quantx)){ 
-            
-            # impute matrix of 0 if effect was never chosen
-            temp$value[sapply(temp$value, function(x) is.null(dim(x)))] <- list(matrix(0, ncol=20, nrow=length(quantx)))
-            
-            if(is.null(temp$z)){
-              
-              myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x, ]) # first column
-              
-              if(showQuantiles){
-                
-                plotWithArgs(matplot, args=argsMatplot, 
-                             myargs=list(x=temp$y, y=myRow, type="l", xlab=temp$ylab,
-                                         main=paste(temp$main, " at ", temp$xlab,"=" ,quantx[j], sep=""), 
-                                         ylab="coef", ylim=ylim, 
-                                         col=rgb(0.6,0.6,0.6, alpha=0.5)))
-
-                if(showNumbers){
-                  matplot(temp$y, myRow, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
-                }
-                lines(temp$y, rowMeans(myRow), col=1, lwd=2)
-                lines(temp$y, apply(myRow, 1, quantile, 0.95, na.rm = TRUE), col=2, lwd=2, lty=2)
-                lines(temp$y, apply(myRow, 1, quantile, 0.05, na.rm = TRUE), col=2, lwd=2, lty=2)
-                
-              }else{
-                matplot(temp$y, myRow, type="l", xlab=temp$ylab, ylim=ylim,
-                        main=paste(temp$main, " at ", temp$xlab,"=" ,quantx[j], sep=""), ylab="coef", ...)
-              } 
-              
-            }else{
-              quantz <- temp$z
-              myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x & quantz[j]==temp$z, ]) # first column
-              
-              if(showQuantiles){
-                
-                plotWithArgs(matplot, args=argsMatplot, 
-                             myargs=list(x=temp$y, y=myRow, type="l", xlab=temp$ylab,
-                                         main=paste(temp$main, " at ", temp$xlab,"=" , quantx[j], ", " , 
-                                                    temp$zlab,"=" ,quantz[j], sep=""), 
-                                         ylab="coef", ylim=ylim, 
-                                         col=rgb(0.6,0.6,0.6, alpha=0.5)))
-                
-                if(showNumbers){
-                  matplot(temp$y, myRow, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
-                }
-                lines(temp$y, rowMeans(myRow), col=1, lwd=2)
-                lines(temp$y, apply(myRow, 1, quantile, 0.95, na.rm = TRUE), col=2, lwd=2, lty=2)
-                lines(temp$y, apply(myRow, 1, quantile, 0.05, na.rm = TRUE), col=2, lwd=2, lty=2)
-                
-              }else{
-                plotWithArgs(matplot, args=argsMatplot, 
-                             myargs=list(x=temp$y, y=myRow, type="l", xlab=temp$ylab,
-                                         main=paste(temp$main, " at ", temp$xlab,"=" , quantx[j], ", " , 
-                                                    temp$zlab,"=" ,quantz[j], sep=""), 
-                                         ylab="coef", ylim=ylim))
-              }
-              
-            }
-            if(showNumbers){
-              matplot(temp$y, myRow, add=TRUE, ...)
-            }
-          } 
-        }
-        
-      } # end if(temp$dim==2)
       
     } # end loop over effects
   }
   par(ask=FALSE)
 }
+
+
+
+plot_bootstrapped_coef <- function(temp, l,  
+                                   offset, yind, 
+                                   pers, showNumbers, showQuantiles, probs, ylim, ...){
+  
+  ### Get further arguments passed to the different plot-functions
+  dots <- list(...)
+  
+  getArguments <- function(x, dots=dots){
+    if(any(names(dots) %in% names(x))){
+      dots[names(dots) %in% names(x)]
+    }else list()
+  }
+  
+  #argsPlot <- getArguments(x=formals(graphics::plot.default), dots=dots)
+  argsPlot <- getArguments(x=c(formals(graphics::plot.default), par()), dots=dots)
+  argsMatplot  <- getArguments(x=c(formals(graphics::matplot), par()), dots=dots)
+  argsFunplot  <- getArguments(x=c(formals(funplot), par()), dots=dots)
+  
+  argsPersp <- getArguments(x=formals(getS3method("persp", "default")), dots=dots)
+  
+  plotWithArgs <- function(plotFun, args, myargs){        
+    args <- c(myargs[!names(myargs) %in% names(args)], args)        
+    do.call(plotFun, args)            
+  }    
+  
+  
+  if(!is.null(temp$numberLevels)){
+    ## TODO: make plots for all levels of temp$numberLevels
+    ## temp$dim <- temp[[1]]$dim
+    temp <- temp[[1]]
+    warning("Of the composed base-learner ", l, " only the first effect is plotted.")
+  }
+  
+  # set the range for each effect individually
+  if(FALSE) ylim <- range(temp$value)
+  
+  ## plot the estimated offset
+  if(l==1 && length(yind)>1){
+    myMat <- offset ## attr(x$coefCV, "offset")
+    
+    if(showQuantiles){ 
+      
+      timeHelp <- seq(min(yind), max(yind), length=nrow(myMat))
+      plotWithArgs(matplot, args=argsMatplot, 
+                   myargs=list(x=timeHelp, y=myMat, type="l", xlab=temp$xlab,
+                               main=temp$main, ylab="coef", ylim=NULL, 
+                               col=rgb(0.6,0.6,0.6, alpha=0.5)))
+      
+      if(showNumbers){
+        matplot(timeHelp, myMat, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
+      }
+      lines(timeHelp, rowMeans(myMat), col=1, lwd=2)
+      lines(timeHelp, apply(myMat, 1, quantile, 0.95), col=2, lwd=2, lty=2)
+      lines(timeHelp, apply(myMat, 1, quantile, 0.05), col=2, lwd=2, lty=2)
+      
+    }else{
+      
+      plotWithArgs(matplot, args=argsMatplot, 
+                   myargs=list(x=timeHelp, y=myMat, type="l", xlab=temp$xlab,
+                               main=temp$main, ylab="coef", ylim=NULL))
+      
+      if(showNumbers){
+        matplot(timeHelp, myMat, add=TRUE, ...)
+      }
+    }
+  }
+  
+  if(temp$dim==1){
+    # impute vector of 0 if effect was never chosen
+    temp$value[sapply(temp$value, function(x) length(x)==1)] <- list(rep(0, 40))
+    myMat <- sapply(temp$value, function(x) x) # as one matrix
+    
+    if(showQuantiles){
+      
+      plotWithArgs(matplot, args=argsMatplot, 
+                   myargs=list(x=temp$x, y=myMat, type="l", xlab=temp$xlab,
+                               main=temp$main, ylab="coef", ylim=ylim, 
+                               col=rgb(0.6,0.6,0.6, alpha=0.5)))
+      
+      if(showNumbers){
+        matplot(temp$x, myMat, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
+      }
+      
+      lines(temp$x, rowMeans(myMat), col=1, lwd=2)
+      lines(temp$x, apply(myMat, 1, quantile, 0.95), col=2, lwd=2, lty=2)
+      lines(temp$x, apply(myMat, 1, quantile, 0.05), col=2, lwd=2, lty=2)
+      
+    }else{
+      
+      plotWithArgs(matplot, args=argsMatplot, 
+                   myargs=list(x=temp$x, y=myMat, type="l", xlab=temp$xlab,
+                               main=temp$main, ylab="coef", ylim=ylim))
+      
+      if(showNumbers){
+        matplot(temp$x, myMat, add=TRUE, ...)
+      }
+      
+    }
+  }
+  
+  if(temp$dim==2){
+    
+    if(!is.factor(temp$x)){
+      quantx <- quantile(temp$x, probs=probs, type=1)
+    } else quantx <- temp$x
+    
+    quanty <- quantile(temp$y, probs=probs, type=1)
+    
+    # set lower triangular matrix to NA for historic effect
+    if(grepl("bhist", temp$main)){
+      for(k in 1:length(temp$value)){
+        temp$value[[k]][outer(1:nrow(temp$value[[k]]), 1:ncol(temp$value[[k]]), "<=")==FALSE] <- NA
+      }
+    }
+    
+    if(!is.factor(temp$x)){ # temp$x is metric
+      
+      # impute matrix of 0 if effect was never chosen
+      temp$value[sapply( temp$value, function(x){ is.null(dim(x)) || dim(x)[2]==1 })] <- list(matrix(0, ncol=20, nrow=20))
+      
+      # plot coefficient surfaces at different pointwise quantiles
+      if(pers){ 
+        matvec <- sapply(temp$value, c)
+        for(k in 1:length(probs)){
+          tempZ <- matrix(apply(matvec, 1, quantile, probs=probs[k], na.rm=TRUE), ncol=length(temp$x))
+          
+          plotWithArgs(persp, args=argsPersp, 
+                       myargs=list(x=temp$x, y=temp$y, z=tempZ,
+                                   ticktype="detailed", theta=30, phi=30,
+                                   xlab=paste("\n", temp$xlab), ylab=paste("\n", temp$ylab), 
+                                   zlab=paste("\n", "coef"), 
+                                   zlim=if(is.null(ylim)) range(matvec, na.rm=TRUE) else ylim,  
+                                   main=paste(temp$main, " at ", probs[k]*100, "%-quantile", sep=""), 
+                                   col=getColPersp(tempZ)))
+        }  
+      }else{ # do 2-dim plots
+        
+        for(j in 1:length(quanty)){ 
+          
+          myCol <- sapply(temp$value, function(x) x[, quanty[j]==temp$y]) # first column
+          
+          if(showQuantiles){ 
+            plotWithArgs(matplot, args=argsMatplot, 
+                         myargs=list(x=temp$y, y=myCol, type="l", xlab=temp$ylab,
+                                     main=paste(temp$main, " at ", probs[j]*100, "% of ", temp$xlab, sep=""), 
+                                     ylab="coef", ylim=ylim, 
+                                     col=rgb(0.6,0.6,0.6, alpha=0.5)))
+            
+            if(showNumbers){
+              matplot(temp$y, myCol, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
+            }
+            lines(temp$y, rowMeans(myCol), col=1, lwd=2)
+            lines(temp$y, apply(myCol, 1, quantile, 0.95, na.rm = TRUE), col=2, lwd=2, lty=2)
+            lines(temp$y, apply(myCol, 1, quantile, 0.05, na.rm = TRUE), col=2, lwd=2, lty=2)
+            
+          }else{
+            plotWithArgs(matplot, args=argsMatplot, 
+                         myargs=list(x=temp$y, y=myCol, type="l", xlab=temp$ylab,
+                                     main=paste(temp$main, " at ", probs[j]*100, "% of ", temp$xlab, sep=""), 
+                                     ylab="coef", ylim=ylim))
+            if(showNumbers){
+              matplot(temp$y, myCol, add=TRUE, ...)
+            }
+          }
+          
+        } # end loop over quanty
+        
+        for(j in 1:length(quantx)){  
+          myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x, ]) # first column
+          
+          if(showQuantiles){
+            
+            plotWithArgs(matplot, args=argsMatplot, 
+                         myargs=list(x=temp$x, y=myRow, type="l", xlab=temp$xlab,
+                                     main=paste(temp$main, " at ", probs[j]*100, "% of ", temp$ylab, sep=""), 
+                                     ylab="coef", ylim=ylim, 
+                                     col=rgb(0.6,0.6,0.6, alpha=0.5)))
+            if(showNumbers){
+              matplot(temp$x, myRow, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
+            }
+            lines(temp$x, rowMeans(myRow), col=1, lwd=2)
+            lines(temp$x, apply(myRow, 1, quantile, 0.95, na.rm = TRUE), col=2, lwd=2, lty=2)
+            lines(temp$x, apply(myRow, 1, quantile, 0.05, na.rm = TRUE), col=2, lwd=2, lty=2)
+            
+          }else{
+            plotWithArgs(matplot, args=argsMatplot, 
+                         myargs=list(x=temp$x, y=myRow, type="l", xlab=temp$xlab,
+                                     main=paste(temp$main, " at ", probs[j]*100, "% of ", temp$ylab, sep=""), 
+                                     ylab="coef", ylim=ylim))                
+            if(showNumbers){
+              matplot(temp$x, myRow, add=TRUE, ...)
+            }
+          }
+        }
+        
+      } # end else
+      
+    }else{ # temp$x is factor
+      for(j in 1:length(quantx)){ 
+        
+        # impute matrix of 0 if effect was never chosen
+        temp$value[sapply(temp$value, function(x) is.null(dim(x)))] <- list(matrix(0, ncol=20, nrow=length(quantx)))
+        
+        if(is.null(temp$z)){
+          
+          myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x, ]) # first column
+          
+          if(showQuantiles){
+            
+            plotWithArgs(matplot, args=argsMatplot, 
+                         myargs=list(x=temp$y, y=myRow, type="l", xlab=temp$ylab,
+                                     main=paste(temp$main, " at ", temp$xlab,"=" ,quantx[j], sep=""), 
+                                     ylab="coef", ylim=ylim, 
+                                     col=rgb(0.6,0.6,0.6, alpha=0.5)))
+            
+            if(showNumbers){
+              matplot(temp$y, myRow, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
+            }
+            lines(temp$y, rowMeans(myRow), col=1, lwd=2)
+            lines(temp$y, apply(myRow, 1, quantile, 0.95, na.rm = TRUE), col=2, lwd=2, lty=2)
+            lines(temp$y, apply(myRow, 1, quantile, 0.05, na.rm = TRUE), col=2, lwd=2, lty=2)
+            
+          }else{
+            matplot(temp$y, myRow, type="l", xlab=temp$ylab, ylim=ylim,
+                    main=paste(temp$main, " at ", temp$xlab,"=" ,quantx[j], sep=""), ylab="coef", ...)
+          } 
+          
+        }else{
+          quantz <- temp$z
+          myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x & quantz[j]==temp$z, ]) # first column
+          
+          if(showQuantiles){
+            
+            plotWithArgs(matplot, args=argsMatplot, 
+                         myargs=list(x=temp$y, y=myRow, type="l", xlab=temp$ylab,
+                                     main=paste(temp$main, " at ", temp$xlab,"=" , quantx[j], ", " , 
+                                                temp$zlab,"=" ,quantz[j], sep=""), 
+                                     ylab="coef", ylim=ylim, 
+                                     col=rgb(0.6,0.6,0.6, alpha=0.5)))
+            
+            if(showNumbers){
+              matplot(temp$y, myRow, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
+            }
+            lines(temp$y, rowMeans(myRow), col=1, lwd=2)
+            lines(temp$y, apply(myRow, 1, quantile, 0.95, na.rm = TRUE), col=2, lwd=2, lty=2)
+            lines(temp$y, apply(myRow, 1, quantile, 0.05, na.rm = TRUE), col=2, lwd=2, lty=2)
+            
+          }else{
+            plotWithArgs(matplot, args=argsMatplot, 
+                         myargs=list(x=temp$y, y=myRow, type="l", xlab=temp$ylab,
+                                     main=paste(temp$main, " at ", temp$xlab,"=" , quantx[j], ", " , 
+                                                temp$zlab,"=" ,quantz[j], sep=""), 
+                                     ylab="coef", ylim=ylim))
+          }
+          
+        }
+        if(showNumbers){
+          matplot(temp$y, myRow, add=TRUE, ...)
+        }
+      } 
+    }
+    
+  } # end if(temp$dim==2)
+  
+}
+
 
 
 #' @rdname validateFDboost

@@ -33,7 +33,7 @@ For issues, bugs, feature requests etc. please use the [GitHub Issues](https://g
 - Latest **patch version** (patched version of CRAN package; under development) from GitHub:
   ```r
   library("devtools")
-  install_github("fdboost/FDboost", build_vignettes = TRUE)
+  install_github("fdboost/FDboost") ## , build_vignettes = TRUE
   library("FDboost")
   ```
 

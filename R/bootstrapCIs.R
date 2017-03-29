@@ -303,8 +303,8 @@ bootstrapCI <- function(object, which = NULL,
     if(is.list(listOfCoefs[[i]]) & is.factor(atx)){
       
       # combine each factor level
-      listOfCoefs[[i]] <- lapply(1:length(levels(atx)),
-                                 function(faclevnr) sapply(listOfCoefs[[i]], function(x) x[faclevnr,]))
+      listOfCoefs[[i]] <- lapply(1:length(levels(droplevels(atx))),
+                                 function(faclevnr) t(sapply(listOfCoefs[[i]], function(x) x[faclevnr,])))
       isSurface[i] <- FALSE
       
     }else if(is.list(listOfCoefs[[i]])){ # effect surfaces

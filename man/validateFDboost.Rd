@@ -11,7 +11,7 @@
 applyFolds(object, folds = cv(rep(1, length(unique(object$id))), type =
   "bootstrap"), grid = 1:mstop(object), fun = NULL, riskFun = NULL,
   numInt = object$numInt, papply = mclapply, mc.preschedule = FALSE,
-  showProgress = TRUE, ...)
+  showProgress = TRUE, redefineWeights = FALSE, ...)
 
 validateFDboost(object, response = NULL, folds = cv(rep(1,
   length(unique(object$id))), type = "bootstrap"), grid = 1:mstop(object),
@@ -57,6 +57,9 @@ see \code{\link[mboost]{cvrisk}} for details.}
 For details see \code{\link[parallel]{mclapply}}.}
 
 \item{showProgress}{logical, defaults to \code{TRUE}.}
+
+\item{redefineWeights}{logical, defaults to \code{FALSE}. Only used to force a meaningful
+behaviour of applyFolds with hmatrix objects when using nested resampling.}
 
 \item{...}{further arguments passed to \code{\link[parallel]{mclapply}}}
 

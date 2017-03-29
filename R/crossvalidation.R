@@ -1511,7 +1511,7 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
 }
 
 
-
+## helper function to plot bootstrapped coefficients with basis plots 
 plot_bootstrapped_coef <- function(temp, l,  
                                    offset, yind, 
                                    pers, showNumbers, showQuantiles, probs, ylim, ...){
@@ -1535,7 +1535,28 @@ plot_bootstrapped_coef <- function(temp, l,
   plotWithArgs <- function(plotFun, args, myargs){        
     args <- c(myargs[!names(myargs) %in% names(args)], args)        
     do.call(plotFun, args)            
-  }    
+  }  
+  
+  
+  ## helper funciton to plot curves 
+  plot_curves <- function(x_i, y_i, xlab_i, main_i, ylim_i, ...){
+    
+    plotWithArgs(matplot, args = argsMatplot, 
+                 myargs = list(x = x_i, y = y_i, type = "l", xlab = xlab_i, ylab = "coef", 
+                             main = main_i, ylim = ylim_i, lty = 1,  
+                             col = rgb(0.6,0.6,0.6, alpha = 0.5)))
+    
+    if(showNumbers){
+      matplot(x_i, y_i, add = TRUE, col = rgb(0.6,0.6,0.6, alpha=0.5), ...)
+    }
+    
+    if(showQuantiles){ 
+      lines(x_i, rowMeans(y_i), col = 1, lwd = 2)
+      lines(x_i, apply(y_i, 1, quantile, 0.95, na.rm = TRUE), col = 2, lwd = 2, lty = 2)
+      lines(x_i, apply(y_i, 1, quantile, 0.05, na.rm = TRUE), col = 2, lwd = 2, lty = 2)
+    }
+    
+  }
   
   
   if(!is.null(temp$numberLevels)){
@@ -1551,32 +1572,10 @@ plot_bootstrapped_coef <- function(temp, l,
   ## plot the estimated offset
   if(l==1 && length(yind)>1){
     myMat <- offset ## attr(x$coefCV, "offset")
-    
-    if(showQuantiles){ 
-      
-      timeHelp <- seq(min(yind), max(yind), length=nrow(myMat))
-      plotWithArgs(matplot, args=argsMatplot, 
-                   myargs=list(x=timeHelp, y=myMat, type="l", xlab=temp$xlab,
-                               main=temp$main, ylab="coef", ylim=NULL, 
-                               col=rgb(0.6,0.6,0.6, alpha=0.5)))
-      
-      if(showNumbers){
-        matplot(timeHelp, myMat, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
-      }
-      lines(timeHelp, rowMeans(myMat), col=1, lwd=2)
-      lines(timeHelp, apply(myMat, 1, quantile, 0.95), col=2, lwd=2, lty=2)
-      lines(timeHelp, apply(myMat, 1, quantile, 0.05), col=2, lwd=2, lty=2)
-      
-    }else{
-      
-      plotWithArgs(matplot, args=argsMatplot, 
-                   myargs=list(x=timeHelp, y=myMat, type="l", xlab=temp$xlab,
-                               main=temp$main, ylab="coef", ylim=NULL))
-      
-      if(showNumbers){
-        matplot(timeHelp, myMat, add=TRUE, ...)
-      }
-    }
+    timeHelp <- seq(min(yind), max(yind), length=nrow(myMat))
+
+    plot_curves(x_i = timeHelp, y_i = myMat, xlab_i = temp$xlab, 
+                main_i = temp$main, ylim_i = NULL)
   }
   
   if(temp$dim==1){
@@ -1584,32 +1583,9 @@ plot_bootstrapped_coef <- function(temp, l,
     temp$value[sapply(temp$value, function(x) length(x)==1)] <- list(rep(0, 40))
     myMat <- sapply(temp$value, function(x) x) # as one matrix
     
-    if(showQuantiles){
-      
-      plotWithArgs(matplot, args=argsMatplot, 
-                   myargs=list(x=temp$x, y=myMat, type="l", xlab=temp$xlab,
-                               main=temp$main, ylab="coef", ylim=ylim, 
-                               col=rgb(0.6,0.6,0.6, alpha=0.5)))
-      
-      if(showNumbers){
-        matplot(temp$x, myMat, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
-      }
-      
-      lines(temp$x, rowMeans(myMat), col=1, lwd=2)
-      lines(temp$x, apply(myMat, 1, quantile, 0.95), col=2, lwd=2, lty=2)
-      lines(temp$x, apply(myMat, 1, quantile, 0.05), col=2, lwd=2, lty=2)
-      
-    }else{
-      
-      plotWithArgs(matplot, args=argsMatplot, 
-                   myargs=list(x=temp$x, y=myMat, type="l", xlab=temp$xlab,
-                               main=temp$main, ylab="coef", ylim=ylim))
-      
-      if(showNumbers){
-        matplot(temp$x, myMat, add=TRUE, ...)
-      }
-      
-    }
+    plot_curves(x_i = temp$x, y_i = myMat, xlab_i = temp$xlab, 
+                main_i = temp$main, ylim_i = ylim)
+    
   }
   
   if(temp$dim==2){
@@ -1643,135 +1619,57 @@ plot_bootstrapped_coef <- function(temp, l,
                                    ticktype="detailed", theta=30, phi=30,
                                    xlab=paste("\n", temp$xlab), ylab=paste("\n", temp$ylab), 
                                    zlab=paste("\n", "coef"), 
-                                   zlim=if(is.null(ylim)) range(matvec, na.rm=TRUE) else ylim,  
+                                   zlim=if(any(is.null(ylim))) range(matvec, na.rm=TRUE) else ylim,  
                                    main=paste(temp$main, " at ", probs[k]*100, "%-quantile", sep=""), 
                                    col=getColPersp(tempZ)))
         }  
       }else{ # do 2-dim plots
-        
+
         for(j in 1:length(quanty)){ 
           
           myCol <- sapply(temp$value, function(x) x[, quanty[j]==temp$y]) # first column
           
-          if(showQuantiles){ 
-            plotWithArgs(matplot, args=argsMatplot, 
-                         myargs=list(x=temp$y, y=myCol, type="l", xlab=temp$ylab,
-                                     main=paste(temp$main, " at ", probs[j]*100, "% of ", temp$xlab, sep=""), 
-                                     ylab="coef", ylim=ylim, 
-                                     col=rgb(0.6,0.6,0.6, alpha=0.5)))
-            
-            if(showNumbers){
-              matplot(temp$y, myCol, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
-            }
-            lines(temp$y, rowMeans(myCol), col=1, lwd=2)
-            lines(temp$y, apply(myCol, 1, quantile, 0.95, na.rm = TRUE), col=2, lwd=2, lty=2)
-            lines(temp$y, apply(myCol, 1, quantile, 0.05, na.rm = TRUE), col=2, lwd=2, lty=2)
-            
-          }else{
-            plotWithArgs(matplot, args=argsMatplot, 
-                         myargs=list(x=temp$y, y=myCol, type="l", xlab=temp$ylab,
-                                     main=paste(temp$main, " at ", probs[j]*100, "% of ", temp$xlab, sep=""), 
-                                     ylab="coef", ylim=ylim))
-            if(showNumbers){
-              matplot(temp$y, myCol, add=TRUE, ...)
-            }
-          }
+          plot_curves(x_i = temp$y, y_i = myCol, xlab_i = temp$ylab, 
+                      main_i = paste(temp$main, " at ", probs[j]*100, "% of ", temp$xlab, sep = ""), 
+                      ylim_i = ylim)
           
         } # end loop over quanty
         
         for(j in 1:length(quantx)){  
           myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x, ]) # first column
           
-          if(showQuantiles){
+          plot_curves(x_i = temp$x, y_i = myRow, xlab_i = temp$xlab, 
+                      main_i = paste(temp$main, " at ", probs[j]*100, "% of ", temp$ylab, sep = ""), 
+                      ylim_i = ylim)
             
-            plotWithArgs(matplot, args=argsMatplot, 
-                         myargs=list(x=temp$x, y=myRow, type="l", xlab=temp$xlab,
-                                     main=paste(temp$main, " at ", probs[j]*100, "% of ", temp$ylab, sep=""), 
-                                     ylab="coef", ylim=ylim, 
-                                     col=rgb(0.6,0.6,0.6, alpha=0.5)))
-            if(showNumbers){
-              matplot(temp$x, myRow, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
-            }
-            lines(temp$x, rowMeans(myRow), col=1, lwd=2)
-            lines(temp$x, apply(myRow, 1, quantile, 0.95, na.rm = TRUE), col=2, lwd=2, lty=2)
-            lines(temp$x, apply(myRow, 1, quantile, 0.05, na.rm = TRUE), col=2, lwd=2, lty=2)
-            
-          }else{
-            plotWithArgs(matplot, args=argsMatplot, 
-                         myargs=list(x=temp$x, y=myRow, type="l", xlab=temp$xlab,
-                                     main=paste(temp$main, " at ", probs[j]*100, "% of ", temp$ylab, sep=""), 
-                                     ylab="coef", ylim=ylim))                
-            if(showNumbers){
-              matplot(temp$x, myRow, add=TRUE, ...)
-            }
-          }
         }
         
       } # end else
       
     }else{ # temp$x is factor
+      
       for(j in 1:length(quantx)){ 
         
         # impute matrix of 0 if effect was never chosen
         temp$value[sapply(temp$value, function(x) is.null(dim(x)))] <- list(matrix(0, ncol=20, nrow=length(quantx)))
         
         if(is.null(temp$z)){
-          
           myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x, ]) # first column
           
-          if(showQuantiles){
-            
-            plotWithArgs(matplot, args=argsMatplot, 
-                         myargs=list(x=temp$y, y=myRow, type="l", xlab=temp$ylab,
-                                     main=paste(temp$main, " at ", temp$xlab,"=" ,quantx[j], sep=""), 
-                                     ylab="coef", ylim=ylim, 
-                                     col=rgb(0.6,0.6,0.6, alpha=0.5)))
-            
-            if(showNumbers){
-              matplot(temp$y, myRow, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
-            }
-            lines(temp$y, rowMeans(myRow), col=1, lwd=2)
-            lines(temp$y, apply(myRow, 1, quantile, 0.95, na.rm = TRUE), col=2, lwd=2, lty=2)
-            lines(temp$y, apply(myRow, 1, quantile, 0.05, na.rm = TRUE), col=2, lwd=2, lty=2)
-            
-          }else{
-            matplot(temp$y, myRow, type="l", xlab=temp$ylab, ylim=ylim,
-                    main=paste(temp$main, " at ", temp$xlab,"=" ,quantx[j], sep=""), ylab="coef", ...)
-          } 
+          plot_curves(x_i = temp$y, y_i = myRow, xlab_i = temp$ylab, 
+                      main_i = paste(temp$main, " at ", temp$xlab,"=" ,quantx[j], sep = ""), 
+                      ylim_i = ylim)
           
         }else{
           quantz <- temp$z
           myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x & quantz[j]==temp$z, ]) # first column
           
-          if(showQuantiles){
-            
-            plotWithArgs(matplot, args=argsMatplot, 
-                         myargs=list(x=temp$y, y=myRow, type="l", xlab=temp$ylab,
-                                     main=paste(temp$main, " at ", temp$xlab,"=" , quantx[j], ", " , 
-                                                temp$zlab,"=" ,quantz[j], sep=""), 
-                                     ylab="coef", ylim=ylim, 
-                                     col=rgb(0.6,0.6,0.6, alpha=0.5)))
-            
-            if(showNumbers){
-              matplot(temp$y, myRow, add=TRUE, col=rgb(0.6,0.6,0.6, alpha=0.5), ...)
-            }
-            lines(temp$y, rowMeans(myRow), col=1, lwd=2)
-            lines(temp$y, apply(myRow, 1, quantile, 0.95, na.rm = TRUE), col=2, lwd=2, lty=2)
-            lines(temp$y, apply(myRow, 1, quantile, 0.05, na.rm = TRUE), col=2, lwd=2, lty=2)
-            
-          }else{
-            plotWithArgs(matplot, args=argsMatplot, 
-                         myargs=list(x=temp$y, y=myRow, type="l", xlab=temp$ylab,
-                                     main=paste(temp$main, " at ", temp$xlab,"=" , quantx[j], ", " , 
-                                                temp$zlab,"=" ,quantz[j], sep=""), 
-                                     ylab="coef", ylim=ylim))
-          }
-          
-        }
-        if(showNumbers){
-          matplot(temp$y, myRow, add=TRUE, ...)
-        }
-      } 
+          plot_curves(x_i = temp$y, y_i = myRow, xlab_i = temp$ylab, 
+                      main_i = paste(temp$main, " at ", temp$xlab, "=" , quantx[j], ", " , 
+                                     temp$zlab, "=", quantz[j], sep = ""), 
+                      ylim_i = ylim)
+        } 
+      }
     }
     
   } # end if(temp$dim==2)

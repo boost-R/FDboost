@@ -18,7 +18,7 @@
 
 plotPredCoef(x, which = NULL, pers = TRUE, commonRange = TRUE,
   showNumbers = FALSE, showQuantiles = TRUE, ask = TRUE, terms = TRUE,
-  probs = c(0.05, 0.5, 0.95), ylim = NULL, ...)
+  probs = c(0.25, 0.5, 0.75), ylim = NULL, ...)
 }
 \arguments{
 \item{object}{object of class \code{validateFDboost}}
@@ -63,7 +63,7 @@ predicted values of the whole model can be compared to the predictions of the cr
 \item{terms}{logical, defaults to \code{TRUE}; plot the added terms (default) or the coefficients?}
 
 \item{probs}{vector of quantiles to be used in the plotting of 2-dimensional coefficients surfaces,
-defaults to \code{probs = c(0.05, 0.5, 0.95)}}
+defaults to \code{probs = c(0.25, 0.5, 0.75)}}
 }
 \description{
 Methods for objects that are fitted to determine the optimal mstop and the 

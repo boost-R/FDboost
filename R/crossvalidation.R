@@ -1269,7 +1269,7 @@ print.validateFDboost <- function(x, ...){
 #' @param showNumbers show number of curve in plot of predicted coefficients, defaults to \code{FALSE}
 #' @param terms logical, defaults to \code{TRUE}; plot the added terms (default) or the coefficients?
 #' @param probs vector of quantiles to be used in the plotting of 2-dimensional coefficients surfaces,
-#' defaults to \code{probs = c(0.05, 0.5, 0.95)}
+#' defaults to \code{probs = c(0.25, 0.5, 0.75)}
 #' @param ylab label for y-axis
 #' @param xlab label for x-axis
 #' @param ylim values for limits of y-axis
@@ -1441,7 +1441,7 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
                          commonRange = TRUE, showNumbers = FALSE, showQuantiles = TRUE,
                          ask = TRUE, 
                          terms = TRUE,         
-                         probs = c(0.05, 0.5, 0.95), # quantiles of variables to use for plotting
+                         probs = c(0.25, 0.5, 0.75), # quantiles of variables to use for plotting
                          ylim = NULL, ...){
   
   stopifnot(any(class(x) == "validateFDboost"))

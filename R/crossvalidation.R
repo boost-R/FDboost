@@ -7,6 +7,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
                        riskFun = NULL, numInt = object$numInt, 
                        papply = mclapply, 
                        mc.preschedule = FALSE, showProgress = TRUE, 
+                       redefineWeights = FALSE,
                        ...) {
   
   #if(any(class(object) == "FDboostLong")){
@@ -36,6 +37,19 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   sample_weights <- rep(1, length(unique(object$id))) # length N
   # if(any(sample_weights == 0)) warning("zero weights") # fullfilled per construction
   
+  # redefine weights in hmatrix objects (for nested applyFolds calls only)
+  if(redefineWeights){
+    
+    isHmatrix <- sapply(object$data, function(x) "hmatrix" %in% class(x))
+    for(i in which(isHmatrix)){
+     
+      id <- as.numeric(getId(object$data[[i]]))
+      time <- as.numeric(getTime(object$data[[i]]))
+      attr(object$data[[i]], "x") <- attr(object$data[[i]], "x")[id[time == min(time)],]
+      object$data[[i]][,2] <- object$id
+       
+    }
+  }
   # save integration weights of original model
   ### integration_weights <- model.weights(object) # weights are (sometimes) rescaled in mboost, see mboost:::rescale_weights  
   #if(!is.null(object$callEval$numInt) && object$callEval$numInt == "Riemann"){
@@ -403,6 +417,8 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #' Defaults to \code{TRUE}. In \code{\link[mboost]{cvrisk}} the offset of the original model fit in  
 #' \code{object} is used in all folds.
 #' @param showProgress logical, defaults to \code{TRUE}.
+#' @param redefineWeights logical, defaults to \code{FALSE}. Only used to force a meaningful
+#' behaviour of applyFolds with hmatrix objects when using nested resampling.
 #' 
 #' @param papply (parallel) apply function, defaults to \code{\link[parallel]{mclapply}}, 
 #' see \code{\link[mboost]{cvrisk}} for details.  

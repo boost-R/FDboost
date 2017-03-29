@@ -1247,29 +1247,29 @@ print.validateFDboost <- function(x, ...){
 #' Methods for objects that are fitted to determine the optimal mstop and the 
 #' prediction error of a model fitted by FDboost.
 #' 
-#' @param object object of class validateFDboost 
+#' @param object object of class \code{validateFDboost} 
 #' @param riskopt how the risk is minimized to obtain the optimal stopping iteration; 
 #' defaults to the mean, can be changed to the median.
 #' 
-#' @param x an object of class\code{validateFDboost}. 
+#' @param x an object of class \code{validateFDboost}. 
 #' @param modObject if the original model object of class \code{FDboost} is given 
 #' predicted values of the whole model can be compared to the predictions of the cross-validated models
 #' @param predictNA should missing values in the response be predicted? Defaults to \code{FALSE}. 
-#' @param which In the case of \code{plotPredCoef} the subset of base-learners to take into account for plotting. 
-#' In the case of \code{plot.validateFDboost} the diagnostic plots that are given 
+#' @param which In the case of \code{plotPredCoef()} the subset of base-learners to take into account for plotting. 
+#' In the case of \code{plot.validateFDboost()} the diagnostic plots that are given 
 #' (1: empirical risk per fold as a funciton of the boosting iterations, 
 #' 2: empirical risk per fold, 3: MRD per fold, 
 #' 4: observed and predicted values, 5: residuals; 
 #' 2-5 for the model with the optimal number of boosting iterations). 
 #' @param names.arg names of the observed curves
-#' @param ask defaults to \code{TRUE}, ask for next plot using par(ask=ask)? 
+#' @param ask defaults to \code{TRUE}, ask for next plot using \code{par(ask = ask)}  ? 
 #' @param pers plot coefficient surfaces as persp-plots? Defaults to \code{TRUE}.
 #' @param commonRange, plot predicted coefficients on a common range, defaults to \code{TRUE}.
 #' @param showQuantiles plot the 0.05 and the 0.95 Quantile of coefficients in 1-dim effects.
 #' @param showNumbers show number of curve in plot of predicted coefficients, defaults to \code{FALSE}
 #' @param terms logical, defaults to \code{TRUE}; plot the added terms (default) or the coefficients?
 #' @param probs vector of quantiles to be used in the plotting of 2-dimensional coefficients surfaces,
-#' defaults to \code{probs=c(0.25, 0.5, 0.75)}
+#' defaults to \code{probs = c(0.05, 0.5, 0.95)}
 #' @param ylab label for y-axis
 #' @param xlab label for x-axis
 #' @param ylim values for limits of y-axis

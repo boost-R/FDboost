@@ -21,14 +21,14 @@ plotPredCoef(x, which = NULL, pers = TRUE, commonRange = TRUE,
   probs = c(0.05, 0.5, 0.95), ylim = NULL, ...)
 }
 \arguments{
-\item{object}{object of class validateFDboost}
+\item{object}{object of class \code{validateFDboost}}
 
 \item{riskopt}{how the risk is minimized to obtain the optimal stopping iteration; 
 defaults to the mean, can be changed to the median.}
 
 \item{...}{additional arguments passed to callies.}
 
-\item{x}{an object of class\code{validateFDboost}.}
+\item{x}{an object of class \code{validateFDboost}.}
 
 \item{ylab}{label for y-axis}
 
@@ -36,8 +36,8 @@ defaults to the mean, can be changed to the median.}
 
 \item{ylim}{values for limits of y-axis}
 
-\item{which}{In the case of \code{plotPredCoef} the subset of base-learners to take into account for plotting. 
-In the case of \code{plot.validateFDboost} the diagnostic plots that are given 
+\item{which}{In the case of \code{plotPredCoef()} the subset of base-learners to take into account for plotting. 
+In the case of \code{plot.validateFDboost()} the diagnostic plots that are given 
 (1: empirical risk per fold as a funciton of the boosting iterations, 
 2: empirical risk per fold, 3: MRD per fold, 
 4: observed and predicted values, 5: residuals; 
@@ -50,7 +50,7 @@ predicted values of the whole model can be compared to the predictions of the cr
 
 \item{names.arg}{names of the observed curves}
 
-\item{ask}{defaults to \code{TRUE}, ask for next plot using par(ask=ask)?}
+\item{ask}{defaults to \code{TRUE}, ask for next plot using \code{par(ask = ask)}  ?}
 
 \item{pers}{plot coefficient surfaces as persp-plots? Defaults to \code{TRUE}.}
 
@@ -63,7 +63,7 @@ predicted values of the whole model can be compared to the predictions of the cr
 \item{terms}{logical, defaults to \code{TRUE}; plot the added terms (default) or the coefficients?}
 
 \item{probs}{vector of quantiles to be used in the plotting of 2-dimensional coefficients surfaces,
-defaults to \code{probs=c(0.25, 0.5, 0.75)}}
+defaults to \code{probs = c(0.05, 0.5, 0.95)}}
 }
 \description{
 Methods for objects that are fitted to determine the optimal mstop and the 

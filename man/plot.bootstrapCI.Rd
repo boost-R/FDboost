@@ -2,33 +2,41 @@
 % Please edit documentation in R/bootstrapCIs.R
 \name{plot.bootstrapCI}
 \alias{plot.bootstrapCI}
-\title{Plot a bootstrapCI object}
+\alias{print.bootstrapCI}
+\title{Methods for objects of class bootstrapCI}
 \usage{
-\method{plot}{bootstrapCI}(x, ...)
+\method{plot}{bootstrapCI}(x, which = NULL, pers = TRUE,
+  commonRange = TRUE, showNumbers = FALSE, showQuantiles = TRUE,
+  ask = TRUE, probs = c(0.25, 0.5, 0.75), ylim = NULL, ...)
+
+\method{print}{bootstrapCI}(x, ...)
 }
 \arguments{
-\item{x}{a fitted \code{bootstrapCI}-object}
+\item{x}{an object of class \code{bootstrapCI}.}
 
-\item{...}{ignored}
-}
-\value{
-a list of \code{ggplot} objects
+\item{which}{base-learners that are plotted}
+
+\item{pers}{plot coefficient surfaces as persp-plots? Defaults to \code{TRUE}.}
+
+\item{commonRange, }{plot predicted coefficients on a common range, defaults to \code{TRUE}.}
+
+\item{showNumbers}{show number of curve in plot of predicted coefficients, defaults to \code{FALSE}}
+
+\item{showQuantiles}{plot the 0.05 and the 0.95 Quantile of coefficients in 1-dim effects.}
+
+\item{ask}{defaults to \code{TRUE}, ask for next plot using \code{par(ask = ask)}?}
+
+\item{probs}{vector of quantiles to be used in the plotting of 2-dimensional coefficients surfaces,
+defaults to \code{probs = c(0.25, 0.5, 0.75)}}
+
+\item{ylim}{values for limits of y-axis}
+
+\item{...}{additional arguments passed to callies.}
 }
 \description{
-For scalar non-functional covariates, a boxplot is 
-used to visualize the distribution. Quantiles are drawn by 
-vertical red lines. For scalar response, functional covariates
-are visualized by line plots with quantiles in dashed red.
-For function-on-function effect surfaces, the quantiles are plotted
-as surface plots.
+Methods for objects that are fitted to compute bootstrap confidence intervals.
 }
 \details{
-Takes a \code{bootstrapCI}-object and produces ggplot objects
-}
-\note{
-Quantiles are plotted using \code{ggplot}.
-}
-\seealso{
-\code{\link{bootstrapCI}}
+\code{plot.bootstrapCI} plots the bootstrapped coefficients.
 }
 

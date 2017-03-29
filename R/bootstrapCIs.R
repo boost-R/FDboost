@@ -428,178 +428,93 @@ bootstrapCI <- function(object, which = NULL,
 }
 
 
-#' Plot a bootstrapCI object
+
+#' Methods for objects of class bootstrapCI
 #' 
-#' Takes a \code{bootstrapCI}-object and produces ggplot objects
+#' Methods for objects that are fitted to compute bootstrap confidence intervals.
 #' 
-#' @param x a fitted \code{bootstrapCI}-object
-#' @param ... ignored
-#' @seealso \code{\link{bootstrapCI}}
-#' @return a list of \code{ggplot} objects
+#' @param x an object of class \code{bootstrapCI}. 
+#' @param which base-learners that are plotted 
+#' @param pers plot coefficient surfaces as persp-plots? Defaults to \code{TRUE}.
+#' @param commonRange, plot predicted coefficients on a common range, defaults to \code{TRUE}.
+#' @param showQuantiles plot the 0.05 and the 0.95 Quantile of coefficients in 1-dim effects.
+#' @param showNumbers show number of curve in plot of predicted coefficients, defaults to \code{FALSE}
+#' @param ask defaults to \code{TRUE}, ask for next plot using \code{par(ask = ask)}? 
+#' @param probs vector of quantiles to be used in the plotting of 2-dimensional coefficients surfaces,
+#' defaults to \code{probs = c(0.25, 0.5, 0.75)}
+#' @param ylim values for limits of y-axis
+#' @param ... additional arguments passed to callies.
+#' 
+#' @details \code{plot.bootstrapCI} plots the bootstrapped coefficients.
+#' 
+#' @aliases print.bootstrapCI
+#' 
 #' @method plot bootstrapCI
 #' 
-#' @note Quantiles are plotted using \code{ggplot}.
-#' @description For scalar non-functional covariates, a boxplot is 
-#' used to visualize the distribution. Quantiles are drawn by 
-#' vertical red lines. For scalar response, functional covariates
-#' are visualized by line plots with quantiles in dashed red.
-#' For function-on-function effect surfaces, the quantiles are plotted
-#' as surface plots.
-#' 
 #' @export
-plot.bootstrapCI <- function(x, ...)
+#' 
+plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
+                             commonRange = TRUE, showNumbers = FALSE, showQuantiles = TRUE,
+                             ask = TRUE, 
+                             probs = c(0.25, 0.5, 0.75), 
+                             ylim = NULL, ...)
 {
-
-  stopifnot(class(x)=="bootstrapCI")
-  if(!requireNamespace("ggplot2")) stop("Please install ggplot2.")
   
-  ### prepare objects
+  stopifnot(class(x) == "bootstrapCI")
   
-  plotObjList <- vector("list", length = length(x$raw_results))
-  qsclass <- sapply(x$quantiles, class)
-  levels <- x$levels
-  type <- rep(NA, length(x$raw_results))
+  boot_offset <- 0 
   
-  for(i in 1:length(x$raw_results)){
- 
-    if(qsclass[i]=="matrix"){
-      
-      rr <- x$raw_results[[i]]
-      qs <- x$quantiles[[i]]
-      
-      plotObjList[[i]] <- 
-        rbind(data.frame(value = c(t(rr)),
-                         group = rep(1:ncol(rr), each = nrow(rr)),
-                         x = attr(rr, "x"),
-                         what = "raw"),
-              data.frame(value = c(t(qs)),
-                         group = rep(1:ncol(qs), each = nrow(qs)),
-                         x = attr(rr, "x"),
-                         what = "quantile")
-        )
-      
-      type[i] <- "line"
-      
-    }else if(qsclass[i]=="list"){
-      
-      rr <- x$raw_results[[i]]
-      qs <- x$quantiles[[i]]
-      
-      if(is.factor(attr(rr, "x"))){
-        # second dimension is not numeric but a factor
-        
-        # get all dimensions
-        lenf <- length(levels(attr(rr, "x")))
-        lennum <- length(attr(rr, "y"))
-        lenboot <- ncol(rr[[1]])
-        lenlev <- length(levels)
-
-        plotObjList[[i]] <- rbind(
-          data.frame(value = c(sapply(rr, c)),
-                     group = rep(rep(1:lenboot, each = lennum), lenf),
-                     fac = rep(attr(rr, "x"), each = lennum * lenboot),
-                     x = rep(attr(rr, "y"), lenf * lenboot),
-                     what = "raw"),
-          data.frame(value = c(sapply(qs, function(x) c(t(x)))),
-                     group = rep(rep(1:lenlev, each = lennum), lenf),
-                     fac = rep(attr(rr, "x"), each = lennum * lenlev),
-                     x = rep(attr(rr, "y"), lenf * lenlev),
-                     what = "quantile")
-        )
-        
-        type[i] <- "multLine"
-
-      }else{ # effect with two numeric dimensions
-
-        plotObjList[[i]] <- data.frame(coefficient = c(sapply(qs, function(x) c(t(x)))),
-                                       # group = rep(1:ncol(qs[[1]]), each = nrow(qs[[1]])),
-                                       x = rep(attr(rr, "x"), length(attr(rr, "y"))),
-                                       y = rep(attr(rr, "y"), each = length(attr(rr, "x"))),
-                                       levels = rep(levels, each = prod(dim(qs[[1]]))))
-        
-        type[i] <- "surface"
-        
-      }
-              
-    }else{
-      
-      rr <- x$raw_results[[i]]
-      
-      plotObjList[[i]] <- data.frame(value = rr)
-      
-      type[i] <- "boxplot"
-      
-    } 
-      
+  if( names(x$raw_results)[1] == "offsets" ){
+    
+    boot_offset <- t(x$raw_results$offsets)
+    x$raw_results$offsets <- NULL
+    
   }
   
-  # define ggplot function for every kind of type
-  plotFun <- function(type) 
-    switch(type,
-           
-           line = function(obj) 
-             ggplot(obj) + 
-             geom_line(data = obj[obj$what=="raw",], 
-                       aes(x = x, y = value, group = group),
-                       alpha = 0.67, colour = "grey50", linetype = 1) + 
-             geom_line(data = obj[obj$what=="quantile",],
-                       aes(x = x, y = value, group = group),
-                       colour = "red", linetype = "dashed", size = 1.1) + 
-             xlab("value") + ylab("coefficient"),
-           
-           multLine = function(obj)
-             ggplot(obj) + 
-             geom_line(data = obj[obj$what=="raw",], 
-                       aes(x = x, y = value, group = group),
-                       alpha = 0.67, colour = "grey50", linetype = 1) + 
-             geom_line(data = obj[obj$what=="quantile",],
-                       aes(x = x, y = value, group = group),
-                       colour = "red", linetype = "dashed", size = 1.1) + 
-             facet_wrap(~ fac) + 
-             xlab("value") + ylab("coefficient"),
-           
-           surface = function(obj) 
-             ggplot(obj, aes(x = x, y = y, z = coefficient, fill = coefficient)) + 
-             geom_tile() + 
-             scale_fill_distiller(palette = "Spectral") + 
-             stat_contour(binwidth = abs((max(obj$coefficient) - min(obj$coefficient))/10),
-                          col = "black") +
-             facet_wrap(~levels) + theme_bw() + xlab("t") + ylab("s"),
-           
-           boxplot = function(obj) 
-             ggplot(obj) + 
-             geom_boxplot() + 
-             geom_abline(yintercept = quantiles(rr, probs = levels), col = "red") + 
-             ylab("coefficient")
-    )
-
-  # call custom ggplot functions
-  ggList <- lapply(1:length(type), function(i) plotFun(type[i])(obj = plotObjList[[i]]) + 
-                     ggtitle(names(x$raw_results)[i]))
+  if(is.null(which)) which <- 1:length(x$raw_results)
   
-  # print ggplot objects
-  lapply(ggList, print)
+  if(length(which)>1) par(ask=ask)
   
-  # return
-  invisible(ggList)
+  # find common range for all effects 
+  if(commonRange & is.null(ylim)){
+    ylim <- range(x$raw_results) 
+    if(any(is.infinite(ylim))) ylim <- NULL
+  }
+  
+  for(l in which){ # loop over effects
+    
+    ### prepare objects
+    # coef() of a certain term
+    temp_CI <- x$raw_results[[l]]
+    
+    temp <- attr(temp_CI, "plot_info")
+    
+    ## write the rows of the matrix into a list, 
+    ## i.e., coefficients of each fold are one list entry
+    temp$value <- split(temp_CI, seq(nrow(temp_CI)))
+    
+    if(temp$dim == 2){
+      temp$value <- lapply(temp$value, function(xx) 
+        matrix(xx, ncol = sqrt(length(xx)), nrow = sqrt(length(xx)), byrow = FALSE) )
+    }
+    
+    plot_bootstrapped_coef(temp = temp, l = l, 
+                           offset = boot_offset, yind = x$yind, 
+                           pers = pers, 
+                           showNumbers = showNumbers, showQuantiles = showQuantiles, 
+                           probs = probs, ylim = ylim, ...)
+    
+    
+  } # end loop over effects
   
 }
 
 
 
-
-
-
-#' Print a bootstrapCI object
-#' 
-#' Takes a \code{bootstrapCI}-object and produces a print on the console.
-#' 
-#' @param x a fitted \code{bootstrapCI}-object
-#' @param ... currently not used
-#' @seealso \code{\link{bootstrapCI}}
-#' @return a list with information on the model 
+#' @rdname plot.bootstrapCI
 #' @method print bootstrapCI
 #' @export
+#'
 print.bootstrapCI <- function(x, ...)
 {
 

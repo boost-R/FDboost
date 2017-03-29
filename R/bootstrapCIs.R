@@ -196,7 +196,8 @@ bootstrapCI <- function(object, which = NULL,
       # }else{ # not long format
         
       resampling_fun_inner <- function(object) applyFolds(object, folds = cv(rep(1, length(unique(object$id))), type =
-                                                                               "bootstrap", B = B_inner))
+                                                                               "bootstrap", B = B_inner),
+                                                          redefineWeights = TRUE)
         
       }
       

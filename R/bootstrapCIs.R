@@ -71,15 +71,21 @@
 #' dat_list$s <- attr(data1, "xindex")
 #' 
 #' ## model fit by FDboost 
-#' m1 <- FDboost(Y ~ 1 + bsignal(x = X1, s = s, knots = 5), 
-#'               timeformula = ~ bbs(t, knots = 5), data = dat_list, 
-#'               control = boost_control(mstop = 21))
+#' m1 <- FDboost(Y ~ 1 + bsignal(x = X1, s = s, knots = 8, df = 3), 
+#'               timeformula = ~ bbs(t, knots = 8), data = dat_list)
 #'
 #'}
 #'               
 #' \dontrun{             
-#' # a short example with not so meaningful number of folds
-#' bootCIs <- bootstrapCI(m1, B_inner = 3, B_outer = 5)               
+#' # a short toy example with to few folds  
+#' # and up to 200 boosting iterations 
+#' bootCIs <- bootstrapCI(m1[200], B_inner = 2, B_outer = 5) 
+#' 
+#' # look at stopping iterations
+#' bootCIs$mstops
+#' 
+#' # plot bootstrapped coefficient estimates
+#' plot(bootCIs, ask = FALSE)
 #' }
 #' 
 #' ## now speed things up by defining the inner resampling
@@ -108,8 +114,7 @@
 #' )) # use ten cores
 #' }
 #' 
-#' # use applyFolds for outer function to avoid
-#' # mess weights mess up
+#' # use applyFolds for outer function to avoid messing up weights
 #' my_outer_fun <- function(object, fun)
 #' {
 #' applyFolds(object = object,
@@ -141,6 +146,7 @@
 #' 
 #' 
 #' \dontrun{
+#' # takes some time, because of defaults: B_outer = 100, B_inner = 25
 #' bootCIs <- bootstrapCI(mod2)
 #' }
 #' 

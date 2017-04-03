@@ -396,10 +396,10 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 
 #' Cross-Validation and Bootstrapping over Curves
 #' 
-#' Function \code{validateFDboost()} is experimental. 
-#' Cross-Validation and bootstrapping over curves to compute the empirical risk for 
-#' hyper-parameter selection and to compute resampled coefficients and predictions for
-#' the models. 
+#' Cross-validation and bootstrapping over curves to compute the empirical risk for 
+#' hyper-parameter selection.    
+#' Note that the function \code{validateFDboost()} is experimental. 
+#' It also compute resampled coefficients and predictions for the models.
 #' 
 #' @param object fitted FDboost-object
 #' @param response optional, specify a response vector for the computation of the prediction errors.  
@@ -458,18 +458,18 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #' The weights (zero weights correspond to test cases) are defined via the folds matrix, 
 #' see \code{\link[mboost]{cvrisk}} in package mboost. 
 #' 
-#' \code{applyFolds} is still EXPERIMENTAL! 
+#' In case of functional response, we recommend to use \code{applyFolds}. 
 #' The function \code{applyFolds} is especially suited to models with functional response. 
 #' It recomputes the model in each fold using \code{FDboost}. Thus, all parameters are recomputed, 
 #' including the smooth offset (if present) and the identifiability constraints (if present, only 
 #' relevant for bolsc, brandomc and bbsc).  
 #' Note, that the function \code{applyFolds} expects folds that give weights
-#' per trajectory without considering integration weights.  
+#' per curve without considering integration weights.  
 #' 
 #' The function \code{validateFDboost} is especially suited to models with functional response. 
 #' Using the option \code{refitSmoothOffset} the offset is refitted on each fold. 
 #' Note, that the function \code{validateFDboost} expects folds that give weights
-#' per trajectory without considering integration weights. The integration weights of 
+#' per curve without considering integration weights. The integration weights of 
 #' \code{object} are used to compute the empirical risk as integral. The argument \code{response} 
 #' can be useful in simulation studies where the true value of the response is known but for 
 #' the model fit the response is used with noise. 
@@ -486,7 +486,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #' The functions \code{cvMa} and \code{cvLong} can be used to build an appropriate 
 #' weight matrix for functional response to be used with \code{cvrisk} as sampling 
 #' is done on the level of curves. The probability for each 
-#' trajectory to enter a fold is equal over all trajectories.    
+#' curve to enter a fold is equal over all curves.     
 #' The function \code{cvMa} takes the dimensions of the response matrix as input argument and thus
 #' can only be used for regularly observed response. 
 #' The function \code{cvLong} takes the id variable and the weights as arguments and thus can be used
@@ -501,7 +501,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #' 
 #' @seealso \code{\link[mboost]{cvrisk}} to perform cross-validation with scalar response.
 #' 
-#' @return \code{cvMa} and \code{cvLong} return a matrix of weights to be used in \code{cvrisk}. 
+#' @return \code{cvMa} and \code{cvLong} return a matrix of sampling weights to be used in \code{cvrisk}. 
 #' 
 #' The functions \code{applyFolds} and \code{cvrisk.FDboost} return a \code{cvrisk}-object, 
 #' which is a matrix of the computed out-of-bag risk. The matrix has the folds in rows and the 

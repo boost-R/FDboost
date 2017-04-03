@@ -872,23 +872,35 @@ FDboost <- function(formula,          ### response ~ xvars
   ## find variables that are defined in environment(formula) but not in environment(fm) or in data 
   fm_vars <- all.vars(fm) # all variables of fm 
   
-  ## for bhist() the limits argument can be a function; in this case those function arguments should not be included 
-  terms_fm_bhist <- terms(formula, specials = "bhist")
-  if( ! is.null(attr(terms_fm_bhist,  "specials")[[1]]) ){
+  ## for bhist() the limits argument can be a function; 
+  ## in this case those function arguments should not be included 
+  terms_fm_bhist <- terms(formula, specials = c("bhist", "bhistx"))
+
+  if(any(! sapply(attr(terms_fm_bhist,  "specials"), is.null))){ ## occurence of bhist or bhistx 
     
-    places_bhist <- attr(terms_fm_bhist,  "specials")$bhist
-    
+    places_bhist <- c(attr(terms_fm_bhist,  "specials")$bhist, 
+                      attr(terms_fm_bhist,  "specials")$bhistx)
+
     vars_arg_limits_not_unique <- c()
     for(pl in seq_along(places_bhist)){ ## loop over all bhist-bl
       
       ## get the limits argument
-      arg_limits <- eval( as.call(attr(terms_fm_bhist, "variables")[[places_bhist[pl] + 1]])$limits )
+      current_bl <- attr(terms_fm_bhist, "variables")[[places_bhist[pl] + 1]]
+      # for base-learner with interaction, find bhistx / bhist
+      if(any(grepl("%X", current_bl))){ 
+        #current_bl <- current_bl[ grepl("bhist", current_bl) ]
+        arg_limits <- eval(as.call(as.list(current_bl[grepl("bhist", current_bl)])[[1]])$limits) 
+      }else{
+        # limits argument of bhist / bhistx 
+        arg_limits <- eval(as.call(current_bl)$limits)
+      }
       
-      if( is.function(arg_limits) ){
+      if(is.function(arg_limits)){
         ## get the names of the arguments of the limits-function 
         vars_arg_limits <- names(formals(arg_limits))
         ## check whether the variables uniquely occur in the limits-function
-        var_occur <- table(all.vars( attr(terms_fm_bhist, "variables")[[places_bhist[pl] + 1]], unique = FALSE))[vars_arg_limits] == 1
+        var_occur <- table(all.vars(attr(terms_fm_bhist, "variables")[[places_bhist[pl] + 1]], 
+                                    unique = FALSE))[vars_arg_limits] == 1
         vars_arg_limits_not_unique <- c(vars_arg_limits_not_unique, vars_arg_limits[var_occur])
       }
     }

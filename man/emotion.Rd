@@ -40,13 +40,14 @@ data("emotion", package = "FDboost")
 fos_random_power <- FDboost(EMG ~ 1 + brandomc(subject, df = 2)
                             + bolsc(power, df = 2),
                             timeformula = ~ bbs(t, df = 3),
-                            data = emotionSubset)
-                            
+                            data = emotion)
+\notrun{                            
 # fit function-on-function model with intercept and historical EEG effect
 # where limits specifies the used lag between EMG and EEG signal
 fof_historical <- FDboost(EMG ~ 1 + bhist(EEG, s = s, time = t,
                           limits = function(s,t) s < t - 3),
                           timeformula = ~ bbs(t, df = 3), data = emotion,
                           control = boost_control(mstop = 200))                            
+}
 }
 \keyword{datasets}

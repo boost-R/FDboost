@@ -675,12 +675,18 @@ FDboost <- function(formula,          ### response ~ xvars
   
   ### (pre-)check if length / number of rows of response and 
   ### functional covariates match
-  functcov <- sapply(data, function(x) NCOL(x) > 1)
+  ### (only meaningful for models with no hmatrix )
+  if(all(!sapply(data, is.hmatrix))){
   
-  if(!scalarResponse || any(functcov))
-    if(any(ww <- ydim[1] != sapply(data[functcov], nrow)))
-      stop(paste0("The length of the response and number of observations of ",
-                  names(ww[1]), " do not match."))
+    functcov <- sapply(data, NCOL) > 1
+    
+    if(!scalarResponse || any(functcov))
+      if(any(ww <- ydim[1] != sapply(data[functcov], NROW)))
+        stop(paste0("The length of the response and number of observations of ",
+                    names(ww[1]), " do not match."))
+      
+  }
+  
   
   ### variable to fit smooth intercept
   assign("ONEx", rep(1.0, nobs))

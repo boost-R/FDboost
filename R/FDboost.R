@@ -673,10 +673,11 @@ FDboost <- function(formula,          ### response ~ xvars
   ### save original dimensions of response
   ydim <- dim(response)
   
-  ### roughly check if dimensions of response and covariates match
-  ### in scalar-on-function case
+  ### (pre-)check if length / number of rows of response and 
+  ### functional covariates match
   functcov <- sapply(data, function(x) NCOL(x) > 1)
-  if(scalarResponse & any(functcov))
+  
+  if(!scalarResponse || any(functcov))
     if(any(ww <- ydim[1] != sapply(data[functcov], nrow)))
       stop(paste0("The length of the response and number of observations of ",
                   names(ww[1]), " do not match."))

@@ -475,7 +475,9 @@ FDboost <- function(formula,          ### response ~ xvars
   if(class(try(id)) == "try-error") stop("id must either be NULL or a formula object.")
   if(missing(timeformula) || class(try(timeformula)) == "try-error") 
     stop("timeformula must either be NULL or a formula object.")
-
+    stopifnot(class(formula) == "formula")
+  if(!is.null(timeformula)) stopifnot(class(timeformula) == "formula")
+  
   ## insert the id variable into the formula, to treat it like the other variables
   if(!is.null(id)){
     stopifnot(class(id) == "formula")
@@ -534,9 +536,6 @@ FDboost <- function(formula,          ### response ~ xvars
     nameid <- NULL
   }
 
-  stopifnot(class(formula) == "formula")
-  if(!is.null(timeformula)) stopifnot(class(timeformula) == "formula")
-  
   ### extract response; a numeric matrix or a vector
   yname <- all.vars(formula)[1]
   response <- data[[yname]]
@@ -673,6 +672,14 @@ FDboost <- function(formula,          ### response ~ xvars
   
   ### save original dimensions of response
   ydim <- dim(response)
+  
+  ### roughly check if dimensions of response and covariates match
+  ### in scalar-on-function case
+  functcov <- sapply(data, function(x) NCOL(x) > 1)
+  if(scalarResponse & any(functcov))
+    if(any(ww <- ydim[1] != sapply(data[functcov], nrow)))
+      stop(paste0("The length of the response and number of observations of ",
+                  names(ww[1]), " do not match."))
   
   ### variable to fit smooth intercept
   assign("ONEx", rep(1.0, nobs))

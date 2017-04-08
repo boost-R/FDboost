@@ -470,6 +470,11 @@ FDboost <- function(formula,          ### response ~ xvars
         sapply(regmatches(trmstrings2[i], gregexpr("\\)", trmstrings2[i])), length)
     })
   }
+  
+  ## check formulas
+  if(class(try(id)) == "try-error") stop("id must either be NULL or a formula object.")
+  if(missing(timeformula) || class(try(timeformula)) == "try-error") 
+    stop("timeformula must either be NULL or a formula object.")
 
   ## insert the id variable into the formula, to treat it like the other variables
   if(!is.null(id)){

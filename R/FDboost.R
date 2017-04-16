@@ -675,7 +675,7 @@ FDboost <- function(formula,          ### response ~ xvars
   
   ### (pre-)check if length / number of rows of response and 
   ### functional covariates match
-  ### (only meaningful for models with no hmatrix )
+  ### (only meaningful for models with no hmatrix)
   if(all(!sapply(data, is.hmatrix))){
   
     functcov <- sapply(data, NCOL) > 1

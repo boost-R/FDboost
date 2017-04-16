@@ -249,9 +249,18 @@ bootstrapCI <- function(object, which = NULL,
   nrEffects <- #length(selects)
     max(sapply(1:length(coefs), function(i) length(coefs[[i]]$smterms)))
   
+  isFacSpecEffect <- sapply(1:nrEffects, function(i) "numberLevels" %in% names(coefs[[1]]$smterms[[i]]))
   # extract values
-  listOfCoefs <- lapply(1:nrEffects, function(i) lapply(1:length(coefs), 
-                                                        function(j) coefs[[j]]$smterms[[i]]$value))
+  listOfCoefs <- lapply(1:nrEffects, function(i)
+  { 
+    if(isFacSpecEffect[i]){
+      # factor specific effect
+      lapply(1:length(coefs), function(j) lapply(1:(coefs[[1]]$smterms[[i]]$numberLevels), 
+                                                 function(k) coefs[[j]]$smterms[[i]][[k]]$value))
+    }else{
+      lapply(1:length(coefs), function(j) coefs[[j]]$smterms[[i]]$value)
+    }
+  })
   
   # check for intercept
   withIntercept <- any(names(coefs[[1]])=="intercept")
@@ -260,6 +269,7 @@ bootstrapCI <- function(object, which = NULL,
     
     listOfCoefs <- c(intercept = list(sapply(coefs, "[[", "intercept")), listOfCoefs)
     nrEffects <- nrEffects + 1
+    isFacSpecEffect <- c(FALSE, isFacSpecEffect)
     
   }
   
@@ -280,11 +290,16 @@ bootstrapCI <- function(object, which = NULL,
   }
     
   # reduce lists for non surface effects
-  listOfCoefs[!isSurface & nonIntercept] <- 
-    lapply(listOfCoefs[!isSurface & nonIntercept], function(x) do.call("rbind", x))
+  listOfCoefs[!isSurface & nonIntercept & !isFacSpecEffect] <- 
+    lapply(listOfCoefs[!isSurface & nonIntercept & !isFacSpecEffect], 
+           function(x) do.call("rbind", x))
+  
+  listOfCoefs[isFacSpecEffect] <- lapply(listOfCoefs[isFacSpecEffect],
+                                         function(x) lapply(x, function(y) do.call("rbind", lapply(y, c))))
   
   listOfCoefs <- c(offsets = list(offsets), listOfCoefs)
   isSurface <- c(FALSE, isSurface)
+  isFacSpecEffect <- c(FALSE, isFacSpecEffect)
 
   # add information about the values of the covariate
   # and change format
@@ -294,7 +309,15 @@ bootstrapCI <- function(object, which = NULL,
     
     if(i != (1 + withIntercept)){
       
-      atx <- coefs[[1]]$smterms[[i-1-withIntercept]]$x # i-1 because of the offset
+      if(isFacSpecEffect[i]){
+      
+        atx <- coefs[[1]]$smterms[[i-1-withIntercept]][[1]]$x
+          
+      }else{
+        
+        atx <- coefs[[1]]$smterms[[i-1-withIntercept]]$x # i-1 because of the offset
+      
+      }
       
     }else{
       
@@ -313,7 +336,7 @@ bootstrapCI <- function(object, which = NULL,
                                  function(faclevnr) t(sapply(listOfCoefs[[i]], function(x) x[faclevnr,])))
       isSurface[i] <- FALSE
       
-    }else if(is.list(listOfCoefs[[i]])){ # effect surfaces
+    }else if(is.list(listOfCoefs[[i]]) & !isFacSpecEffect[i]){ # effect surfaces
       
       listOfCoefs[[i]] <- do.call("rbind", lapply(listOfCoefs[[i]],c))
       
@@ -347,7 +370,7 @@ bootstrapCI <- function(object, which = NULL,
   for(i in 1:length(listOfCoefs)){
     
     # for matrix object
-    if(is.matrix(listOfCoefs[[i]])){
+    if(is.matrix(listOfCoefs[[i]]) & !is.list(listOfCoefs[[i]])){
       
       listOfQuantiles[[i]] <- apply(listOfCoefs[[i]], 2, quantile, probs = levels)
       attr(listOfQuantiles[[i]], "x") <- attr(listOfCoefs[[i]], "x")
@@ -356,7 +379,7 @@ bootstrapCI <- function(object, which = NULL,
 
     }else if(is.list(listOfCoefs[[i]])){ # functional factor variables
       
-      listOfQuantiles[[i]] <- lapply(listOfCoefs[[i]], function(x) apply(x, 1, quantile, probs = levels))
+      listOfQuantiles[[i]] <- lapply(listOfCoefs[[i]], function(x) apply(t(x), 1, quantile, probs = levels))
       
     }else{# scalar case
       

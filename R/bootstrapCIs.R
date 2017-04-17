@@ -327,6 +327,7 @@ bootstrapCI <- function(object, which = NULL,
     
     aty <- NA
     if(isSurface[i]) aty <- coefs[[1]]$smterms[[i-1-withIntercept]]$y # i-1 because of the offset
+    if(isFacSpecEffect[i]) aty <- coefs[[1]]$smterms[[i-1-withIntercept]][[1]]$y # i-1 because of the offset
 
     # format functional factors
     if(is.list(listOfCoefs[[i]]) & is.factor(atx)){

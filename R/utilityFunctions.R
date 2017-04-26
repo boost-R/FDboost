@@ -1103,8 +1103,13 @@ reweightData <- function(data, argvals, vars, longvars = NULL,
   dimd <- lapply(data, dim)
   isVec <- sapply(dimd, is.null)
   
-  if(length(vars) == 1 && sum(whichHmat) == 1) 
-    n <- nrow(attr(data[[vars]],"x")) else{
+  if(length(vars) == 1 && sum(whichHmat) == 1){
+    
+    # FIXME the following two definitions of n should yield the same n!?
+    n <- nrow(attr(data[[vars]],"x"))
+    # n <- length(unique(getId.hmatrix(data[[vars]]))) 
+    
+  }else{
       
       if(length(whichHmat) == 0){ 
         

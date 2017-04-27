@@ -383,7 +383,7 @@ X_histx <- function(mf, vary, args) {
 #' for \code{penalty="pss"} the penalty matrix is transformed to have full rank, 
 #' so called shrinkage approach by Marra and Wood (2011)
 #' @param check.ident use checks for identifiability of the effect, based on Scheipl and Greven (2016); 
-#'   see Brockhaus et al. (2016) for identifiability checks that take into account the integration limits
+#' see Brockhaus et al. (2017) for identifiability checks that take into account the integration limits
 #' @param standard the historical effect can be standardized with a factor. 
 #' "no" means no standardization, "time" standardizes with the current value of time and 
 #' "lenght" standardizes with the lenght of the integral 
@@ -426,9 +426,9 @@ X_histx <- function(mf, vary, args) {
 #' @keywords models
 #' 
 #' @references 
-#' Brockhaus, S., Melcher, M., Leisch, F. and Greven, S. (2016): 
-#' Boosting flexible functional regression models with a high number of functional historical effects, 
-#' Statistics and Computing, accepted. 
+#' Brockhaus, S., Melcher, M., Leisch, F. and Greven, S. (2017): 
+#' Boosting flexible functional regression models with a high number of functional historical effects,  
+#' Statistics and Computing, 27(4), 913-926. 
 #' 
 #' Marra, G. and Wood, S.N. (2011): Practical variable selection for generalized additive models. 
 #' Computational Statistics & Data Analysis, 55, 2372-2387.

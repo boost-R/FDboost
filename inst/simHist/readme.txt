@@ -1,8 +1,8 @@
 
 Code for simulation study presented in 
-Brockhaus S., Melcher M., Leisch F. and Greven S. (2016): 
-Boosting Flexible Functional Regression Models with a High Number of Functional Historical Effects. 
-Statistics and Computing, accepted. 
+Brockhaus, S., Melcher, M., Leisch, F. and Greven, S. (2017): 
+Boosting flexible functional regression models with a high number of functional historical effects,  
+Statistics and Computing, 27(4), 913-926.  
 
 
 Use the run_...R files to run the different settings of the simulation study, 

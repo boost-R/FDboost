@@ -86,7 +86,7 @@
 #' as a vector in long format and the argument \code{id} has  
 #' to be specified (as formula!) to define which observations belong to which curve.  
 #' In this case the base-learners are built as row tensor-products of marginal base-learners, 
-#' see Scheipl et al. (2015) and Brockhaus et al. (2016), for details on how to set up the effects. 
+#' see Scheipl et al. (2015) and Brockhaus et al. (2017), for details on how to set up the effects. 
 #' The row tensor product of two marginal bases is implemented in R-package mboost 
 #' in the function \code{\%X\%}, see \code{\link[mboost]{\%X\%}}. 
 #' 
@@ -212,9 +212,9 @@
 #' Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 #' The functional linear array model. Statistical Modelling, 15(3), 279-300. 
 #' 
-#' Brockhaus, S., Melcher, M., Leisch, F. and Greven, S. (2016): 
+#' Brockhaus, S., Melcher, M., Leisch, F. and Greven, S. (2017): 
 #' Boosting flexible functional regression models with a high number of functional historical effects,  
-#' Statistics and Computing, accepted.  
+#' Statistics and Computing, 27(4), 913-926.   
 #' 
 #' Currie, I.D., Durban, M. and Eilers P.H.C. (2006):  
 #' Generalized linear array models with applications to multidimensional smoothing. 

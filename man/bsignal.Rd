@@ -79,7 +79,7 @@ so called shrinkage approach by Marra and Wood (2011)}
 
 \item{check.ident}{use checks for identifiability of the effect, based on Scheipl and Greven (2016) 
 for linear functional effect using \code{bsignal} and 
-based on Brockhaus et al. (2016) for historical effects using \code{bhist}}
+based on Brockhaus et al. (2017) for historical effects using \code{bhist}}
 
 \item{time}{vector for the index of the functional response y(time) 
 giving the measurement points of the functional response.}
@@ -148,7 +148,7 @@ The base-learner defaults to a historical effect of the form
 \eqn{\int_{T1}^{t} x_i(s)\beta(t,s)ds}, 
 where \eqn{T1} is the minimal index of \eqn{t} of the response \eqn{Y(t)}. 
 The functional covariate must be observed on one common grid \code{s}.  
-See Brockhaus et al. (2016) for details on historical effects.   
+See Brockhaus et al. (2017) for details on historical effects.   
 
 \code{bfpc()} is a base-learner for a linear effect of functional covariates based on 
 functional principal component analysis (FPCA). 
@@ -281,9 +281,9 @@ plot(m2_pffr, select = 2)
 Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 The functional linear array model. Statistical Modelling, 15(3), 279-300.
 
-Brockhaus, S., Melcher, M., Leisch, F. and Greven, S. (2016): 
-Boosting flexible functional regression models with a high number of functional historical effects, 
-Statistics and Computing, accepted.  
+Brockhaus, S., Melcher, M., Leisch, F. and Greven, S. (2017): 
+Boosting flexible functional regression models with a high number of functional historical effects,  
+Statistics and Computing, 27(4), 913-926.   
 
 Marra, G. and Wood, S.N. (2011): Practical variable selection for generalized additive models. 
 Computational Statistics & Data Analysis, 55, 2372-2387.

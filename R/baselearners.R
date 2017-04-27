@@ -459,8 +459,8 @@ X_bsignal <- function(mf, vary, args) {
 #' for \code{penalty="pss"} the penalty matrix is transformed to have full rank, 
 #' so called shrinkage approach by Marra and Wood (2011)
 #' @param check.ident use checks for identifiability of the effect, based on Scheipl and Greven (2016) 
-#'  for linear functional effect using \code{bsignal} and 
-#'  based on Brockhaus et al. (2016) for historical effects using \code{bhist}
+#' for linear functional effect using \code{bsignal} and 
+#' based on Brockhaus et al. (2017) for historical effects using \code{bhist}
 #' @param standard the historical effect can be standardized with a factor. 
 #' "no" means no standardization, "time" standardizes with the current value of time and 
 #' "length" standardizes with the length of the integral 
@@ -508,7 +508,7 @@ X_bsignal <- function(mf, vary, args) {
 #' \eqn{\int_{T1}^{t} x_i(s)\beta(t,s)ds}, 
 #' where \eqn{T1} is the minimal index of \eqn{t} of the response \eqn{Y(t)}. 
 #' The functional covariate must be observed on one common grid \code{s}.  
-#' See Brockhaus et al. (2016) for details on historical effects.   
+#' See Brockhaus et al. (2017) for details on historical effects.   
 #' 
 #' \code{bfpc()} is a base-learner for a linear effect of functional covariates based on 
 #' functional principal component analysis (FPCA). 
@@ -547,9 +547,9 @@ X_bsignal <- function(mf, vary, args) {
 #' Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 #' The functional linear array model. Statistical Modelling, 15(3), 279-300.
 #' 
-#' Brockhaus, S., Melcher, M., Leisch, F. and Greven, S. (2016): 
-#' Boosting flexible functional regression models with a high number of functional historical effects, 
-#' Statistics and Computing, accepted.  
+#' Brockhaus, S., Melcher, M., Leisch, F. and Greven, S. (2017): 
+#' Boosting flexible functional regression models with a high number of functional historical effects,  
+#' Statistics and Computing, 27(4), 913-926.   
 #' 
 #' Marra, G. and Wood, S.N. (2011): Practical variable selection for generalized additive models. 
 #' Computational Statistics & Data Analysis, 55, 2372-2387.

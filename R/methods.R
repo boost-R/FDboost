@@ -452,16 +452,16 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
 
 #' Fitted values of a boosted functional regression model 
 #' 
-#'  Takes a fitted \code{FDboost}-object and computes the fitted values.
+#' Takes a fitted \code{FDboost}-object and computes the fitted values.
 #' 
 #' @param object a fitted \code{FDboost}-object
 #' @param toFDboost logical, defaults to \code{TRUE}. In case of regular response in wide format 
-#' (i.e. response is supplied as matrix): should the predictions be returned as matrix, or list 
+#' (i.e., response is supplied as matrix): should the predictions be returned as matrix, or list 
 #' of matrices instead of vectors
 #' @param ... additional arguments passed on to \code{\link{predict.FDboost}}
 #' 
 #' @seealso \code{\link{FDboost}} for the model fit.
-#' @return matrix of fitted values
+#' @return matrix or vector of fitted values
 #' @method fitted FDboost
 #' @export
 ### similar to fitted.mboost() but returns the fitted values as matrix

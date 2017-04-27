@@ -10,13 +10,13 @@
 \item{object}{a fitted \code{FDboost}-object}
 
 \item{toFDboost}{logical, defaults to \code{TRUE}. In case of regular response in wide format 
-(i.e. response is supplied as matrix): should the predictions be returned as matrix, or list 
+(i.e., response is supplied as matrix): should the predictions be returned as matrix, or list 
 of matrices instead of vectors}
 
 \item{...}{additional arguments passed on to \code{\link{predict.FDboost}}}
 }
 \value{
-matrix of fitted values
+matrix or vector of fitted values
 }
 \description{
 Takes a fitted \code{FDboost}-object and computes the fitted values.

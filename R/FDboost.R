@@ -16,7 +16,7 @@
 #' Possible effects are, e.g., a smooth intercept \eqn{\beta_0(t)}, 
 #' a linear functional effect \eqn{\int x_i(s)\beta(s,t)ds}, 
 #' potentially with integration limits depending on \eqn{t}, 
-#' smooth and linear effects of scalar covariates \eqn{f(z_i)} or \eqn{z_i \beta(t)}. 
+#' smooth and linear effects of scalar covariates \eqn{f(z_i,t)} or \eqn{z_i \beta(t)}. 
 #' 
 #' @param formula a symbolic description of the model to be fit. 
 #' Per default no intercept is added, only a smooth offset, see argument \code{offset}. 

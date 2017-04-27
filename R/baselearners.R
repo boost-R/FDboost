@@ -2,6 +2,7 @@
 #' Functions to compute integration weights
 #' 
 #' Computes trapezoidal integration weights for a functional variable X1 on grid xind.
+#' 
 #' @param X1 matrix of functional variable
 #' @param xind index of functional variable
 #' @param id defaults to NULL if \code{X1} is a matrix. identity variable if \code{X1} is in long format.
@@ -13,22 +14,22 @@
 #' 
 #' @aliases integrationWeightsLeft
 #' 
-#'  @details The function \code{integrationWeights()} computes trapezoidal integration weights, 
-#'  that are symmetric. Per default those weights are used in the \code{\link{bsignal}}-base-learner. 
-#'  In the special case of regular xind with equal distances all integration weights are equal.
+#' @details The function \code{integrationWeights()} computes trapezoidal integration weights, 
+#' that are symmetric. Per default those weights are used in the \code{\link{bsignal}}-base-learner. 
+#' In the special case of regular xind with equal distances all integration weights are equal.
 #'   
-#'  The function \code{integrationWeightsLeft()} computes weights,
-#'  that take into account only the distance to the prior observation point. 
-#'  Thus one has to decide what to do with the first observation. 
-#'  The left weights are adequate for historical effects like in \code{\link{bhist}}.
+#' The function \code{integrationWeightsLeft()} computes weights,
+#' that take into account only the distance to the prior observation point. 
+#' Thus one has to decide what to do with the first observation. 
+#' The left weights are adequate for historical effects like in \code{\link{bhist}}.
 #'  
 #' @seealso \code{\link{bsignal}} and \code{\link{bhist}} for the base-learners. 
 #'
 #' @examples 
 #' ## Example for trapezoidal integration weights
-#' xind0 <- seq(0,1,l=5)
+#' xind0 <- seq(0,1,l = 5)
 #' xind <- c(0, 0.1, 0.3, 0.7, 1)
-#' X1 <- matrix(xind^2, ncol=length(xind0), nrow=2)
+#' X1 <- matrix(xind^2, ncol = length(xind0), nrow = 2)
 #' 
 #' # Regualar observation points
 #' integrationWeights(X1, xind0)
@@ -41,23 +42,23 @@
 #' integrationWeights(X1, xind)
 #' 
 #' ## Example for left integration weights
-#' xind0 <- seq(0,1,l=5)
+#' xind0 <- seq(0,1,l = 5)
 #' xind <- c(0, 0.1, 0.3, 0.7, 1)
-#' X1 <- matrix(xind^2, ncol=length(xind0), nrow=2)
+#' X1 <- matrix(xind^2, ncol = length(xind0), nrow = 2)
 #' 
 #' # Regular observation points
-#' integrationWeightsLeft(X1, xind0, leftWeight="mean") 
-#' integrationWeightsLeft(X1, xind0, leftWeight="first") 
-#' integrationWeightsLeft(X1, xind0, leftWeight="zero")
+#' integrationWeightsLeft(X1, xind0, leftWeight = "mean") 
+#' integrationWeightsLeft(X1, xind0, leftWeight = "first") 
+#' integrationWeightsLeft(X1, xind0, leftWeight = "zero")
 #' 
 #' # Irregular observation points
-#' integrationWeightsLeft(X1, xind, leftWeight="mean") 
-#' integrationWeightsLeft(X1, xind, leftWeight="first") 
-#' integrationWeightsLeft(X1, xind, leftWeight="zero")
+#' integrationWeightsLeft(X1, xind, leftWeight = "mean") 
+#' integrationWeightsLeft(X1, xind, leftWeight = "first") 
+#' integrationWeightsLeft(X1, xind, leftWeight = "zero")
 #' 
 #' # obervation points that do not start with 0
 #' xind2 <- xind + 0.5
-#' integrationWeightsLeft(X1, xind2, leftWeight="zero")
+#' integrationWeightsLeft(X1, xind2, leftWeight = "zero")
 #'  
 #' @export
 ################################# 
@@ -165,6 +166,7 @@ integrationWeights <- function(X1, xind, id=NULL){
 #### Computes Riemann-weights that only take into account the distance to the previous 
 # observation point
 # important for bhist()
+
 #' @rdname integrationWeights
 #' @export
 ## <TODO> implement weights for missing values in X1

@@ -111,13 +111,16 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
     if(length(which) > 1 ) stop("For aggregate != 'sum', only one effect, or which=NULL are possible.")
     if(toFDboost & class(object)[1]=="FDboost"){ 
       toFDboost <- FALSE
-      warning("Set toFDboost to FALSE, as aggregate!='sum'. Prediction is in long vector.")
+      warning("Set toFDboost to FALSE, as aggregate != 'sum'. Prediction is in long vector.")
     }
   }
   
   classObject <- class(object)
   class(object) <- "mboost"
-  sel <- sort(unique(selected(object))) # which effects were selected
+  # which effects were selected
+  sel <- NULL 
+  # NULL if no base-learners are selected as mstop = 0
+  if(!is.null(selected(object))) sel <- sort(unique(selected(object))) 
   
   ### <FIXME> does not work, as for bl bsignal(), bhist() and bconcurrent(), the 
   ### index is not selected
@@ -321,7 +324,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
     # offset of length>1 is not used in prediction, 
     # important when offset=NULL in FDboost() but not in mboost()
     muffleWarning1 <- function(w){
-      if( any( grepl( "User-specified offset is not a scalar, thus offset not used for prediction when", w) ) )
+      if( any( grepl( "User-specified offset is not a scalar", w) ) )
         invokeRestart( "muffleWarning" )  
     }
 
@@ -347,7 +350,8 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
       for(i in seq_along(which)){
         if(which[i]!=0){
           # [,1] save vector instead of a matrix with one column
-          predMboost[[i]] <- predict(object=object, newdata=newdata, which=which[i], ...)#[,1]
+          predMboost[[i]] <- withCallingHandlers(predict(object=object, newdata=newdata, which=which[i], ...), 
+                                                 warning = muffleWarning1)
           if(!is.null(dim(predMboost[[i]])) && dim(predMboost[[i]])[2] == 1) predMboost[[i]] <- predMboost[[i]][,1]
           
           if(!which[i] %in% sel){
@@ -1432,17 +1436,8 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     do.call(plotFun, args)            
   }
   
-  #     #### function by Fabian Scheipl
-  #     # colors in rgb
-  #     alpha <- function(x, alpha=25){
-  #       tmp <- sapply(x, col2rgb)
-  #       tmp <- rbind(tmp, rep(alpha, length(x)))/255
-  #       return(apply(tmp, 2, function(x) do.call(rgb, as.list(x))))
-  #     }      
-  #     clrs <- alpha( rainbow(x$ydim[1]), 125) 
-  
   ### get the effects to be plotted
-  whichSpecified <- which
+  whichSpecified <- which 
   if(is.null(which)) which <- 1:length(x$baselearner) 
   
   if(onlySelected){
@@ -1455,9 +1450,10 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
   
   # In the case that intercept and offset should be plotted and the intercept was never selected
   # plot the offset
-  if( (1 %in% whichSpecified | is.null(whichSpecified))  & !1 %in% which & length(x$yind)>1) which <- c(0, which)
+  if( (1 %in% whichSpecified | is.null(whichSpecified))  
+      & ! 1 %in% which & length(x$yind) > 1) which <- c(0, which)
   
-  if(length(which)==0){
+  if(length(which) == 0){
     warning("Nothing selected for plotting.")
     return(NULL)
   } 
@@ -1472,14 +1468,14 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     bl_data <- lapply(x$baselearner[which], function(x) x[["get_data"]]()) 
     
     # plot nothing but the offset
-    if(length(which)==1 && which==0){
+    if(length(which) == 1 && which == 0){
       terms <- list(offsetTerms)
       bl_data <- c(offset = list( list(x$yind) ), bl_data)
       names(bl_data[[1]]) <- attr(x$yind, "nameyind")
     }
     
     # include the offset in the plot of the intercept
-    if( includeOffset && 1 %in% which && grepl("ONEx", names(terms)[1]) ){
+    if(includeOffset && 1 %in% which && grepl("ONEx", names(terms)[1])){
       terms[[1]]$value <- terms[[1]]$value + matrix(offsetTerms$value, ncol=1, nrow=n1)
       terms[[1]]$main <- paste("offset", "+", terms[[1]]$main)
     }
@@ -1487,14 +1483,14 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     # plot the offset as extra effect
     # case 1: the offset should be included as extra plot
     # case 2: the whole model is plotted, but the intercept-base-learner was never selected
-    if( (!includeOffset | (includeOffset & !1 %in% which)) & 
-         is.null(whichSpecified)){
+    if( (! includeOffset | (includeOffset & ! 1 %in% which)) & 
+         is.null(whichSpecified) & ! is.null(selected(x))){
       terms <- c(offset = list(offsetTerms), terms)
       bl_data <- c(offset = list( list(x$yind) ), bl_data)
       names(bl_data[[1]]) <- attr(x$yind, "nameyind")     
     } 
    
-    if((length(terms)>1 || is.null(terms[[1]]$dim) || terms[[1]]$dim==3) & ask) par(ask=TRUE)
+    if((length(terms) > 1 || is.null(terms[[1]]$dim) || terms[[1]]$dim == 3) & ask) par(ask = TRUE)
     
     #     ### <TODO> implement common range
     #     if(commonRange){
@@ -1509,9 +1505,8 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       myplot <- function(trm){
         
         if(grepl("bhist", trm$main)){
-          ## set 0 to NA so that beta only has values in its domain
-          # get the limits- function
-          #limits <- get("args", (environment(x$baselearner[[which[i]]]$dpp)))$limits
+          # set 0 to NA so that beta only has values in its domain
+          # get the limits-function
           limits <- trm$limits
           if(is.null(limits)){
             warning("limits is NULL, the default limits 's<=t' are used for plotting.")
@@ -1523,8 +1518,8 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
         }
         
         # plot for 1-dim effects
-        if(trm$dim==1){
-          if(length(trm$value)==1) trm$value <- rep(trm$value, l=length(trm$x)) 
+        if(trm$dim == 1){
+          if(length(trm$value) == 1) trm$value <- rep(trm$value, l=length(trm$x)) 
           
           if(!"add" %in% names(dots)){
             plotWithArgs(plot, args=argsPlot, 
@@ -1621,7 +1616,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
           
         }else{
           # persp-plot for 2-dim effects
-          if(trm$dim==2 & pers){
+          if(trm$dim == 2 & pers){
             if(length(unique(as.vector(trm$value)))==1){
               # persp() gives error if only a flat plane should be drawn
               plot(y=trm$value[1,], x=trm$x, main=trm$main, type="l", xlab=trm$ylab, 
@@ -1640,7 +1635,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
             } 
           }
           # image for 2-dim effects
-          if(trm$dim==2 & !pers){        
+          if(trm$dim == 2 & !pers){        
             plotWithArgs(image, args=argsImage,
                          myargs=list(x=trm$y, y=trm$x, z=t(trm$value), xlab=trm$ylab, ylab=trm$xlab, 
                                      main=trm$main, col = heat.colors(length(trm$x)^2)))          
@@ -1664,7 +1659,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
         }
         ### 3 dim plots
         # persp-plot for 3-dim effects
-        if(trm$dim==3 & pers){
+        if(trm$dim == 3 & pers){
           for(j in 1:length(trm$z)){
             plotWithArgs(persp, args=argsPersp,
                          myargs=list(x=trm$x, y=trm$y, z=trm$value[[j]], xlab=paste("\n", trm$xlab), 
@@ -1676,7 +1671,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
           }
         }
         # image for 3-dim effects
-        if(trm$dim==3 & !pers){
+        if(trm$dim == 3 & !pers){
           for(j in 1:length(trm$z)){
             plotWithArgs(image, args=argsImage,
                          myargs=list(x=trm$x, y=trm$y, z=trm$value[[j]], xlab=trm$xlab, ylab=trm$ylab,
@@ -1687,10 +1682,6 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
             if(rug){
               points(bl_data[[i]][[1]], bl_data[[i]][[2]]) 
             }
-            #           plotWithArgs(filled.contour, args=list(),
-            #                        myargs=list(x=trm$x, y=trm$y, z=trm$value[[j]], xlab=trm$xlab, ylab=trm$ylab,
-            #                                    zlim=range(trm$value), color.palette=heat.colors,
-            #                                    main= paste(trm$zlab ,"=", round(trm$z[j],2), ": ", trm$main, sep="")))
           }        
         }
         
@@ -1705,7 +1696,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       
     } # end for-loop
     
-    if(length(terms)>1 & ask) par(ask=FALSE) 
+    if(length(terms)>1 & ask) par(ask = FALSE) 
     
   ### plot smooth effects as they are estimated for the original data
   }else{
@@ -1727,13 +1718,13 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     }
     
     if(class(terms)!="list") terms <- list(terms)
-    if(length(which)==1 && which==0) terms[[1]] <- offset
-    if(length(which)==1 && length(terms[[1]]) == 1 && terms[[1]]==0){ terms[[1]] <- rep(0, l=length(x$yind)) }
+    if(length(which) == 1 && which == 0) terms[[1]] <- offset
+    if(length(which) == 1 && length(terms[[1]]) == 1 && terms[[1]] == 0){ terms[[1]] <- rep(0, l=length(x$yind)) }
     
     #if(length(which)==1 && !any(class(x)=="FDboostLong")) terms <- list(terms) 
     
     shrtlbls <- try(coef(x, which=which, computeCoef=FALSE))# get short names
-    if(class(shrtlbls)=="try-error"){
+    if(class(shrtlbls) == "try-error"){
       shrtlbls <- names(x$baselearner)[which[which!=0]]
       if(0 %in% which) shrtlbls <- c("offset", which)
     }
@@ -1745,7 +1736,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       terms[[1]] <- terms[[1]] + x$offset
       shrtlbls[1] <- paste("offset", "+", shrtlbls[1])
     }   
-    if(length(which)>1 & ask) par(ask=TRUE)
+    if(length(which) > 1 & ask) par(ask = TRUE)
     if(commonRange){
       range <- range(terms)
       range[1] <- range[1]-0.02*diff(range)
@@ -1760,7 +1751,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
         range <- dots$ylim
       }
       
-      if(length(time)>1){
+      if(length(time) > 1){
         
         plotWithArgs(funplot, args=argsFunplot, 
                      myargs=list(x=time, y=terms[[i]], id=x$id, type="l", ylab="effect", lty=1, rug=FALSE,
@@ -1772,7 +1763,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
                                  xlab="response-offset", ylim=range, main=shrtlbls[i])) 
       }
     }
-    if(length(which)>1 & ask) par(ask=FALSE) 
+    if(length(which) > 1 & ask) par(ask = FALSE) 
     }       
 }
 

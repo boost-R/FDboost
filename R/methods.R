@@ -15,10 +15,12 @@ summary.FDboost <- function(object, ...) {
   ret <- list(object = object, selprob = NULL)
   xs <- selected(object)
   nm <- variable.names(object)
-  selprob <- tabulate(xs, nbins = length(nm)) / length(xs)
-  names(selprob) <- names(nm)
-  selprob <- sort(selprob, decreasing = TRUE)
-  ret$selprob <- selprob[selprob > 0]
+  if (length(xs) > 0) { # mstop > 0
+    selprob <- tabulate(xs, nbins = length(nm)) / length(xs)
+    names(selprob) <- names(nm)
+    selprob <- sort(selprob, decreasing = TRUE)
+    ret$selprob <- selprob[selprob > 0]
+  }
   class(ret) <- "summary.FDboost"
   
   ### only show one unique offset value
@@ -26,6 +28,7 @@ summary.FDboost <- function(object, ...) {
   
   return(ret)
 }
+
 
 #' Print a boosted functional regression model 
 #' 
@@ -38,29 +41,32 @@ summary.FDboost <- function(object, ...) {
 #' @method print FDboost
 #' @export
 ### similar to print.mboost()
+### similar to print.mboost()
 print.FDboost <- function(x, ...) {
   
   cat("\n")
-  if(!any(class(x)=="FDboostLong")){
-    cat(cat("\t Model-based Boosting with Functional Response\n"))
-  }else{
-    cat("\t Model-based Boosting with Irregular Functional Response\n")
-  }
+  type <- switch(class(x)[1], 
+                 FDboost22 = "Functional Response",
+                 FDboostLong  = "Functional Response in Long Format", 
+                 FDboostScalar = "Scalar Response")
+  if(is.null(type)) type <- "Functional Response"
+  cat("\t Model-based Boosting with", type, "\n")
   cat("\n")
+  
   if (!is.null(x$call))
-    cat("Call:\n", deparse(x$call, nlines=10), "\n\n", sep = "", nlines = 10)
+    cat("Call:\n", deparse(x$call, nlines = 10), "\n\n", sep = "", nlines = 10)
   show(x$family)
   cat("\n")
   cat("Number of boosting iterations: mstop =", mstop(x), "\n")
   cat("Step size: ", x$control$nu, "\n")
   
-  if(length(unique(x$offset))<10){
+  if(length(unique(x$offset)) < 10){
     cat("Offset: ", round(unique(x$offset), 3), "\n")
   }else{
     cat("Offset: ", round(unique(x$offset), 3)[1:3], "..." ,
         round(unique(x$offset), 3)[length(unique(x$offset))-3+1:3], "\n")
   }
-
+  
   cat("Number of baselearners: ", length(variable.names(x)), "\n")
   cat("\n")
   invisible(x)

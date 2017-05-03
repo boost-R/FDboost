@@ -21,7 +21,7 @@ Instructions on how to use `FDboost` can be found in various places:
 
 ## Issues & Feature Requests
 
-For issues, bugs, feature requests etc. please use the [GitHub Issues](https://github.com/fdboost/FDboost/issues).
+For issues, bugs, feature requests etc. please use the [GitHub Issues](https://github.com/boost-R/FDboost/issues).
 
 ## Installation Instructions
 
@@ -33,7 +33,7 @@ For issues, bugs, feature requests etc. please use the [GitHub Issues](https://g
 - Latest **patch version** (patched version of CRAN package; under development) from GitHub:
   ```r
   library("devtools")
-  install_github("fdboost/FDboost") ## , build_vignettes = TRUE
+  install_github("boost-R/FDboost") 
   library("FDboost")
   ```
 

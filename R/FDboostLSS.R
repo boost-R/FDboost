@@ -535,9 +535,10 @@ FDboostLSS <- function(formula, timeformula, data = list(), families = GaussianL
 #' @param folds a weight matrix a weight matrix with number of rows equal to the number of observations. 
 #' The number of columns corresponds to the number of cross-validation runs, 
 #' defaults to 25 bootstrap samples, resampling whole curves  
-#' @param grid a matrix of stopping parameters the empirical risk is to be evaluated for. 
-#' Each row represents a parameter combination. The number of columns must be equal to the number 
-#' of parameters of the GAMLSS family. Per default, make.grid(mstop(object)) is used. 
+#' @param grid defaults to a grid up to the current number of boosting iterations. 
+#' The default generates the grid according to the defaults of 
+#' \code{\link[gamboostLSS]{cvrisk.mboostLSS}} and \code{\link[gamboostLSS]{cvrisk.nc_mboostLSS}} for
+#' models with cyclic or noncyclic fitting.  
 #' @param papply (parallel) apply function, defaults to \code{\link[parallel]{mclapply}}, 
 #' see \code{\link[gamboostLSS]{cvrisk.mboostLSS}} for details 
 #' @param trace print status information during cross-validation? Defaults to \code{TRUE}.
@@ -562,15 +563,27 @@ FDboostLSS <- function(formula, timeformula, data = list(), families = GaussianL
 ## wrapper for cvrisk of gamboostLSS, specifying folds on the level of curves
 cvrisk.FDboostLSS <- function(object, folds = cvLong(id = object[[1]]$id, 
                                                      weights = model.weights(object[[1]])),
-                              grid = make.grid(mstop(object)),
+                              grid = NULL,
                               papply = mclapply, trace = TRUE, 
                               fun = NULL, ...){
   
   ## message not necessary as currently only a scalar offset is possible for FDboostLSS-models
   ## if(!length(unique(object$offset)) == 1) message("The smooth offset is fixed over all folds.")
   
-  class(object) <- "mboostLSS"
+  class(object) <- class(object)[class(object) != "FDboostLSS"]
   
+  ## set up grid according to defaults of cvrisk.nc_mboostLSS and cvrisk.mboostLSS
+  if(is.null(grid)){
+    
+    if(any(class(object) == "nc_mboostLSS")){
+      grid <- 1:sum(mstop(object))
+    }else{
+      grid <- make.grid(mstop(object))
+    }
+    
+  }
+
+  ## call cvrisk.nc_mboostLSS or cvrisk.mboostLSS
   ret <- cvrisk(object = object, folds = folds,
                 grid = grid,
                 papply = papply, trace = trace, 

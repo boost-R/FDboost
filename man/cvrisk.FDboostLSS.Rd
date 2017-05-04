@@ -5,8 +5,8 @@
 \title{Cross-validation for FDboostLSS}
 \usage{
 \method{cvrisk}{FDboostLSS}(object, folds = cvLong(id = object[[1]]$id,
-  weights = model.weights(object[[1]])), grid = make.grid(mstop(object)),
-  papply = mclapply, trace = TRUE, fun = NULL, ...)
+  weights = model.weights(object[[1]])), grid = NULL, papply = mclapply,
+  trace = TRUE, fun = NULL, ...)
 }
 \arguments{
 \item{object}{an object of class \code{FDboostLSS}.}
@@ -15,9 +15,10 @@
 The number of columns corresponds to the number of cross-validation runs, 
 defaults to 25 bootstrap samples, resampling whole curves}
 
-\item{grid}{a matrix of stopping parameters the empirical risk is to be evaluated for. 
-Each row represents a parameter combination. The number of columns must be equal to the number 
-of parameters of the GAMLSS family. Per default, make.grid(mstop(object)) is used.}
+\item{grid}{defaults to a grid up to the current number of boosting iterations. 
+The default generates the grid according to the defaults of 
+\code{\link[gamboostLSS]{cvrisk.mboostLSS}} and \code{\link[gamboostLSS]{cvrisk.nc_mboostLSS}} for
+models with cyclic or noncyclic fitting.}
 
 \item{papply}{(parallel) apply function, defaults to \code{\link[parallel]{mclapply}}, 
 see \code{\link[gamboostLSS]{cvrisk.mboostLSS}} for details}

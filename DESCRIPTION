@@ -2,7 +2,7 @@ Package: FDboost
 Type: Package
 Title: Boosting Functional Regression Models
 Version: 0.2-1
-Date: 2016-06-20
+Date: 2017-05-04
 Authors@R: c(person("Sarah", "Brockhaus", role = c("aut", "cre"),
 		            email = "Sarah.Brockhaus@stat.uni-muenchen.de"), 
 			 person("David", "Ruegamer", role = "aut", 
@@ -15,14 +15,14 @@ Description: Regression models for functional data, i.e., scalar-on-function,
 Depends:
     R (>= 3.0.0),
     methods,
-    mboost (>= 2.6-0)
+    mboost (>= 2.8-0)
 Imports:
     graphics,
     grDevices,
     utils,
     stats,
     Matrix,
-    gamboostLSS (>= 1.2-1),
+    gamboostLSS (>= 2.0-0),
     stabs,
     mgcv,
     refund,

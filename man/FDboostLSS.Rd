@@ -5,7 +5,8 @@
 \title{Model-based Gradient Boosting for Functional GAMLSS}
 \usage{
 FDboostLSS(formula, timeformula, data = list(), families = GaussianLSS(),
-  control = boost_control(), weights = NULL, ...)
+  control = boost_control(), weights = NULL, method = c("cyclic",
+  "noncyclic"), ...)
 }
 \arguments{
 \item{formula}{a symbolic description of the model to be fit. 
@@ -32,6 +33,10 @@ Per default, the two-parametric \code{\link[gamboostLSS]{GaussianLSS}} family is
 For more details see \code{\link[mboost]{boost_control}}.}
 
 \item{weights}{does not work!}
+
+\item{method}{fitting method, currently two methods are supported: 
+\code{"cyclic"} (see Mayr et al., 2012) and \code{"noncyclic"} 
+(algorithm with inner loss of Thomas et al., 2016).}
 
 \item{...}{additional arguments passed to \code{\link[FDboost]{FDboost}}, 
 including, \code{family} and \code{control}.}
@@ -126,7 +131,11 @@ Journal of the Royal Statistical Society: Series C (Applied Statistics), 61(3), 
 
 Rigby, R. A. and D. M. Stasinopoulos (2005):  
 Generalized additive models for location, scale and shape (with discussion). 
-Journal of the Royal Statistical Society: Series C (Applied Statistics), 54(3), 507-554.
+Journal of the Royal Statistical Society: Series C (Applied Statistics), 54(3), 507-554. 
+
+Thomas, J., Mayr, A., Bischl, B., Schmid, M., Smith, A., and Hofner, B. (2016):  
+Stability selection for component-wise gradient boosting in multiple dimensions. 
+Preliminary version: \url{http://arxiv.org/abs/1611.10171}.
 }
 \seealso{
 Note that \code{FDboostLSS} calls \code{\link{FDboost}} directly.

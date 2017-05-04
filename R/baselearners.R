@@ -576,7 +576,8 @@ X_bsignal <- function(mf, vary, args) {
 #'                                 (max(nir.lambda) - min(nir.lambda) ))
 #'
 #' ## model fit with scalar response and two functional linear effects 
-#' ## include no intercept as all base-learners are centered around 0                                                                  
+#' ## include no intercept 
+#' ## as all base-learners are centered around 0 
 #' mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.ident = FALSE) 
 #'                + bsignal(NIR, nir.lambda, knots = 40, df=4, check.ident = FALSE), 
 #'                timeformula = NULL, data = fuelSubset) 

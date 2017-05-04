@@ -225,31 +225,44 @@ plotPredicted <- function(x, subset=NULL, posLegend="topleft", lwdObs=1, lwdPred
   
   stopifnot("FDboost" %in% class(x))
   
-  if(!any(class(x)=="FDboostLong")){
-    if(is.null(subset)) subset <- 1:x$ydim[1]
-    response <- matrix(x$response, nrow=x$ydim[1], ncol=x$ydim[2])[subset, , drop=FALSE] 
-    pred <- fitted(x)[subset, , drop=FALSE]
+  if(any(class(x) == "FDboostScalar")){
+    
+    if(is.null(subset)) subset <- 1:length(x$response)
+    response <- x$response[subset, drop=FALSE] 
+    pred <- fitted(x)[subset, drop=FALSE]
     pred[is.na(response)] <- NA
-    yind <- x$yind
-    id <- NULL
+    
   }else{
-    if(is.null(subset)) subset <- unique(x$id)
-    response <- x$response[x$id %in% subset] 
-    pred <- fitted(x)[x$id %in% subset]
-    pred[is.na(response)] <- NA
-    yind <- x$yind[x$id %in% subset] 
-    id <- x$id[x$id %in% subset]
+    
+    if(!any(class(x) == "FDboostLong")){
+      if(is.null(subset)) subset <- 1:x$ydim[1]
+      response <- matrix(x$response, nrow=x$ydim[1], ncol=x$ydim[2])[subset, , drop=FALSE] 
+      pred <- fitted(x)[subset, , drop=FALSE]
+      pred[is.na(response)] <- NA
+      yind <- x$yind
+      id <- NULL
+    }else{
+      if(is.null(subset)) subset <- unique(x$id)
+      response <- x$response[x$id %in% subset] 
+      pred <- fitted(x)[x$id %in% subset]
+      pred[is.na(response)] <- NA
+      yind <- x$yind[x$id %in% subset] 
+      id <- x$id[x$id %in% subset]
+    }
+    
   }
   
   if(is.character(response) | is.factor(x$response)){
+    
     message("For response that is not continuous only the predicted values are plotted.")
     ylim <- range(pred, na.rm = TRUE)
     funplot(yind, pred, id=id, pch=2, lwd=lwdPred, ... )
+    
   } else{
     
     ylim <- range(response, pred, na.rm = TRUE)
     
-    if(length(x$yind)>1){
+    if(length(x$yind) > 1){
       # Observed values
       funplot(yind, response, id=id, pch=1, ylim=ylim, lty=3, 
               ylab=x$yname, xlab=attr(x$yind, "nameyind"), lwd=lwdObs, ...)
@@ -278,21 +291,34 @@ plotResiduals <- function(x, subset=NULL, posLegend="topleft", ...){
   
   stopifnot("FDboost" %in% class(x))
   
-  if(!any(class(x)=="FDboostLong")){ ## wide format
-    if(is.null(subset)) subset <- 1:x$ydim[1]
-    response <- matrix(x$response, nrow=x$ydim[1], ncol=x$ydim[2])[subset, , drop=FALSE] 
-    pred <- fitted(x)[subset, , drop=FALSE]
+  if(any(class(x) == "FDboostScalar")){
+    
+    if(is.null(subset)) subset <- 1:length(x$response)
+    response <- x$response[subset, drop=FALSE] 
+    pred <- fitted(x)[subset, drop=FALSE]
     pred[is.na(response)] <- NA
-    yind <- x$yind
-    id <- NULL
-  }else{ ## long format
-    if(is.null(subset)) subset <- unique(x$id)
-    response <- x$response[x$id %in% subset] 
-    pred <- fitted(x)[x$id %in% subset]
-    pred[is.na(response)] <- NA
-    yind <- x$yind[x$id %in% subset]
-    id <- x$id[x$id %in% subset] 
+    
+  }else{
+    
+    if(!any(class(x) == "FDboostLong")){ ## wide format
+      if(is.null(subset)) subset <- 1:x$ydim[1]
+      response <- matrix(x$response, nrow=x$ydim[1], ncol=x$ydim[2])[subset, , drop=FALSE] 
+      pred <- fitted(x)[subset, , drop=FALSE]
+      pred[is.na(response)] <- NA
+      yind <- x$yind
+      id <- NULL
+    }else{ ## long format
+      if(is.null(subset)) subset <- unique(x$id)
+      response <- x$response[x$id %in% subset] 
+      pred <- fitted(x)[x$id %in% subset]
+      pred[is.na(response)] <- NA
+      yind <- x$yind[x$id %in% subset]
+      id <- x$id[x$id %in% subset] 
+    }
+    
   }
+  
+
   
   # Observed - predicted values
   if(length(x$yind)>1){

@@ -106,7 +106,7 @@ print.FDboost <- function(x, ...) {
 # predict function: wrapper for predict.mboost()
 predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TRUE, ...){
   
-  stopifnot(any(class(object)=="FDboost")) 
+  stopifnot(any(class(object) == "FDboost")) 
   # print("Prediction FDboost") 
   dots <- list(...)
   
@@ -115,7 +115,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
 
   if(!is.null(dots$aggregate) && dots$aggregate != "sum"){
     if(length(which) > 1 ) stop("For aggregate != 'sum', only one effect, or which=NULL are possible.")
-    if(toFDboost & class(object)[1]=="FDboost"){ 
+    if(toFDboost & class(object)[1] == "FDboost"){ 
       toFDboost <- FALSE
       warning("Set toFDboost to FALSE, as aggregate != 'sum'. Prediction is in long vector.")
     }
@@ -151,7 +151,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
     nameyind <- attr(object$yind, "nameyind")
     
     ## response observed on common grid / scalar response 
-    if(!is.null(object$ydim)){
+    if(classObject[1] != "FDboostLong"){ ## if(!is.null(object$ydim)){
       # get the number of trajectories you want to predict
       n <- NROW(newdata[[1]])  
       ## use the second variable if the first is the time variable 
@@ -180,7 +180,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
           }
         }
         ## in case of scalar response, set lenth of yindex to 1
-        if(object$ydim[2]==1){ 
+        if(classObject[1] == "FDboostScalar"){ 
           lengthYind <- 1 
           alllengthYind <- 1
         } 
@@ -189,7 +189,9 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
         if( length(unique(alllengthYind))>1 ) stop("The hmatrix-objects in newdata imply differing times or do not match the time variable.")
       }
       
-      if(object$ydim[2]>1 && lengthYind==0) stop("Index of response, ", nameyind, ", must be specified and have length >0.")
+      if(classObject[1] != "FDboostScalar" && lengthYind == 0){
+        stop("Index of response, ", nameyind, ", must be specified and have length > 0.")
+      } 
       
       # dummy variable to fit the intercept
       newdata[["ONEx"]] <- rep(1.0, n)
@@ -377,10 +379,14 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
     n <- object$ydim[1]
     lengthYind <- object$ydim[2]
     
-    ## for response in long format
+    ## for response in long format / scalar response
     if(is.null(object$ydim)){
       n <- 1
       lengthYind <- length(object$yind)
+    }
+    
+    if(classObject[1] == "FDboostScalar"){
+      n <- length(object$response)
     }
 
     ## predict all effects together, include the offset into the prediction 
@@ -425,8 +431,8 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
       return(predMboost)
     } else{
       ## check that all predictions have the same length
-      stopifnot( all( length(predMboost[[1]])==lapply(predMboost, length) ) )
-      ret <- matrix(unlist(predMboost), ncol=length(predMboost))
+      stopifnot(all( length(predMboost[[1]]) == lapply(predMboost, length) ))
+      ret <- matrix(unlist(predMboost), ncol = length(predMboost))
       colnames(ret) <- names(predMboost)
       attr(ret, "offset") <- offsetTemp
       return(ret)
@@ -480,15 +486,30 @@ fitted.FDboost <- function(object, toFDboost = TRUE, ...) {
   args <- list(...)
   
   if (length(args) == 0) {
-    ## give back matrix for regular response and toFDboost==TRUE
-    if(!any(class(object)=="FDboostLong") & toFDboost){
-      ret <- matrix(object$fitted(), nrow=object$ydim[1])
+    ## give back matrix for regular response and toFDboost == TRUE
+    if(toFDboost & !any(class(object) == "FDboostScalar") & !any(class(object) == "FDboostLong") ){
+      ret <- matrix(object$fitted(), nrow = object$ydim[1])
     }else{ # give back a long vector
       ret <- object$fitted()
-      names(ret) <- object$rownames
+      if (length(ret) == length(object$rownames)) 
+        names(ret) <- object$rownames
     }
   } else {
-    ret <- predict(object, newdata=NULL, toFDboost=toFDboost, ...)
+    
+    ## ret <- predict(object, newdata = NULL, toFDboost = toFDboost, ...)
+    
+    if ("newdata" %in% names(args)) {
+      args$newdata <- NULL
+      warning("Argument ", sQuote("newdata"), " was  ignored. Please use ", 
+              sQuote("predict()"), " to make predictions for new data.")
+    }
+    
+    args$object <- object
+    args$toFDboost <- toFDboost
+    
+    ret <- do.call(predict, args)
+    
+    
   }
   ret
 }
@@ -606,7 +627,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
     if(is.null(which)) which <- 1:length(object$baselearner)
     
     ## special case of ~1 intercept specification with scalar response
-    if( object$ydim[[2]] == 1 && 
+    if( class(object)[1] == "FDboostScalar" && 
         any(which == 1) && 
         length(object$coef(which = 1)[[1]]) == 1 ){
       ret$intercept <- object$coef(which = 1)[[1]]
@@ -1218,7 +1239,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
       
       ## it is necessary to expand the dataframe!
       if(!grepl("bhistx(", trm$get_call(), fixed=TRUE) && 
-         is.null(object$ydim) && !grepl("bconcurrent", trm$get_call())){
+         class(object)[1] == "FDboostLong" && !grepl("bconcurrent", trm$get_call())){
         #print(attr(d, "varnms"))
         vari <- names(d)[1]
         if(is.factor(d[[vari]])){

@@ -1,18 +1,29 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
-\section{Changes in FDboost version 0.2-1 (2017-04-03)}{
+\section{Changes in FDboost version 0.2-1 (2017-05-04)}{
     \subsection{User-visible changes}{
     \itemize{
-    \item add function bootstrapCI() to compute bootstrapped coefficients 
-    \item add the dataset 'emotion' containing EEG and EMG measures under different experimental conditions 
+    \item new function \code{bootstrapCI()} to compute bootstrapped coefficients 
+    \item add the dataset 'emotion' containing EEG and EMG measures under different experimental conditions
+    \item with scalar response, \code{FDboost()} works with the response as 
+          vector and not as matrix with one row; 
+          thus, \code{fitted()} and \code{predict()} return a vector 
     }
   }
   \subsection{Bug-fixes}{
     \itemize{
-    \item update.FDboost() works now with scalar response 
+    \item \code{update.FDboost()} works now with scalar response 
+    \item \code{FDboost()} works with family \code{Binomial(type = "glm")}, 
+          see isssue \href{https://github.com/boost-R/FDboost/issues/1}{#1} 
     }
     }
+   \subsection{Miscellaneous}{
+    \itemize{
+	  \item adapt \pkg{FDboost} to \pkg{mboost} 2.8-1 that allows for mstop = 0
+	  \item restructure FDboostLSS() such that it calls mboostLSS_fit() from \pkg{mboostLSS} 
+    }
+  }
 }
 
 

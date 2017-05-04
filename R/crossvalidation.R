@@ -29,9 +29,13 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   if(any(class(object) == "FDboostLong")){ # irregular response
     nObs <- length(unique(object$id)) # number of curves
     Gy <- NULL # number of time-points per curve
-  }else{ # regular response
+  }else{ # regular response / scalar response 
     nObs <- object$ydim[1] # number of curves
     Gy <- object$ydim[2] # number of time-points per curve
+    if(class(object)[1] == "FDboostScalar"){
+      nObs <- length(object$response)
+      Gy <- 1
+    }
   }
   
   sample_weights <- rep(1, length(unique(object$id))) # length N
@@ -82,7 +86,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   ### get yind in long format
   yindLong <- object$yind
   if(!any(class(object) == "FDboostLong")){
-    yindLong <- rep(object$yind, each=object$ydim[1])
+    yindLong <- rep(object$yind, each = nObs)
   }
   ### compute ("length of each trajectory")^-1 in the response
   ### more precisely ("sum of integration weights")^-1 is used
@@ -110,7 +114,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   nameyind <- attr(object$yind, "nameyind")
   dathelp[[nameyind]] <- object$yind
   
-  if(!any(class(object) == "FDboostLong")){
+  if(!any(class(object) == "FDboostLong") & !any(class(object) == "FDboostScalar")){
     dathelp[[object$yname]] <- matrix(object$response, ncol=object$ydim[2])
     dathelp$integration_weights <- matrix(integration_weights, ncol=object$ydim[2])
     dathelp$object_id <- object$id
@@ -654,9 +658,13 @@ validateFDboost <- function(object, response = NULL,
   if(any(class(object) == "FDboostLong")){ # irregular response
     nObs <- length(unique(object$id)) # number of curves
     Gy <- NULL # number of time-points per curve
-  }else{ # regular response
+  }else{ # regular response / scalar response 
     nObs <- object$ydim[1] # number of curves
     Gy <- object$ydim[2] # number of time-points per curve
+    if(class(object)[1] == "FDboostScalar"){
+      nObs <- length(object$response)
+      Gy <- 1
+    }
   }
   
   if(is.null(response)) response <- object$response # response as vector!
@@ -708,8 +716,8 @@ validateFDboost <- function(object, response = NULL,
   
   ### get yind in long format
   yindLong <- object$yind
-  if(!any(class(object)=="FDboostLong")){
-    yindLong <- rep(object$yind, each=object$ydim[1])
+  if(!any(class(object) == "FDboostLong")){
+    yindLong <- rep(object$yind, each = nObs)
   }
   ### compute ("length of each trajectory")^-1 in the response
   ### more precisely ("sum of integration weights")^-1 is used
@@ -730,8 +738,8 @@ validateFDboost <- function(object, response = NULL,
     nameyind <- attr(object$yind, "nameyind")
     dathelp[[nameyind]] <- object$yind
     
-    if(!any(class(object) == "FDboostLong")){
-      dathelp[[object$yname]] <- matrix(object$response, ncol=object$ydim[2])
+    if(!any(class(object) == "FDboostLong") & !any(class(object) == "FDboostScalar")){
+      dathelp[[object$yname]] <- matrix(object$response, ncol = Gy)
     }else{
       dathelp[[object$yname]] <- object$response
     }
@@ -849,7 +857,7 @@ validateFDboost <- function(object, response = NULL,
     # call$oobweights <- oobweights[id]
     if(refitSmoothOffset == FALSE && is.null(call$offset) ){
       if(!any(class(object) == "FDboostLong")){
-        call$offset <- matrix(object$offset, ncol=object$ydim[2])[1, ]
+        call$offset <- matrix(object$offset, ncol = Gy)[1, ]
       }else{
         call$offset <- object$offset
       }

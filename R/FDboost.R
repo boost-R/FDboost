@@ -432,7 +432,7 @@
 #' @importFrom graphics abline barplot contour legend lines matplot par persp plot points
 #' @importFrom utils getS3method 
 #' @importFrom stats approx as.formula coef complete.cases fitted formula lm median model.matrix model.weights na.omit predict quantile sd terms.formula variable.names 
-#' @importFrom gamboostLSS GaussianLSS GaussianMu GaussianSigma make.grid cvrisk.mboostLSS
+#' @importFrom gamboostLSS GaussianLSS GaussianMu GaussianSigma make.grid cvrisk.mboostLSS mboostLSS_fit
 #' @importFrom stabs stabsel stabsel_parameters 
 #' @importFrom splines bs splineDesign
 #' @importFrom mgcv gam s
@@ -539,6 +539,7 @@ FDboost <- function(formula,          ### response ~ xvars
   ### extract response; a numeric matrix or a vector
   yname <- all.vars(formula)[1]
   response <- data[[yname]]
+  if(is.null(response)) stop("The response <", yname, "> is not contained in data.")
   data[[yname]] <- NULL
   
   ### for scalar response ~bols(1) or NULL
@@ -556,14 +557,15 @@ FDboost <- function(formula,          ### response ~ xvars
       timeformula <- ~bols(ONEtime, intercept = FALSE)
     }
     
-    ## <FIXME> would be nice, as then no penalization in dummy-direction happens
-    ## timeformula <- ~bols(ONEtime, lambda = 0)
-    
     data$ONEtime <- 1
-    ## matrix() converts factors to characters
-    ## thus, save the original factor variable if the response is a factor
-    if(is.factor(response)) response_factor <- response
-    response <- matrix(response, ncol = 1)
+    
+    # if response is a matrix with one row, convert it to a vector 
+    if(is.matrix(response) && dim(response)[2] == 1){
+      response <- c(response)
+      warning("The scalar response is coerced from a one-column matrix to a vector. ", 
+              "Specify scalar response as vector.")
+    }
+
   }
   
   ### <TODO> find a reasonable way to warn the user in the case of non-identifiable models?
@@ -596,9 +598,7 @@ FDboost <- function(formula,          ### response ~ xvars
   #     }    
   #   }
   
-  ### extract time;
-  # <FixMe> Only keep first variable, 
-  # otherwise it is impossible to have a vector for knots
+  ## extract time from timeformula 
   yind <- all.vars(timeformula)[[1]]
   stopifnot(length(yind) == 1)
   nameyind <- yind
@@ -635,40 +635,55 @@ FDboost <- function(formula,          ### response ~ xvars
     blconstant <- "bols(ONEtime, intercept = FALSE)"
   }
   assign("ONEtime", rep(1.0, length(time)))
+  
+  
+  if(scalarResponse){ ## scalar response 
     
-  if(is.null(id)){
-    ### check dimensions
-    ### response has trajectories as rows
-    stopifnot(is.matrix(response))
-    # <SB> dataframe is list and can contain time-points of functional covariates of arbitrary length
-    # if (nrow(data) > 0) stopifnot(nrow(response) == nrow(data))
-    nr <- nrow(response)
-    stopifnot(ncol(response) == length(time))
-    nc <- ncol(response)
-    dresponse <- as.vector(response) # column-wise stacking of response 
-    ## convert characters to factor 
-    if(is.character(dresponse)) dresponse <- factor(dresponse) 
-    ## in case of a scalar factor response, use the original factor as response 
-    if(!is.null(response_factor)) dresponse <- response_factor
+    nr <- NROW(response)
     nobs <- nr # number of observed trajectories
-    ## check wether time variable is used in other base-learners
-    ## only check in regular response case, as for irregular response, the problem cannot occur
-    #if(nameyind %in% allCovs){
-    #  warning("Do not use the same variable t as time-variable in y(t) and in the base-learners, e.g., as x(t).")
-    #}
-  }else{
-    stopifnot(is.null(dim(response))) ## stopifnot(is.vector(response))
-    # check length of response and its time and index
-    stopifnot(length(response) == length(time) & length(response) == length(id))
+    nc <- 1
+    dresponse <- response
     
-    if(any(is.na(response))) warning("For non-grid observations the response should not contain missing values.")
-    if( !all(sort(unique(id)) == 1:length(unique(id))) ) stop("id has to be integers 1, 2, 3,..., N.")
     
-    nr <- length(response) # total number of observations
-    nc <- length(unique(id)) # number of trajectories
-    dresponse <- as.vector(response) # column-wise stacking of response  
-    nobs <- length(unique(id)) # number of observed trajectories
+  }else{ ## functional response 
+    
+    if(is.null(id)){
+      ### check dimensions
+      ### response has trajectories as rows
+      stopifnot(is.matrix(response))
+      # <SB> dataframe is list and can contain time-points of functional covariates of arbitrary length
+      # if (nrow(data) > 0) stopifnot(nrow(response) == nrow(data))
+      nr <- nrow(response)
+      stopifnot(ncol(response) == length(time))
+      nc <- ncol(response)
+      dresponse <- as.vector(response) # column-wise stacking of response 
+      ## convert characters to factor 
+      if(is.character(dresponse)) dresponse <- factor(dresponse) 
+      ## in case of a scalar factor response, use the original factor as response 
+      if(!is.null(response_factor)) dresponse <- response_factor
+      nobs <- nr # number of observed trajectories
+      ## check wether time variable is used in other base-learners
+      ## only check in regular response case, as for irregular response, the problem cannot occur
+      #if(nameyind %in% allCovs){
+      #  warning("Do not use the same variable t as time-variable in y(t) and in the base-learners, e.g., as x(t).")
+      #}
+    }else{
+      stopifnot(is.null(dim(response))) ## stopifnot(is.vector(response))
+      # check length of response and its time and index
+      stopifnot(length(response) == length(time) & length(response) == length(id))
+      
+      if(any(is.na(response))) warning("For non-grid observations the response should not contain missing values.")
+      if( !all(sort(unique(id)) == 1:length(unique(id))) ) stop("id has to be integers 1, 2, 3,..., N.")
+      
+      nr <- length(response) # total number of observations
+      nc <- length(unique(id)) # number of trajectories
+      dresponse <- as.vector(response) # column-wise stacking of response  
+      nobs <- length(unique(id)) # number of observed trajectories
+    }
+    
   }
+    
+
   
   ### save original dimensions of response
   ydim <- dim(response)
@@ -1001,7 +1016,7 @@ FDboost <- function(formula,          ### response ~ xvars
   ## remember the offset-specification of FDboost
   offsetFDboost <- offset
   
-  if( (!is.null(ydim) && ydim[2] == 1) || # scalar response
+  if( scalarResponse || # scalar response
       !is.null(offset) && length(offset) == 1 ){  # offset == "scalar" / offset = numeric of length 1
     
     if( !is.null(offset) && !is.numeric(offset) && offset != "scalar" ){
@@ -1199,8 +1214,14 @@ FDboost <- function(formula,          ### response ~ xvars
   class(ret) <- c("FDboost", class(ret))
   if(!is.null(id)) class(ret) <- c("FDboostLong", class(ret))
   if(scalarResponse) class(ret) <- c("FDboostScalar", class(ret))
-  ## generate an id-variable for a regular response 
-  if(is.null(id)) id <- rep(1:ydim[1], times = ydim[2])
+  ## generate an id-variable for a regular response
+  if(is.null(id)){
+    if(scalarResponse){
+      id <- 1:length(response)
+    }else{
+      id <- rep(1:ydim[1], times = ydim[2])
+    }
+  } 
   
   ### reset weights for cvrisk etc., expanding works OK in bl_lin_matrix!
   # ret$"(weights)" <- weights

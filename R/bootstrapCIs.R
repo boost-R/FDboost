@@ -327,14 +327,14 @@ bootstrapCI <- function(object, which = NULL,
   # add intercept and offset separately
   if(withIntercept){
     
-    listOfCoefs <- c(offset = list(offsets), 
-                        intercept = list(intercept), 
-                        listOfCoefs)
+    listOfCoefs <- c(offsets = list(offsets), 
+                     intercept = list(intercept), 
+                     listOfCoefs)
   
   }else{
     
-    listOfCoefs <- c(offset = list(offsets), 
-                        listOfCoefs)
+    listOfCoefs <- c(offsets = list(offsets), 
+                     listOfCoefs)
     
   }  
   

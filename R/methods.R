@@ -1785,9 +1785,15 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
                                  xlab=attr(time, "nameyind"), ylim=range, main=shrtlbls[i]))
         if(rug) rug(time)
       }else{
+        plot_x <- x$response
+        plot_xlab <- "response"
+        if(is.numeric(x$response)){
+          plot_x <- x$response - x$offset
+          plot_xlab <- "response - offset"
+        }
         plotWithArgs(plot, args=argsPlot, 
-                     myargs=list(x=x$response-x$offset, y=terms[[i]], type="p", ylab="effect", 
-                                 xlab="response-offset", ylim=range, main=shrtlbls[i])) 
+                     myargs=list(x=plot_x, y=terms[[i]], type="p", ylab="effect", 
+                                 xlab=plot_xlab, ylim=range, main=shrtlbls[i])) 
       }
     }
     if(length(which) > 1 & ask) par(ask = FALSE) 

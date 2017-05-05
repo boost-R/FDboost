@@ -2,7 +2,7 @@ Package: FDboost
 Type: Package
 Title: Boosting Functional Regression Models
 Version: 0.2-1
-Date: 2017-05-04
+Date: 2017-05-05
 Authors@R: c(person("Sarah", "Brockhaus", role = c("aut", "cre"),
 		            email = "Sarah.Brockhaus@stat.uni-muenchen.de"), 
 			 person("David", "Ruegamer", role = "aut", 
@@ -36,7 +36,7 @@ Suggests:
     mapdata,
     knitr
 License: GPL-2
-Packaged: 2016-06-20 13:44:03 UTC; brockhaus
+Packaged: 2017-05-05 13:44:03 UTC; brockhaus
 Collate:
     'FDboost.R'
     'baselearners.R'
@@ -50,6 +50,6 @@ Collate:
     'stabsel.R'
     'utilityFunctions.R'
 RoxygenNote: 5.0.1
-BugReports: https://github.com/fdboost/FDboost/issues
-URL: https://github.com/fdboost/FDboost
+BugReports: https://github.com/boost-R/FDboost/issues
+URL: https://github.com/boost-R/FDboost
 VignetteBuilder: knitr

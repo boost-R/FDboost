@@ -1,0 +1,35 @@
+## check development version of FDboost
+## see http://docs.travis-ci.com/user/languages/r/
+
+language: r
+sudo: required
+dist: trusty
+
+repos:
+  CRAN: https://cloud.r-project.org
+  # Rforge: http://R-Forge.R-project.org
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install latex-xcolor texlive-generic-recommended texlive-fonts-recommended texlive-fonts-extra texlive-extra-utils texlive-latex-recommended texlive-latex-extra
+
+## bioc_packages:
+##  - KEGGgraph
+##  - biomaRt
+  
+r_github_packages:
+  - hofnerb/stabs
+  - boost-R/mboost
+  - boost-R/gamboostLSS
+  - jimhester/covr
+  
+after_failure:
+  - ./travis-tool.sh dump_logs
+
+after_success:
+  - Rscript -e 'library(covr); coveralls()'
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change

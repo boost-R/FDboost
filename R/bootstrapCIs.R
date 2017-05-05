@@ -250,6 +250,12 @@ bootstrapCI <- function(object, which = NULL,
     max(sapply(1:length(coefs), function(i) length(coefs[[i]]$smterms)))
   
   isFacSpecEffect <- sapply(1:nrEffects, function(i) "numberLevels" %in% names(coefs[[1]]$smterms[[i]]))
+  
+  # check for intercept
+  withIntercept <- any(names(coefs[[1]])=="intercept")
+  
+  if(withIntercept) intercept <- sapply(coefs, "[[", "intercept")
+    
   # extract values
   listOfCoefs <- lapply(1:nrEffects, function(i)
   { 
@@ -262,72 +268,36 @@ bootstrapCI <- function(object, which = NULL,
     }
   })
   
-  # check for intercept
-  withIntercept <- any(names(coefs[[1]])=="intercept")
   
-  if(withIntercept){
-    
-    listOfCoefs <- c(intercept = list(sapply(coefs, "[[", "intercept")), listOfCoefs)
-    nrEffects <- nrEffects + 1
-    isFacSpecEffect <- c(FALSE, isFacSpecEffect)
-    
-  }
-  
-  names(listOfCoefs) <- names(object$baselearner)#[selects]
+  names(listOfCoefs) <- names(object$baselearner)[-withIntercept]
   
   # check for effect surfaces
-  isSurface <- sapply(1:(nrEffects-withIntercept), function(i) !is.null(coefs[[1]]$smterms[[i]]$y) )
+  isSurface <- sapply(1:nrEffects, function(i) !is.null(coefs[[1]]$smterms[[i]]$y) )
   
-  if(withIntercept){ 
-    
-    isSurface <- c(FALSE, isSurface)
-    nonIntercept <- c(FALSE, rep(TRUE, length(isSurface)-1))
-  
-  }else{
-    
-    nonIntercept <- rep(TRUE, length(isSurface))
-    
-  }
-    
   # reduce lists for non surface effects
-  listOfCoefs[!isSurface & nonIntercept & !isFacSpecEffect] <- 
-    lapply(listOfCoefs[!isSurface & nonIntercept & !isFacSpecEffect], 
-           function(x) do.call("rbind", x))
+  listOfCoefs[!isFacSpecEffect] <- lapply(listOfCoefs[!isFacSpecEffect], 
+                                          function(x) do.call("rbind", x))
   
   listOfCoefs[isFacSpecEffect] <- lapply(listOfCoefs[isFacSpecEffect],
                                          function(x) lapply(x, function(y) do.call("rbind", lapply(y, c))))
   
-  listOfCoefs <- c(offsets = list(offsets), listOfCoefs)
-  isSurface <- c(FALSE, isSurface)
-  isFacSpecEffect <- c(FALSE, isFacSpecEffect)
-
   # add information about the values of the covariate
   # and change format
   for(i in 1:length(listOfCoefs)){
     
-    if(i==1 & withIntercept) next
-    
-    if(i != (1 + withIntercept)){
+    if(isFacSpecEffect[i]){
       
-      if(isFacSpecEffect[i]){
-      
-        atx <- coefs[[1]]$smterms[[i-1-withIntercept]][[1]]$x
-          
-      }else{
-        
-        atx <- coefs[[1]]$smterms[[i-1-withIntercept]]$x # i-1 because of the offset
-      
-      }
+      atx <- coefs[[1]]$smterms[[i]][[1]]$x
       
     }else{
       
-      atx <- coefs[[1]]$offset$x
+      atx <- coefs[[1]]$smterms[[i]]$x 
       
     }
-    
+
     aty <- NA
-    if(isSurface[i]) aty <- coefs[[1]]$smterms[[i-1-withIntercept]]$y # i-1 because of the offset
-    if(isFacSpecEffect[i]) aty <- coefs[[1]]$smterms[[i-1-withIntercept]][[1]]$y # i-1 because of the offset
+    if(isSurface[i]) aty <- coefs[[1]]$smterms[[i]]$y 
+    if(isFacSpecEffect[i]) aty <- coefs[[1]]$smterms[[i]][[1]]$y 
 
     # format functional factors
     if(is.list(listOfCoefs[[i]]) & is.factor(atx)){
@@ -347,21 +317,37 @@ bootstrapCI <- function(object, which = NULL,
     if(!is.na(sum(aty))) attr(listOfCoefs[[i]], "y") <- aty
 
     # add all plotting infos as attribute
-    if(names(listOfCoefs)[i] != "offsets"){
-      my_plot_info <- coefs[[1]]$smterms[[i-1-withIntercept]]
-    }else{
-      my_plot_info <- coefs[[1]]$offset
-    }
+    my_plot_info <- coefs[[1]]$smterms[[i]]
     my_plot_info$value <- NA
     attr(listOfCoefs[[i]], "plot_info") <- my_plot_info 
     
     
   }
 
+  # add intercept and offset separately
+  if(withIntercept){
+    
+    listOfCoefs <- c(offset = list(offsets), 
+                        intercept = list(intercept), 
+                        listOfCoefs)
+  
+  }else{
+    
+    listOfCoefs <- c(offset = list(offsets), 
+                        listOfCoefs)
+    
+  }  
+  
+  my_plot_info <- coefs[[1]]$offset
+  my_plot_info$value <- NA
+  attr(listOfCoefs[[1]], "plot_info") <- my_plot_info
+  attr(listOfCoefs[[1]], "x") <- coefs[[1]]$offset$x
+  
   # return raw results
   if(is.null(levels)) return(listOfCoefs)
 
-  
+  # define isSurface for quantile calculations
+  isSurface <- c(rep(FALSE, 1 + withIntercept), isSurface)
   
   ########## calculate quantiles #########
   # create list for quantiles

@@ -268,17 +268,18 @@ bootstrapCI <- function(object, which = NULL,
     }
   })
   
-  
-  names(listOfCoefs) <- names(object$baselearner)[-withIntercept]
+  nnob <- names(object$baselearner)
+  # exclude intercept in names
+  names(listOfCoefs) <- nnob[(1+withIntercept):length(nnob)]
   
   # check for effect surfaces
   isSurface <- sapply(1:nrEffects, function(i) !is.null(coefs[[1]]$smterms[[i]]$y) )
   
   # reduce lists for non surface effects
-  listOfCoefs[!isFacSpecEffect] <- lapply(listOfCoefs[!isFacSpecEffect], 
+  listOfCoefs[!isFacSpecEffect & !isSurface] <- lapply(listOfCoefs[!isFacSpecEffect & !isSurface], 
                                           function(x) do.call("rbind", x))
   
-  listOfCoefs[isFacSpecEffect] <- lapply(listOfCoefs[isFacSpecEffect],
+  listOfCoefs[isFacSpecEffect | isSurface] <- lapply(listOfCoefs[isFacSpecEffect | isSurface],
                                          function(x) lapply(x, function(y) do.call("rbind", lapply(y, c))))
   
   # add information about the values of the covariate

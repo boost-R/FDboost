@@ -200,6 +200,10 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
       dat_weights <- reweightData(data = dathelp, vars = names_variables, 
                                   longvars = c(object$yname, nameyind, "integration_weights", names_variables_long),  
                                   weights = weights, idvars = c(attr(object$id, "nameid"), index_names))
+    }else if(class(object)[1] == "FDboostScalar"){
+      dat_weights <- reweightData(data = dathelp, 
+                                  vars = c(names_variables, names_variables_long),
+                                  weights = weights)
     }else{
       dat_weights <- reweightData(data = dathelp, vars = names_variables, 
                                   longvars = names_variables_long, 
@@ -264,6 +268,10 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
           
         }
         
+      }else if(class(object)[1] == "FDboostScalar"){
+        dat_oobweights <- reweightData(data = dathelp, 
+                                    vars = c(names_variables, names_variables_long),
+                                    weights = weights)
       }else{
         dat_oobweights <- reweightData(data = dathelp, vars = names_variables, 
                                        longvars = names_variables_long,

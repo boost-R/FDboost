@@ -1092,15 +1092,15 @@ safeDeparse <- function(expr){
 #' @author David Ruegamer, Sarah Brockhaus
 #' 
 #' @export 
-reweightData <- function(data, argvals, vars, longvars = NULL, 
-                         weights, index, idvars = NULL)
+reweightData <- function(data, argvals, vars, 
+                         longvars = NULL, weights, index, idvars = NULL)
 {
   
   if(missing(argvals) & missing(vars)) 
     stop("Either argvals or vars must be supplied.")
   if(missing(weights) & missing(index)) 
     stop("Either weights or index must be supplied.")
-  
+
   # get names of data
   nd <- names(data)
   

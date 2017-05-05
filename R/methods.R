@@ -1745,7 +1745,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     }
     
     if(class(terms)!="list") terms <- list(terms)
-    if(length(which) == 1 && which == 0) terms[[1]] <- offset
+    if(mstop(x) > 0 && length(which) == 1 && which == 0) terms[[1]] <- offset
     if(length(which) == 1 && length(terms[[1]]) == 1 && terms[[1]] == 0){ terms[[1]] <- rep(0, l=length(x$yind)) }
     
     #if(length(which)==1 && !any(class(x)=="FDboostLong")) terms <- list(terms) 

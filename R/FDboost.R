@@ -1217,7 +1217,7 @@ FDboost <- function(formula,          ### response ~ xvars
   ## generate an id-variable for a regular response
   if(is.null(id)){
     if(scalarResponse){
-      id <- 1:length(response)
+      id <- 1:NROW(response)
     }else{
       id <- rep(1:ydim[1], times = ydim[2])
     }

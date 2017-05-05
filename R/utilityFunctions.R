@@ -253,10 +253,14 @@ plotPredicted <- function(x, subset=NULL, posLegend="topleft", lwdObs=1, lwdPred
   }
   
   if(is.character(response) | is.factor(x$response)){
+
+    if(length(x$yind) > 1){
+      message("For functional response that is not continuous only the predicted values are plotted.")
+      funplot(yind, pred, id=id, pch=2, lwd=lwdPred, ... )
+    }else{
+      plot(response, pred, ylab="predicted", xlab="observed", ...)
+    }
     
-    message("For response that is not continuous only the predicted values are plotted.")
-    ylim <- range(pred, na.rm = TRUE)
-    funplot(yind, pred, id=id, pch=2, lwd=lwdPred, ... )
     
   } else{
     

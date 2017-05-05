@@ -568,36 +568,6 @@ FDboost <- function(formula,          ### response ~ xvars
 
   }
   
-  ### <TODO> find a reasonable way to warn the user in the case of non-identifiable models?
-  #   else{   
-  #     ### <FIXME> option to switch off those checks?    
-  #     ## in the case of functional response: check formula to use identifiable base-learners
-  #     tf <- terms.formula(formula, specials = c("c"))
-  #     trmstrings <- attr(tf, "term.labels")    
-  #     if(length(trmstrings) > 0){
-  #       if(any(grepl("bbs(", trmstrings, fixed = TRUE))){
-  #         warning("Use bbsc() instead of bbs() with functional response, to get an identifiable model.")
-  #       }      
-  #       if(any(grepl("bols(", trmstrings, fixed = TRUE))){
-  #         temp <- trmstrings[grepl("bols(", trmstrings, fixed = TRUE)]
-  #         #temp[[1]]
-  #         warning("Use bolsc() instead of bols() with functional response, to get an identifiable model.")
-  #       }      
-  #       if(any(grepl("brandom(", trmstrings, fixed = TRUE))){
-  #         warning("Use brandomc() instead of brandom() with functional response, to get an identifiable model.")
-  #       }      
-  #       if(any(grepl("bspatial(", trmstrings, fixed = TRUE))){
-  #         warning("Use bbsc() instead of bspatial() with functional response, to get an identifiable model.")
-  #       }      
-  #       if(any(grepl("bmono(", trmstrings, fixed = TRUE))){
-  #         warning("With functional response, base-learner bmono() yields generally not an identifiable effect.")
-  #       }      
-  #       if(any(grepl("bmrf(", trmstrings, fixed = TRUE))){
-  #         warning("With functional response, base-learner bmrf() yields generally not an identifiable effect.")
-  #       }
-  #     }    
-  #   }
-  
   ## extract time from timeformula 
   yind <- all.vars(timeformula)[[1]]
   stopifnot(length(yind) == 1)
@@ -706,7 +676,7 @@ FDboost <- function(formula,          ### response ~ xvars
   ### variable to fit smooth intercept
   assign("ONEx", rep(1.0, nobs))
   
-  #   ### FIXME: plausibility check: 
+  #   ### TODO: plausibility check: 
   #   # for constrained effects in the formula the model should include an intercept
   #   grep("bbsc", trmstrings) + grep("brandomc", trmstrings)
   

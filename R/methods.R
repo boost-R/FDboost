@@ -1784,8 +1784,13 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
                      myargs=list(x=time, y=terms[[i]], id=x$id, type="l", ylab="effect", lty=1, rug=FALSE,
                                  xlab=attr(time, "nameyind"), ylim=range, main=shrtlbls[i]))
         if(rug) rug(time)
+        
       }else{
-        plot_x <- x$response
+        
+        if(!is.null(dim(x$response)) && dim(x$response)[2] > 1) 
+          stop("plot.FDboost() with raw = TRUE is only implemented for one-dimensional scalar response.")
+          
+          plot_x <- x$response
         plot_xlab <- "response"
         if(is.numeric(x$response)){
           plot_x <- x$response - x$offset
@@ -1797,7 +1802,8 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       }
     }
     if(length(which) > 1 & ask) par(ask = FALSE) 
-    }       
+  }
+  
 }
 
 #' Function to update FDboost objects

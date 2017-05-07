@@ -1038,6 +1038,8 @@ safeDeparse <- function(expr){
 #' @param idvars character (vector); index, which is needed to expand \code{vars} to be conform
 #' with the \code{hmatrix} structure when using \code{bhistx}-base-learners or to be conform with 
 #' variables in long format specified in \code{longvars}. 
+#' @param compress logical; whether \code{hmatrix} objects are saved in compressed form or not. Default is \code{TRUE}.
+#' Should be set to \code{FALSE} when using \code{reweightData} for nested resampling.
 #' 
 #' @return A list with the reweighted or subsetted data.
 #' 
@@ -1093,7 +1095,8 @@ safeDeparse <- function(expr){
 #' 
 #' @export 
 reweightData <- function(data, argvals, vars, 
-                         longvars = NULL, weights, index, idvars = NULL)
+                         longvars = NULL, weights, index, 
+                         idvars = NULL, compress = FALSE)
 {
   
   if(missing(argvals) & missing(vars)) 
@@ -1135,9 +1138,10 @@ reweightData <- function(data, argvals, vars,
   
   if(length(vars) == 1 && sum(whichHmat) == 1){
     
-    # FIXME the following two definitions of n should yield the same n!?
     n <- nrow(attr(data[[vars]],"x"))
-    # n <- length(unique(getId.hmatrix(data[[vars]]))) 
+    if((nalt <- length(unique(getId.hmatrix(data[[vars[whichHmat]]]))))!=n)
+      n <- nalt
+      #warning("Dimension of hmatrix is not equal to its corresponding attribute.")
     
   }else{
       
@@ -1155,7 +1159,7 @@ reweightData <- function(data, argvals, vars,
           
         }
         
-        }else{
+      }else{
       
           n <- NROW(data[[vars[!whichHmat][1]]])
           n_variables <- sapply(data[vars][!whichHmat], NROW)
@@ -1202,7 +1206,7 @@ reweightData <- function(data, argvals, vars,
   if(any(whichHmat)){
     
     # construct a list for new hmatrices
-    newHatmats <- vector("list", length(nhm))
+    newHmats <- vector("list", length(nhm))
     
     # construct the new hmatrices
     for(j in 1:length(nhm)){
@@ -1211,47 +1215,19 @@ reweightData <- function(data, argvals, vars,
       if(!is.null(idvars) && !(all.equal(c(getId(data[[nhm[j]]])), c(data[[idvars[1]]])) == "TRUE")) 
         stop("id variable in hmatrix object must be equal to idvars")
       
-      ## number columns of X-matrix in hmatrix-object
-      nc <- ncol(attr(data[[nhm[j]]], "x"))
+      # subset hmatrix
+      newHmats[[j]] <- subset(data[[nhm[j]]], index = index, compress = compress)
       
-      tempHmat <- data[[nhm[j]]]
-      attrTemp <- attributes(tempHmat)
-      # save time and id variable of hmatrix-object as ordinary matrix
-      # otherwise [ on a hmatrix-object behaves unexpectedly 
-      tempMat <- cbind(tempHmat[,1], tempHmat[, 2])
-      resMat <- matrix(ncol=3)
-      for(t in unique(tempHmat[,1])){ 
-        
-        idInT <- index %in% tempMat[tempMat[,1] == t, 2]
-        # add rows for observations selected by index for time t
-        resMat <- rbind(resMat, matrix(c(rep(t, sum(idInT)), # for time points in hmatrix
-                                         index[idInT], # for id in hmatrix
-                                         (1:length(index))[idInT]), # for idvars 
-                                       ncol=3))
-        
-      }
-      resMat <- resMat[-1,] # drop first row with NAs
-      idvars_new <- resMat[,3]
-      resMat <- resMat[,-3]
-      resMat[,2] <- c(factor(resMat[,2])) # get id variable with values 1, 2, 3, ...
-      tempId <- (1:length(unique(resMat[,2])))[factor(resMat[,2])] # correct ordering 
-      newHatmats[[j]] <- hmatrix(time = resMat[,1], 
-                                 id = tempId, 
-                                 x = attrTemp$x[unique(index), , drop=FALSE], 
-                                 argvals = attrTemp$argvals, 
-                                 timeLab = attrTemp$timeLab, 
-                                 idLab = attrTemp$idLab, 
-                                 xLab = attrTemp$xLab, 
-                                 argvalsLab = attrTemp$argvalsLab)
       if( any(class(data[[nhm[j]]]) == "AsIs") ){
-        newHatmats[[j]] <- I(newHatmats[[j]])
+        newHmats[[j]] <- I(newHmats[[j]])
       }
+      
     }
-    names(newHatmats) <- nhm
+    names(newHmats) <- nhm
     
   }else{ # if there are no hmatrices, set the list and corresponding names to NULL
     
-    newHatmats <- NULL
+    newHmats <- NULL
     nhm <- NULL
     
   }
@@ -1276,8 +1252,7 @@ reweightData <- function(data, argvals, vars,
     
     ## gives equal numbers to repetitions of the same observation
     ## idvars_new <- c(factor(temp_idvars))
-    
-    ## @David: hack to change the id, what is about the id in hmatrix?
+   
     ## gives different numbers to repetitions of the same observation
     my_index_long <- index_long 
     my_temp_idvars <- temp_idvars
@@ -1289,7 +1264,7 @@ reweightData <- function(data, argvals, vars,
       i <- i + 1
     }
     idvars_new <- c(factor(my_temp_idvars))
-    ## check wheterh id variable of hmatrix-object and id variable of long variables are equal
+    ## check whether id variable of hmatrix-object and id variable of long variables are equal
     if(!is.null(idvars_new_hmatrix)){
       if(!all(idvars_new == idvars_new_hmatrix)) 
         warning("id variable generated for long variables and id variable of hmatrix-object do not match. ",
@@ -1308,7 +1283,7 @@ reweightData <- function(data, argvals, vars,
     for(ifr in idvars){
       data[[ifr]] <- idvars_new
     } 
-    ## data[[idvars]] <- getId(newHatmats[[j]])
+    ## data[[idvars]] <- getId(newHmats[[j]])
     argvals <- c(argvals, idvars)
   }
   
@@ -1317,7 +1292,7 @@ reweightData <- function(data, argvals, vars,
   # recycle data
   data <- c(lapply(nd[!isVec & !inAVs], function(nameWithDim) data[[nameWithDim]][index, , drop=FALSE]),
             lapply(nd[isVec & !inAVs], function(nameWithoutDim) data[[nameWithoutDim]][index]), 
-            newHatmats, 
+            newHmats, 
             temp_long, 
             data[argvals])
   names(data) <- c(nd[!isVec & !inAVs], nd[isVec & !inAVs], nhm, longvars, argvals)

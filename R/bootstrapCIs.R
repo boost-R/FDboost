@@ -177,7 +177,8 @@ bootstrapCI <- function(object, which = NULL,
     
     resampling_fun_outer <- function(object, fun) applyFolds(object = object,
                                                              folds = cv(rep(1, length(unique(object$id))), type =
-                                                                          "bootstrap", B = B_outer), fun = fun)
+                                                                          "bootstrap", B = B_outer), fun = fun,
+                                                             compress = FALSE)
 
   }else{
     
@@ -202,8 +203,7 @@ bootstrapCI <- function(object, which = NULL,
       # }else{ # not long format
         
       resampling_fun_inner <- function(object) applyFolds(object, folds = cv(rep(1, length(unique(object$id))), type =
-                                                                               "bootstrap", B = B_inner),
-                                                          redefineWeights = TRUE)
+                                                                               "bootstrap", B = B_inner))
         
       }
       
@@ -343,6 +343,7 @@ bootstrapCI <- function(object, which = NULL,
   my_plot_info$value <- NA
   attr(listOfCoefs[[1]], "plot_info") <- my_plot_info
   attr(listOfCoefs[[1]], "x") <- coefs[[1]]$offset$x
+  if(withIntercept) attr(listOfCoefs[[2]], "plot_info") <- list(dim = 1)
   
   # return raw results
   if(is.null(levels)) return(listOfCoefs)
@@ -510,7 +511,7 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
     ## i.e., coefficients of each fold are one list entry
     temp$value <- split(temp_CI, seq(nrow(temp_CI)))
     
-    if(temp$dim == 2){
+    if(!is.null(temp$dim) && temp$dim == 2){
       temp$value <- lapply(temp$value, function(xx) 
         matrix(xx, ncol = sqrt(length(xx)), nrow = sqrt(length(xx)), byrow = FALSE) )
     }

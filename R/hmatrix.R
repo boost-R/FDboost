@@ -280,4 +280,84 @@ wide2long <- function(time, id){
   return(list(time=newtime, id=newid))
 }
 
-
+#' Subsets hmatrix according to an index
+#' 
+#' @param index integer vector with (possibly duplicated) indices
+#' for each curve to select
+#' @details Function is primary useful when subsetting repeatedly
+#' @examples 
+#' t1 <- rep((1:5)/2, each=3)
+#' id1 <- rep(1:3, 5)
+#' x1 <- matrix(1:15, ncol=5) 
+#' s1 <- (1:5)/2 
+#' hmat <- hmatrix(time=t1, id=id1, x=x1, argvals=s1, timeLab="t1", 
+#' argvalsLab="s1", xLab="test")
+#' 
+#' index1 <- c(1,1,3)
+#' index2 <- c(2,3,3)
+#' resMat <- subset(hmat, index = index1)
+#' try(resMat2 <- subset(resMat, index = index2))
+#' resMat <- subset(hmat, index = index1, compress = FALSE)
+#' try(resMat2 <- subset(resMat, index = index2))
+#'
+#' @export
+subset.hmatrix <- function(hmat, index, compress = TRUE)
+{
+  
+  
+  ## get attributes
+  attrTemp <- attributes(hmat)
+  
+  # save time and id variable of hmatrix-object as ordinary matrix
+  # otherwise [ on a hmatrix-object behaves unexpectedly 
+  tempMat <- cbind(hmat[,1], hmat[, 2])
+  
+  # create new matrix for results
+  resMat <- matrix(ncol=3)
+  
+  # for all unique time points t do
+  for(t in unique(hmat[,1])){ 
+    
+    # check whether the id exists for this time point 
+    idInT <- index %in% tempMat[tempMat[,1] == t, 2]
+    # add rows for observations selected by index for time t
+    resMat <- rbind(resMat, 
+                    matrix(c(rep(t, sum(idInT)), # for time points in hmatrix
+                             index[idInT], # for id in hmatrix
+                             (1:length(index))[idInT]), # for idvars 
+                           ncol=3))
+    
+  }
+  
+  # drop first row with NAs
+  resMat <- resMat[-1,]
+  
+  if(compress)
+  {
+    # id with duplicates
+    idvars <- c(factor(resMat[,2])) 
+    # correct ordering
+    idvars <- (1:length(unique(idvars)))[factor(idvars)] 
+    
+    # rewrite index for actual matrix
+    index <- unique(index)
+    
+  }else{
+    # id with unique values
+    idvars <- resMat[,3]
+  }  
+  
+  new_time <- resMat[,1]
+  
+  newHmat <- hmatrix(time = new_time, 
+                     id = idvars, 
+                     x = attrTemp$x[index, , drop=FALSE], 
+                     argvals = attrTemp$argvals, 
+                     timeLab = attrTemp$timeLab, 
+                     idLab = attrTemp$idLab, 
+                     xLab = attrTemp$xLab, 
+                     argvalsLab = attrTemp$argvalsLab)
+  
+  return(newHmat)
+  
+}

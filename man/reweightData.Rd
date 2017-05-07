@@ -5,7 +5,7 @@
 \title{Function to Reweight Data}
 \usage{
 reweightData(data, argvals, vars, longvars = NULL, weights, index,
-  idvars = NULL)
+  idvars = NULL, compress = FALSE)
 }
 \arguments{
 \item{data}{a named list or data.frame.}
@@ -25,6 +25,9 @@ are subsetted according to weights or index. Must be supplied if \code{argvals} 
 \item{idvars}{character (vector); index, which is needed to expand \code{vars} to be conform
 with the \code{hmatrix} structure when using \code{bhistx}-base-learners or to be conform with 
 variables in long format specified in \code{longvars}.}
+
+\item{compress}{logical; whether \code{hmatrix} objects are saved in compressed form or not. Default is \code{TRUE}.
+Should be set to \code{FALSE} when using \code{reweightData} for nested resampling.}
 }
 \value{
 A list with the reweighted or subsetted data.

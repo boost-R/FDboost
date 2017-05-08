@@ -500,16 +500,31 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
   }
   
   for(l in which){ # loop over effects
-    
+
     ### prepare objects
     # coef() of a certain term
     temp_CI <- x$raw_results[[l]]
     
     temp <- attr(temp_CI, "plot_info")
     
+    ## for interaction effects like "bhistx(x) %X% bolsc(z)"
+    if(!is.null(temp$numberLevels)){
+      ## TODO: make plots for all levels of temp$numberLevels
+      ## temp$dim <- temp[[1]]$dim
+      temp <- temp[[1]]
+      warning("Of the composed base-learner ", l, " only the first effect is plotted.")
+    }
+    
     ## write the rows of the matrix into a list, 
     ## i.e., coefficients of each fold are one list entry
-    temp$value <- split(temp_CI, seq(nrow(temp_CI)))
+    if(!is.list(temp_CI)){
+      temp$value <- split(temp_CI, seq(nrow(temp_CI)))
+    }else{
+      ## for interaction effects like "bhistx(x) %X% bolsc(z)" 
+      ## the values are already a list 
+      temp$value <- lapply(temp_CI, function(x) x[1, ])
+    }
+    
     
     if(!is.null(temp$dim) && temp$dim == 2){
       temp$value <- lapply(temp$value, function(xx) 

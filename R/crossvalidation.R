@@ -1606,8 +1606,8 @@ plot_bootstrapped_coef <- function(temp, l,
   # set the range for each effect individually
   if(FALSE) ylim <- range(temp$value)
   
-  ## plot the estimated offset
-  if(l==1 && length(yind)>1){
+  ## plot the estimated offset for functional response 
+  if(l == 1 && length(yind) > 1){
     myMat <- offset ## attr(x$coefCV, "offset")
     timeHelp <- seq(min(yind), max(yind), length=nrow(myMat))
 
@@ -1615,7 +1615,19 @@ plot_bootstrapped_coef <- function(temp, l,
                 main_i = temp$main, ylim_i = NULL)
   }
   
-  if(temp$dim==1){
+  
+  if(temp$dim == 0){
+    # intercept of model with scalar response 
+    y_i <- unlist(temp$value)
+    x_i <-rep(0, length(y_i))
+
+    plotWithArgs(plot, args = argsPlot, 
+                 myargs = list(x = x_i, y = y_i, xlab = "", ylab = "coef", 
+                               main = "intercept",   
+                               col = rgb(0.6,0.6,0.6, alpha = 0.5)))
+  }
+  
+  if(temp$dim == 1){
     # impute vector of 0 if effect was never chosen
     temp$value[sapply(temp$value, function(x) length(x)==1)] <- list(rep(0, 40))
     myMat <- sapply(temp$value, function(x) x) # as one matrix
@@ -1625,7 +1637,7 @@ plot_bootstrapped_coef <- function(temp, l,
     
   }
   
-  if(temp$dim==2){
+  if(temp$dim == 2){
     
     if(!is.factor(temp$x)){
       quantx <- quantile(temp$x, probs=probs, type=1)

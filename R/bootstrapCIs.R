@@ -252,9 +252,14 @@ bootstrapCI <- function(object, which = NULL,
   isFacSpecEffect <- sapply(1:nrEffects, function(i) "numberLevels" %in% names(coefs[[1]]$smterms[[i]]))
   
   # check for intercept
-  withIntercept <- any(names(coefs[[1]])=="intercept")
+  withIntercept <- any(names(coefs[[1]]) == "intercept")
   
-  if(withIntercept) intercept <- sapply(coefs, "[[", "intercept")
+  if(withIntercept){
+    intercept <- sapply(coefs, "[[", "intercept")
+    if(!is.matrix(intercept)) intercept <- matrix(intercept, ncol = 1)
+  } 
+  
+  
     
   # extract values
   listOfCoefs <- lapply(1:nrEffects, function(i)
@@ -343,7 +348,12 @@ bootstrapCI <- function(object, which = NULL,
   my_plot_info$value <- NA
   attr(listOfCoefs[[1]], "plot_info") <- my_plot_info
   attr(listOfCoefs[[1]], "x") <- coefs[[1]]$offset$x
-  if(withIntercept) attr(listOfCoefs[[2]], "plot_info") <- list(dim = 1)
+  if(withIntercept){
+    # for functional response, the intercept is a vector 
+    attr(listOfCoefs[[2]], "plot_info") <- list(dim = 1)
+    # for scalar response, the intercept is a scalar 
+    if(class(object)[1] == "FDboostScalar") attr(listOfCoefs[[2]], "plot_info") <- list(dim = 0)
+  } 
   
   # return raw results
   if(is.null(levels)) return(listOfCoefs)

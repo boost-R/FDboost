@@ -276,7 +276,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
       }else if(class(object)[1] == "FDboostScalar"){
         dat_oobweights <- reweightData(data = dathelp, 
                                     vars = c(names_variables, names_variables_long),
-                                    weights = weights)
+                                    weights = oobweights)
       }else{
         dat_oobweights <- reweightData(data = dathelp, vars = names_variables, 
                                        longvars = names_variables_long,

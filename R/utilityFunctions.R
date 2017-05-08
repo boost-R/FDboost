@@ -1216,7 +1216,7 @@ reweightData <- function(data, argvals, vars,
         stop("id variable in hmatrix object must be equal to idvars")
       
       # subset hmatrix
-      newHmats[[j]] <- subset(data[[nhm[j]]], index = index, compress = compress)
+      newHmats[[j]] <- subset_hmatrix(data[[nhm[j]]], index = index, compress = compress)
       
       if( any(class(data[[nhm[j]]]) == "AsIs") ){
         newHmats[[j]] <- I(newHmats[[j]])

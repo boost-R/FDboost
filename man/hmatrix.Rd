@@ -37,29 +37,30 @@ The rows of the functional covariate x correspond to those observations.
 }
 \examples{
 ## Example for a hmatrix object
-t1 <- rep((1:5)/2, each=3)
+t1 <- rep((1:5)/2, each = 3)
 id1 <- rep(1:3, 5)
-x1 <- matrix(1:15, ncol=5) 
+x1 <- matrix(1:15, ncol = 5) 
 s1 <- (1:5)/2 
-myhmatrix <- hmatrix(time=t1, id=id1, x=x1, argvals=s1, timeLab="t1", argvalsLab="s1", xLab="test")
+myhmatrix <- hmatrix(time = t1, id = id1, x = x1, argvals = s1, 
+                     timeLab = "t1", argvalsLab = "s1", xLab = "test")
 
 # extract with [ keeps attributes 
 # select observations of subjects 2 and 3
-myhmatrixSub <- myhmatrix[id1 \%in\% c(2,3),]  
+myhmatrixSub <- myhmatrix[id1 \%in\% c(2, 3), ]  
 str(myhmatrixSub)
 getX(myhmatrixSub)
 getX(myhmatrix)
 
 # get time
-myhmatrix[,1] # as column matrix as drop=FALSE
+myhmatrix[ , 1] # as column matrix as drop=FALSE
 getTime(myhmatrix) # as vector
 
 # get id
-myhmatrix[,2] # as column matrix as drop=FALSE
+myhmatrix[ , 2] # as column matrix as drop=FALSE
 getId(myhmatrix) # as vector
 
 # subset hmatrix on the basis of an index, which is defined on the curve level
-reweightData(data = list(hmat = myhmatrix), vars = "hmat", index = c(1,1,2))
+reweightData(data = list(hmat = myhmatrix), vars = "hmat", index = c(1, 1, 2))
 # this keeps only the unique x values in attr(,'x') but multiplies the corresponding
 # ids and times in the time id matrix 
 # for bhistx baselearner, there may be an additional id variable for the tensor product

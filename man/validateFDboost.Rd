@@ -58,6 +58,9 @@ For details see \code{\link[parallel]{mclapply}}.}
 
 \item{showProgress}{logical, defaults to \code{TRUE}.}
 
+\item{compress}{logical, defaults to \code{FALSE}. Only used to force a meaningful
+behaviour of \code{applyFolds} with hmatrix objects when using nested resampling.}
+
 \item{...}{further arguments passed to \code{\link[parallel]{mclapply}}}
 
 \item{response}{optional, specify a response vector for the computation of the prediction errors.
@@ -97,9 +100,6 @@ for subsampling.}
 \item{strata}{a factor of the same length as \code{weights} for stratification.}
 
 \item{ydim}{dimensions of response-matrix}
-
-\item{eights}{logical, defaults to \code{FALSE}. Only used to force a meaningful
-behaviour of applyFolds with hmatrix objects when using nested resampling.}
 }
 \value{
 \code{cvMa} and \code{cvLong} return a matrix of sampling weights to be used in \code{cvrisk}. 

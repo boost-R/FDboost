@@ -434,8 +434,8 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #' Defaults to \code{TRUE}. In \code{\link[mboost]{cvrisk}} the offset of the original model fit in  
 #' \code{object} is used in all folds.
 #' @param showProgress logical, defaults to \code{TRUE}.
-#' @param eights logical, defaults to \code{FALSE}. Only used to force a meaningful
-#' behaviour of applyFolds with hmatrix objects when using nested resampling.
+#' @param compress logical, defaults to \code{FALSE}. Only used to force a meaningful
+#' behaviour of \code{applyFolds} with hmatrix objects when using nested resampling.
 #' 
 #' @param papply (parallel) apply function, defaults to \code{\link[parallel]{mclapply}}, 
 #' see \code{\link[mboost]{cvrisk}} for details.  

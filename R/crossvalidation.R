@@ -1283,7 +1283,7 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
       ylim <- range(x$predCV[which])
     }
     # <FIXME> use extra ylim for functional offset?
-    
+
     ### loop over base-learners
     for(l in which){
       
@@ -1350,6 +1350,10 @@ plot_bootstrapped_coef <- function(temp, l,
   
   ### Get further arguments passed to the different plot-functions
   dots <- list(...)
+  
+  if(!is.null(ylim) && all(ylim == 0)){
+    ylim <- c(-0.1, 0.1)
+  }
   
   getArguments <- function(x, dots=dots){
     if(any(names(dots) %in% names(x))){

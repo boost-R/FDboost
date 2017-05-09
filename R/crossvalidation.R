@@ -10,13 +10,9 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
                        compress = FALSE,
                        ...) {
   
-  #if(any(class(object) == "FDboostLong")){
-  #  stop("applyFolds() not yet implemented for FDboostlong.")
-  #}
-  
-  if(any(class(object$response) == "factor")){
-    stop("applyFolds() for factor response not implemented yet.")
-  } 
+  #if(any(class(object$response) == "factor")){
+  #  stop("applyFolds() for factor response not implemented yet.")
+  #} 
   
   if (is.null(folds)) {
     stop("Specify folds.")
@@ -83,6 +79,8 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
       ## fixme: is that always what we want?
       ## integration_weights <- model.weights(object)
       integration_weights <- rep(1, length(object$response))
+      ## correct integration weights for matrix valued response like possibly in Binomial()
+      if( class(object)[1] == "FDboostScalar") integration_weights <- rep(1, NROW(object$response))
     }
   }
   
@@ -248,7 +246,8 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
       
       # get risk function of the family
       if(is.null(riskFun)){
-        riskfct <- get("family", environment(mod$update))@risk
+        myfamily <- get("family", environment(mod$update))
+        riskfct <- myfamily@risk
       }else{
         stopifnot(is.function(riskFun))
         riskfct <- riskFun 
@@ -270,21 +269,27 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
           }else{
             dat_oobweights[[v]] <- dat_oobweights[[v]][dat_oobweights[[attr(object$id, "nameid")]]]
           }
-          
+        }
+        response_oobweights <- c(dat_oobweights[[object$yname]])
+        
+      }else{ ## scalar or regular response
+        
+        if(class(object)[1] == "FDboostScalar"){
+          dat_oobweights <- reweightData(data = dathelp, 
+                                         vars = c(names_variables, names_variables_long),
+                                         weights = oobweights)
+          response_oobweights <- dat_oobweights[[object$yname]]
+          ## this check is important for Binomial() as it recodes factor to -1, 1
+          response_oobweights <- myfamily@check_y(response_oobweights)
+        }else{
+          dat_oobweights <- reweightData(data = dathelp, vars = names_variables, 
+                                         longvars = names_variables_long,
+                                         weights = oobweights, idvars = c("object_id", index_names))
+          response_oobweights <- c(dat_oobweights[[object$yname]])
         }
         
-      }else if(class(object)[1] == "FDboostScalar"){
-        dat_oobweights <- reweightData(data = dathelp, 
-                                    vars = c(names_variables, names_variables_long),
-                                    weights = oobweights)
-      }else{
-        dat_oobweights <- reweightData(data = dathelp, vars = names_variables, 
-                                       longvars = names_variables_long,
-                                       weights = oobweights, idvars = c("object_id", index_names))
-      }
-      
-      response_oobweights <- c(dat_oobweights[[object$yname]])
-      
+      } 
+
       ## <TODO> implement correct transformation for factor response, like in Binomial() 
       if(any(class(response_oobweights) == "character")){
         stop("applyFolds() for factor response not implemented yet.")
@@ -648,15 +653,14 @@ validateFDboost <- function(object, response = NULL,
   #     folds <- cvMa(ydim=object$ydim, weights=model.weights(object), type="bootstrap")
   #   }
   
-  if(any(class(object$response) == "factor")){
-    stop("validateFDboost() for factor response not implemented yet.")
-  } 
+  # if(any(class(object$response) == "factor")){
+  #   stop("validateFDboost() for factor response not implemented yet.")
+  # } 
   
   names_bl <- names(object$baselearner)
   if(any(grepl("brandomc", names_bl))) message("For brandomc, the transformation matrix Z is fixed over all folds.")
   if(any(grepl("bolsc", names_bl))) message("For bolsc, the transformation matrix Z is fixed over all folds.")
   if(any(grepl("bbsc", names_bl))) message("For bbsc, the transformation matrix Z is fixed over all folds.")
-  
   
   type <- attr(folds, "type")
   if(is.null(type)) type <- "unknown"
@@ -680,9 +684,10 @@ validateFDboost <- function(object, response = NULL,
     }
   }
   
+  myfamily <- get("family", environment(object$update))
+  
   if(is.null(response)) response <- object$response # response as vector!
-  #plot(response)
-  #points(response, col=3)
+  if(class(object)[1] == "FDboostScalar") response <- myfamily@check_y(response)
   
   ## destinction no longer necessary as object always contains an id-variable
   #   # id of observations that belong to the same trajectory
@@ -756,107 +761,7 @@ validateFDboost <- function(object, response = NULL,
     }else{
       dathelp[[object$yname]] <- object$response
     }
-    
-    ########################################################################
-    ### in this version the data are generated explicitely -> Z is computed differently 
-    if(FALSE){
-      
-      ## get the names of all variables x_i, i = 1, ... , N
-      names_variables <- unlist(lapply(object$baselearner, function(x) x$get_names() ))
-      names(names_variables) <- NULL
-      names_variables <- names_variables[names_variables != nameyind]
-      names_variables <- names_variables[names_variables != "ONEx"]
-      names_variables <- names_variables[names_variables != "ONEtime"]
-      names_variables <- c(object$yname, names_variables)
-      
-      ## get data according to weights
-      dat_weights <- reweightData(data = dathelp, vars = names_variables, 
-                                  weights = weights)
-      
-      ## get data according to oobweights
-      dat_oobweights <- reweightData(data = dathelp, vars = names_variables, 
-                                     weights = oobweights)
-      
-      call <- object$callEval
-      call$data <- dat_weights
-      if(! is.null(call$weights)) warning("Argument weights of original model is not considered.")
-      call$weights <- NULL 
-      
-      ## fit the model for dat_weights  
-      mod <- withCallingHandlers(suppressMessages(eval(call)), warning = h) # suppress the warning of missing responses    
-      mod <- mod[max(grid)]
-      
-      pred_oobweights <- lapply(1:length(grid), function(g) predict(mod[g], newdata = dat_oobweights, toFDboost = FALSE))
-      response_oobweights <- response[ oobweights[id] == 1 ] ## FIXME for more general oobweights that are not only 0,1 
-      
-      ### use update.FDboost() ?? 
-      # mod <- do.call(update.FDboost, args = list of arguments in call)
-      
-      # compute weights for standardizing risk, mse, ...
-      oobwstand <- lengthTi1[id]*oobweights[id]*intWeights*(1/sum(oobweights))
-      
-      ############# compute risk, mse, relMSE and mrd
-      # get risk function of the family
-      riskfct <- get("family", environment(mod$update))@risk
-      
-      ####################
-      ### compute risk and mse without integration weights, like in cvrisk
-      risk0 <- sapply(grid, function(g){riskfct(response_oobweights, 
-                                                pred_oobweights[[grid[g]]], 
-                                                # predict(mod[g], newdata = dat_oobweights, toFDboost = FALSE), 
-                                                w = 1)} ) / sum(oobweights[id])
-      
-      mse0 <- simplify2array(mclapply(grid, function(g){
-        sum( ((response_oobweights - pred_oobweights[[grid[g]]])^2 * 1), 
-             na.rm = TRUE )
-      }, mc.cores=1) ) / sum(oobweights[id])
-      ####################
-      
-      # oobweights using riskfct() like in mboost, but with different weights!
-      risk <- sapply(grid, function(g){riskfct( response_oobweights, 
-                                                pred_oobweights[[grid[g]]], 
-                                                w = oobwstand[oobweights != 0 ])})
-      
-      ### mse (mean squared error) equals risk in the case of familiy=Gaussian()
-      mse <- simplify2array(mclapply(grid, function(g){
-        sum( ((response_oobweights - pred_oobweights[[grid[g]]])^2 * oobwstand[oobweights != 0 ]), 
-             na.rm = TRUE )
-      }, mc.cores=1) )
-      
-      ### compute overall mean of response in learning sample
-      meanResp <- sum(response*intWeights*lengthTi1[id]*weights[id], na.rm = TRUE) / sum(weights)
-      
-      # # compute overall mean of response in whole sample
-      # meanResp <- sum(response*intWeights*lengthTi1[id], na.rm=TRUE) / nObs
-      
-      ### compute relative mse
-      relMSE <- simplify2array(mclapply(grid, function(g){
-        sum( ((response_oobweights - pred_oobweights[[grid[g]]])^2*oobwstand[oobweights != 0 ]), na.rm = TRUE ) /
-          sum( ((response_oobweights - meanResp)^2*oobwstand[oobweights != 0 ]), na.rm = TRUE )
-      }, mc.cores=1) )
-      
-      ### mean relative deviation
-      resp0 <- response_oobweights
-      resp0[abs(resp0) <= mrdDelete | round(resp0, 1) == 0] <- NA
-      
-      mrd <- simplify2array(mclapply(grid, function(g){
-        sum( abs(resp0 - pred_oobweights[[grid[g]]])/abs(resp0)*oobwstand[oobweights != 0 ], na.rm = TRUE )
-      }, mc.cores=1) )
-      
-      mrd0 <- simplify2array(mclapply(grid, function(g){
-        sum( abs(resp0 - pred_oobweights[[grid[g]]])/abs(resp0)*1, na.rm = TRUE)
-      }, mc.cores=1) ) / sum(oobweights[id])
-      
-      
-      ####### prediction for all observations, not only oob! 
-      # the predictions are in a long vector for all model types (regular, irregular, scalar)
-      predGrid <- predict(mod, aggregate = "cumsum", toFDboost = FALSE, newdata = dathelp)
-      predGrid <- predGrid[ , grid] # save vectors of predictions for grid in matrix
-      
-    }
-    
-    ########################################################################
-    
+
     call <- object$callEval
     call$data <- dathelp
     
@@ -988,14 +893,6 @@ validateFDboost <- function(object, response = NULL,
   
   # str(modRisk, max.level=2)
   # str(modRisk, max.level=5)
-  
-  # function call without parallelization
-  if(FALSE){
-    modRisk <- list()
-    for(i in 1:ncol(folds)){
-      modRisk[[i]] <- dummyfct(weights = folds[, i], oobweights = OOBweights[, i]) 
-    }
-  }
   
   # check whether model fit worked in all iterations
   modFitted <- sapply(modRisk, function(x) class(x) == "list")

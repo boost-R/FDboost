@@ -52,11 +52,11 @@ getX(myhmatrixSub)
 getX(myhmatrix)
 
 # get time
-myhmatrix[ , 1] # as column matrix as drop=FALSE
+myhmatrix[ , 1] # as column matrix as drop = FALSE
 getTime(myhmatrix) # as vector
 
 # get id
-myhmatrix[ , 2] # as column matrix as drop=FALSE
+myhmatrix[ , 2] # as column matrix as drop = FALSE
 getId(myhmatrix) # as vector
 
 # subset hmatrix on the basis of an index, which is defined on the curve level
@@ -72,8 +72,8 @@ length(newdat$repIDx)
 ## use hmatrix within a data.frame
 mydat <- data.frame(I(myhmatrix), z=rnorm(3)[id1])
 str(mydat)
-str(mydat[id1 \%in\% c(2,3),])
-str(myhmatrix[id1 \%in\% c(2,3),])
+str(mydat[id1 \%in\% c(2, 3), ])
+str(myhmatrix[id1 \%in\% c(2, 3), ])
  
 }
 \seealso{

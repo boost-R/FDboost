@@ -497,6 +497,9 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
     boot_offset <- t(x$raw_results$offsets)
     x$raw_results$offsets <- NULL
     
+    ## for scalar response, keep only one value per offset
+    if(length(x$yind) == 1) boot_offset <- boot_offset[1, ]
+    
   }
   
   if(is.null(which)) which <- 1:length(x$raw_results)
@@ -528,7 +531,15 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
     ## write the rows of the matrix into a list, 
     ## i.e., coefficients of each fold are one list entry
     if(!is.list(temp_CI)){
-      temp$value <- split(temp_CI, seq(nrow(temp_CI)))
+      
+      if(temp$dim >= 2){
+        temp$value <- split(temp_CI, seq(nrow(temp_CI)))
+      }else{ 
+        ## temp$dim == 1 like in scalar response with bsignal()
+        ## put each fold into one list entry 
+        temp$value <- split(temp_CI, rep(1:x$B_outer, each = length(temp_CI)/x$B_outer)) 
+      }
+      
     }else{
       ## for interaction effects like "bhistx(x) %X% bolsc(z)" 
       ## the values are already a list 

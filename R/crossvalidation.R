@@ -1105,9 +1105,10 @@ validateFDboost <- function(object, response = NULL,
     for(l in 1:length(modRisk[[1]]$mod$baselearner)){
       # estimate the coefficients for the model of the first fold
       my_coef <- coef(modRisk[[1]]$mod[optimalMstop], 
-           which=l, n1 = 40, n2 = 20, n3 = 15, n4 = 10)$smterms[[1]]
+           which = l, n1 = 40, n2 = 20, n3 = 15, n4 = 10)$smterms[[1]]
       if(is.null(my_coef)){
         my_coef <- list(0)
+        my_coef$dim <- 0
       }
       coefCV[[l]] <- my_coef
       #       if(l==1){
@@ -1466,21 +1467,21 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
                          ylim = NULL, ...){
   
   stopifnot(any(class(x) == "validateFDboost"))
-  
+
   if(is.null(which)) which <- 1:length(x$coefCV)
   
-  if(length(which)>1) par(ask=ask)
+  if(length(which) > 1) par(ask = ask)
   
   if(terms){
     
-    if(all(which==1:length(x$coefCV))){
+    if(all(which == 1:length(x$coefCV))){
       which <- 1:(length(x$coefCV)+1)
     }else{
-      which <- which+1 
+      which <- which + 1 
     }
     
-    if( length(x$predCV)==0 ){
-      warning("no bootstrapped predcition, set terms=FALSE, to plot bootstrapped coefficients.")
+    if(length(x$predCV) == 0){
+      warning("no bootstrapped predcition, set terms = FALSE, to plot bootstrapped coefficients.")
       return(NULL)
     }
     
@@ -1492,7 +1493,7 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
     ### loop over base-learners
     for(l in which){
       
-      if( x$format=="FDboostLong" ){
+      if( x$format == "FDboostLong" ){
         
         funplot(x$yind, unlist(x$predCV[[l]]), id=x$id, col="white", 
                 main=names(x$predCV)[l], xlab=attr(x$yind, "nameyind"), ylab="coef", ylim=ylim, ...)
@@ -1584,7 +1585,7 @@ plot_bootstrapped_coef <- function(temp, l,
                              col = rgb(0.6,0.6,0.6, alpha = 0.5)))
     
     if(showNumbers){
-      matplot(x_i, y_i, add = TRUE, col = rgb(0.6,0.6,0.6, alpha=0.5), ...)
+      matplot(x_i, y_i, add = TRUE, col = rgb(0.6,0.6,0.6, alpha = 0.5), ...)
     }
     
     if(showQuantiles){ 
@@ -1609,7 +1610,7 @@ plot_bootstrapped_coef <- function(temp, l,
   ## plot the estimated offset for functional response 
   if(l == 1 && length(yind) > 1){
     myMat <- offset ## attr(x$coefCV, "offset")
-    timeHelp <- seq(min(yind), max(yind), length=nrow(myMat))
+    timeHelp <- seq(min(yind), max(yind), length = nrow(myMat))
 
     plot_curves(x_i = timeHelp, y_i = myMat, xlab_i = temp$xlab, 
                 main_i = temp$main, ylim_i = NULL)
@@ -1617,14 +1618,31 @@ plot_bootstrapped_coef <- function(temp, l,
   
   
   if(temp$dim == 0){
-    # intercept of model with scalar response 
+
+    # intercept and offset of model with scalar response 
+    temp$value[sapply(temp$value, function(x) is.null(x))] <- 0
     y_i <- unlist(temp$value)
+    
+    offset[sapply(offset, function(x) is.null(x))] <- 0
+    offset_i <- offset
+    
     x_i <-rep(0, length(y_i))
 
     plotWithArgs(plot, args = argsPlot, 
-                 myargs = list(x = x_i, y = y_i, xlab = "", ylab = "coef", 
-                               main = "intercept",   
+                 myargs = list(x = x_i, y = y_i + offset_i, xlab = "", ylab = "coef", 
+                               xaxt = "n", main = "offset + intercept",   
                                col = rgb(0.6,0.6,0.6, alpha = 0.5)))
+    
+    if(showNumbers){
+      matplot(x_i, y_i + offset_i, col = rgb(0.6,0.6,0.6, alpha = 0.5), add = TRUE)
+    }
+    
+    if(showQuantiles){ 
+      points(0, mean(y_i + offset_i), col = 1, lwd = 2)
+      points(0, quantile(y_i + offset_i, 0.95, na.rm = TRUE), col = 2, lwd = 2, lty = 2)
+      points(0, quantile(y_i + offset_i, 0.05, na.rm = TRUE), col = 2, lwd = 2, lty = 2)
+    }
+    
   }
   
   if(temp$dim == 1){

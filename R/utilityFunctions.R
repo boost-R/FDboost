@@ -291,44 +291,36 @@ plotPredicted <- function(x, subset=NULL, posLegend="topleft", lwdObs=1, lwdPred
 ### function to plot the residuals
 plotResiduals <- function(x, subset=NULL, posLegend="topleft", ...){
   
-  if(is.character(x$response) | is.factor(x$response)) stop("plotResiduals() only works for continuous response.")
-  
   stopifnot("FDboost" %in% class(x))
   
   if(any(class(x) == "FDboostScalar")){
     
     if(is.null(subset)) subset <- 1:length(x$response)
     response <- x$response[subset, drop=FALSE] 
-    pred <- fitted(x)[subset, drop=FALSE]
-    pred[is.na(response)] <- NA
+    resid <- x$resid()[subset, drop=FALSE]
     
   }else{
     
     if(!any(class(x) == "FDboostLong")){ ## wide format
       if(is.null(subset)) subset <- 1:x$ydim[1]
-      response <- matrix(x$response, nrow=x$ydim[1], ncol=x$ydim[2])[subset, , drop=FALSE] 
-      pred <- fitted(x)[subset, , drop=FALSE]
-      pred[is.na(response)] <- NA
+      resid <- matrix(x$resid(), nrow = x$ydim[1])[subset, , drop=FALSE]
       yind <- x$yind
       id <- NULL
+      
     }else{ ## long format
       if(is.null(subset)) subset <- unique(x$id)
-      response <- x$response[x$id %in% subset] 
-      pred <- fitted(x)[x$id %in% subset]
-      pred[is.na(response)] <- NA
+      resid <- x$resid()[x$id %in% subset, drop=FALSE]
       yind <- x$yind[x$id %in% subset]
       id <- x$id[x$id %in% subset] 
     }
     
   }
   
-
-  
   # Observed - predicted values
-  if(length(x$yind)>1){
-    funplot(yind, response-pred, id=id, ylab=x$yname, xlab=attr(x$yind, "nameyind"), ...) 
+  if(length(x$yind) > 1){
+    funplot(yind, resid, id=id, ylab=x$yname, xlab=attr(x$yind, "nameyind"), ...) 
   }else{
-    plot(response, response-pred, ylab="residuals", xlab="observed", ...)
+    plot(response, resid, ylab="residuals", xlab="observed", ...)
     #abline(h=0)
   }
   

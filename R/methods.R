@@ -357,13 +357,14 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
       predMboost <- vector("list", length(which))
       for(i in seq_along(which)){
         if(which[i]!=0){
-          # [,1] save vector instead of a matrix with one column
-          predMboost[[i]] <- withCallingHandlers(predict(object=object, newdata=newdata, which=which[i], ...), 
-                                                 warning = muffleWarning1)
-          if(!is.null(dim(predMboost[[i]])) && dim(predMboost[[i]])[2] == 1) predMboost[[i]] <- predMboost[[i]][,1]
-          
-          if(!which[i] %in% sel){
+          # only use predict.mboost() if the base-learner was selected at least once
+          if(! which[i] %in% sel){
             predMboost[[i]] <- rep(0L, lengthYind*n)
+          }else{
+            # [,1] save vector instead of a matrix with one column
+            predMboost[[i]] <- withCallingHandlers(predict(object=object, newdata=newdata, which=which[i], ...), 
+                                                   warning = muffleWarning1)
+            if(!is.null(dim(predMboost[[i]])) && dim(predMboost[[i]])[2] == 1) predMboost[[i]] <- predMboost[[i]][,1]
           }
         }else{
           predMboost[[i]] <- predOffset # predict offset in case of which=0

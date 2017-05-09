@@ -10,10 +10,6 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
                        compress = FALSE,
                        ...) {
   
-  #if(any(class(object$response) == "factor")){
-  #  stop("applyFolds() for factor response not implemented yet.")
-  #} 
-  
   if (is.null(folds)) {
     stop("Specify folds.")
   } 
@@ -37,25 +33,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   sample_weights <- rep(1, length(unique(object$id))) # length N
   # if(any(sample_weights == 0)) warning("zero weights") # fullfilled per construction
   
-  # redefine weights in hmatrix objects (for nested applyFolds calls only)
-  # if(redefineWeights){
-  #   
-  #   isHmatrix <- sapply(object$data, function(x) "hmatrix" %in% class(x))
-  #   for(i in which(isHmatrix)){
-  #    
-  #     id <- as.numeric(getId(object$data[[i]]))
-  #     time <- as.numeric(getTime(object$data[[i]]))
-  #     # redefine the data of the hmatrix object: 
-  #     attr(object$data[[i]], "x") <- attr(object$data[[i]], "x")[id[time == min(time)],]
-  #     # use the id from the FDboost object, which does not have duplicates 
-  #     # i.e. two identical bootstrapped curves have different ids
-  #     object$data[[i]][,2] <- c(factor(object$id))
-  #      
-  #   }
-  # }
   # save integration weights of original model
-  ### integration_weights <- model.weights(object) # weights are (sometimes) rescaled in mboost, see mboost:::rescale_weights  
-  #if(!is.null(object$callEval$numInt) && object$callEval$numInt == "Riemann"){
   if(is.null(numInt)){
     numInt <- "equal"
     warning("'numInt' is NULL. It is set to 'equal' which means that all integration weights are set to 1.")
@@ -102,7 +80,6 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
       lengthTi1 <- rep(1, l = length(object$response))
     }
   }
-  
   
   # Function to suppress the warning of missings in the response
   h <- function(w){
@@ -159,7 +136,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
     function(y) strsplit(y, split = "%.{1,3}%")) # split single baselearners
   )) 
   
-  singleBls <- singleBls[singleBls!="1"]
+  singleBls <- singleBls[singleBls != "1"]
   
   if(any( !grepl("\\(",singleBls) )) 
     stop(paste0("applyFolds can not deal with the following base-learner(s) without brackets: ", 
@@ -176,20 +153,10 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
     blWithMissVars <- lapply(names_variables[whMiss], function(w) 
       unlist(lapply(1:length(object$baselearner), function(i) if(
         any( grepl(w, object$baselearner[[i]]$get_names() ) )) return(i))
-      )[1]
-      )
-
-    # # add variable to dathelp
-    # for(i in 1:length(names_variables[whMiss])){
-    #   thisVar <- names_variables[whMiss][i]
-    #   dathelp[[thisVar]] <- 
-    #     object$baselearner[[blWithMissVars[[i]]]]$get_data()[[thisVar]]
-    #   
-    #   }
+      )[1])
     
-    stop(paste0("base-learner(s) ", paste(unlist(list(1,2)),collapse=", "), 
-           " contain(s) variables, which are not part of the data object.")
-    )
+    stop(paste0("base-learner(s) ", paste(unlist(list(1,2)), collapse = ", "), 
+                " contain(s) variables, which are not part of the data object."))
     
   }
   
@@ -257,8 +224,10 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
       if(any(class(object) == "FDboostLong")){
         dathelp$lengthTi1 <- c(lengthTi1)
         dat_oobweights <- reweightData(data = dathelp, vars = c(names_variables, "lengthTi1"),  
-                                       longvars = c(object$yname, nameyind, "integration_weights", names_variables_long),  
-                                       weights = oobweights, idvars = c(attr(object$id, "nameid"), index_names),
+                                       longvars = c(object$yname, nameyind, 
+                                                    "integration_weights", names_variables_long),  
+                                       weights = oobweights, 
+                                       idvars = c(attr(object$id, "nameid"), index_names),
                                        compress = compress)
         ## funplot(dat_oobweights[[nameyind]], dat_oobweights[[object$yname]], 
         ##         id = dat_oobweights[[attr(object$id, "nameid")]])
@@ -279,8 +248,6 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
                                          vars = c(names_variables, names_variables_long),
                                          weights = oobweights)
           response_oobweights <- dat_oobweights[[object$yname]]
-          ## this check is important for Binomial() as it recodes factor to -1, 1
-          response_oobweights <- myfamily@check_y(response_oobweights)
         }else{
           dat_oobweights <- reweightData(data = dathelp, vars = names_variables, 
                                          longvars = names_variables_long,
@@ -288,24 +255,11 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
           response_oobweights <- c(dat_oobweights[[object$yname]])
         }
         
-      } 
-
-      ## <TODO> implement correct transformation for factor response, like in Binomial() 
-      if(any(class(response_oobweights) == "character")){
-        stop("applyFolds() for factor response not implemented yet.")
-        ## response_oobweights <- as.numeric(as.factor(response_oobweights))
       }
       
-      ### this is achieved by setting numInt = "equal" in applyFolds()
-      #       # get the integration weights for the oob-predictions 
-      #       integration_weights_oob <- c(dat_oobweights$integration_weights)
-      #       if(all(integration_weights_oob == 1)) integration_weights_oob <- 1
-      #       
-      #       # compute risk without integration weights like in mboost::cvrisk
-      #       risk0 <- sapply(grid, function(g){riskfct(response_oobweights, 
-      #                                                 predict(mod[g], newdata = dat_oobweights, toFDboost = FALSE), 
-      #                                                 w = integration_weights_oob)} ) / sum(oobweights[object$id])
-      
+      if(is.character(response_oobweights)) response_oobweights <- factor(response_oobweights)
+      ## this check is important for Binomial() as it recodes factor to -1, 1
+      response_oobweights <- myfamily@check_y(response_oobweights)
       
       # Function to suppress the warning of extrapolation in bbs / bbsc 
       h2 <- function(w){
@@ -687,20 +641,14 @@ validateFDboost <- function(object, response = NULL,
   myfamily <- get("family", environment(object$update))
   
   if(is.null(response)) response <- object$response # response as vector!
-  if(class(object)[1] == "FDboostScalar") response <- myfamily@check_y(response)
-  
-  ## destinction no longer necessary as object always contains an id-variable
-  #   # id of observations that belong to the same trajectory
-  #   if(is.null(object$id)){
-  #     id <- rep(1:object$ydim[1], times=object$ydim[2])
-  #   }else{
-  #     id <- object$id
-  #   }
+  # for Binomial() transform factor to -1/1 coding
+  response <- myfamily@check_y(response)
   
   id <- object$id
   
   # save integration weights of original model
-  ### intWeights <- model.weights(object) # weights are rescaled in mboost, see mboost:::rescale_weights  
+  # intWeights <- model.weights(object) 
+  # weights are rescaled in mboost, see mboost:::rescale_weights  
   if(!is.null(object$callEval$numInt) && object$callEval$numInt == "Riemann"){
     if(!any(class(object) == "FDboostLong")){
       intWeights <- as.vector(integrationWeights(X1 = matrix(object$response, 
@@ -715,16 +663,6 @@ validateFDboost <- function(object, response = NULL,
   # out-of-bag-weights: i.e. the left out curve/ the left out observations
   OOBweights <- matrix(1, ncol = ncol(folds), nrow = nrow(folds))
   OOBweights[folds > 0] <- 0 
-  
-  #   # matrix of measured responses for regular observations
-  #   resp <-  matrix(object$response, nrow=nObs, ncol=Gy)
-  #   
-  #   # Matrix of predictions using all terms in the model
-  #   predFun <- matrix(nrow=nObs, ncol=Gy)
-  #   
-  #   # List of predictions using only one term at a time
-  #   predFunCoef <- replicate(length(object$baselearner), predFun, simplify=FALSE)
-  #   coefCV <- list()
   
   # Function to suppress the warning of missings in the response
   h <- function(w){
@@ -851,20 +789,6 @@ validateFDboost <- function(object, response = NULL,
     # the predictions are in a long vector for all model types (regular, irregular, scalar)
     predGrid <- predict(mod, aggregate = "cumsum", toFDboost = FALSE)
     predGrid <- predGrid[ , grid] # save vectors of predictions for grid in matrix
-    
-    
-    #### predOOB/respOOB are no longer used 
-    #     # -> oob-predictions have to be merged out of predGrid
-    #     predOOB <- predGrid
-    #     keepidOOB <- (oobweights != 0)[mod$id]
-    #     if(any(keepidOOB)){
-    #       predOOB <- predOOB[keepidOOB,]
-    #       respOOB <- mod$response[keepidOOB]
-    #       attr(respOOB, "curves") <- unique(mod$id[keepidOOB])
-    #     }else{
-    #       predOOB <- NULL
-    #       respOOB <- NULL
-    #     } 
 
     if(showProgress) cat(".")
     
@@ -907,8 +831,6 @@ validateFDboost <- function(object, response = NULL,
     folds <- folds[,modFitted]
   } 
   
-  # matrix(model.weights(modRisk[[1]]$mod), ncol=Gy) 
-  
   ####### restructure the results
   
   ## get the out-of-bag risk
@@ -946,7 +868,7 @@ validateFDboost <- function(object, response = NULL,
   
   ## only makes sense for type="curves" with leaving-out one curve per fold!!
   if(grepl( "curves", type)){
-    ## predict response for all mstops in grid out of bag
+    # predict response for all mstops in grid out of bag
     # predictions for each response are in a vector!
     oobpreds0 <- lapply(modRisk, function(x) x$predGrid)
     oobpreds <- matrix(nrow = nrow(oobpreds0[[1]]), ncol = ncol(oobpreds0[[1]]))
@@ -988,10 +910,8 @@ validateFDboost <- function(object, response = NULL,
   if(getCoefCV){
     
     if(riskopt == "median"){
-      #print("median")
       optimalMstop <- grid[which.min(apply(oobrisk, 2, median))]
     }else{
-      #print("mean")
       optimalMstop <- grid[which.min(apply(oobrisk, 2, mean))]
     }  
     
@@ -1008,10 +928,6 @@ validateFDboost <- function(object, response = NULL,
         my_coef$dim <- 0
       }
       coefCV[[l]] <- my_coef
-      #       if(l==1){
-      #         coefCV[[l]]$offset <- matrix(ncol=40, nrow=length(modRisk))
-      #         coefCV[[l]]$offset[1,] <- modRisk[[1]]$mod$predictOffset(time=timeHelp)
-      #       }
       
       ## no %X% with several levels in the coefficients
       if(is.null(coefCV[[l]]$numberLevels)){
@@ -1099,7 +1015,6 @@ validateFDboost <- function(object, response = NULL,
               coefCV = coefCV,
               predCV = predCV,
               oobpreds = oobpreds, 
-              #predOOB = predOOB, respOOB = respOOB,
               oobrisk = oobrisk, 
               oobriskMean = colMeans(oobrisk),
               oobmse = oobmse,
@@ -1217,9 +1132,9 @@ plot.validateFDboost <- function(x, riskopt=c("mean", "median"),
   riskopt <- match.arg(riskopt)
   mopt <- mstop(x, riskopt=riskopt)
   # get the position in the grid of mopt
-  mpos <- which(x$grid==mopt)
+  mpos <- which(x$grid == mopt)
   
-  if(length(which)>1) par(ask=ask)
+  if(length(which) > 1) par(ask = ask)
   
   if(1 %in% which){
     # Plot the cross validated risk
@@ -1238,10 +1153,6 @@ plot.validateFDboost <- function(x, riskopt=c("mean", "median"),
       lines(c(mOptMean, mOptMean), 
             c(min(c(0, ylim[1] * ifelse(ylim[1] < 0, 2, 0.5))), 
               riskMean[paste(mOptMean)]), lty = 2)
-      
-      #legend("topright", legend=paste(c(mOptMean, mOptMedian), c("(mean)","(median)")),
-      #       lty=c(1,2), col=c("black","black"))
-      
       legend("topright", legend=paste(c(mOptMean)),
              lty=c(2), col=c("black"))
       
@@ -1259,8 +1170,6 @@ plot.validateFDboost <- function(x, riskopt=c("mean", "median"),
              lty=c(2), col=c("black"))
     }
     
-    #mOptOverModels <- apply(x$oobrisk, 1, which.min)
-    #abline(v=mOptOverModels, lty=3)
   }
   
   if(any(c(2,3) %in% which)){
@@ -1317,8 +1226,6 @@ plot.validateFDboost <- function(x, riskopt=c("mean", "median"),
         abline(h=0, lty=2, col="grey")
       }
     }
-    
-    
   }
   
   # Plot coefficients
@@ -1339,17 +1246,7 @@ plot.validateFDboost <- function(x, riskopt=c("mean", "median"),
   #   matplot(x$coefCV[[3]][[5]]$value[[mpos]], type="l", lty=3, add=TRUE)
   #   matplot(x$coefCV[[4]][[5]]$value[[mpos]], type="l", lty=4, add=TRUE)
   
-  # old possibility to plot the coefficients
-  #   if(!is.null(modObject)){  
-  #     for(j in 1:length(x$predFunCoef)){      
-  #       predObject <- predict(modObject, which=j)
-  #       if(j==1) predObject <- predObject + attr(predObject, "offset")
-  #       funplot(x$yind, x$predFunCoef[[j]], lty=3, xlab="t", ylab="",
-  #               ylim=range(x$predFunCoef[[j]], predObject, na.rm=TRUE))
-  #       funplot(x$yind, predObject, pch=1, add=TRUE)
-  #     } 
-  #   }
-  par(ask=FALSE)  
+  par(ask = FALSE)  
 }
 
 
@@ -1460,12 +1357,11 @@ plot_bootstrapped_coef <- function(temp, l,
     }else list()
   }
   
-  #argsPlot <- getArguments(x=formals(graphics::plot.default), dots=dots)
-  argsPlot <- getArguments(x=c(formals(graphics::plot.default), par()), dots=dots)
-  argsMatplot  <- getArguments(x=c(formals(graphics::matplot), par()), dots=dots)
-  argsFunplot  <- getArguments(x=c(formals(funplot), par()), dots=dots)
+  argsPlot <- getArguments(x = c(formals(graphics::plot.default), par()), dots = dots)
+  argsMatplot  <- getArguments(x = c(formals(graphics::matplot), par()), dots = dots)
+  argsFunplot  <- getArguments(x = c(formals(funplot), par()), dots = dots)
   
-  argsPersp <- getArguments(x=formals(getS3method("persp", "default")), dots=dots)
+  argsPersp <- getArguments(x=formals(getS3method("persp", "default")), dots = dots)
   
   plotWithArgs <- function(plotFun, args, myargs){        
     args <- c(myargs[!names(myargs) %in% names(args)], args)        
@@ -1636,7 +1532,7 @@ plot_bootstrapped_coef <- function(temp, l,
       }
     }
     
-  } # end if(temp$dim==2)
+  } # end if(temp$dim == 2)
   
 }
 

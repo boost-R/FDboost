@@ -92,6 +92,17 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   nameyind <- attr(object$yind, "nameyind")
   dathelp[[nameyind]] <- object$yind
   
+  ## try to set up data using $get_data() 
+  ## problem with index for bl containing index, and you do not get s for bsignal/bhist
+  if(FALSE){
+    dathelp2 <- list()
+    for(j in 1:length(object$baselearner)){
+      dat_bl_j <- object$baselearner[[j]]$get_data() ## object$baselearner[[j]]$model.frame()
+      # if the variable is already present, do not add it again
+      dathelp2 <- c(dathelp2, dat_bl_j[!names(dat_bl_j) %in% names(dathelp2)])
+    }
+  }
+  
   if(!any(class(object) == "FDboostLong") & !any(class(object) == "FDboostScalar")){
     dathelp[[object$yname]] <- matrix(object$response, ncol=object$ydim[2])
     dathelp$integration_weights <- matrix(integration_weights, ncol=object$ydim[2])
@@ -130,6 +141,8 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   if(identical(names_variables, character(0))) names_variables <- NULL
   
   ## check if there is a baselearner without brackets
+  # the probelm with such base-learners is that their data is not contained in object$data
+  # using object$baselearner[[j]]$get_data() is difficult as this can be blow up by index for %X%
   singleBls <- gsub("\\s", "", unlist(lapply(strsplit(
     strsplit(object$formulaFDboost, "~")[[1]][2], # split formula
                                       "\\+")[[1]], # split additive terms
@@ -138,9 +151,10 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   
   singleBls <- singleBls[singleBls != "1"]
   
-  if(any( !grepl("\\(",singleBls) )) 
+  if(any(!grepl("\\(", singleBls))) 
     stop(paste0("applyFolds can not deal with the following base-learner(s) without brackets: ", 
-                paste(singleBls[!grepl("\\(",singleBls)], collapse=", ")))
+                paste(singleBls[!grepl("\\(", singleBls)], collapse = ", ")))
+  
   
   ## check if data includes all variables
   if(any(whMiss <- ! c(names_variables,

@@ -757,8 +757,6 @@ FDboost <- function(formula,          ### response ~ xvars
     xfm[which_equalBrackets] <- xfmTemp
     rm(xfmTemp)
     tmp <- outer(xfm, tfm, function(x, y) paste(x, y, sep = "%X%"))
-    ## <FIXME> use the following specification for irregular response -> adapt coef() and plot()-function 
-    ## if(grepl("ONEx", tmp[[1]])) tmp[[1]] <- tfm ## smooth intercept is just time-formula
   }
 
   # do not expand an effect bconcurrent() or bhist() with timeformula
@@ -1088,7 +1086,7 @@ FDboost <- function(formula,          ### response ~ xvars
           if(length(offset) != nc) stop("Dimensions of offset and response do not match.")
           offsetVec <- offset
           offset <- as.vector(matrix(offset, ncol = ncol(response), nrow = nrow(response), byrow = TRUE))
-          ### <FixMe> use a more sophisticated model to estimate the time-specific offset? 
+          ### Use a more sophisticated model to estimate the time-specific offset? 
           modOffset <- lm(offsetVec ~ bs(time, df = length(offsetVec)-2))
           predictOffset <- function(time){
             ret <- as.numeric(predict(modOffset, newdata = data.frame(time = time)))
@@ -1212,6 +1210,7 @@ FDboost <- function(formula,          ### response ~ xvars
   # offsetVec is an integer if no smooth offset was calculated
   ret$offsetVec <- offsetVec
   if(is.null(offset)) ret$offsetVec <- ret$offset
+  
   ret$offsetFDboost <- offsetFDboost # offset as specified in call to FDboost 
   ret$offsetMboost <- offsetMboost # offset as given to mboost 
       

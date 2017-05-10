@@ -46,7 +46,7 @@ is supplied.}
 raw results are returned.}
 }
 \value{
-a list containing the elements \code{raw_results}, the 
+A list containing the elements \code{raw_results}, the 
 \code{quantiles} and \code{mstops}. 
 In \code{raw_results} and \code{quantiles}, each baselearner
 selected with \code{which} in turn corresponds to a list
@@ -58,7 +58,11 @@ In case of coefficient surfaces, \code{quantiles} comprises a list of matrices,
 where each list element corresponds to a quantile.
 }
 \description{
-Function to compute bootstrap confidence intervals
+The model is fitted on bootstrapped samples of the data to compute bootstrapped 
+coefficient estimates. To determine the optimal stopping iteration an inner bootstrap 
+is run within each bootstrap fold. 
+As estimation by boosting shrinks the coefficient estimates towards zero, 
+to bootstrap confidence intervals are biased towards zero.
 }
 \note{
 Note that parallelization can be achieved by defining
@@ -106,10 +110,9 @@ plot(bootCIs, ask = FALSE)
 }
 
 ## now speed things up by defining the inner resampling
-## function with parallelization
+## function with parallelization based on mclapply (does not work on Windows)
 
-my_inner_fun <- function(object)
-{ 
+my_inner_fun <- function(object){ 
 cvrisk(object, folds = cvLong(id = object$id, weights = 
 model.weights(object), 
 B = 10 # 10-fold for inner resampling
@@ -123,8 +126,7 @@ bootCIs <- bootstrapCI(m1, resampling_fun_inner = my_inner_fun)
 ## Now let's parallelize the outer resampling and use 
 ## crossvalidation instead of bootstrap for the inner resampling
 
-my_inner_fun <- function(object)
-{ 
+my_inner_fun <- function(object){ 
 cvrisk(object, folds = cvLong(id = object$id, weights = 
 model.weights(object), type = "kfold", # use CV
 B = 10 # 10-fold for inner resampling
@@ -132,8 +134,7 @@ B = 10 # 10-fold for inner resampling
 }
 
 # use applyFolds for outer function to avoid messing up weights
-my_outer_fun <- function(object, fun)
-{
+my_outer_fun <- function(object, fun){
 applyFolds(object = object,
 folds = cv(rep(1, length(unique(object$id))), 
 type = "bootstrap", B = 100), fun = fun,

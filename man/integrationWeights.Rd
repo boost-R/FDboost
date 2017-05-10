@@ -10,11 +10,14 @@ integrationWeights(X1, xind, id = NULL)
 integrationWeightsLeft(X1, xind, leftWeight = c("first", "mean", "zero"))
 }
 \arguments{
-\item{X1}{matrix of functional variable}
+\item{X1}{for functional data that is observed on one common grid, 
+a matrix containing the observations of the functional variable. 
+For a functional variable that is observed on curve specific grids, a long vector.}
 
-\item{xind}{index of functional variable}
+\item{xind}{evaluation points (index) of functional variable}
 
-\item{id}{defaults to NULL if \code{X1} is a matrix. identity variable if \code{X1} is in long format.}
+\item{id}{defaults to \code{NULL}. Only necessary for response in long format. 
+In this case \code{id} specifies which curves belong together.}
 
 \item{leftWeight}{one of \code{c("mean", "first", "zero")}. With left Riemann sums 
 different assumptions for the weight of the first observation are possible. 
@@ -23,12 +26,14 @@ Alternatively one can use the first integration weight, \code{"first"}, or
 use the distance to zero, \code{"zero"}.}
 }
 \description{
-Computes trapezoidal integration weights for a functional variable X1 on grid xind.
+Computes trapezoidal integration weights (Riemann sums) for a functional variable 
+\code{X1} that has evaluation points \code{xind}.
 }
 \details{
 The function \code{integrationWeights()} computes trapezoidal integration weights, 
 that are symmetric. Per default those weights are used in the \code{\link{bsignal}}-base-learner. 
-In the special case of regular xind with equal distances all integration weights are equal.
+In the special case of evaluation points (\code{xind}) with equal distances, 
+all integration weights are equal.
   
 The function \code{integrationWeightsLeft()} computes weights,
 that take into account only the distance to the prior observation point. 

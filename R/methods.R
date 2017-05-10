@@ -226,17 +226,6 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
       ## message("Predict ", lengthYind, " observations in total.")
       
     } ## for response observed on irregular grid
-
-    #     # Predict effect of offset: predOffset
-    #     predOffset <- object$offsetVec # offset is just an integer 
-    #     if(length(object$offsetVec)>1){ # offset is a smooth function
-    #       if(!any(class(object)=="FDboostLong")){ # irregular response
-    #         predOffset <- rep(object$predictOffset(newdata[[nameyind]]), each=n)
-    #       }else{ # regular response 
-    #         predOffset <- object$predictOffset(newdata[[nameyind]])
-    #       }  
-    #       names(predOffset) <- NULL
-    #     }
     
     ### Predict effect of offset (scalar, regular, irregular):  
     # use the function predictOffset() on the new time-variable   
@@ -1469,10 +1458,6 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
   if(is.null(which)) which <- 1:length(x$baselearner) 
   
   if(onlySelected){
-    #     sel <- selected(x)
-    #     if( !1 %in% sel  && length(x$offsetVec) > 1 && grepl("ONEx", names(x$baselearner)[[1]])){
-    #       sel <- c(1, sel) # plot the offset as first effect
-    #     } 
     which <- intersect(which, c(0, selected(x)))
   }
   

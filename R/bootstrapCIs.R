@@ -1,4 +1,10 @@
 #' Function to compute bootstrap confidence intervals
+#' 
+#' The model is fitted on bootstrapped samples of the data to compute bootstrapped 
+#' coefficient estimates. To determine the optimal stopping iteration an inner bootstrap 
+#' is run within each bootstrap fold. 
+#' As estimation by boosting shrinks the coefficient estimates towards zero, 
+#' to bootstrap confidence intervals are biased towards zero. 
 #'
 #' @param object a fitted model object of class \code{FDboost}, 
 #' for which the confidence intervals should be computed.
@@ -47,7 +53,7 @@
 #' treats its effect as constantly zero.
 #' 
 #'  
-#' @return a list containing the elements \code{raw_results}, the 
+#' @return A list containing the elements \code{raw_results}, the 
 #' \code{quantiles} and \code{mstops}. 
 #' In \code{raw_results} and \code{quantiles}, each baselearner
 #' selected with \code{which} in turn corresponds to a list
@@ -89,10 +95,9 @@
 #' }
 #' 
 #' ## now speed things up by defining the inner resampling
-#' ## function with parallelization
+#' ## function with parallelization based on mclapply (does not work on Windows)
 #' 
-#' my_inner_fun <- function(object)
-#' { 
+#' my_inner_fun <- function(object){ 
 #' cvrisk(object, folds = cvLong(id = object$id, weights = 
 #' model.weights(object), 
 #' B = 10 # 10-fold for inner resampling
@@ -106,8 +111,7 @@
 #' ## Now let's parallelize the outer resampling and use 
 #' ## crossvalidation instead of bootstrap for the inner resampling
 #' 
-#' my_inner_fun <- function(object)
-#' { 
+#' my_inner_fun <- function(object){ 
 #' cvrisk(object, folds = cvLong(id = object$id, weights = 
 #' model.weights(object), type = "kfold", # use CV
 #' B = 10 # 10-fold for inner resampling
@@ -115,8 +119,7 @@
 #' }
 #' 
 #' # use applyFolds for outer function to avoid messing up weights
-#' my_outer_fun <- function(object, fun)
-#' {
+#' my_outer_fun <- function(object, fun){
 #' applyFolds(object = object,
 #' folds = cv(rep(1, length(unique(object$id))), 
 #' type = "bootstrap", B = 100), fun = fun,
@@ -168,10 +171,7 @@ bootstrapCI <- function(object, which = NULL,
   
   ########## check for scalar response #########
   scalarResp <- "FDboostScalar" %in% class(object)
-  # isLongFormat <- "FDboostLong" %in% class(object)
 
-  
-  
   ########## define outer resampling function if NULL #########
   if(is.null(resampling_fun_outer)){
     
@@ -195,12 +195,6 @@ bootstrapCI <- function(object, which = NULL,
                                                                                model.weights(object), B = B_inner))
       
     }else{ 
-      # 
-      # if(isLongFormat){
-      #   
-      #   resampling_fun_inner <- function(object) applyFolds()
-      #   
-      # }else{ # not long format
         
       resampling_fun_inner <- function(object) applyFolds(object, folds = cv(rep(1, length(unique(object$id))), type =
                                                                                "bootstrap", B = B_inner))
@@ -225,31 +219,25 @@ bootstrapCI <- function(object, which = NULL,
   results <- resampling_fun_outer(object, 
                                   fun = function(mod)
                                   {
-                                    
                                     ms <- mstop( resampling_fun_inner(mod) )
                                     coefs <- coef( mod[ms], which = which )
-                                    #selc <- selected(mod[ms])
-                                    
-                                    return(list(coefs = coefs, ms = ms#, selc = selc
-                                                ))
-                                    
+                                    return(list(coefs = coefs, ms = ms))
                                   }
-                                  
-  )
+                                  )
   
   cat("\n")
   
   coefs <- lapply(results, "[[", "coefs")
   mstops <- sapply(results, "[[", "ms")
   offsets <- t(sapply(coefs, function(x) x$offset$value))
-  # selects <- sort(unique(c(unlist(sapply(results, "[[", "selc")))))
   
   ########## format coefficients #########
   # number of baselearners
-  nrEffects <- #length(selects)
-    max(sapply(1:length(coefs), function(i) length(coefs[[i]]$smterms)))
+  nrEffects <- max(sapply(1:length(coefs), 
+                          function(i) length(coefs[[i]]$smterms)))
   
-  isFacSpecEffect <- sapply(1:nrEffects, function(i) "numberLevels" %in% names(coefs[[1]]$smterms[[i]]))
+  isFacSpecEffect <- sapply(1:nrEffects, 
+                            function(i) "numberLevels" %in% names(coefs[[1]]$smterms[[i]]))
   
   # check for intercept
   withIntercept <- any(names(coefs[[1]]) == "intercept")
@@ -259,8 +247,6 @@ bootstrapCI <- function(object, which = NULL,
     if(!is.matrix(intercept)) intercept <- matrix(intercept, ncol = 1)
   } 
   
-  
-    
   # extract values
   listOfCoefs <- lapply(1:nrEffects, function(i)
   { 
@@ -326,8 +312,7 @@ bootstrapCI <- function(object, which = NULL,
     my_plot_info <- coefs[[1]]$smterms[[i]]
     my_plot_info$value <- NA
     attr(listOfCoefs[[i]], "plot_info") <- my_plot_info 
-    
-    
+
   }
 
   # add intercept and offset separately

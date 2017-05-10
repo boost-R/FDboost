@@ -26,16 +26,16 @@ bfpc(x, s, index = NULL, df = 4, lambda = NULL, pve = 0.99,
 }
 \arguments{
 \item{x}{matrix of functional variable x(s). The functional covariate has to be 
-supplied as n by <no. of evaluations> matrix, i.e. each row is one functional observation.}
+supplied as n by <no. of evaluations> matrix, i.e., each row is one functional observation.}
 
 \item{s}{vector for the index of the functional variable x(s) giving the 
 measurement points of the functional covariate.}
 
-\item{index}{a vector of integers for expanding the signal variable in \code{x} 
+\item{index}{a vector of integers for expanding the covariate in \code{x} 
 For example, \code{bsignal(X, s, index = index)} is equal to \code{bsignal(X[index,], s)}, 
-where index is an integer of length greater or equal to \code{length(x)}.}
+where index is an integer of length greater or equal to \code{NROW(x)}.}
 
-\item{inS}{historical effect can be smooth, linear or constant in s, 
+\item{inS}{the functional effect can be smooth, linear or constant in s, 
 which is the index of the functional covariates x(s).}
 
 \item{knots}{either the number of knots or a vector of the positions 
@@ -98,7 +98,7 @@ the given \eqn{t}.}
 \item{intFun}{specify the function that is used to compute integration weights in \code{s} 
 over the functional covariate \eqn{x(s)}}
 
-\item{inTime}{historical effect can be smooth, linear or constant in time, 
+\item{inTime}{the historical effect can be smooth, linear or constant in time, 
 which is the index of the functional response y(time).}
 
 \item{pve}{proportion of variance explained by the first K functional principal components (FPCs): 

@@ -1,11 +1,15 @@
 
 #' Functions to compute integration weights
 #' 
-#' Computes trapezoidal integration weights for a functional variable X1 on grid xind.
+#' Computes trapezoidal integration weights (Riemann sums) for a functional variable 
+#' \code{X1} that has evaluation points \code{xind}.
 #' 
-#' @param X1 matrix of functional variable
-#' @param xind index of functional variable
-#' @param id defaults to NULL if \code{X1} is a matrix. identity variable if \code{X1} is in long format.
+#' @param X1 for functional data that is observed on one common grid, 
+#' a matrix containing the observations of the functional variable. 
+#' For a functional variable that is observed on curve specific grids, a long vector.  
+#' @param xind evaluation points (index) of functional variable
+#' @param id defaults to \code{NULL}. Only necessary for response in long format. 
+#' In this case \code{id} specifies which curves belong together. 
 #' @param leftWeight one of \code{c("mean", "first", "zero")}. With left Riemann sums 
 #' different assumptions for the weight of the first observation are possible. 
 #' The default is to use the mean over all integration weights, \code{"mean"}. 
@@ -16,7 +20,8 @@
 #' 
 #' @details The function \code{integrationWeights()} computes trapezoidal integration weights, 
 #' that are symmetric. Per default those weights are used in the \code{\link{bsignal}}-base-learner. 
-#' In the special case of regular xind with equal distances all integration weights are equal.
+#' In the special case of evaluation points (\code{xind}) with equal distances, 
+#' all integration weights are equal.
 #'   
 #' The function \code{integrationWeightsLeft()} computes weights,
 #' that take into account only the distance to the prior observation point. 
@@ -64,13 +69,13 @@
 ################################# 
 # Trapezoidal integration weights for a functional variable X1 on grid xind
 # corresponds to mean of left and right Riemann integration sum
-integrationWeights <- function(X1, xind, id=NULL){
+integrationWeights <- function(X1, xind, id = NULL){
   
-  if(is.null(id)) if(ncol(X1)!=length(xind) ) stop("Dimension of xind and X1 do not match")
+  if(is.null(id)) if(ncol(X1) != length(xind) ) stop("Dimension of xind and X1 do not match")
   
   # compute integraion weights for irregular data in long format
   if(!is.null(id)){
-    Lneu <- tapply(xind, id, FUN = function(x) colMeans(rbind(c(0,diff(x)), c(diff(x), 0))) )
+    Lneu <- tapply(xind, id, FUN = function(x) colMeans(rbind(c(0, diff(x)), c(diff(x), 0))) )
     Lneu <- unlist(Lneu)
     names(Lneu) <- NULL    
     return(Lneu) 
@@ -104,7 +109,6 @@ integrationWeights <- function(X1, xind, id=NULL){
     L <- matrix(Li, nrow=nrow(X1), ncol=ncol(X1), byrow=TRUE)
     
   }
-  
   
   # taking into account missing values
   if(any(is.na(X1))){
@@ -141,27 +145,6 @@ integrationWeights <- function(X1, xind, id=NULL){
   }
 }
 
-# # test integrationWeights()
-# xind <- seq(0,1,l=5)
-# xind <- c(0, 0.2, 0.4, 0.5, 1)
-# colMeans(rbind(c(0,diff(xind)), c(diff(xind), 0)))
-# X1 <- matrix(xind^2, ncol=5)
-# intW <- integrationWeights(X1, xind)[1,]
-# plot(X1[1,]~xind, type="b")
-# points(rep(0,5)~cumsum(intW), col=2)
-# 
-# X1 <- matrix(c(1:5, 1:5+1, 1:5+2, 1:5+3), ncol=5, byrow=TRUE)
-# X1[1,1] <- NA
-# X1[1,2] <- NA
-# X1[2,2] <- NA
-# X1[3,5] <- NA
-# xind <- c(2,4,6,8,10)
-# 
-# intW <- integrationWeights(X1, xind)
-# rowSums(intW*X1, na.rm=TRUE) -c(0, 5, 10, 15)
-# matplot(xind, t(X1), type="b")
-
-
 
 #### Computes Riemann-weights that only take into account the distance to the previous 
 # observation point
@@ -169,11 +152,9 @@ integrationWeights <- function(X1, xind, id=NULL){
 
 #' @rdname integrationWeights
 #' @export
-## <TODO> implement weights for missing values in X1
-## does missing values affect the spline basis in s as well?
-integrationWeightsLeft <- function(X1, xind, leftWeight=c("first", "mean", "zero")){
+integrationWeightsLeft <- function(X1, xind, leftWeight = c("first", "mean", "zero")){
   
-  if( ncol(X1)!=length(xind) ) stop("Dimension of xind and X1 do not match")
+  if(ncol(X1) != length(xind)) stop("Dimension of xind and X1 do not match")
   # !is.unsorted(xind, strictly = FALSE) # is xind sorted?
   
   leftWeight <- match.arg(leftWeight)
@@ -192,13 +173,6 @@ integrationWeightsLeft <- function(X1, xind, leftWeight=c("first", "mean", "zero
   return(L)
 }
 
-# ## test integrationWeightsLeft
-# xind <- c(0.5, 0.7, 1, 2, 4)
-# X1 <- matrix(xind^2, ncol=5)
-# integrationWeightsLeft(X1, xind)
-# integrationWeightsLeft(X1, xind, leftWeight="mean")
-# integrationWeightsLeft(X1, xind, leftWeight="first")
-# integrationWeightsLeft(X1, xind, leftWeight="zero")
 
 ################################################################################
 ### syntax for base learners is modified code of the package mboost, see bl.R
@@ -347,9 +321,6 @@ X_bsignal <- function(mf, vary, args) {
     K <- t(args$Z) %*% K %*% args$Z
   }
   #---------------------------------- 
-
-  #print("X_bsignal")
-  #print(args$Z[1:3,1:3])
   
   ### Weighting with matrix of functional covariate
   L <- integrationWeights(X1=X1, xind=xind)
@@ -358,7 +329,8 @@ X_bsignal <- function(mf, vary, args) {
   
   colnames(X) <- paste0(xname, 1:ncol(X))
  
-  ## see Scheipl and Greven (2016): Identifiability in penalized function-on-function regression models  
+  ## see Scheipl and Greven (2016): 
+  ## Identifiability in penalized function-on-function regression models  
   if(args$check.ident){
     res_check <- check_ident(X1=X1, L=L, Bs=Bs, K=K, xname=xname, 
                              penalty=args$penalty)
@@ -421,14 +393,14 @@ X_bsignal <- function(mf, vary, args) {
 #' Base-learners that fit effects of functional covariates.  
 #' 
 #' @param x matrix of functional variable x(s). The functional covariate has to be 
-#' supplied as n by <no. of evaluations> matrix, i.e. each row is one functional observation. 
+#' supplied as n by <no. of evaluations> matrix, i.e., each row is one functional observation. 
 #' @param s vector for the index of the functional variable x(s) giving the 
 #' measurement points of the functional covariate. 
 #' @param time vector for the index of the functional response y(time) 
 #' giving the measurement points of the functional response. 
-#' @param index a vector of integers for expanding the signal variable in \code{x} 
+#' @param index a vector of integers for expanding the covariate in \code{x} 
 #' For example, \code{bsignal(X, s, index = index)} is equal to \code{bsignal(X[index,], s)}, 
-#' where index is an integer of length greater or equal to \code{length(x)}.
+#' where index is an integer of length greater or equal to \code{NROW(x)}.
 #' @param knots either the number of knots or a vector of the positions 
 #' of the interior knots (for more details see \code{\link[mboost]{bbs}}).
 #' @param boundary.knots boundary points at which to anchor the B-spline basis 
@@ -466,9 +438,9 @@ X_bsignal <- function(mf, vary, args) {
 #' "length" standardizes with the length of the integral 
 #' @param intFun specify the function that is used to compute integration weights in \code{s} 
 #' over the functional covariate \eqn{x(s)}
-#' @param inS historical effect can be smooth, linear or constant in s, 
+#' @param inS the functional effect can be smooth, linear or constant in s, 
 #' which is the index of the functional covariates x(s). 
-#' @param inTime historical effect can be smooth, linear or constant in time, 
+#' @param inTime the historical effect can be smooth, linear or constant in time, 
 #' which is the index of the functional response y(time). 
 #' @param limits defaults to \code{"s<=t"} for an historical effect with s<=t;  
 #' either one of \code{"s<t"} or \code{"s<=t"} for [l(t), u(t)] = [T1, t]; 
@@ -2248,7 +2220,7 @@ bbsc <- function(..., by = NULL, index = NULL, knots = 10, boundary.knots = NULL
             " numbers of observations.")
   
   ################# do not use the index option as then Z is always computed as for balanced data
-  ################# TODO: make an option available for this? as this means centering per group
+  ################# make an option available for this? as this means centering per group
   ### option
   DOINDEX <- (nrow(mf) > options("mboost_indexmin")[[1]])
   if (is.null(index)) {

@@ -8,7 +8,7 @@
 #' @param silent print error messages of model fit?
 #' @param cyclic defaults to FALSE, if TRUE cyclic splines are used
 #' @param knots arguments knots passed to \code{\link[mgcv]{gam}}
-
+#' 
 #' @export 
 o_control <- function(k_min=20, rule=2, silent=TRUE, cyclic=FALSE, knots=NULL) { 
   RET <- list(k_min=k_min, rule=rule, silent=silent, cyclic=cyclic, knots=knots)
@@ -101,8 +101,6 @@ funplot <- function(x, y, id=NULL, rug=TRUE, ...){
   argsMatplot  <- getArguments(x=c(formals(graphics::matplot), par(), main="", sub=""), dots=dots)
   argsPlot <- getArguments(x=c(formals(graphics::plot.default), par()), dots=dots)
   
-  
-  #if( !(is.vector(y) | is.atomic(y)) ){  # is.null(id)
   if( !is.null(dim(y)) ){ # is.null(id)
     
     # Deal with missing values: interpolate data
@@ -208,9 +206,6 @@ funplot <- function(x, y, id=NULL, rug=TRUE, ...){
     
   }
   
-  #   matplot(time, t(y), xlab=xlabel, ylab="", type="p", pch=3)
-  #   matplot(time, t(y), type="l", pch=1, lty=1, add=TRUE)
-  #   matplot(time, t(yint), type="l", pch=1, lty=3, add=TRUE)  
 }
 
 
@@ -321,7 +316,6 @@ plotResiduals <- function(x, subset=NULL, posLegend="topleft", ...){
     funplot(yind, resid, id=id, ylab=x$yname, xlab=attr(x$yind, "nameyind"), ...) 
   }else{
     plot(response, resid, ylab="residuals", xlab="observed", ...)
-    #abline(h=0)
   }
   
 }
@@ -803,22 +797,6 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
     }
   } ## end of computation of logCondDs_hist for historical effects
   
-  
-  ## measure degree of overlap between the spans of ker(t(X1)) and W%*%Bs%*%ker(K)
-  ## ker = kernel = null space 
-  ## overlap measure like in Scheipl and Greven, 2016
-  ## based on distance measure of Larsson and Villani, 2001
-  
-  #### code from pffr-ff.R to compute overlap for whole matrix
-  #   N.X <- Null(t(X1))
-  #   N.pen <- diag(L[1, ]) %*% Bs %*% Null(K)
-  #   if (any(c(NCOL(N.X) == 0, NCOL(N.pen) == 0))) {
-  #     nullOverlap <- 0
-  #   }
-  #   else {
-  #     nullOverlap <- trace_lv(svd(N.X)$u, svd(N.pen)$u)
-  #   }
-  
   getOverlap <- function(subset, X1, L, Bs, K){
     # <FIXME> case that all observations are 0, kernel is everything -> kernel overlap
     if(all(X1[ , subset]==0)){
@@ -838,63 +816,10 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
     return(nullOverlap)
   }
   
-  #### check: 
-  #### nullOverlap == getOverlap(subset=1:ncol(X1), X1=X1, L=L, Bs=Bs, K=K)
-  
-  ####### old cumbersome code to compute the null space overlap
-  #   tryNA <- function(expr){
-  #     ret <- try(expr, silent = TRUE)
-  #     if(any(class(ret)=="try-error")) return(NA)
-  #     return(ret)
-  #   }
-  #   tryNull <- function(expr){
-  #     ret <- try(expr, silent = TRUE)
-  #     if(any(class(ret)=="try-error")) return(matrix(NA, 0, 0))
-  #     return(ret)
-  #   }
-  #   
-  #   ### get special measures for kernel overlap of WB_s(P_s) with subset of Xobs
-  #   ### overlap measure based on distance measure of Larsson and Villani 2001
-  #   ### as proposed by Scheipl and Greven 2016
-  #   getOverlap <- function(subset, X1, L, Bs, K){
-  #     # <FIXME> case that all observations are 0, kernel is everything -> kernel overlap
-  #     if(all(X1[ , subset]==0)){
-  #       return(5)
-  #     }
-  #     KeXsub <- tryNull(Null(t(X1[ , subset])))
-  #     if(ncol(KeXsub)==0){ # no null space
-  #       return(0)
-  #     }
-  #     KePen2sub <- tryNull(diag(L[1,subset]) %*% Bs[subset,] %*% Null(K))
-  #     overlapSub <- tryNA(trace_lv(svd(KeXsub)$u, svd(KePen2sub)$u))
-  #     return(overlapSub)
-  #   }
-  
   cumOverlapKe <- NULL
   overlapKe <- NULL
   overlapKeComplete <- NULL
-  
-  #   ## cumulative overlap for historical model in the special case of s<t
-  #   if(cumOverlap){   
-  #     restm <- ncol(X1) %% 10 # rest of modulo calculation 
-  #     ntemp <- (ncol(X1)-restm)/10 # group-size without rest
-  #     ## subset with 1/10, 2/10, ..., 10/10 of the observation points
-  #     if(restm > ntemp){ # case that rest is bigger than group size
-  #       subs <- c(list(1:restm), lapply(1:8, function(i) 1:(restm+i*ntemp)), list(1:ncol(X1)))
-  #     }else{
-  #       subs <- c(lapply(1:9, function(i) 1:(restm+i*ntemp)), list(1:ncol(X1)))
-  #     }
-  #     cumOverlapKe <- sapply(subs, getOverlap, X1=X1, L=L, Bs=Bs, K=K)
-  #     overlapKe <- max(cumOverlapKe, na.rm = TRUE) #cumOverlapKe[[length(cumOverlapKe)]]
-  #     
-  #   }else{ # overlap between whole matrix X and penalty
-  #     overlapKe <- getOverlap(subset=1:ncol(X1), X1=X1, L=L, Bs=Bs, K=K)
-  #   } 
-  #   print("overlapKe")
-  #   print(overlapKe)
-  #   plot( seq(min(t_unique), max(t_unique), l=10), cumOverlapKe, ylim=c(0,1))
-  
-  
+
   ## sequential overlap for historical model with general integration limits
   if(!is.null(limits)){  
     
@@ -908,9 +833,6 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
   }else{ # overlap between whole matrix X and penalty
     overlapKe <- getOverlap(subset=1:ncol(X1), X1=X1, L=L, Bs=Bs, K=K)
   }
-  # print("overlapKe general limits")
-  # print(overlapKe)
-  # points(t_unique, cumOverlapKe, col=2)
   
   # look at overlap with whole functional covariate 
   overlapKeComplete  <- getOverlap(subset=1:ncol(X1), X1=X1, L=L, Bs=Bs, K=K)
@@ -935,8 +857,8 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
 trace_lv <- function(A, B, tol=1e-10){
   ## A, B orthnormal!!
   
-  #Rolf Larsson, Mattias Villani (2001)
-  #"A distance measure between cointegration spaces"
+  # Rolf Larsson, Mattias Villani (2001)
+  # "A distance measure between cointegration spaces"
   
   if(NCOL(A)==0 | NCOL(B)==0){
     return(0)

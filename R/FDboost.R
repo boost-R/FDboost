@@ -483,14 +483,6 @@ FDboost <- function(formula,          ### response ~ xvars
     ##trmstrings <- attr(tf, "term.labels")
     ##equalBrackets <- NULL
     if(length(trmstrings) > 0){
-      #### insert index at end of each base-learner
-      ##trmstrings2 <- paste(substr(trmstrings, 1 , nchar(trmstrings)-1), ", index=", id[2],")", sep = "")
-      #### check if number of opening brackets is equal to number of closing brackets
-      ##equalBrackets <- sapply(1:length(trmstrings2), function(i)
-      ##  {
-      ##  sapply(regmatches(trmstrings2[i], gregexpr("\\(", trmstrings2[i])), length) ==
-      ##    sapply(regmatches(trmstrings2[i], gregexpr("\\)", trmstrings2[i])), length)
-      ##})
       ## insert index into the other base-learners of the tensor-product as well
       for(i in 1:length(trmstrings)){
         if(grepl( "%X", trmstrings2[i])){
@@ -511,11 +503,7 @@ FDboost <- function(formula,          ### response ~ xvars
         if( grepl("%A%", trmstrings[i]) ) trmstrings2[i] <- trmstrings[i]
         if( grepl("%A0%", trmstrings[i]) ) trmstrings2[i] <- trmstrings[i]
         if( grepl("%O%", trmstrings[i]) ) trmstrings2[i] <- trmstrings[i]
-        # ##  do not add an index for base-learner that do not have brackets
-        # if( !grepl("\\(", trmstrings[i]) ){ 
-        #   trmstrings2[i] <- trmstrings[i]
-        #   trmWoBracket <- c(trmWoBracket, i)
-        # }
+        ##  do not add an index for base-learner that do not have brackets
         if( i %in% which(!equalBrackets) ) trmstrings2[i] <- trmstrings[i]
       }
       trmstrings <- trmstrings2
@@ -588,14 +576,12 @@ FDboost <- function(formula,          ### response ~ xvars
         
   ### get covariates that are modeled constant over time
   # code of function pffr() of package refund
-  ##tf <- terms.formula(formula, specials = c("c"))
-  ##trmstrings <- attr(tf, "term.labels")
   terms <- sapply(trmstrings, function(trm) as.call(parse(text = trm))[[1]], simplify = FALSE) 
-  #ugly, but getTerms(formula)[-1] does not work for terms like I(x1:x2) 
+  # ugly, but getTerms(formula)[-1] does not work for terms like I(x1:x2) 
   frmlenv <- environment(formula)
   where.c <- attr(tf, "specials")$c - 1    # indices of scalar offset terms
   
-  #transform: c(foo) --> foo
+  # transform: c(foo) --> foo
   if(length(where.c)){ 
     trmstrings[where.c] <- sapply(trmstrings[where.c], function(x){
       sub("\\)$", "", sub("^c\\(", "", x)) #c(BLA) --> BLA
@@ -604,14 +590,12 @@ FDboost <- function(formula,          ### response ~ xvars
   }
   assign("ONEtime", rep(1.0, length(time)))
   
-  
   if(scalarResponse){ ## scalar response 
     
     nr <- NROW(response)
     nobs <- nr # number of observed trajectories
     nc <- 1
     dresponse <- response
-    
     
   }else{ ## functional response 
     
@@ -630,11 +614,6 @@ FDboost <- function(formula,          ### response ~ xvars
       ## in case of a scalar factor response, use the original factor as response 
       if(!is.null(response_factor)) dresponse <- response_factor
       nobs <- nr # number of observed trajectories
-      ## check wether time variable is used in other base-learners
-      ## only check in regular response case, as for irregular response, the problem cannot occur
-      #if(nameyind %in% allCovs){
-      #  warning("Do not use the same variable t as time-variable in y(t) and in the base-learners, e.g., as x(t).")
-      #}
     }else{
       stopifnot(is.null(dim(response))) ## stopifnot(is.vector(response))
       # check length of response and its time and index
@@ -651,8 +630,6 @@ FDboost <- function(formula,          ### response ~ xvars
     
   }
     
-
-  
   ### save original dimensions of response
   ydim <- dim(response)
   
@@ -670,14 +647,8 @@ FDboost <- function(formula,          ### response ~ xvars
       
   }
   
-  
   ### variable to fit smooth intercept
   assign("ONEx", rep(1.0, nobs))
-  
-  #   ### TODO: plausibility check: 
-  #   # for constrained effects in the formula the model should include an intercept
-  #   grep("bbsc", trmstrings) + grep("brandomc", trmstrings)
-  
   
   ##### compose mboost formula
 
@@ -709,9 +680,6 @@ FDboost <- function(formula,          ### response ~ xvars
           stop("The timeLab of the hmatrix-object in bhistx(), '", getTimeLab(data[[temp_name]]),
                "', must be euqal to the name of the time-variable in timeformula, '", nameyind, "'.")
         }
-        #if(!is.null(nameid) && any( abs(getId(data[[temp_name]]) - id) > .Machine$double.eps*10^10) ){
-        #  stop("The id-variable of the hmatrix-object in bhistx() must match the id-variable.")
-        #}
         timeLong <- time
         ## for response matrix: expand time accordingly 
         if(!is.null(ydim)) timeLong <- rep(time, each = ydim[1] )
@@ -726,8 +694,7 @@ FDboost <- function(formula,          ### response ~ xvars
   
   ## set up formula for effects constant in time
   if(length(where.c) > 0){
-    ### set c_df to the df/lambda in timeformula
-    ##<FIXME> Does this make sense for bols() base-learner?
+    # set c_df to the df/lambda in timeformula
     if( grepl("lambda", tfm) || 
           ( grepl("bols", tfm) &  !grepl("df", tfm)) ){
       c_lambda <- eval(parse(text = paste(tfm, "$dpp(rep(1.0,", length(time), "))$df()", sep = "")))["lambda"]
@@ -914,7 +881,6 @@ FDboost <- function(formula,          ### response ~ xvars
 
   }
   
-  
   ## vars_envir_formula <- fm_vars[ ! fm_vars %in% c(names(data), "dresponse" , "ONEx", "ONEtime", yind) ]
   # variables that exist in environment(fm) 
   vars1 <- sapply(fm_vars, exists, envir = environment(fm), inherits = FALSE)   
@@ -931,8 +897,6 @@ FDboost <- function(formula,          ### response ~ xvars
     if(! exists(vars_envir_formula[i], envir = environment(formulaFDboost)))
       stop("Variable <", vars_envir_formula[i], "> does not exist.")
     tmp <- get(vars_envir_formula[i], envir = environment(formulaFDboost))
-    ## a <- try(get(vars_envir_formula[i], envir = environment(formula))) 
-    # if(class(a) == "try-error") get(vars_envir_formula[i], envir = parent.frame())
     assign(x = vars_envir_formula[i], value = tmp,  envir = environment(fm))
   }
   rm(tmp)
@@ -944,7 +908,8 @@ FDboost <- function(formula,          ### response ~ xvars
   w <- weights
   if(is.null(id)){
     if (length(w) == nr) w <- rep(w, nc) # expand weights if they are only on the columns
-    if(length(w) != nc*nr) stop("Dimensions of weights do not match the dimensions of the response.") # check dimensions of w  
+    # check dimensions of w
+    if(length(w) != nc*nr) stop("Dimensions of weights do not match the dimensions of the response.")   
   }
 
   ## save the integration weights as data_weights
@@ -970,7 +935,6 @@ FDboost <- function(formula,          ### response ~ xvars
   
   ### set weights of missing values to 0
   if(sum(is.na(dresponse)) > 0){
-    #warning(paste("The response contains", sum(is.na(dresponse)) ,"missing values. The corresponding weights are set to 0."))
     w[which(is.na(dresponse))] <- 0
   }
   
@@ -1226,11 +1190,7 @@ FDboost <- function(formula,          ### response ~ xvars
   if(scalarNoFLAM) ret$timeformula <- ""
   ret$formulaFDboost <- paste(deparse(formulaFDboost), collapse = "")
   ret$formulaMboost <- paste(deparse(fm), collapse = "")
-  
-#   ret$timeformula <- timeformula
-#   ret$formulaFDboost <- formulaFDboost
-#   ret$formulaMboost <- fm
-  
+
   ret
 }
 

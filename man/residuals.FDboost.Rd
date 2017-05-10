@@ -15,7 +15,8 @@
 matrix of residual values
 }
 \description{
-Takes a fitted \code{FDboost}-object and computes the residuals.
+Takes a fitted \code{FDboost}-object and computes the residuals, 
+more precisely the current value of the negative gradient is returned.
 }
 \details{
 The residual is missing if the corresponding value of the response was missing.

@@ -1,13 +1,21 @@
 
-#' Summary of a boosted functional regression model 
+#' Print and summary of a boosted functional regression model 
 #' 
-#'  Takes a fitted \code{FDboost}-object and produces a summary.
+#' Takes a fitted \code{FDboost}-object and produces a print 
+#' to the console or a summary.
 #' 
 #' @param object a fitted \code{FDboost}-object
+#' @param x a fitted \code{FDboost}-object
 #' @param ... currently not used
+#' 
 #' @seealso \code{\link{FDboost}} for the model fit.
-#' @return a list with summary information 
+#' 
+#' @return a list with information on the model / a list with summary information 
+#' 
 #' @method summary FDboost
+#' 
+#' @aliases print.FDboost
+#' 
 #' @export
 ### similar to summary.mboost()
 summary.FDboost <- function(object, ...) {
@@ -21,26 +29,16 @@ summary.FDboost <- function(object, ...) {
     selprob <- sort(selprob, decreasing = TRUE)
     ret$selprob <- selprob[selprob > 0]
   }
-  class(ret) <- "summary.FDboost"
   
-  ### only show one unique offset value
-  #ret$object$offset <- unique(ret$object$offset)
+  class(ret) <- "summary.FDboost"
   
   return(ret)
 }
 
 
-#' Print a boosted functional regression model 
-#' 
-#'  Takes a fitted \code{FDboost}-object and produces a print on the console.
-#' 
-#' @param x a fitted \code{FDboost}-object
-#' @param ... currently not used
-#' @seealso \code{\link{FDboost}} for the model fit.
-#' @return a list with information on the model 
 #' @method print FDboost
+#' @rdname summary.FDboost
 #' @export
-### similar to print.mboost()
 ### similar to print.mboost()
 print.FDboost <- function(x, ...) {
   
@@ -128,22 +126,6 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
   # NULL if no base-learners are selected as mstop = 0
   if(!is.null(selected(object))) sel <- sort(unique(selected(object))) 
   
-  ### <FIXME> does not work, as for bl bsignal(), bhist() and bconcurrent(), the 
-  ### index is not selected
-  #   # which variables do you need for the prediction
-  #   allVariables <- c()
-  #   for(i in which){
-  #     allVariables <- c(allVariables, names(object$baselearner[[i]]$model.frame()))
-  #     ## FIXME: save the index variables for bsignal(), bhist() and bconcurrent()
-  #     if( grepl("bsignal", object$baselearner[[i]]$get_call() ) ){
-  #       allVariables <- c(allVariables, object$baselearner[[i]]$get_call() )
-  #     }
-  #   }
-  #   
-  #   ## only keep the necessary variables
-  #   allVariables <- unique(allVariables, all.vars(formula(object$timeformula)))
-  #   newdata <- newdata[allVariables]
-  
   ### Prepare data so that the function predict.mboost() can be used
   if(!is.null(newdata)){
     
@@ -160,7 +142,6 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
       } 
       
       lengthYind <- length(newdata[[nameyind]])
-      #assign(nameyind, newdata[[nameyind]])
       
       # try to get more reliable information on n (number of trajectories)
       # and on lengthYind (length of time)
@@ -198,9 +179,8 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
       # dummy variable for time
       newdata$ONEtime <- rep(1.0, lengthYind)
       
-      #message("Predict ", n, " x ", lengthYind," observations.")
+      # message("Predict ", n, " x ", lengthYind," observations.")
 
-      
     }else{ #### for response observed on irregular grid
       
       n <- 1
@@ -263,9 +243,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
           fun_call <- gsub(pattern = "\\", replacement = "", x = fun_call, fixed=TRUE)
           indname <- all.vars(formula(paste("Y~", fun_call)))[3] # variabes are Y, x, s, (time)
         }
-        # print(xname); print(indname)
 
-        #indname_all <- c(indname_all, indname)
         if(i %in% c(posBhist, posBconc)){
           indnameY <- attr(object$baselearner[[i]]$get_data()[[xname]], "indnameY")
         }else{
@@ -287,30 +265,6 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
             attr(newdata[[xname]], "id") <-  id
           } 
         }       
-        
-        ### <FIXE> is this code still necessary?? changes necessary!
-        #         ## <FIXME> quite ugly how to deal with %X%, is there a way to do this more generally?
-        #         # save data of concurrent effects
-        #         if(i %in% posBconc){
-        #           newdataConc[[xname]] <- newdata[[xname]]
-        #           if(grepl("%X%", names(object$baselearner)[i])){
-        #             xname <- object$baselearner[[i]]$get_names() 
-        #             xname <- xname[!xname %in% names(newdataConc)] # already there
-        #             # print(xname)
-        #             newdataConc[xname] <- newdata[xname]
-        #           }
-        #         } 
-        #         
-        #         # save data of historic effects
-        #         if(i %in% posBhist){
-        #           newdataHist[[xname]] <- newdata[[xname]]
-        #           if(grepl("%X%", names(object$baselearner)[i])){
-        #             xname <- object$baselearner[[i]]$get_names() 
-        #             xname <- xname[!xname %in% names(newdataHist)] # already there
-        #             # print(xname)
-        #             newdataHist[xname] <- newdata[xname]
-        #           }
-        #         }
         
       } ## loop over posBsignal, ...
     } # end data setup for functional effects (adding index as attribute to the data)
@@ -484,10 +438,9 @@ fitted.FDboost <- function(object, toFDboost = TRUE, ...) {
       if (length(ret) == length(object$rownames)) 
         names(ret) <- object$rownames
     }
+    
   } else {
-    
-    ## ret <- predict(object, newdata = NULL, toFDboost = toFDboost, ...)
-    
+
     if ("newdata" %in% names(args)) {
       args$newdata <- NULL
       warning("Argument ", sQuote("newdata"), " was  ignored. Please use ", 
@@ -498,15 +451,14 @@ fitted.FDboost <- function(object, toFDboost = TRUE, ...) {
     args$toFDboost <- toFDboost
     
     ret <- do.call(predict, args)
-    
-    
   }
   ret
 }
  
 #' Residual values of a boosted functional regression model 
 #' 
-#' Takes a fitted \code{FDboost}-object and computes the residuals.
+#' Takes a fitted \code{FDboost}-object and computes the residuals, 
+#' more precisely the current value of the negative gradient is returned.
 #' 
 #' @param object a fitted \code{FDboost}-object
 #' @param ... not used

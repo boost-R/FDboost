@@ -73,8 +73,6 @@ The \code{FDboost}-object is a named list containing:
 \item{data}{the data that was used for the model fit}
 \item{id}{the id variable of the response}
 \item{predictOffset}{the function to predict the smooth offset}
-\item{offsetVec}{the offset for one trajectory if the response is represented as matrix and 
-otherwise the offset for all trajectories}
 \item{offsetFDboost}{offset as specified in call to FDboost} 
 \item{offsetMboost}{offset as given to mboost}
 \item{call}{the call to \code{FDboost}}

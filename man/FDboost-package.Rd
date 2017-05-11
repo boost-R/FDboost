@@ -51,7 +51,7 @@ R package version 2.8-0, \url{https://cran.r-project.org/package=mboost}
 
 Hofner, B., Mayr, A., Robinzonov, N., Schmid, M. (2014). Model-based Boosting in R: 
 A Hands-on Tutorial Using the R Package mboost. Computational Statistics, 29, 3-35. 
-\url{https://cran.r-project.org/web/packages/mboost/vignettes/mboost_tutorial.pdf}
+\url{https://cran.r-project.org/package=mboost/vignettes/mboost_tutorial.pdf}
 
 Ruegamer D., Brockhaus, S., Gentsch K., Scherer, K., Greven, S. (2016). Detecting synchronisation in 
 EEG- and EMG-Signals via boosted functional historical models. 

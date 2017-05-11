@@ -66,7 +66,7 @@ if(require(refund)){
   par(mfrow = c(4,4))
   plot(m, ask = FALSE)
   plot(ml, ask = FALSE)
-  plot(ms, ask = FALSE)
+  plot(ms, ask = FALSE, which =1:2)
   plot(mlss$mu, ask = FALSE); plot(mlss$sigma, ask = FALSE)
   
   ## test applyFolds()

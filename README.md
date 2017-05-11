@@ -3,9 +3,9 @@ FDboost
 
 [![Build Status (Linux)](https://travis-ci.org/boost-R/FDboost.svg?branch=master)](https://travis-ci.org/boost-R/FDboost)
 <!--[![Build status (Windows)](https://ci.appveyor.com/api/projects/status/5mkvicgin1j6pfc6/branch/master?svg=true)](https://ci.appveyor.com/project/hofnerb/mboost-h73a1/branch/master)  -->
-[![CRAN Status Badge](http://www.r-pkg.org/badges/version/FDboost)](http://cran.r-project.org/package=FDboost)
+[![CRAN Status Badge](https://www.r-pkg.org/badges/version/FDboost)](https://cran.r-project.org/package=FDboost)
 <!--[![Coverage Status](https://coveralls.io/repos/github/boost-R/mboost/badge.svg?branch=master)](https://coveralls.io/github/boost-R/mboost?branch=master) -->
-[![](http://cranlogs.r-pkg.org/badges/FDboost)](http://cran.rstudio.com/web/packages/FDboost/index.html)
+[![](https://cranlogs.r-pkg.org/badges/FDboost)](https://cran.rstudio.com/web/packages/FDboost/index.html)
 
 `FDboost` Boosting Functional Regression Models.
 

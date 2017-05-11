@@ -13,7 +13,7 @@ function-on-scalar and function-on-function regression models, are fitted
 by a component-wise gradient boosting algorithm.
 }
 \details{
-This package is intenden to fit regression models with functional variables. 
+This package is intended to fit regression models with functional variables. 
 It is possible to fit models with functional response and/or functional covariates, 
 resulting in Scalar-on-function, function-on-scalar and function-on-function regression. 
 Details on the functional regression models that can be fitted with \pkg{FDboost}
@@ -24,7 +24,6 @@ the R package \pkg{mboost} (Hothorn et al., 2017).
 A comprehensive tutorial to \pkg{mboost} is given in Hofner et al. (2014). 
 
 The main fitting function is \code{\link{FDboost}}. 
-
 Like the fitting procedures in \pkg{mboost}, the function \code{FDboost} DOES NOT 
 automatically estimate an appropriate model complexity. The most important tuning parameter
 is the number of boosting iterations, which must be chosen by the user.  
@@ -48,7 +47,7 @@ Signal regression models for location, scale and shape with an application to st
 \url{https://arxiv.org/abs/1605.04281}
 
 Hothorn T., Buehlmann P., Kneib T., Schmid M., and Hofner B. (2017). mboost: Model-Based Boosting, 
-R package version 2.8-0, \url{https://CRAN.R-project.org/package=mboost}
+R package version 2.8-0, \url{https://cran.r-project.org/package=mboost}
 
 Hofner, B., Mayr, A., Robinzonov, N., Schmid, M. (2014). Model-based Boosting in R: 
 A Hands-on Tutorial Using the R Package mboost. Computational Statistics, 29, 3-35. 

@@ -27,10 +27,11 @@
 }
 \source{
   
-  Gentsch,  K.,  Grandjean,  D.  and  Scherer,  K.  R.  (2014)  Coherence  explored  between  emotioncomponents:  Evidence from event-related potentials and facial electromyography.BiologicalPsychology, 98, 70 - 81.
+  Gentsch,  K.,  Grandjean,  D.  and  Scherer,  K.  R.  (2014)  Coherence  explored  between  emotion components:  Evidence from event-related potentials and facial electromyography. Biological Psychology, 98, 70-81.
   
-  Ruegamer D, Brockhaus S, Gentsch K, Scherer K, Greven S (2016). Detecting Synchronisation in
-  EEG- and EMG-Signals via Boosted Functional Historical Models.
+ Ruegamer D., Brockhaus, S., Gentsch K., Scherer, K., Greven, S. (2016). Detecting synchronisation in 
+ EEG- and EMG-Signals via boosted functional historical models. 
+ \url{http://arxiv.org/abs/1609.06070} 
   
 }
 \examples{

@@ -301,7 +301,8 @@ X_histx <- function(mf, vary, args) {
 #' Base-learners for Functional Covariates
 #' 
 #' Base-learners that fit historical functional effects that can be used with the 
-#' tensor product, as e.g., hbistx(...) \%X\% bolsc(...).  
+#' tensor product, as, e.g., \code{hbistx(...) \%X\% bolsc(...)}, to form interaction 
+#' effects (Ruegamer et al., 2016).  
 #' For expert use only! May show unexpected behavior  
 #' compared to other base-learners for functional data!
 #' 
@@ -351,6 +352,8 @@ X_histx <- function(mf, vary, args) {
 #' where \eqn{T1} is the minimal index of \eqn{t} of the response \eqn{Y(t)}. 
 #' \code{bhistx} can only be used if \eqn{Y(t)} and \eqn{x(s)} are observd over
 #' the same domain \eqn{s,t \in [T1, T2]}. 
+#' The base-learner \code{bhistx} can be used to set up complex interaction effects 
+#' like factor-specific historical  effects as discussed in Ruegamer et al. (2016). 
 #' 
 #' Note that the data has to be supplied as a \code{hmatrix} object for 
 #' model fit and predictions. 
@@ -364,7 +367,9 @@ X_histx <- function(mf, vary, args) {
 #' \code{bl} (base-learner) with a \code{fit} function. The call to 
 #' \code{fit} finally returns an object of class \code{bm} (base-model).
 #' 
-#' @seealso \code{\link{FDboost}} for the model fit. 
+#' @seealso \code{\link{FDboost}} for the model fit and \code{\link{bhist}} 
+#' for simple hisotorical effects. 
+#'  
 #' @keywords models
 #' 
 #' @references 
@@ -374,6 +379,10 @@ X_histx <- function(mf, vary, args) {
 #' 
 #' Marra, G. and Wood, S.N. (2011): Practical variable selection for generalized additive models. 
 #' Computational Statistics & Data Analysis, 55, 2372-2387.
+#' 
+#' Ruegamer D., Brockhaus, S., Gentsch K., Scherer, K., Greven, S. (2016). Detecting synchronisation in 
+#' EEG- and EMG-Signals via boosted functional historical models. 
+#' \url{http://arxiv.org/abs/1609.06070}
 #' 
 #' Scheipl, F., Staicu, A.-M. and Greven, S. (2015): 
 #' Functional Additive Mixed Models, Journal of Computational and Graphical Statistics, 24(2), 477-501.

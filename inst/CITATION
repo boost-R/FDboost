@@ -1,7 +1,7 @@
 
 
-year <- 2016
-vers <- "0.2-1"
+year <- 2017
+vers <- "0.3-0"
 
 citHeader("To cite package 'FDboost' itself use the manual;  
 to cite functional linear array models use Brockhaus et al. (2015).")

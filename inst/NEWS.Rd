@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
-\section{Changes in FDboost version 0.2-1 (2017-05-04)}{
+\section{Changes in FDboost version 0.3-0 (2017-05-11)}{
     \subsection{User-visible changes}{
     \itemize{
     \item new function \code{bootstrapCI()} to compute bootstrapped coefficients 
@@ -16,12 +16,18 @@
     \item \code{update.FDboost()} works now with scalar response 
     \item \code{FDboost()} works with family \code{Binomial(type = "glm")}, 
           see isssue \href{https://github.com/boost-R/FDboost/issues/1}{#1} 
+    \item \code{applyFolds()} works for factor response, 
+          see issue \href{https://github.com/boost-R/FDboost/issues/7}{#7}
     }
     }
    \subsection{Miscellaneous}{
     \itemize{
-	  \item adapt \pkg{FDboost} to \pkg{mboost} 2.8-1 that allows for mstop = 0
-	  \item restructure FDboostLSS() such that it calls mboostLSS_fit() from \pkg{mboostLSS} 
+	  \item adapt \pkg{FDboost} to \pkg{mboost} 2.8-0 that allows for mstop = 0
+	  \item restructure FDboostLSS() such that it calls mboostLSS_fit() from \pkg{gamboostLSS} 2.0-0  
+	  \item in \pkg{FDboost}, set \code{options("mboost_indexmin" = +Inf)} to disable the 
+	        internal use of ties in model fitting, as this breaks some methods for models with response 
+	        in long format and for models containing \code{bhsitx}, 
+	        see issue \href{https://github.com/boost-R/FDboost/issues/10}{#10}
     }
   }
 }

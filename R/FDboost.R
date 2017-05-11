@@ -428,7 +428,7 @@
 #' @import methods Matrix mboost
 #' @importFrom grDevices heat.colors rgb
 #' @importFrom graphics abline barplot contour legend lines matplot par persp plot points
-#' @importFrom utils getS3method 
+#' @importFrom utils getS3method packageDescription
 #' @importFrom stats approx as.formula coef complete.cases fitted formula lm median model.matrix model.weights na.omit predict quantile sd terms.formula variable.names 
 #' @importFrom gamboostLSS GaussianLSS GaussianMu GaussianSigma make.grid cvrisk.mboostLSS mboostLSS_fit
 #' @importFrom stabs stabsel stabsel_parameters 

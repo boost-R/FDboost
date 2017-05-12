@@ -337,10 +337,11 @@
 #'   ## fit model with cyclic splines over the year
 #'   mod3 <- FDboost(l10precip ~ bols(region, df = 2.5, contrasts.arg = "contr.dummy") 
 #'                    + bsignal(temp, month.s, knots = 11, cyclic = TRUE, 
-#'                            df = 2.5, boundary.knots = c(0.5,12.5), check.ident = FALSE), 
-#'                    timeformula = ~ bbs(month.t, knots = 11, cyclic = TRUE, 
-#'                                   df = 3, boundary.knots = c(0.5, 12.5)), 
-#'                    offset = "scalar", offset_control = o_control(k_min = 5), 
+#'                              df = 2.5, boundary.knots = c(0.5,12.5), check.ident = FALSE), 
+#'                   timeformula = ~ bbs(month.t, knots = 11, cyclic = TRUE, 
+#'                                       df = 3, boundary.knots = c(0.5, 12.5)), 
+#'                   offset = "scalar", offset_control = o_control(k_min = 5), 
+#'                   control = boost_control(mstop = 60), 
 #'                   data = CanadianWeather) 
 #'  
 #'  \dontrun{                  
@@ -348,12 +349,12 @@
 #'    ## using the function applyFolds 
 #'    set.seed(123)
 #'    folds3 <- cv(rep(1, length(unique(mod3$id))), B = 5)
-#'    appl3 <- applyFolds(mod3, folds = folds3)
+#'    appl3 <- applyFolds(mod3, folds = folds3, grid = 1:200)
 #'  
 #'    ## use function cvrisk; be careful to do the resampling on the level of curves
 #'    set.seed(123)
 #'    folds3long <- cvLong(id = mod3$id, weights = model.weights(mod3), B = 5)
-#'    cvm3 <- cvrisk(mod3, folds = folds3long, grid = 1:500)
+#'    cvm3 <- cvrisk(mod3, folds = folds3long, grid = 1:200)
 #'    mstop(cvm3) ## mod3[64]
 #'    
 #'    summary(mod3)

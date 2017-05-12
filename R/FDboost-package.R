@@ -9,20 +9,20 @@
 #' @details 
 #' This package is intended to fit regression models with functional variables. 
 #' It is possible to fit models with functional response and/or functional covariates, 
-#' resulting in Scalar-on-function, function-on-scalar and function-on-function regression. 
+#' resulting in scalar-on-function, function-on-scalar and function-on-function regression. 
 #' Details on the functional regression models that can be fitted with \pkg{FDboost}
 #' can be found in Brockhaus et al. (2015, 2016, 2017) and Ruegamer et al. (2016).  
 #' 
-#' For model fitting by component-wise gradient boosting, \pkg{FDboost} relies on 
+#' Using component-wise gradient boosting as fitting procedure, \pkg{FDboost} relies on 
 #' the R package \pkg{mboost} (Hothorn et al., 2017). 
 #' A comprehensive tutorial to \pkg{mboost} is given in Hofner et al. (2014). 
 #' 
 #' The main fitting function is \code{\link{FDboost}}. 
+#' The model complexity is controlled by the number of boosting iterations (mstop).   
 #' Like the fitting procedures in \pkg{mboost}, the function \code{FDboost} DOES NOT 
-#' automatically estimate an appropriate model complexity. The most important tuning parameter
-#' is the number of boosting iterations, which must be chosen by the user.  
-#' It is recommended to determine an adequate stopping iteration by resampling methods like 
-#' cross-validation or bootstrapping. 
+#' select an appropriate stopping iterations. This must be chosen by the user.  
+#' The user can determine an adequate stopping iteration by resampling methods like 
+#' cross-validation or bootstrap. 
 #' This can be done using the function \code{\link{applyFolds}}. 
 #' 
 #' @references 

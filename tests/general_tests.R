@@ -47,11 +47,12 @@ if(require(refund)){
                 control = boost_control(mstop = 10), data = dat)
   
   ## scalar response 
-  ms <- FDboost(Y_scalar ~ 1 + bsignal(X1, svals, knots = 6, df = 3)
-                + bbs(xsmoo, knots = 6, df = 3) 
-                + bols(xte1, xte2, df = 3), 
+  ms <- FDboost(Y_scalar ~ 1 + bsignal(X1, svals, knots = 6, df = 2)
+                + bbs(xsmoo, knots = 6, df = 2, differences = 1) 
+                + bols(xte1, df = 2) 
+                + bols(xte2, df = 2), 
                 timeformula = NULL, 
-                control = boost_control(mstop = 10), data = dat)
+                control = boost_control(mstop = 50), data = dat)
   
   ## GAMLSS with functional response 
   mlss <- FDboostLSS(Y ~ 1 + bsignal(X1, svals, knots = 6, df = 4), 
@@ -66,7 +67,7 @@ if(require(refund)){
   par(mfrow = c(4,4))
   plot(m, ask = FALSE)
   plot(ml, ask = FALSE)
-  plot(ms, ask = FALSE, which =1:2)
+  plot(ms, ask = FALSE)
   plot(mlss$mu, ask = FALSE); plot(mlss$sigma, ask = FALSE)
   
   ## test applyFolds()

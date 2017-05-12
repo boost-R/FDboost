@@ -9,6 +9,10 @@ FDboost
 
 `FDboost` Boosting Functional Regression Models.
 
+The package FDboost fits regression models for functional data, i.e., 
+scalar-on-function, function-on-scalar and function-on-function regression models, 
+by a component-wise gradient boosting algorithm. 
+
 ## Using FDboost
 
 For installation instructions see below.

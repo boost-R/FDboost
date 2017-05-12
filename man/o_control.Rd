@@ -23,4 +23,3 @@ closest non-missing value, see \code{\link[stats]{approx}}}
 \description{
 Function to control estimation of smooth offset
 }
-

@@ -24,4 +24,3 @@ The residual is missing if the corresponding value of the response was missing.
 \seealso{
 \code{\link{FDboost}} for the model fit.
 }
-

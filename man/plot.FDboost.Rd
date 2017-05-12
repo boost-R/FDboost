@@ -4,6 +4,8 @@
 \alias{plot.FDboost}
 \alias{plotPredicted}
 \alias{plotResiduals}
+\alias{plotPredicted}
+\alias{plotResiduals}
 \title{Plot the fit or the coefficients of a boosted functional regression model}
 \usage{
 \method{plot}{FDboost}(x, raw = FALSE, rug = TRUE, which = NULL,
@@ -77,4 +79,3 @@ plots the fitted effects or the coefficient-functions/surfaces.
 \code{\link{FDboost}} for the model fit and 
 \code{\link{coef.FDboost}} for the calculation of the coefficient functions.
 }
-

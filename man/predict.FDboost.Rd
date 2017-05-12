@@ -41,4 +41,3 @@ Takes a fitted \code{FDboost}-object produced by \code{\link{FDboost}()} and pro
 \code{\link{FDboost}} for the model fit 
 and \code{\link{plotPredicted}} for a plot of the observed values and their predictions.
 }
-

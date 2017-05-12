@@ -47,4 +47,3 @@ is used over the same domain
 as the response! In that case you would have to rename the index of the response or that 
 of the covariates.
 }
-

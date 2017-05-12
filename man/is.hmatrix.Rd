@@ -12,4 +12,3 @@ is.hmatrix(object)
 \description{
 is.hmatrix tests if its argument is an object of class hmatrix.
 }
-

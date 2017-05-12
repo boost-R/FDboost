@@ -2,9 +2,10 @@
 % Please edit documentation in R/crossvalidation.R
 \name{mstop.validateFDboost}
 \alias{mstop.validateFDboost}
-\alias{plot.validateFDboost}
-\alias{plotPredCoef}
 \alias{print.validateFDboost}
+\alias{plot.validateFDboost}
+\alias{mstop.validateFDboost}
+\alias{plotPredCoef}
 \title{Methods for objects of class validateFDboost}
 \usage{
 \method{mstop}{validateFDboost}(object, riskopt = c("mean", "median"), ...)
@@ -77,4 +78,3 @@ and residuals as determined by \code{validateFDboost}. The function \code{plotPr
 coefficients that were estimated in the folds - only possible if the argument getCoefCV is \code{TRUE} in 
 the call to \code{validateFDboost}.
 }
-

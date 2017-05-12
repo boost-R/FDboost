@@ -34,4 +34,3 @@ Takes a base-learner and extracts information.
 \seealso{
 \code{\link[mboost]{extract}} for the \code{extract} function of the package mboost
 }
-

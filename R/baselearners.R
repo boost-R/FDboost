@@ -484,13 +484,14 @@ X_bsignal <- function(mf, vary, args) {
 #' 
 #' \code{bfpc()} is a base-learner for a linear effect of functional covariates based on 
 #' functional principal component analysis (FPCA). 
-#' For the funcitonal linear effect \eqn{\int x_i(s)\beta(s)ds} the functional covariate 
+#' For the functional linear effect \eqn{\int x_i(s)\beta(s)ds} the functional covariate 
 #' and the coefficient function are both represented by a FPC basis. 
 #' The functional covariate
 #' \eqn{x(s)} is decomposed into \eqn{x(s) \approx \sum_{k=1}^K \xi_{ik} \Phi_k(s)} using 
 #' \code{\link[refund]{fpca.sc}} for the truncated Karhunen-Loeve decomposition. 
 #' Then \eqn{\beta(s)} is represented in the function
 #' space spanned by \eqn{\Phi_k(s)}, k=1,...,K, see Scheipl et al. (2015) for details. 
+#' As penalty matrix, the identity matrix is used. 
 #' The implementation is similar to \code{\link[refund]{ffpc}}.  
 #' 
 #' It is recommended to use centered functional covariates with 

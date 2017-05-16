@@ -389,7 +389,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #' Cross-validation and bootstrapping over curves to compute the empirical risk for 
 #' hyper-parameter selection.    
 #' Note that the function \code{validateFDboost()} is experimental. 
-#' It also compute resampled coefficients and predictions for the models.
+#' It also computes resampled coefficients and predictions for the models.
 #' 
 #' @param object fitted FDboost-object
 #' @param response optional, specify a response vector for the computation of the prediction errors.  
@@ -1584,37 +1584,43 @@ cvrisk.FDboost <- function(object, folds = cvLong(id=object$id, weights=model.we
 #' @export
 # wrapper for function cv() of mboost, additional type "curves"
 # create folds for data in long format
-cvLong <- function(id, weights=rep(1, l=length(id)), 
+cvLong <- function(id, weights = rep(1, l=length(id)), 
                    type = c("bootstrap", "kfold", "subsampling", "curves"), 
                    B = ifelse(type == "kfold", 10, 25), prob = 0.5, strata = NULL){
+  
+  stopifnot(length(id) == length(weights))
+  
   type <- match.arg(type)
   n <- length(weights)
   
-  if(type=="curves"){
+  if(type == "curves"){
+    if(!is.null(strata)) warning("Argument strata is ignored for type = 'curves'.")
     # set up folds so that always one curve is left out for the estimation
-    folds <- -diag(length(unique(id)))+1
-    foldsLong <- folds[id,]*weights    
+    folds <- - diag(length(unique(id))) + 1
+    foldsLong <- folds[id, ] * weights    
     B <- length(unique(id))
   }else{
     # expand folds over the functional measures of the response
-    folds <- cv(weights=rep(1, length(unique(id))), type = type, B = B, prob = prob, strata = strata)
-    foldsLong <- folds[id,]*weights
+    folds <- cv(weights=rep(1, length(unique(id))), type = type, 
+                B = B, prob = prob, strata = strata)
+    foldsLong <- folds[id, , drop = FALSE] * weights
   }
   attr(foldsLong, "type") <- paste(B, "-fold ", type, sep = "")  
   return(foldsLong)
+  
 }
 
 #' @rdname validateFDboost
 #' @export
 # wrapper for function cv() of mboost, additional type "curves"
 # add option id to sample on the level of id if there are repeated measures
-cvMa <- function(ydim, weights=rep(1, l=ydim[1]*ydim[2]), 
+cvMa <- function(ydim, weights = rep(1, l = ydim[1] * ydim[2]), 
                  type = c("bootstrap", "kfold", "subsampling", "curves"), 
                  B = ifelse(type == "kfold", 10, 25), prob = 0.5, strata = NULL, ...){
   
   dots <- list(...)
   
-  if(any(names(dots)=="id")) message("argument id in cvMa is deprecated and ignored.")
+  if(any(names(dots) == "id")) message("argument id in cvMa is deprecated and ignored.")
   
   ncolY <- ydim[2]
   nrowY <- ydim[1]  
@@ -1622,11 +1628,11 @@ cvMa <- function(ydim, weights=rep(1, l=ydim[1]*ydim[2]),
   type <- match.arg(type)
   n <- length(weights)
   
-  if ( (nrowY*ncolY) != n) stop("The arguments weights and ydim do not match.")
+  if ( (nrowY * ncolY) != n) stop("The arguments weights and ydim do not match.")
   
   ## cvMa is only a wrapper for cvLong
-  foldsMa <- cvLong(id=rep(1:nrowY, times=ncolY), weights=weights, 
-                    type=type, B=B, prob = 0.5, strata = NULL) 
+  foldsMa <- cvLong(id = rep(1:nrowY, times = ncolY), weights = weights, 
+                    type = type, B=B, prob = 0.5, strata = NULL) 
   return(foldsMa)
 }
 

@@ -139,7 +139,7 @@ which is a named list containing:
 Cross-validation and bootstrapping over curves to compute the empirical risk for 
 hyper-parameter selection.    
 Note that the function \code{validateFDboost()} is experimental. 
-It also compute resampled coefficients and predictions for the models.
+It also computes resampled coefficients and predictions for the models.
 }
 \details{
 The number of boosting iterations is an important hyper-parameter of boosting  

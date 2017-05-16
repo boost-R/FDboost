@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
-\section{Changes in FDboost version 0.3-0 (2017-05-11)}{
+\section{Changes in FDboost version 0.3-0 (2017-05-16)}{
     \subsection{User-visible changes}{
     \itemize{
     \item new function \code{bootstrapCI()} to compute bootstrapped coefficients 
@@ -18,6 +18,8 @@
           see isssue \href{https://github.com/boost-R/FDboost/issues/1}{#1} 
     \item \code{applyFolds()} works for factor response, 
           see issue \href{https://github.com/boost-R/FDboost/issues/7}{#7}
+    \item \code{cvLong} and \code{cvMA} return a matrix for only one resampling 
+           fold with \code{B = 1} (proposed by Almond Stoecker)
     }
     }
    \subsection{Miscellaneous}{

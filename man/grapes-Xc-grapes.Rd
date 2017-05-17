@@ -69,11 +69,10 @@ colMeans(predict(mod1, which = 4)[viscosity$T_C == "low", ])
 # funplot(mod1$yind, predict(mod1, which=4))
 
 }
-\author{
-Sarah Brockhaus, David Ruegamer
-}
 \references{
 Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 The functional linear array model. Statistical Modelling, 15(3), 279-300.
 }
-
+\author{
+Sarah Brockhaus, David Ruegamer
+}

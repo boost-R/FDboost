@@ -3,6 +3,7 @@
 \name{plot.bootstrapCI}
 \alias{plot.bootstrapCI}
 \alias{print.bootstrapCI}
+\alias{print.bootstrapCI}
 \title{Methods for objects of class bootstrapCI}
 \usage{
 \method{plot}{bootstrapCI}(x, which = NULL, pers = TRUE,
@@ -39,4 +40,3 @@ Methods for objects that are fitted to compute bootstrap confidence intervals.
 \details{
 \code{plot.bootstrapCI} plots the bootstrapped coefficients.
 }
-

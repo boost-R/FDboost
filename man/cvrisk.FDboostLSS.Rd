@@ -50,4 +50,3 @@ It overrieds the default for the folds, so that the folds are sampled on the lev
 \seealso{
 \code{\link[gamboostLSS]{cvrisk.mboostLSS}} in packge gamboostLSS.
 }
-

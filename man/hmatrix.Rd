@@ -80,4 +80,3 @@ str(myhmatrix[id1 \%in\% c(2, 3), ])
 \code{\link{getTime.hmatrix}} to extract attributes, 
 and ?"[.hmatrix" for the extract method.
 }
-

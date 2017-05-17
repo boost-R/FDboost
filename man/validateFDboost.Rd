@@ -2,10 +2,12 @@
 % Please edit documentation in R/crossvalidation.R
 \name{applyFolds}
 \alias{applyFolds}
+\alias{validateFDboost}
+\alias{cvMa}
+\alias{cvLong}
+\alias{cvrisk.FDboost}
 \alias{cvLong}
 \alias{cvMa}
-\alias{cvrisk.FDboost}
-\alias{validateFDboost}
 \title{Cross-Validation and Bootstrapping over Curves}
 \usage{
 applyFolds(object, folds = cv(rep(1, length(unique(object$id))), type =
@@ -275,4 +277,3 @@ mod <- mod[75]
 \seealso{
 \code{\link[mboost]{cvrisk}} to perform cross-validation with scalar response.
 }
-

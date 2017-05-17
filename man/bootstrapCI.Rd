@@ -191,4 +191,3 @@ bootCIs <- bootstrapCI(mod2, B_outer = 1000, B_inner = 10)
 \author{
 David Ruegamer, Sarah Brockhaus
 }
-

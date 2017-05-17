@@ -423,9 +423,6 @@ pred <- predict(mod4, newdata = newd)
                   
                 
 }
-\author{
-Sarah Brockhaus, Torsten Hothorn
-}
 \references{
 Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 The functional linear array model. Statistical Modelling, 15(3), 279-300. 
@@ -446,6 +443,8 @@ Note that \link{FDboost} calls \code{\link[mboost]{mboost}} directly.
 See, e.g., \code{\link[FDboost]{bsignal}} and \code{\link[FDboost]{bbsc}} 
 for possible base-learners.
 }
+\author{
+Sarah Brockhaus, Torsten Hothorn
+}
 \keyword{models,}
 \keyword{nonlinear}
-

@@ -15,4 +15,3 @@ wide2long(time, id)
 Transform id and time from wide format into long format, i.e., time and id are 
 repeated accordingly so that two vectors of the same length are returned.
 }
-

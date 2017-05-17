@@ -3,8 +3,8 @@
 \docType{package}
 \name{FDboost-package}
 \alias{FDboost-package}
-\alias{FDboost_package}
 \alias{_PACKAGE}
+\alias{FDboost_package}
 \alias{package-FDboost}
 \title{FDboost: Boosting Functional Regression Models}
 \description{
@@ -30,9 +30,6 @@ select an appropriate stopping iterations. This must be chosen by the user.
 The user can determine an adequate stopping iteration by resampling methods like 
 cross-validation or bootstrap. 
 This can be done using the function \code{\link{applyFolds}}.
-}
-\author{
-Sarah Brockhaus and David Ruegamer
 }
 \references{
 Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
@@ -61,4 +58,6 @@ EEG- and EMG-Signals via boosted functional historical models.
 \code{\link{FDboost}} for the main fitting function and 
 \code{\link{applyFolds}} for model tuning via resampling methods.
 }
-
+\author{
+Sarah Brockhaus and David Ruegamer
+}

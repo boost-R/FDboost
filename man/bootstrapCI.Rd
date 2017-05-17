@@ -6,7 +6,7 @@
 \usage{
 bootstrapCI(object, which = NULL, resampling_fun_outer = NULL,
   resampling_fun_inner = NULL, B_outer = 100, B_inner = 25,
-  levels = c(0.05, 0.95))
+  levels = c(0.05, 0.95), ...)
 }
 \arguments{
 \item{object}{a fitted model object of class \code{FDboost}, 
@@ -21,6 +21,7 @@ and \code{fun}, where \code{object} corresponds to the fitted
 \code{FDboost} object and \code{fun} is passed to the \code{fun}
 argument of the resampling function (see examples).
 If \code{NULL}, \code{\link{applyFolds}} is used with 100-fold boostrap.
+Further arguments to \code{\link{applyFolds}} can be passed via \code{...}.
 Although the function can be defined very flexible, it is recommended 
 to use \code{applyFolds} and, in particular, not \code{cvrisk}, 
 as in this case, weights of the inner and outer 
@@ -44,6 +45,9 @@ is supplied.}
 
 \item{levels}{the confidence levels required. If NULL, the 
 raw results are returned.}
+
+\item{...}{further arguments passed to \code{\link{applyFolds}} if
+the default for \code{resampling_fun_outer} is used}
 }
 \value{
 A list containing the elements \code{raw_results}, the 
@@ -123,14 +127,22 @@ B = 10 # 10-fold for inner resampling
 bootCIs <- bootstrapCI(m1, resampling_fun_inner = my_inner_fun)
 }
 
+## We can also use the ... argument to parallelize the applyFolds
+## function in the outer resampling 
+
+\dontrun{
+bootCIs <- bootstrapCI(m1, mc.cores = 30)
+}
+
 ## Now let's parallelize the outer resampling and use 
 ## crossvalidation instead of bootstrap for the inner resampling
 
 my_inner_fun <- function(object){ 
 cvrisk(object, folds = cvLong(id = object$id, weights = 
 model.weights(object), type = "kfold", # use CV
-B = 10 # 10-fold for inner resampling
-)) # use ten cores
+B = 10, # 10-fold for inner resampling
+),
+mc.cores = 10) # use ten cores
 }
 
 # use applyFolds for outer function to avoid messing up weights
@@ -179,3 +191,4 @@ bootCIs <- bootstrapCI(mod2, B_outer = 1000, B_inner = 10)
 \author{
 David Ruegamer, Sarah Brockhaus
 }
+

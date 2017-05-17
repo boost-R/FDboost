@@ -52,3 +52,4 @@ of the covariates.
 Ramsay, J., Silverman, B. (2006). Functional data analysis. 
 Wiley Online Library. chapter 16.3
 }
+

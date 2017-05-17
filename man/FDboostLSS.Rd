@@ -112,6 +112,9 @@ summary(m_boost)
  }
 }
 }
+\author{
+Sarah Brockhaus
+}
 \references{
 Brockhaus, S. and Fuest, A. and Mayr, A. and Greven, S. (2015a): 
 Functional regression models for location, scale and shape applied to stock returns. 
@@ -143,8 +146,6 @@ Preliminary version: \url{http://arxiv.org/abs/1611.10171}.
 \seealso{
 Note that \code{FDboostLSS} calls \code{\link{FDboost}} directly.
 }
-\author{
-Sarah Brockhaus
-}
 \keyword{models,}
 \keyword{nonlinear}
+

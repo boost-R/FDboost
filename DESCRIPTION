@@ -39,7 +39,7 @@ License: GPL-2
 Packaged: 2017-05-05 13:44:03 UTC; brockhaus
 Collate:
     'aaa.R'
-	'FDboost-package.R'
+    'FDboost-package.R'
     'FDboost.R'
     'baselearners.R'
     'baselearnersX.R'
@@ -51,7 +51,7 @@ Collate:
     'methods.R'
     'stabsel.R'
     'utilityFunctions.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 5.0.1
 BugReports: https://github.com/boost-R/FDboost/issues
 URL: https://github.com/boost-R/FDboost
 VignetteBuilder: knitr

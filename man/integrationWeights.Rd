@@ -3,7 +3,6 @@
 \name{integrationWeights}
 \alias{integrationWeights}
 \alias{integrationWeightsLeft}
-\alias{integrationWeightsLeft}
 \title{Functions to compute integration weights}
 \usage{
 integrationWeights(X1, xind, id = NULL)
@@ -80,3 +79,4 @@ integrationWeightsLeft(X1, xind2, leftWeight = "zero")
 \seealso{
 \code{\link{bsignal}} and \code{\link{bhist}} for the base-learners.
 }
+

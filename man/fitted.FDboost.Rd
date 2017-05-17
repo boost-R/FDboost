@@ -24,3 +24,4 @@ Takes a fitted \code{FDboost}-object and computes the fitted values.
 \seealso{
 \code{\link{FDboost}} for the model fit.
 }
+

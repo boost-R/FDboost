@@ -37,3 +37,4 @@ resMat <- subset_hmatrix(hmat, index = index1, compress = FALSE)
 try(resMat2 <- subset_hmatrix(resMat, index = index2))
 
 }
+

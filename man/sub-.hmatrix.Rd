@@ -32,3 +32,4 @@ From the functional covariate \code{x} rows are selected accordingly.
 \seealso{
 ?"["
 }
+

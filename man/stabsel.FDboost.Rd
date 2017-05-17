@@ -127,3 +127,4 @@ another look at stability selection. Journal of the Royal Statistical Society, S
 \seealso{
 \code{\link[mboost]{stabsel}} to perform stability selection for a mboost-object.
 }
+

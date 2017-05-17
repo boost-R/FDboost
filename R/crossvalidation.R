@@ -193,6 +193,22 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
                                   weights = weights, idvars = c("object_id", index_names))
     }
 
+    # check for factors
+    
+    isFac <- sapply(dathelp, is.factor)
+    
+    if(any(isFac)){
+      namesFac <- names(isFac)[isFac]
+      
+      for(i in 1:length(namesFac)){
+        
+      if(length(levels(droplevels(dathelp[[namesFac[i]]]))) != 
+         length(levels(droplevels(dat_weights[[namesFac[i]]]))))
+        stop(paste0("The factor variable '", namesFac[i], "' has unobserved levels in the training data. ",
+                    "Make sure that training data in each fold contains all factor levels."))
+        
+      }
+    }
     
     call <- object$callEval
     call$data <- dat_weights

@@ -64,3 +64,4 @@ If \code{raw = FALSE} the function \code{coef.FDboost} generates adequate dummy 
 and uses the function \code{predict.FDboost} to 
 compute the estimated coefficient functions.
 }
+

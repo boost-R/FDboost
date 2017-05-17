@@ -2,8 +2,6 @@
 % Please edit documentation in R/baselearners.R
 \name{bbsc}
 \alias{bbsc}
-\alias{brandomc}
-\alias{bolsc}
 \alias{bolsc}
 \alias{brandomc}
 \title{Constrained Base-learners for Scalar Covariates}
@@ -136,6 +134,9 @@ plot(m1, which = 2, lty = 2, col = 1, add = TRUE)
 
 
 }
+\author{
+Sarah Brockhaus, Almond Stoecker
+}
 \references{
 Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 The functional linear array model. Statistical Modelling, 15(3), 279-300.
@@ -148,7 +149,5 @@ Functional Additive Mixed Models, Journal of Computational and Graphical Statist
 \code{\link[mboost]{bbs}}, \code{\link[mboost]{bols}} and \code{\link[mboost]{brandom}} for the 
 corresponding base-learners in \code{mboost}.
 }
-\author{
-Sarah Brockhaus, Almond Stoecker
-}
 \keyword{models}
+

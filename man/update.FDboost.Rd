@@ -49,3 +49,4 @@ mod4 <- update(mod1, formula = vis ~ 1 + bolsc(T_C, df = 2)) # drop one term
 \author{
 David Ruegamer
 }
+

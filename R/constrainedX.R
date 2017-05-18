@@ -1,7 +1,5 @@
 #' Constrained row tensor product 
 #' 
-#' EXPERIMENTAL! 
-#' 
 #' Combining single base-learners to form new, more complex base-learners, with
 #' an identifiability constraint to center the interaction around the intercept and
 #' around the two main effects. Suitable for functional response. 
@@ -16,13 +14,18 @@
 #' as the interaction is centerd around the intercept and centered around the two main effects. 
 #' See Web Appendix A of Brockhaus et al. (2015) for details on how to enforce the constraint 
 #' for the functional intercept.   
-#' Use e.g. in a model call to \code{FDboost}, following the scheme, 
+#' Use, e.g., in a model call to \code{FDboost}, following the scheme, 
 #' \code{y ~ 1 + bolsc(x1) + bolsc(x2) + bols(x1) \%Xc\% bols(x2)}, 
-#' where \code{1} induces a global intercept and \code{x1}, \code{x2} are factor variables.  
+#' where \code{1} induces a global intercept and \code{x1}, \code{x2} are factor variables, 
+#' see Ruegamer et al. (2016).  
 #' 
 #' @references 
 #' Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 #' The functional linear array model. Statistical Modelling, 15(3), 279-300.
+#' 
+#' Ruegamer D., Brockhaus, S., Gentsch K., Scherer, K., Greven, S. (2016). Detecting synchronisation in 
+#' EEG- and EMG-Signals via boosted functional historical models. 
+#' \url{http://arxiv.org/abs/1609.06070}
 #' 
 #' @author Sarah Brockhaus, David Ruegamer
 #' 

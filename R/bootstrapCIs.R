@@ -216,7 +216,7 @@ bootstrapCI <- function(object, which = NULL,
     
   }else{
     
-    message("B_inner is ignored as resampling_fun_outer is not NULL.")
+    message("B_inner is ignored as resampling_fun_inner is not NULL.")
     
   }
     

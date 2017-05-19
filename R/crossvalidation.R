@@ -1395,6 +1395,10 @@ plot_bootstrapped_coef <- function(temp, l,
   argsMatplot  <- getArguments(x = c(formals(graphics::matplot), par()), dots = dots)
   argsFunplot  <- getArguments(x = c(formals(funplot), par()), dots = dots)
   
+  argsImage <- getArguments(x=c(formals(graphics::plot.default), 
+                                formals(graphics::image.default)), dots=dots)
+  argsContour <- getArguments(x=formals(graphics::contour.default), dots=dots)
+  
   argsPersp <- getArguments(x=formals(getS3method("persp", "default")), dots = dots)
   
   plotWithArgs <- function(plotFun, args, myargs){        
@@ -1506,6 +1510,7 @@ plot_bootstrapped_coef <- function(temp, l,
       if(pers){ 
         matvec <- sapply(temp$value, c)
         for(k in 1:length(probs)){
+          
           tempZ <- matrix(apply(matvec, 1, quantile, probs=probs[k], na.rm=TRUE), ncol=length(temp$x))
           
           plotWithArgs(persp, args=argsPersp, 
@@ -1516,28 +1521,47 @@ plot_bootstrapped_coef <- function(temp, l,
                                    zlim=if(any(is.null(ylim))) range(matvec, na.rm=TRUE) else ylim,  
                                    main=paste(temp$main, " at ", probs[k]*100, "%-quantile", sep=""), 
                                    col=getColPersp(tempZ)))
-        }  
-      }else{ # do 2-dim plots
-
-        for(j in 1:length(quanty)){ 
-          
-          myCol <- sapply(temp$value, function(x) x[, quanty[j]==temp$y]) # first column
-          
-          plot_curves(x_i = temp$y, y_i = myCol, xlab_i = temp$ylab, 
-                      main_i = paste(temp$main, " at ", probs[j]*100, "% of ", temp$xlab, sep = ""), 
-                      ylim_i = ylim)
-          
-        } # end loop over quanty
         
-        for(j in 1:length(quantx)){  
-          myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x, ]) # first column
-          
-          plot_curves(x_i = temp$x, y_i = myRow, xlab_i = temp$xlab, 
-                      main_i = paste(temp$main, " at ", probs[j]*100, "% of ", temp$ylab, sep = ""), 
-                      ylim_i = ylim)
-            
         }
         
+      }else{ # do 2-dim plots
+
+        # for(j in 1:length(quanty)){ 
+        #   
+        #   myCol <- sapply(temp$value, function(x) x[, quanty[j]==temp$y]) # first column
+        #   
+        #   plot_curves(x_i = temp$y, y_i = myCol, xlab_i = temp$ylab, 
+        #               main_i = paste(temp$main, " at ", probs[j]*100, "% of ", temp$xlab, sep = ""), 
+        #               ylim_i = ylim)
+        #   
+        # } # end loop over quanty
+        # 
+        # for(j in 1:length(quantx)){  
+        #   myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x, ]) # first column
+        #   
+        #   plot_curves(x_i = temp$x, y_i = myRow, xlab_i = temp$xlab, 
+        #               main_i = paste(temp$main, " at ", probs[j]*100, "% of ", temp$ylab, sep = ""), 
+        #               ylim_i = ylim)
+        #     
+        # }
+        
+        matvec <- sapply(temp$value, c)
+        for(k in 1:length(probs)){
+          
+          tempZ <- matrix(apply(matvec, 1, quantile, probs=probs[k], na.rm=TRUE), ncol=length(temp$x))
+          
+          plotWithArgs(image, args=argsImage,
+                       myargs=list(x=temp$y, y=temp$x, z=t(tempZ), xlab=paste("\n", temp$xlab), 
+                                   ylab=paste("\n", temp$ylab),
+                                   main=paste(temp$main, " at ", probs[k]*100, "%-quantile", sep=""), 
+                                   col = heat.colors(length(temp$x)^2) 
+                                   )
+          )
+          plotWithArgs(contour, args=argsContour,
+                       myargs=list(temp$y, temp$x, z=t(tempZ), add = TRUE))
+          
+        }
+         
       } # end else
       
     }else{ # temp$x is factor

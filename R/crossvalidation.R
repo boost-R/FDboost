@@ -1399,7 +1399,7 @@ plot_bootstrapped_coef <- function(temp, l,
                                 formals(graphics::image.default)), dots=dots)
   dotsContour <- dots
   dotsContour$col <- "black"
-  argsContour <- getArguments(x=formals(graphics::contour.default), dots=dots)
+  argsContour <- getArguments(x=formals(graphics::contour.default), dots=dotsContour)
   
   argsPersp <- getArguments(x=formals(getS3method("persp", "default")), dots = dots)
   
@@ -1554,13 +1554,14 @@ plot_bootstrapped_coef <- function(temp, l,
           
           plotWithArgs(image, args=argsImage,
                        myargs=list(x=temp$y, y=temp$x, z=t(tempZ), xlab=paste("\n", temp$xlab), 
-                                   ylab=paste("\n", temp$ylab),
+                                   ylab=paste("\n", temp$ylab), zlim=c(min(matvec, na.rm=TRUE),
+                                                                       max(matvec, na.rm=TRUE)),
                                    main=paste(temp$main, " at ", probs[k]*100, "%-quantile", sep=""), 
                                    col = heat.colors(length(temp$x)^2) 
                                    )
           )
           plotWithArgs(contour, args=argsContour,
-                       myargs=list(temp$y, temp$x, z=t(tempZ), add = TRUE))
+                       myargs=list(temp$y, temp$x, z=t(tempZ), col = "black", add = TRUE))
           
         }
          

@@ -1399,7 +1399,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
                                 formals(graphics::image.default)), dots=dots)
   dotsContour <- dots
   dotsContour$col <- "black"
-  argsContour <- getArguments(x=formals(graphics::contour.default), dots=dots)
+  argsContour <- getArguments(x=formals(graphics::contour.default), dots=dotsContour)
   argsPersp <- getArguments(x=formals(getS3method("persp", "default")), dots=dots)
   
   plotWithArgs <- function(plotFun, args, myargs){        

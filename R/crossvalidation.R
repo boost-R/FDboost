@@ -1397,6 +1397,8 @@ plot_bootstrapped_coef <- function(temp, l,
   
   argsImage <- getArguments(x=c(formals(graphics::plot.default), 
                                 formals(graphics::image.default)), dots=dots)
+  dotsContour <- dots
+  dotsContour$col <- "black"
   argsContour <- getArguments(x=formals(graphics::contour.default), dots=dots)
   
   argsPersp <- getArguments(x=formals(getS3method("persp", "default")), dots = dots)

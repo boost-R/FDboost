@@ -1397,6 +1397,8 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
 
   argsImage <- getArguments(x=c(formals(graphics::plot.default), 
                                 formals(graphics::image.default)), dots=dots)
+  dotsContour <- dots
+  dotsContour$col <- "black"
   argsContour <- getArguments(x=formals(graphics::contour.default), dots=dots)
   argsPersp <- getArguments(x=formals(getS3method("persp", "default")), dots=dots)
   
@@ -1546,7 +1548,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
                                          main=trm$main, col = heat.colors(length(trm$x)^2), 
                                          sub=trm$add_main))          
                 plotWithArgs(contour, args=argsContour,
-                             myargs=list(trm$y, trm$x, z=t(trm$value), add = TRUE))
+                             myargs=list(trm$y, trm$x, z=t(trm$value), add = TRUE), col="black")
                 
                 if(rug){
                   rug(bl_data[[i]][[trm$xlab]], ticksize = 0.02)

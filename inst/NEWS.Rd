@@ -30,6 +30,8 @@
 	        internal use of ties in model fitting, as this breaks some methods for models with response 
 	        in long format and for models containing \code{bhsitx}, 
 	        see issue \href{https://github.com/boost-R/FDboost/issues/10}{#10}
+	  \item deprecate \code{validateFDboost()}, 
+	        use \code{applyFolds()} and \code{bootstrapCI()} instead
     }
   }
 }

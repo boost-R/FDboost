@@ -1,5 +1,158 @@
 
-#' @rdname validateFDboost
+#' Cross-Validation and Bootstrapping over Curves
+#' 
+#' Cross-validation and bootstrapping over curves to compute the empirical risk for 
+#' hyper-parameter selection.    
+#' 
+#' @param object fitted FDboost-object
+#' @param folds a weight matrix with number of rows equal to the number of observed trajectories.  
+#' @param grid the grid over which the optimal number of boosting iterations (mstop) is searched.  
+#' @param showProgress logical, defaults to \code{TRUE}.
+#' @param compress logical, defaults to \code{FALSE}. Only used to force a meaningful
+#' behaviour of \code{applyFolds} with hmatrix objects when using nested resampling.
+#' @param papply (parallel) apply function, defaults to \code{\link[parallel]{mclapply}}, 
+#' see \code{\link[mboost]{cvrisk}} for details.  
+#' @param fun if \code{fun} is \code{NULL}, the out-of-bag risk is returned. 
+#' \code{fun}, as a function of \code{object}, 
+#' may extract any other characteristic of the cross-validated models. These are returned as is.
+#' @param riskFun only exists in \code{applyFolds}; allows to compute other risk functions than the risk 
+#' of the family that was specified in object. 
+#' Must be specified as function of arguments \code{(y, f, w = 1)}, where \code{y} is the 
+#' observed response, \code{f} is the prediciton from the model and \code{w} is the weight. 
+#' The risk function must return a scalar numeric value for vector valued imput.  
+#' @param numInt only exists in \code{applyFolds}; the scheme for numerical integration, 
+#' see \code{numInt} in \code{\link{FDboost}}. 
+#' @param corrected see \code{\link[mboost]{cvrisk}}. 
+#' @param mc.preschedule Defaults to \code{FALSE}. Preschedule tasks if are parallelized using \code{mclapply}?  
+#' For details see \code{\link[parallel]{mclapply}}. 
+#' @param ... further arguments passed to \code{\link[parallel]{mclapply}} 
+#' 
+#' @param id the id-vector as integers 1, 2, ... specifying which observations belong to the same curve, 
+#' deprecated in \code{cvMa()}. 
+#' @param weights a numeric vector of (integration) weights, defaults to 1.
+#' @param type character argument for specifying the cross-validation 
+#' method. Currently (stratified) bootstrap, k-fold cross-validation, subsampling and 
+#' leaving-one-curve-out cross validation (i.e. jack knife on curves) are implemented.
+#' @param B number of folds, per default 25 for \code{bootstrap} and
+#' \code{subsampling} and 10 for \code{kfold}.
+#' @param prob percentage of observations to be included in the learning samples 
+#' for subsampling.
+#' @param strata a factor of the same length as \code{weights} for stratification.
+#' 
+#' @param ydim dimensions of response-matrix
+#' 
+#' @details The number of boosting iterations is an important hyper-parameter of boosting  
+#' and can be chosen using the functions \code{applyFolds} or \code{cvrisk.FDboost} as they compute
+#' honest, i.e., out-of-bag, estimates of the empirical risk for different numbers of boosting iterations. 
+#' The weights (zero weights correspond to test cases) are defined via the folds matrix, 
+#' see \code{\link[mboost]{cvrisk}} in package mboost. 
+#' 
+#' In case of functional response, we recommend to use \code{applyFolds}. 
+#' The function \code{applyFolds} is especially suited to models with functional response. 
+#' It recomputes the model in each fold using \code{FDboost}. Thus, all parameters are recomputed, 
+#' including the smooth offset (if present) and the identifiability constraints (if present, only 
+#' relevant for \code{bolsc}, \code{brandomc} and \code{bbsc}).  
+#' Note, that the function \code{applyFolds} expects folds that give weights
+#' per curve without considering integration weights.  
+#' 
+#' The function \code{cvrisk.FDboost} is a wrapper for \code{\link[mboost]{cvrisk}} in package mboost. 
+#' It overrides the default for the folds, so that the folds are sampled on the level of curves 
+#' (not on the level of single observations, which does not make sense for functional response).  
+#' Note that the smooth offset and the computation of the identifiability constraints
+#' are not part of the refitting if \code{cvrisk} is used. 
+#' Per default the integration weights of the model fit are used to compute the prediction errors 
+#' (as the integration weights are part of the default folds). 
+#' Note that in \code{cvrisk} the weights are rescaled to sum up to one. 
+#' 
+#' The functions \code{cvMa} and \code{cvLong} can be used to build an appropriate 
+#' weight matrix for functional response to be used with \code{cvrisk} as sampling 
+#' is done on the level of curves. The probability for each 
+#' curve to enter a fold is equal over all curves.     
+#' The function \code{cvMa} takes the dimensions of the response matrix as input argument and thus
+#' can only be used for regularly observed response. 
+#' The function \code{cvLong} takes the id variable and the weights as arguments and thus can be used
+#' for responses in long format that are potentially observed irregularly. 
+#'  
+#' If \code{strata} is defined 
+#' sampling is performed in each stratum separately thus preserving 
+#' the distribution of the \code{strata} variable in each fold. 
+#' 
+#' @note Use argument \code{mc.cores = 1L} to set the numbers of cores that is used in 
+#' parallel computation. On Windows only 1 core is possible, \code{mc.cores = 1}, which is the default.
+#' 
+#' @seealso \code{\link[mboost]{cvrisk}} to perform cross-validation with scalar response.
+#' 
+#' @return \code{cvMa} and \code{cvLong} return a matrix of sampling weights to be used in \code{cvrisk}. 
+#' 
+#' The functions \code{applyFolds} and \code{cvrisk.FDboost} return a \code{cvrisk}-object, 
+#' which is a matrix of the computed out-of-bag risk. The matrix has the folds in rows and the 
+#' number of boosting iteratins in columns. Furhtermore, the matrix has attributes including: 
+#' \item{risk}{name of the applied risk function}
+#' \item{call}{model call of the model object}
+#' \item{mstop}{gird of stopping iterations that is used}
+#' \item{type}{name for the type of folds}
+#' 
+#' @examples
+#' Ytest <- matrix(rnorm(15), ncol = 3) # 5 trajectories, each with 3 observations 
+#' Ylong <- as.vector(Ytest)
+#' ## 4-folds for bootstrap for the response in long format without integration weights
+#' cvMa(ydim = c(5,3), type = "bootstrap", B = 4)  
+#' cvLong(id = rep(1:5, times = 3), type = "bootstrap", B = 4)
+#' 
+#' if(require(fda)){
+#'  ## load the data
+#'  data("CanadianWeather", package = "fda")
+#'  
+#'  ## use data on a daily basis 
+#'  canada <- with(CanadianWeather, 
+#'                 list(temp = t(dailyAv[ , , "Temperature.C"]),
+#'                      l10precip = t(dailyAv[ , , "log10precip"]),
+#'                      l10precip_mean = log(colMeans(dailyAv[ , , "Precipitation.mm"]), base = 10),
+#'                      lat = coordinates[ , "N.latitude"],
+#'                      lon = coordinates[ , "W.longitude"],
+#'                      region = factor(region),
+#'                      place = factor(place),
+#'                      day = 1:365,  ## corresponds to t: evaluation points of the fun. response 
+#'                      day_s = 1:365))  ## corresponds to s: evaluation points of the fun. covariate
+#'  
+#' ## center temperature curves per day 
+#' canada$tempRaw <- canada$temp
+#' canada$temp <- scale(canada$temp, scale = FALSE) 
+#' rownames(canada$temp) <- NULL ## delete row-names 
+#'   
+#' ## fit the model  
+#' mod <- FDboost(l10precip ~ 1 + bolsc(region, df = 4) + 
+#'                  bsignal(temp, s = day_s, cyclic = TRUE, boundary.knots = c(0.5, 365.5)), 
+#'                timeformula = ~ bbs(day, cyclic = TRUE, boundary.knots = c(0.5, 365.5)), 
+#'                data = canada)
+#' mod <- mod[75]
+#' 
+#' \dontrun{
+#'   #### create folds for 3-fold bootstrap: one weight for each curve
+#'   set.seed(123)
+#'   folds_bs <- cv(weights = rep(1, mod$ydim[1]), type = "bootstrap", B = 3)
+#' 
+#'   ## compute out-of-bag risk on the 3 folds for 1 to 75 boosting iterations  
+#'   cvr <- applyFolds(mod, folds = folds_bs, grid = 1:75)
+#' 
+#'   ## weights per observation point  
+#'   folds_bs_long <- folds_bs[rep(1:nrow(folds_bs), times = mod$ydim[2]), ]
+#'   attr(folds_bs_long, "type") <- "3-fold bootstrap"
+#'   ## compute out-of-bag risk on the 3 folds for 1 to 75 boosting iterations  
+#'   cvr3 <- cvrisk(mod, folds = folds_bs_long, grid = 1:75)
+#' }
+#' 
+#' \dontrun{
+#'   ## plot the out-of-bag risk
+#'   par(mfrow = c(1,3))
+#'   plot(cvr); legend("topright", lty=2, paste(mstop(cvr)))
+#'   plot(cvr3); legend("topright", lty=2, paste(mstop(cvr3)))
+#' }
+#' 
+#'}
+#' 
+#' @aliases cvMa cvLong cvrisk.FDboost
+#' 
 #' @export
 ## computes the empirical out-of-bag risk for each fold  
 applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), type = "bootstrap"),
@@ -402,10 +555,9 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 
 #' Cross-Validation and Bootstrapping over Curves
 #' 
-#' Cross-validation and bootstrapping over curves to compute the empirical risk for 
-#' hyper-parameter selection.    
-#' Note that the function \code{validateFDboost()} is experimental. 
-#' It also computes resampled coefficients and predictions for the models.
+#' DEPRECATED! 
+#' The function \code{validateFDboost()} is deprecated,  
+#' use \code{\link{applyFolds}} and \code{\link{bootstrapCI}} instead. 
 #' 
 #' @param object fitted FDboost-object
 #' @param response optional, specify a response vector for the computation of the prediction errors.  
@@ -423,54 +575,15 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #' Defaults to \code{TRUE}. In \code{\link[mboost]{cvrisk}} the offset of the original model fit in  
 #' \code{object} is used in all folds.
 #' @param showProgress logical, defaults to \code{TRUE}.
-#' @param compress logical, defaults to \code{FALSE}. Only used to force a meaningful
-#' behaviour of \code{applyFolds} with hmatrix objects when using nested resampling.
-#' 
-#' @param papply (parallel) apply function, defaults to \code{\link[parallel]{mclapply}}, 
-#' see \code{\link[mboost]{cvrisk}} for details.  
 #' @param fun if \code{fun} is \code{NULL}, the out-of-bag risk is returned. 
 #' \code{fun}, as a function of \code{object}, 
 #' may extract any other characteristic of the cross-validated models. These are returned as is.
-#' @param riskFun only exists in \code{applyFolds}; allows to compute other risk functions than the risk 
-#' of the family that was specified in object. 
-#' Must be specified as function of arguments \code{(y, f, w = 1)}, where \code{y} is the 
-#' observed response, \code{f} is the prediciton from the model and \code{w} is the weight. 
-#' The risk function must return a scalar numeric value for vector valued imput.  
-#' @param numInt only exists in \code{applyFolds}; the scheme for numerical integration, 
-#' see \code{numInt} in \code{\link{FDboost}}. 
-#' @param corrected see \code{\link[mboost]{cvrisk}}. 
-#' @param mc.preschedule Defaults to \code{FALSE}. Preschedule tasks if are parallelized using \code{mclapply}?  
-#' For details see \code{\link[parallel]{mclapply}}. 
+#' 
 #' @param ... further arguments passed to \code{\link[parallel]{mclapply}} 
 #' 
-#' @param id the id-vector as integers 1, 2, ... specifying which observations belong to the same curve, 
-#' deprecated in \code{cvMa()}. 
-#' @param weights a numeric vector of (integration) weights, defaults to 1.
-#' @param type character argument for specifying the cross-validation 
-#' method. Currently (stratified) bootstrap, k-fold cross-validation, subsampling and 
-#' leaving-one-curve-out cross validation (i.e. jack knife on curves) are implemented.
-#' @param B number of folds, per default 25 for \code{bootstrap} and
-#' \code{subsampling} and 10 for \code{kfold}.
-#' @param prob percentage of observations to be included in the learning samples 
-#' for subsampling.
-#' @param strata a factor of the same length as \code{weights} for stratification.
-#' 
-#' @param ydim dimensions of response-matrix
-#' 
 #' @details The number of boosting iterations is an important hyper-parameter of boosting  
-#' and can be chosen using the functions \code{applyFolds}, \code{cvrisk.FDboost} and 
-#' \code{validateFDboost} as they compute
+#' and can be chosen using the function \code{validateFDboost} as they compute
 #' honest, i.e., out-of-bag, estimates of the empirical risk for different numbers of boosting iterations. 
-#' The weights (zero weights correspond to test cases) are defined via the folds matrix, 
-#' see \code{\link[mboost]{cvrisk}} in package mboost. 
-#' 
-#' In case of functional response, we recommend to use \code{applyFolds}. 
-#' The function \code{applyFolds} is especially suited to models with functional response. 
-#' It recomputes the model in each fold using \code{FDboost}. Thus, all parameters are recomputed, 
-#' including the smooth offset (if present) and the identifiability constraints (if present, only 
-#' relevant for bolsc, brandomc and bbsc).  
-#' Note, that the function \code{applyFolds} expects folds that give weights
-#' per curve without considering integration weights.  
 #' 
 #' The function \code{validateFDboost} is especially suited to models with functional response. 
 #' Using the option \code{refitSmoothOffset} the offset is refitted on each fold. 
@@ -480,44 +593,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #' can be useful in simulation studies where the true value of the response is known but for 
 #' the model fit the response is used with noise. 
 #' 
-#' The function \code{cvrisk.FDboost} is a wrapper for \code{\link[mboost]{cvrisk}} in package mboost. 
-#' It overrides the default for the folds, so that the folds are sampled on the level of curves 
-#' (not on the level of single observations, which does not make sense for functional response).  
-#' Note that the smooth offset and the computation of the identifiability constraints
-#' are not part of the refitting if \code{cvrisk} is used. 
-#' Per default the integration weights of the model fit are used to compute the prediction errors 
-#' (as the integration weights are part of the default folds). 
-#' Note that in \code{cvrisk} the weights are rescaled to sum up to one. 
-#' 
-#' The functions \code{cvMa} and \code{cvLong} can be used to build an appropriate 
-#' weight matrix for functional response to be used with \code{cvrisk} as sampling 
-#' is done on the level of curves. The probability for each 
-#' curve to enter a fold is equal over all curves.     
-#' The function \code{cvMa} takes the dimensions of the response matrix as input argument and thus
-#' can only be used for regularly observed response. 
-#' The function \code{cvLong} takes the id variable and the weights as arguments and thus can be used
-#' for responses in long format that are potentially observed irregularly. 
-#'  
-#' If \code{strata} is defined 
-#' sampling is performed in each stratum separately thus preserving 
-#' the distribution of the \code{strata} variable in each fold. 
-#' 
-#' @note Use argument \code{mc.cores = 1L} to set the numbers of cores that is used in 
-#' parallel computation. On Windows only 1 core is possible, \code{mc.cores = 1}, which is the default.
-#' 
-#' @seealso \code{\link[mboost]{cvrisk}} to perform cross-validation with scalar response.
-#' 
-#' @return \code{cvMa} and \code{cvLong} return a matrix of sampling weights to be used in \code{cvrisk}. 
-#' 
-#' The functions \code{applyFolds} and \code{cvrisk.FDboost} return a \code{cvrisk}-object, 
-#' which is a matrix of the computed out-of-bag risk. The matrix has the folds in rows and the 
-#' number of boosting iteratins in columns. Furhtermore, the matrix has attributes including: 
-#' \item{risk}{name of the applied risk function}
-#' \item{call}{model call of the model object}
-#' \item{mstop}{gird of stopping iterations that is used}
-#' \item{type}{name for the type of folds}
-#' 
-#' The function \code{validateFDboost} returns a \code{validateFDboost}-object, 
+#' @return The function \code{validateFDboost} returns a \code{validateFDboost}-object, 
 #' which is a named list containing: 
 #' \item{response}{the response}
 #' \item{yind}{the observation points of the response}
@@ -539,12 +615,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #' \item{fun_ret}{list of what fun returns if fun was specified}
 #' 
 #' @examples
-#' Ytest <- matrix(rnorm(15), ncol = 3) # 5 trajectories, each with 3 observations 
-#' Ylong <- as.vector(Ytest)
-#' ## 4-folds for bootstrap for the response in long format without integration weights
-#' cvMa(ydim = c(5,3), type = "bootstrap", B = 4)  
-#' cvLong(id = rep(1:5, times = 3), type = "bootstrap", B = 4)
-#' 
+#' \dontrun{
 #' if(require(fda)){
 #'  ## load the data
 #'  data("CanadianWeather", package = "fda")
@@ -573,7 +644,6 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #'                data = canada)
 #' mod <- mod[75]
 #' 
-#' \dontrun{
 #'   #### create folds for 3-fold bootstrap: one weight for each curve
 #'   set.seed(123)
 #'   folds_bs <- cv(weights = rep(1, mod$ydim[1]), type = "bootstrap", B = 3)
@@ -589,25 +659,19 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #'   attr(folds_bs_long, "type") <- "3-fold bootstrap"
 #'   ## compute out-of-bag risk on the 3 folds for 1 to 75 boosting iterations  
 #'   cvr3 <- cvrisk(mod, folds = folds_bs_long, grid = 1:75)
-#' }
 #' 
-#' \dontrun{
 #'   ## plot the out-of-bag risk
 #'   par(mfrow = c(1,3))
 #'   plot(cvr); legend("topright", lty=2, paste(mstop(cvr)))
 #'   plot(cvr2)
 #'   plot(cvr3); legend("topright", lty=2, paste(mstop(cvr3)))
-#' }
 #' 
-#' \dontrun{
 #'   ## plot the estimated coefficients per fold
 #'   ## more meaningful for higher number of folds, e.g., B = 100 
 #'   par(mfrow = c(2,2))
 #'   plotPredCoef(cvr2, terms = FALSE, which = 2)
 #'   plotPredCoef(cvr2, terms = FALSE, which = 3)
-#' }
-#' 
-#' \dontrun{ 
+#'   
 #'   ## compute out-of-bag risk and predictions for leaving-one-curve-out cross-validation
 #'   cvr_jackknife <- validateFDboost(mod, folds = cvLong(unique(mod$id), 
 #'                                    type = "curves"), grid = 1:75)
@@ -616,11 +680,9 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #'   plotPredCoef(cvr_jackknife, which = 3) 
 #'   ## plot coefficients per fold for 2nd effect
 #'   plotPredCoef(cvr_jackknife, which = 2, terms = FALSE)
-#' }
 #' 
 #'}
-#' 
-#' @aliases cvMa cvLong
+#'}
 #' 
 #' @export
 validateFDboost <- function(object, response = NULL,  
@@ -632,14 +694,7 @@ validateFDboost <- function(object, response = NULL,
                             mrdDelete = 0, refitSmoothOffset = TRUE, 
                             showProgress = TRUE, ...){
   
-  #   if(is.null(folds)){
-  #     warning("is.null(folds), per default folds=cvMa(ydim=object$ydim, weights=model.weights(object), type=\"bootstrap\")")
-  #     folds <- cvMa(ydim=object$ydim, weights=model.weights(object), type="bootstrap")
-  #   }
-  
-  # if(any(class(object$response) == "factor")){
-  #   stop("validateFDboost() for factor response not implemented yet.")
-  # } 
+  warning("validateFDboost() is deprecated since FDboost 0.3-0.")
   
   names_bl <- names(object$baselearner)
   if(any(grepl("brandomc", names_bl))) message("For brandomc, the transformation matrix Z is fixed over all folds.")
@@ -1599,7 +1654,7 @@ plot_bootstrapped_coef <- function(temp, l,
 
 
 
-#' @rdname validateFDboost
+#' @rdname applyFolds
 #' @export
 ## wrapper for cvrisk of mboost, specifying folds on the level of curves
 cvrisk.FDboost <- function(object, folds = cvLong(id=object$id, weights=model.weights(object)),
@@ -1623,7 +1678,7 @@ cvrisk.FDboost <- function(object, folds = cvLong(id=object$id, weights=model.we
   return(ret) 
 }
 
-#' @rdname validateFDboost
+#' @rdname applyFolds
 #' @export
 # wrapper for function cv() of mboost, additional type "curves"
 # create folds for data in long format
@@ -1653,7 +1708,7 @@ cvLong <- function(id, weights = rep(1, l=length(id)),
   
 }
 
-#' @rdname validateFDboost
+#' @rdname applyFolds
 #' @export
 # wrapper for function cv() of mboost, additional type "curves"
 # add option id to sample on the level of id if there are repeated measures

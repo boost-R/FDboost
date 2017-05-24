@@ -35,8 +35,8 @@
 #' Argument is overwritten, when a custom \code{resampling_fun_inner}
 #' is supplied.
 #' @param type_inner character argument for specifying the cross-validation method for
-#' the inner resampling level. Default is \code{"bootstrap"}. 
-#' See \code{?applyFolds} or \code{?cvrisk} for more details. 
+#' the inner resampling level. Default is \code{"bootstrap"}. Currently  
+#' bootstrap, k-fold cross-validation and subsampling are implemented.
 #' @param levels the confidence levels required. If NULL, the 
 #' raw results are returned. 
 #' @param ... further arguments passed to \code{\link{applyFolds}} if
@@ -180,10 +180,12 @@ bootstrapCI <- function(object, which = NULL,
                         resampling_fun_inner = NULL,
                         B_outer = 100,
                         B_inner = 25,
-                        type_inner = "bootstrap",
+                        type_inner = c("bootstrap", "kfold", "subsampling"),
                         levels = c(0.05, 0.95),
                         ...)
 {
+  
+  type_inner <- match.arg(type_inner)
   
   ########## check for scalar response #########
   scalarResp <- "FDboostScalar" %in% class(object)

@@ -97,14 +97,14 @@ Cross-validation and bootstrapping over curves to compute the empirical risk for
 hyper-parameter selection.
 }
 \details{
-The number of boosting iterations is an important hyper-parameter of boosting  
-and can be chosen using the functions \code{applyFolds} or \code{cvrisk.FDboost} as they compute
-honest, i.e., out-of-bag, estimates of the empirical risk for different numbers of boosting iterations. 
+The number of boosting iterations is an important hyper-parameter of boosting.   
+It be chosen using the functions \code{applyFolds} or \code{cvrisk.FDboost}. Those functions 
+they compute honest, i.e., out-of-bag, estimates of the empirical risk for different 
+numbers of boosting iterations. 
 The weights (zero weights correspond to test cases) are defined via the folds matrix, 
 see \code{\link[mboost]{cvrisk}} in package mboost. 
 
 In case of functional response, we recommend to use \code{applyFolds}. 
-The function \code{applyFolds} is especially suited to models with functional response. 
 It recomputes the model in each fold using \code{FDboost}. Thus, all parameters are recomputed, 
 including the smooth offset (if present) and the identifiability constraints (if present, only 
 relevant for \code{bolsc}, \code{brandomc} and \code{bbsc}).  

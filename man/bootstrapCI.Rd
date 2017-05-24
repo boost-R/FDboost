@@ -6,7 +6,7 @@
 \usage{
 bootstrapCI(object, which = NULL, resampling_fun_outer = NULL,
   resampling_fun_inner = NULL, B_outer = 100, B_inner = 25,
-  levels = c(0.05, 0.95), ...)
+  type_inner = "bootstrap", levels = c(0.05, 0.95), ...)
 }
 \arguments{
 \item{object}{a fitted model object of class \code{FDboost}, 
@@ -42,6 +42,10 @@ is supplied.}
 \item{B_inner}{Number of resampling folds in the inner loop.
 Argument is overwritten, when a custom \code{resampling_fun_inner}
 is supplied.}
+
+\item{type_inner}{character argument for specifying the cross-validation method for
+the inner resampling level. Default is \code{"bootstrap"}. 
+See \code{?applyFolds} or \code{?cvrisk} for more details.}
 
 \item{levels}{the confidence levels required. If NULL, the 
 raw results are returned.}

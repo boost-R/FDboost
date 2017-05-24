@@ -34,6 +34,9 @@
 #' @param B_inner Number of resampling folds in the inner loop.
 #' Argument is overwritten, when a custom \code{resampling_fun_inner}
 #' is supplied.
+#' @param type_inner character argument for specifying the cross-validation method for
+#' the inner resampling level. Default is \code{"bootstrap"}. 
+#' See \code{?applyFolds} or \code{?cvrisk} for more details. 
 #' @param levels the confidence levels required. If NULL, the 
 #' raw results are returned. 
 #' @param ... further arguments passed to \code{\link{applyFolds}} if
@@ -177,6 +180,7 @@ bootstrapCI <- function(object, which = NULL,
                         resampling_fun_inner = NULL,
                         B_outer = 100,
                         B_inner = 25,
+                        type_inner = "bootstrap",
                         levels = c(0.05, 0.95),
                         ...)
 {
@@ -204,12 +208,14 @@ bootstrapCI <- function(object, which = NULL,
     if(scalarResp){
       
       resampling_fun_inner <- function(object) cvrisk(object, folds = cvLong(id = object$id, weights =
-                                                                               model.weights(object), B = B_inner))
+                                                                               model.weights(object), B = B_inner,
+                                                                             type = type_inner))
       
     }else{ 
         
-      resampling_fun_inner <- function(object) applyFolds(object, folds = cv(rep(1, length(unique(object$id))), type =
-                                                                               "bootstrap", B = B_inner))
+      resampling_fun_inner <- function(object) applyFolds(object, folds = cv(rep(1, length(unique(object$id))), 
+                                                                             B = B_inner, 
+                                                                             type = type_inner))
         
       }
       

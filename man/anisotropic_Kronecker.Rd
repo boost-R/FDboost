@@ -19,7 +19,6 @@ bl1 \%Xa0\% bl2
 \item{bl2}{base-learner 2, e.g. \code{bbs(x2)}}
 }
 \description{
-EXPERIMENTAL! 
 Kronecker product or row tensor product of two base-learners allowing for anisotropic penalties. 
 For the Kronecker product, \code{\%A\%} works in the general case, \code{\%A0\%} for the special case where 
 the penalty is zero in one direction. 

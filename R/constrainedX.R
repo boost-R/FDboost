@@ -556,7 +556,6 @@ bl_lin_matrix_a <- function(blg, Xfun, args) {
 
 #' Kronecker product or row tensor product of two base-learners with anisotropic penalty 
 #' 
-#' EXPERIMENTAL! 
 #' Kronecker product or row tensor product of two base-learners allowing for anisotropic penalties. 
 #' For the Kronecker product, \code{\%A\%} works in the general case, \code{\%A0\%} for the special case where 
 #' the penalty is zero in one direction. 

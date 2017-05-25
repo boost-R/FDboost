@@ -60,7 +60,7 @@ large amount of smoothing and thus to "weaker" base-learners.}
 
 \item{lambda}{smoothing parameter of the penalty, computed from \code{df} when \code{df} is specified.}
 
-\item{center}{experimental implementation! See \code{\link[mboost]{bbs}}. 
+\item{center}{See \code{\link[mboost]{bbs}}. 
 The effect is re-parameterized such that the unpenalized part of the fit is subtracted and only 
 the penalized effect is fitted, using a spectral decomposition of the penalty matrix.  
 The unpenalized, parametric part has then to be included in separate 

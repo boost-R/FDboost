@@ -25,7 +25,6 @@ Imports:
     gamboostLSS (>= 2.0-0),
     stabs,
     mgcv,
-    refund,
     MASS,
     zoo
 Suggests:
@@ -34,7 +33,8 @@ Suggests:
     ggplot2,
     maps,
     mapdata,
-    knitr
+    knitr,
+    refund
 License: GPL-2
 Packaged: 2017-05-05 13:44:03 UTC; brockhaus
 Collate:

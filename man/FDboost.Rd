@@ -168,7 +168,7 @@ The \code{timeformula} is used to expand the effects in \code{t}-direction.
   are specified as \code{bols(z1) \%Xc\% bols(z2)} and  
   an interaction \eqn{z_i1 f(zi2, t)} as \code{bols(z1) \%Xc\% bbs(z2)}, as 
   \code{\%Xc\%} applies the sum-to-zero constraint to the desgin matrix of the tensor product 
-  built by \code{\%Xc\%}, see \code{\link{\%Xc\%}}, EXPERIMENTAL!
+  built by \code{\%Xc\%}, see \code{\link{\%Xc\%}}.
 \item Function-on-function regression terms of functional covariates \code{x}, 
   e.g., \eqn{\int x_i(s)\beta(s,t)ds}, specified as \code{bsignal(x, s = s)}, 
   using P-splines, see \code{\link{bsignal}}. 

@@ -128,7 +128,7 @@ integrationWeights <- function(X1, xind, id = NULL){
         if(is.na(xindU[length(xind)])){ # last observation is missing
           xindU[length(xind)] <- xind[length(xind)] + diff(c(xind[length(xind)-1], xind[length(xind)])) 
         }
-        
+
         xindL <- na.locf(xindL, na.rm=FALSE) # index for lower sum
         xindU <- na.locf(xindU, fromLast=TRUE, na.rm=FALSE) # index for upper sum
         
@@ -414,7 +414,7 @@ X_bsignal <- function(mf, vary, args) {
 #' base-learner complexity. Low values of \code{df} correspond to a 
 #' large amount of smoothing and thus to "weaker" base-learners.
 #' @param lambda smoothing parameter of the penalty, computed from \code{df} when \code{df} is specified. 
-#' @param center experimental implementation! See \code{\link[mboost]{bbs}}. 
+#' @param center See \code{\link[mboost]{bbs}}. 
 #' The effect is re-parameterized such that the unpenalized part of the fit is subtracted and only 
 #' the penalized effect is fitted, using a spectral decomposition of the penalty matrix.  
 #' The unpenalized, parametric part has then to be included in separate 
@@ -1719,7 +1719,10 @@ bfpc <- function(x, s, index = NULL, df = 4,
   cll[[1]] <- as.name("bfpc")
   #print(cll)
   
-  if(! mboost_intern(x, fun = "isMATRIX") ) stop("signal has to be a matrix")
+  if (!requireNamespace("refund", quietly = TRUE))
+    stop("The package refund is needed for the function 'fpca.sc'.\nTo use the bfpc baseleaner, please install the package 'refund'.")
+  if(! mboost_intern(x, fun = "isMATRIX") ) 
+    stop("signal has to be a matrix")
   
   varnames <- all.vars(cll)
   
@@ -2079,7 +2082,7 @@ hyper_bbsc <- function(Z, ...){
 #' \code{df} is specified. 
 #' @param K in \code{bolsc} it is possible to specify the penalty matrix K
 #' @param weights experiemtnal! weights that are used for the computation of the transformation matrix Z.
-#' @param center experimental! See \code{\link[mboost]{bbs}}. 
+#' @param center See \code{\link[mboost]{bbs}}. 
 #' @param cyclic  if \code{cyclic = TRUE} the fitted values coincide at 
 #' the boundaries (useful for cyclic covariates such as day time etc.).
 #' @param contrasts.arg Note that a special \code{contrasts.arg} exists in 

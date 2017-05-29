@@ -1549,7 +1549,7 @@ plot_bootstrapped_coef <- function(temp, l,
     # set lower triangular matrix to NA for historic effect
     if(grepl("bhist", temp$main)){
       for(k in 1:length(temp$value)){
-        temp$value[[k]][outer(1:nrow(temp$value[[k]]), 1:ncol(temp$value[[k]]), "<=")==FALSE] <- NA
+        temp$value[[k]][temp$value[[k]]==0] <- NA
       }
     }
     

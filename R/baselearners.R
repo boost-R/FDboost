@@ -1629,8 +1629,8 @@ hyper_fpc <- function(mf, vary, df = 4, lambda = NULL,
 }
 
 ### model.matrix for FPCA based functional base-learner
-X_fpc <- function(mf, vary, args) {  
- 
+X_fpc <- function(mf, vary, args) {
+
   stopifnot(is.data.frame(mf))
   xname <- names(mf)
   X1 <- as.matrix(mf)
@@ -1639,9 +1639,6 @@ X_fpc <- function(mf, vary, args) {
   #print(xind)
   
   if(ncol(X1) != length(xind)) stop(xname, ": Dimension of signal matrix and its index do not match.")
-  
-  ## <FIXME> is the following statement on fpca.sc() correct??
-  ## does it work correctly with argvals = xind
   
   ## do FPCA on X1 (code of refund::ffpc adapted) using xind as argvals 
   if(is.null(args$klX)){
@@ -1673,19 +1670,19 @@ X_fpc <- function(mf, vary, args) {
     if(ncol(X1) == length(klX$mu) && all(args$s == xind)){
       ## is the same as "X <- klX$scores[ , args$subset, drop = FALSE]" if klX is FPCA on X1 
       X <- (scale(X1, center=klX$mu, scale=FALSE) %*% klX$efunctions)[ , args$subset, drop = FALSE]
-      ## <FIXME> use integration weights?
-      #X <- 1/args$a*(scale(X1, center=klX$mu, scale=FALSE) %*% klX$efunctions)[ , args$subset, drop = FALSE]
+      ## use integration weights?
+      # X <- 1/args$a*(scale(X1, center=klX$mu, scale=FALSE) %*% klX$efunctions)[ , args$subset, drop = FALSE]
     }else{
       ##stop("In bfpc the grid for the functional covariate has to be the same as in the model fit!")
-      ## <FIXME> is this linear interpolation of the basis functions correct?
+      ## linear interpolation of the basis functions 
       approxEfunctions <- matrix(NA, nrow=length(xind), ncol=length(args$subset))
       for(i in 1:ncol(klX$efunctions[ , args$subset, drop = FALSE])){
         approxEfunctions[,i] <- approx(x=args$klX$xind, y=klX$efunctions[,i], xout=xind)$y
       }
       approxMu <- approx(x=args$klX$xind, y=klX$mu, xout=xind)$y
       X <-(scale(X1, center=approxMu, scale=FALSE) %*% approxEfunctions)
-      ## <FIXME> use integration weights?
-      #X <- 1/args$a*(scale(X1, center=approxMu, scale=FALSE) %*% approxEfunctions)
+      ## use integration weights?
+      # X <- 1/args$a*(scale(X1, center=approxMu, scale=FALSE) %*% approxEfunctions)
     } 
     
   }

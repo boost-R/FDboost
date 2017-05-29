@@ -692,7 +692,8 @@ validateFDboost <- function(object, response = NULL,
                             mrdDelete = 0, refitSmoothOffset = TRUE, 
                             showProgress = TRUE, ...){
   
-  warning("validateFDboost() is deprecated since FDboost 0.3-0.")
+  .Deprecated(new = "applyFolds", 
+              msg = "'validateFDboost' is deprecated. Use 'applyFolds' and 'bootstrapCI' instead.")
   
   names_bl <- names(object$baselearner)
   if(any(grepl("brandomc", names_bl))) message("For brandomc, the transformation matrix Z is fixed over all folds.")

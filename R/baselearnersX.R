@@ -247,7 +247,7 @@ X_histx <- function(mf, vary, args) {
     K1 <- diff(diag(ncol(Bs)), differences = args$differences)
     K1 <- crossprod(K1)    
     if(args$penalty == "pss"){
-      # <FIXME> allow for variable shrinkage parameter in penalty_pss()? 
+      # instead of using 0.1, allow for flexible shrinkage parameter in penalty_pss()? 
       K1 <- penalty_pss(K = K1, difference = args$difference, shrink = 0.1)
     }    
   }else{ # Ridge-penalty

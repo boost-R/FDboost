@@ -972,8 +972,7 @@ FDboost <- function(formula,          ### response ~ xvars
       if(is.null(offset) && dim(response)[2] > 1 && 
          any(colMeans(response, na.rm = TRUE) > .Machine$double.eps *10^10)){
         message("Use a smooth offset.") 
-        ### <FixMe> is the use of family@offset correct?
-        #meanY <- colMeans(response, na.rm = TRUE)
+        ### check whether the use of family@offset is correct
         if(! "family" %in% names(dots) ){ # get the used family
           myfamily <-  Gaussian()
         } else myfamily <- dots$family
@@ -1010,7 +1009,7 @@ FDboost <- function(formula,          ### response ~ xvars
           }
         }
         rm(responseInter, meanNA)
-        ### <FixMe> is the computation of k ok? 
+        ## additive model for smooth offset  
         if(!offset_control$cyclic){
           modOffset <- try( gam(meanY ~ s(time, bs = "ad", 
                                           k = min(offset_control$k_min, round(length(time)/2))  ),
@@ -1066,7 +1065,6 @@ FDboost <- function(formula,          ### response ~ xvars
         responseW <- response
         responseW[w == 0] <- NA
         message("Use a smooth offset for irregular data.") 
-        ### <FixMe> is the computation of k ok? 
         if(!offset_control$cyclic){
           modOffset <- try( gam(responseW ~ s(time, bs = "ad", 
                                               k = min(offset_control$k_min, round(length(time)/10))  ),

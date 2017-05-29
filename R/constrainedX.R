@@ -343,7 +343,7 @@ bl_lin_matrix_a <- function(blg, Xfun, args) {
             if( all((W == w1w2)[w1w2 == 0]) & all((W == w1w2)[W == 0]) & ## check positions of zeros 
                 length(multFactor) == 1 ){ # check that only 1 multiplicative factor 
               
-              ## <FIXME> how to know whether multFactor is multiplied to w1 or w2?
+              ## it is impossible to know whether multFactor is multiplied to w1 or w2! 
               # w2 <- w2 * multFactor
               # all( W == (w1 %*% t(w2 * multFactor)))
               # all( W == ( (w1 * multFactor) %*% t(w2)))
@@ -355,7 +355,6 @@ bl_lin_matrix_a <- function(blg, Xfun, args) {
               if(nrow(unique(W, MARGIN = 1)) != 1){
                 warning("Assume that resampling is such that whole observations of blg1 are used.")
               }
-              ## <FIXME>
               
             }else{
               warning("Set all weights = 1 for computation of lambda1 and lambda2 in %A%.")
@@ -390,7 +389,7 @@ bl_lin_matrix_a <- function(blg, Xfun, args) {
         }else{
           ## call df2lambda for marginal bl1 
           al1 <- mboost_intern(X = X$X1,  # X$X1[expand_index1 , , drop = FALSE],
-                               df = args$df1, lambda = NULL, ## lambda = args$df1, FIXME allow for lambda in %A%?
+                               df = args$df1, lambda = NULL, ## lambda = args$df1, do not allow for lambda in %A%
                                dmat = args$K1, weights = w1, XtX = NULL, 
                                fun = "df2lambda")
           args$lambda1 <- al1["lambda"]
@@ -699,7 +698,7 @@ NULL
 #' @export
 "%A%" <- function(bl1, bl2) {
 
-  ###### <FIXME> was passiert hier???
+  ### code snippet from %O% in package mboost
   #   if (is.list(bl1) && !inherits(bl1, "blg"))
   #     return(lapply(bl1, "%X%", bl2 = bl2))
   #   
@@ -753,12 +752,7 @@ NULL
     args <- list(lambda = NA, df = NA)
     
   }else{
-    
-    ## origianl code of %O%
-    # args <- list(lambda = NULL,
-    #             df = ifelse(is.null(args1$df), 1, args1$df) *
-    #             ifelse(is.null(args2$df), 1, args2$df))
-    
+
     ### <SB> anisotropic penalty matrix
     ### save lambda, df and penalty matrices of the marginal base-learners 
     args <- list(lambda = NULL,

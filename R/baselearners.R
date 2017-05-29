@@ -306,12 +306,10 @@ X_bsignal <- function(mf, vary, args) {
   ## as arbitrary constants can be added to the coefficient surface
   if(is.null(args$Z) && 
        all( abs(rowMeans(X1, na.rm = TRUE)-mean(rowMeans(X1, na.rm = TRUE))) < .Machine$double.eps *10^10)){
-    # message(paste("All trajectories in ", xname, " have the same mean. ",
-    # "Coefficient function is centered.", sep=""))
     C <- t(Bs) %*% rep(1, nrow(Bs))
     Q <- qr.Q(qr(C), complete=TRUE) # orthonormal matrix of QR decomposition
     args$Z <- Q[  , 2:ncol(Q)] # only keep last columns  
-  }else{ ### <FIXME> nicer solution that Z not produced for prediction with new data with mean 0?
+  }else{ # nicer solution that Z not produced for prediction with new data with mean 0?
     args$Z <- diag(x=1, ncol=ncol(Bs), nrow=ncol(Bs))
   }
   
@@ -341,7 +339,7 @@ X_bsignal <- function(mf, vary, args) {
   }
   
   if(args$penalty == "pss"){
-    # <FIXME> allow for variable shrinkage parameter in penalty_pss()?
+    # instead of using 0.1, allow for flexible shrinkage parameter in penalty_pss()?
     K <- penalty_pss(K = K, difference = args$difference, shrink = 0.1)
   }
   
@@ -1226,8 +1224,7 @@ X_hist <- function(mf, vary, args) {
     #message("use sparse matrix in X_hist")
     diag <- Diagonal
     cbind <- cBind
-    ###### <FIXME> construction of X1des directly as sparse matrix does not work 
-    
+    ###### more efficient construction of X1des directly as sparse matrix 
     #     ### compute the design matrix as sparse matrix
     #     if(args$format == "wide"){
     #       tempIndexDesign <- which(!ind0, arr.ind=TRUE)
@@ -1246,7 +1243,7 @@ X_hist <- function(mf, vary, args) {
     #       rm(tempj)       
     #     }
     
-    ###### <FIXME> instead: build the matrix as dense matrix and convert it into a sparse matrix
+    ###### instead: build the matrix as dense matrix and convert it into a sparse matrix
     if(args$format == "wide"){
       ### expand the design matrix for all observations (yind is equal for all observations!)
       ### the response is a vector (y1(t1), y2(t1), ... , yn(t1), yn(tG))
@@ -1313,7 +1310,6 @@ X_hist <- function(mf, vary, args) {
   
   
   ## see Scheipl and Greven (2016): Identifiability in penalized function-on-function regression models  
-  ## <FIXME> do checks for identifiability for effects that are not smooth? 
   if(args$check.ident && args$inS == "smooth"){
     K1 <- diff(diag(ncol(Bs)), differences = args$differences)
     K1 <- crossprod(K1)
@@ -1366,7 +1362,7 @@ X_hist <- function(mf, vary, args) {
     K1 <- diff(diag(ncol(Bs)), differences = args$differences)
     K1 <- crossprod(K1)    
     if(args$penalty == "pss"){
-      # <FIXME> allow for variable shrinkage parameter in penalty_pss()? 
+      # instead of using 0.1, allow for flexible shrinkage parameter in penalty_pss()? 
       K1 <- penalty_pss(K = K1, difference = args$difference, shrink = 0.1)
     }    
   }else{ # Ridge-penalty
@@ -1744,7 +1740,7 @@ bfpc <- function(x, s, index = NULL, df = 4,
   
   vary <- ""
   
-  ## <FIXME> for a FPCA based base-learner the X can contain missings!
+  ## improvement: for a FPCA based base-learner the X can contain missings!
   # CC <- all(Complete.cases(mf))
   CC <- all(mboost_intern(mf, fun = "Complete.cases"))
   if (!CC)
@@ -2425,12 +2421,8 @@ X_olsc <- function(mf, vary, args) {
   X <- X %*% args$Z
   K <- t(args$Z) %*% K %*% args$Z
   
-  #print("##################")
-  #print(args$Z)
-  #print(dim(X))
   #----------------------------------
   
-  ### </FIXME>
   if (is(X, "Matrix") && !is(K, "Matrix"))
     K <- Matrix(K)
   

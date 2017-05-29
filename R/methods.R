@@ -1351,7 +1351,8 @@ getColPersp <- function(z, col1 = "tomato", col2 = "lightblue"){
 #' If \code{FALSE}, image/contour-plots (\code{\link[graphics]{image}}, 
 #' \code{\link[graphics]{contour}}) are drawn for 2- and 3-dimensional effects. 
 #' @param commonRange logical, defaults to \code{FALSE}, 
-#' if \code{TRUE} the range over all effects is the same (so far not implemented).
+#' if \code{TRUE} the range over all effects is the same 
+#' (does not affect perspecitve or image plots).
 #' 
 #' @param subset subset of the observed response curves and their predictions that is plotted. 
 #' Per default all observations are plotted.
@@ -1455,14 +1456,16 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
    
     if((length(terms) > 1 || is.null(terms[[1]]$dim) || terms[[1]]$dim == 3) & ask) par(ask = TRUE)
     
-    #     ### <TODO> implement common range
-    #     if(commonRange){
-    #       #range <- range(fit)
-    #       #range[1] <- range[1]-0.02*diff(range)
-    #     }else range <- NULL
+    if(commonRange){
+      range <- range(lapply(terms, function(x) x$value ))
+      # range[1] <- range[1] - 0.01 * diff(range)
+      # range[2] <- range[2] + 0.01 * diff(range)
+    }else range <- NULL
+    
+    if(!is.null(dots$ylim)) range <- dots$ylim
     
     ## trm <- terms[[i]] 
-    myplot <- function(trm){
+    myplot <- function(trm, range_i = NULL){
       
       if(grepl("bhist", trm$main)){
         # set 0 to NA so that beta only has values in its domain
@@ -1484,7 +1487,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
         if(!"add" %in% names(dots)){
           plotWithArgs(plot, args=argsPlot, 
                        myargs=list(x=trm$x, y=trm$value, xlab=trm$xlab, main=trm$main, 
-                                   ylab="coef", type="l"))
+                                   ylab="coef", type="l", ylim=range_i))
         }else{
           plotWithArgs(lines, args=argsPlot, 
                        myargs=list(x=trm$x, y=trm$value, xlab=trm$xlab, main=trm$main, 
@@ -1521,7 +1524,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
           if(is.factor(trm$x) && is.factor(trm$z)){
             plotWithArgs(matplot, args=argsMatplot, 
                          myargs=list(x=trm$y, y=t(trm$value), xlab=trm$ylab, main=trm$main, 
-                                     ylab="coef", type="l", sub=trm$add_main))
+                                     ylab="coef", type="l", sub=trm$add_main, ylim=range_i))
             if(rug){
               rug(x$yind, ticksize = 0.02)
             }
@@ -1557,7 +1560,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
           if(is.factor(trm$y)){ # effect with by-variable (by-variable is factor)
             plotWithArgs(matplot, args=argsMatplot, 
                          myargs=list( x=trm$z, y=t(trm$value), xlab=trm$ylab, main=trm$main, 
-                                      ylab="coef", type="l", col=as.numeric(trm$y) ) )
+                                      ylab="coef", type="l", col=as.numeric(trm$y), ylim=range_i ) )
             if(rug){
               #rug(bl_data[[i]][[3]], ticksize = 0.02) 
               rug(x$yind, ticksize = 0.02)
@@ -1565,7 +1568,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
           }else{ # effect of factor variable
             plotWithArgs(matplot, args=argsMatplot, 
                          myargs=list(x=trm$y, y=t(trm$value), xlab=trm$ylab, main=trm$main, 
-                                     ylab="coef", type="l"))
+                                     ylab="coef", type="l", ylim=range_i))
             if(rug){
               #rug(bl_data[[i]][[2]], ticksize = 0.02) 
               rug(x$yind, ticksize = 0.02)
@@ -1651,11 +1654,14 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       
       trm <- terms[[i]] 
       
+      range_i <- range
+      if(is.null(range_i)) range_i <- range(terms[[i]]$value, na.rm=TRUE)
+      
       ### call to function myplot()
       if(is.null(trm$numberLevels)){
-        myplot(trm = trm)
+        myplot(trm = trm, range_i = range_i)
       }else{  # several levels of bl1 %X% bl2
-        lapply(trm[1:trm$numberLevels], myplot)
+        lapply(trm[1:trm$numberLevels], myplot, range_i = range_i)
       }
       
     } # end for-loop
@@ -1701,33 +1707,36 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       shrtlbls[1] <- paste("offset", "+", shrtlbls[1])
     }   
     if(length(which) > 1 & ask) par(ask = TRUE)
+
     if(commonRange){
       range <- range(terms)
-      range[1] <- range[1]-0.02*diff(range)
+      # range[1] <- range[1] - 0.01 * diff(range)
+      # range[2] <- range[2] + 0.01 * diff(range)
     }else range <- NULL
     
+    if(!is.null(dots$ylim)) range <- dots$ylim
+    
     for(i in 1:length(terms)){
+      
       # set values of predicted effect to missing if response is missing
-      if(sum(is.na(x$response))>0) terms[[i]][is.na(x$response)] <- NA
-      if(is.null(dots$ylim)){
-        range <- range(terms[[i]], na.rm=TRUE)
-      }else{
-        range <- dots$ylim
-      }
+      if(sum(is.na(x$response)) > 0) terms[[i]][is.na(x$response)] <- NA
+      
+      range_i <- range
+      if(is.null(range_i)) range_i <- range(terms[[i]], na.rm=TRUE)
       
       if(length(time) > 1){
         
         plotWithArgs(funplot, args=argsFunplot, 
                      myargs=list(x=time, y=terms[[i]], id=x$id, type="l", ylab="effect", lty=1, rug=FALSE,
-                                 xlab=attr(time, "nameyind"), ylim=range, main=shrtlbls[i]))
+                                 xlab=attr(time, "nameyind"), ylim=range_i, main=shrtlbls[i]))
         if(rug) rug(time)
         
       }else{
         
         if(!is.null(dim(x$response)) && dim(x$response)[2] > 1) 
           stop("plot.FDboost() with raw = TRUE is only implemented for one-dimensional scalar response.")
-          
-          plot_x <- x$response
+        
+        plot_x <- x$response
         plot_xlab <- "response"
         if(is.numeric(x$response)){
           plot_x <- x$response - x$offset
@@ -1735,9 +1744,10 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
         }
         plotWithArgs(plot, args=argsPlot, 
                      myargs=list(x=plot_x, y=terms[[i]], type="p", ylab="effect", 
-                                 xlab=plot_xlab, ylim=range, main=shrtlbls[i])) 
+                                 xlab=plot_xlab, ylim=range_i, main=shrtlbls[i])) 
       }
     }
+    
     if(length(which) > 1 & ask) par(ask = FALSE) 
   }
   

@@ -876,8 +876,6 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
               
             }
             
-
-            
           }else{ # else for if(trm$dim == 2)
             
             ## plot.FDboost expects that y-variable is yind-varible (time of response)
@@ -1424,7 +1422,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
 
   ### plot coefficients of model (smooth curves and surfaces)
   if(!raw){ 
-        
+    
     # compute the coefficients of the smooth terms that should be plotted
     coefMod <- coef(x, which=which, n1=n1, n2=n2, n3=n3, n4=n4)
     terms <- coefMod$smterms
@@ -1439,7 +1437,8 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     }
     
     # include the offset in the plot of the intercept
-    if(includeOffset && 1 %in% which && grepl("ONEx", names(terms)[1])){
+    # if the first entry in which is 1 and the model contains an intercept
+    if(includeOffset && which[1] == 1 && x$withIntercept){
       terms[[1]]$value <- terms[[1]]$value + matrix(offsetTerms$value, ncol=1, nrow=n1)
       terms[[1]]$main <- paste("offset", "+", terms[[1]]$main)
     }
@@ -1462,194 +1461,195 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     #       #range[1] <- range[1]-0.02*diff(range)
     #     }else range <- NULL
     
-    for(i in 1:length(terms)){
+    ## trm <- terms[[i]] 
+    myplot <- function(trm){
       
-      trm <- terms[[i]] 
-      
-      myplot <- function(trm){
-        
-        if(grepl("bhist", trm$main)){
-          # set 0 to NA so that beta only has values in its domain
-          # get the limits-function
-          limits <- trm$limits
-          if(is.null(limits)){
-            warning("limits is NULL, the default limits 's<=t' are used for plotting.")
-            limits <- function(s, t) {
-              (s < t) | (s == t)
-            }
+      if(grepl("bhist", trm$main)){
+        # set 0 to NA so that beta only has values in its domain
+        # get the limits-function
+        limits <- trm$limits
+        if(is.null(limits)){
+          warning("limits is NULL, the default limits 's<=t' are used for plotting.")
+          limits <- function(s, t) {
+            (s < t) | (s == t)
           }
-          trm$value[!outer(trm$x, trm$y, limits)] <- NA
+        }
+        trm$value[!outer(trm$x, trm$y, limits)] <- NA
+      }
+      
+      # plot for 1-dim effects
+      if(trm$dim == 1){
+        if(length(trm$value) == 1) trm$value <- rep(trm$value, l=length(trm$x)) 
+        
+        if(!"add" %in% names(dots)){
+          plotWithArgs(plot, args=argsPlot, 
+                       myargs=list(x=trm$x, y=trm$value, xlab=trm$xlab, main=trm$main, 
+                                   ylab="coef", type="l"))
+        }else{
+          plotWithArgs(lines, args=argsPlot, 
+                       myargs=list(x=trm$x, y=trm$value, xlab=trm$xlab, main=trm$main, 
+                                   ylab="coef", type="l"))          
         }
         
-        # plot for 1-dim effects
-        if(trm$dim == 1){
-          if(length(trm$value) == 1) trm$value <- rep(trm$value, l=length(trm$x)) 
-          
-          if(!"add" %in% names(dots)){
-            plotWithArgs(plot, args=argsPlot, 
-                         myargs=list(x=trm$x, y=trm$value, xlab=trm$xlab, main=trm$main, 
-                                     ylab="coef", type="l"))
-          }else{
-            plotWithArgs(lines, args=argsPlot, 
-                         myargs=list(x=trm$x, y=trm$value, xlab=trm$xlab, main=trm$main, 
-                                     ylab="coef", type="l"))          
-          }
-          
-          if(rug & !is.factor(x = trm$x)){
-            if(grepl("bconcurrent", trm$main) | grepl("bsignal", trm$main) | grepl("bfpc", trm$main) ){
-              rug(attr(bl_data[[i]][[1]], "signalIndex"), ticksize = 0.02)
-            }else rug(bl_data[[i]][[trm$xlab]], ticksize = 0.02)
-          } 
+        if(rug & !is.factor(x = trm$x)){
+          if(grepl("bconcurrent", trm$main) | grepl("bsignal", trm$main) | grepl("bfpc", trm$main) ){
+            rug(attr(bl_data[[i]][[1]], "signalIndex"), ticksize = 0.02)
+          }else rug(bl_data[[i]][[trm$xlab]], ticksize = 0.02)
         } 
+      } 
+      
+      # plot with factor variable
+      if( (!grepl("bhistx", trm$main)) && trm$dim==2 &&
+          ((is.factor(trm$x) | is.factor(trm$y)) | is.factor(trm$z)) ){
         
-        # plot with factor variable
-        if( (!grepl("bhistx", trm$main)) && trm$dim==2 &&
-           ((is.factor(trm$x) | is.factor(trm$y)) | is.factor(trm$z)) ){
+        ## plot for the special case where factor is plotted in several plots 
+        if(!is.null(trm$add_main)){
           
-          ## plot for the special case where factor is plotted in several plots 
-          if(!is.null(trm$add_main)){
-
-            ## order the terms such that they are plotted with x and y 
-            if(is.factor(trm$x) && !is.factor(trm$z)){
-              trm_sort <- trm
-              trm$x <- trm_sort$z
-              trm$xlab <- trm_sort$zlab
-              trm$xlim <- trm_sort$zlim
-              trm$z <- trm_sort$x
-              trm$zlab <- trm_sort$xlab
-              trm$zlim <- trm_sort$xlim
-            }
-            
-            
-            # effect of two factor variables
-            if(is.factor(trm$x) && is.factor(trm$z)){
-              plotWithArgs(matplot, args=argsMatplot, 
-                           myargs=list(x=trm$y, y=t(trm$value), xlab=trm$ylab, main=trm$main, 
-                                       ylab="coef", type="l", sub=trm$add_main))
-              if(rug){
-                rug(x$yind, ticksize = 0.02)
-              }
-            }else{
-              
-              if(pers){
-                plotWithArgs(persp, args=argsPersp,
-                             myargs=list(x=trm$x, y=trm$y, z=trm$value, xlab=paste("\n", trm$xlab), 
-                                         ylab=paste("\n", trm$ylab), zlab=paste("\n", "coef"), 
-                                         theta=30, phi=30, ticktype="detailed", 
-                                         zlim=range(trm$value), col=getColPersp(trm$value), 
-                                         main=trm$main))  
-                
-              }else{
-                plotWithArgs(image, args=argsImage,
-                             myargs=list(x=trm$y, y=trm$x, z=t(trm$value), xlab=trm$ylab, ylab=trm$xlab, 
-                                         main=trm$main, col = heat.colors(length(trm$x)^2), 
-                                         sub=trm$add_main))          
-                plotWithArgs(contour, args=argsContour,
-                             myargs=list(trm$y, trm$x, z=t(trm$value), add = TRUE), col="black")
-                
-                if(rug){
-                  rug(bl_data[[i]][[trm$xlab]], ticksize = 0.02)
-                  if(is.null(bl_data[[i]][[trm$xlab]])) rug(attr(bl_data[[i]][[1]], "signalIndex"), ticksize = 0.02)
-                  rug(bl_data[[i]][[trm$ylab]], ticksize = 0.02, side=2)
-                }
-              }
-              
-            }
-            
-          }else{
-            
-            if(is.factor(trm$y)){ # effect with by-variable (by-variable is factor)
-              plotWithArgs(matplot, args=argsMatplot, 
-                           myargs=list( x=trm$z, y=t(trm$value), xlab=trm$ylab, main=trm$main, 
-                                        ylab="coef", type="l", col=as.numeric(trm$y) ) )
-              if(rug){
-                #rug(bl_data[[i]][[3]], ticksize = 0.02) 
-                rug(x$yind, ticksize = 0.02)
-              }
-            }else{ # effect of factor variable
-              plotWithArgs(matplot, args=argsMatplot, 
-                           myargs=list(x=trm$y, y=t(trm$value), xlab=trm$ylab, main=trm$main, 
-                                       ylab="coef", type="l"))
-              if(rug){
-                #rug(bl_data[[i]][[2]], ticksize = 0.02) 
-                rug(x$yind, ticksize = 0.02)
-              }
-            }
+          ## order the terms such that they are plotted with x and y 
+          if(is.factor(trm$x) && !is.factor(trm$z)){
+            trm_sort <- trm
+            trm$x <- trm_sort$z
+            trm$xlab <- trm_sort$zlab
+            trm$xlim <- trm_sort$zlim
+            trm$z <- trm_sort$x
+            trm$zlab <- trm_sort$xlab
+            trm$zlim <- trm_sort$xlim
           }
           
           
-        }else{
-          # persp-plot for 2-dim effects
-          if(trm$dim == 2 & pers){
-            if(length(unique(as.vector(trm$value)))==1){
-              # persp() gives error if only a flat plane should be drawn
-              plot(y=trm$value[1,], x=trm$x, main=trm$main, type="l", xlab=trm$ylab, 
-                   ylab="coef")
-            }else{  
-              range <- range(trm$value, na.rm = TRUE)
-              if(range[1]==range[2]) range <- range(0, range)
-              zlim <- c(range[1] - 0.05*(range[2] - range[1]), 
-                        range[2] + 0.05*(range[2] - range[1]))
+          # effect of two factor variables
+          if(is.factor(trm$x) && is.factor(trm$z)){
+            plotWithArgs(matplot, args=argsMatplot, 
+                         myargs=list(x=trm$y, y=t(trm$value), xlab=trm$ylab, main=trm$main, 
+                                     ylab="coef", type="l", sub=trm$add_main))
+            if(rug){
+              rug(x$yind, ticksize = 0.02)
+            }
+          }else{
+            
+            if(pers){
               plotWithArgs(persp, args=argsPersp,
                            myargs=list(x=trm$x, y=trm$y, z=trm$value, xlab=paste("\n", trm$xlab), 
                                        ylab=paste("\n", trm$ylab), zlab=paste("\n", "coef"), 
-                                       main=trm$main, theta=30, zlim=zlim,
-                                       phi=30, ticktype="detailed",
-                                       col=getColPersp(trm$value)))
-            } 
-          }
-          # image for 2-dim effects
-          if(trm$dim == 2 & !pers){        
-            plotWithArgs(image, args=argsImage,
-                         myargs=list(x=trm$y, y=trm$x, z=t(trm$value), xlab=trm$ylab, ylab=trm$xlab, 
-                                     main=trm$main, col = heat.colors(length(trm$x)^2)))          
-            plotWithArgs(contour, args=argsContour,
-                         myargs=list(trm$y, trm$x, z=t(trm$value), add = TRUE))
-            
-            if(rug){
-              ##points(expand.grid(bl_data[[i]][[1]], bl_data[[i]][[2]]))
-              if(grepl("bhist", trm$main)){
-                rug(x$yind, ticksize = 0.02)
-              }else{
-                ifelse(grepl("by", trm$main) | ( !any(class(x)=="FDboostLong") && grepl("%X", trm$main) ) ,
-                       rug(bl_data[[i]][[3]], ticksize = 0.02),
-                       rug(bl_data[[i]][[2]], ticksize = 0.02))
+                                       theta=30, phi=30, ticktype="detailed", 
+                                       zlim=range(trm$value), col=getColPersp(trm$value), 
+                                       main=trm$main))  
+              
+            }else{
+              plotWithArgs(image, args=argsImage,
+                           myargs=list(x=trm$y, y=trm$x, z=t(trm$value), xlab=trm$ylab, ylab=trm$xlab, 
+                                       main=trm$main, col = heat.colors(length(trm$x)^2), 
+                                       sub=trm$add_main))          
+              plotWithArgs(contour, args=argsContour,
+                           myargs=list(trm$y, trm$x, z=t(trm$value), add = TRUE), col="black")
+              
+              if(rug){
+                rug(bl_data[[i]][[trm$xlab]], ticksize = 0.02)
+                if(is.null(bl_data[[i]][[trm$xlab]])) rug(attr(bl_data[[i]][[1]], "signalIndex"), ticksize = 0.02)
+                rug(bl_data[[i]][[trm$ylab]], ticksize = 0.02, side=2)
               }
-              ifelse(grepl("bsignal", trm$main) | grepl("bfpc", trm$main) | grepl("bhist", trm$main),
-                     rug(attr(bl_data[[i]][[1]], "signalIndex"), ticksize = 0.02, side=2),
-                     rug(bl_data[[i]][[1]], ticksize = 0.02, side=2))
             }
-          }        
-        }
-        ### 3 dim plots
-        # persp-plot for 3-dim effects
-        if(trm$dim == 3 & pers){
-          for(j in 1:length(trm$z)){
-            plotWithArgs(persp, args=argsPersp,
-                         myargs=list(x=trm$x, y=trm$y, z=trm$value[[j]], xlab=paste("\n", trm$xlab), 
-                                     ylab=paste("\n", trm$ylab), zlab=paste("\n", "coef"), 
-                                     theta=30, phi=30, ticktype="detailed", 
-                                     zlim=range(trm$value), col=getColPersp(trm$value[[j]]), 
-                                     main= paste(trm$zlab ,"=", round(trm$z[j],2), ": ", trm$main, sep=""))
-            )         
+            
           }
-        }
-        # image for 3-dim effects
-        if(trm$dim == 3 & !pers){
-          for(j in 1:length(trm$z)){
-            plotWithArgs(image, args=argsImage,
-                         myargs=list(x=trm$x, y=trm$y, z=trm$value[[j]], xlab=trm$xlab, ylab=trm$ylab,
-                                     col = heat.colors(length(trm$x)^2), zlim=range(trm$value),
-                                     main= paste(trm$zlab ,"=", round(trm$z[j],2), ": ", trm$main, sep="")))
-            plotWithArgs(contour, args=argsContour,
-                         myargs=list(trm$x, trm$y, trm$value[[j]], xlab=trm$xlab, add = TRUE))
+          
+        }else{
+          
+          if(is.factor(trm$y)){ # effect with by-variable (by-variable is factor)
+            plotWithArgs(matplot, args=argsMatplot, 
+                         myargs=list( x=trm$z, y=t(trm$value), xlab=trm$ylab, main=trm$main, 
+                                      ylab="coef", type="l", col=as.numeric(trm$y) ) )
             if(rug){
-              points(bl_data[[i]][[1]], bl_data[[i]][[2]]) 
+              #rug(bl_data[[i]][[3]], ticksize = 0.02) 
+              rug(x$yind, ticksize = 0.02)
             }
-          }        
+          }else{ # effect of factor variable
+            plotWithArgs(matplot, args=argsMatplot, 
+                         myargs=list(x=trm$y, y=t(trm$value), xlab=trm$ylab, main=trm$main, 
+                                     ylab="coef", type="l"))
+            if(rug){
+              #rug(bl_data[[i]][[2]], ticksize = 0.02) 
+              rug(x$yind, ticksize = 0.02)
+            }
+          }
         }
         
-      }  ## end function myplot()
+        
+      }else{
+        # persp-plot for 2-dim effects
+        if(trm$dim == 2 & pers){
+          if(length(unique(as.vector(trm$value)))==1){
+            # persp() gives error if only a flat plane should be drawn
+            plot(y=trm$value[1,], x=trm$x, main=trm$main, type="l", xlab=trm$ylab, 
+                 ylab="coef")
+          }else{  
+            range <- range(trm$value, na.rm = TRUE)
+            if(range[1]==range[2]) range <- range(0, range)
+            zlim <- c(range[1] - 0.05*(range[2] - range[1]), 
+                      range[2] + 0.05*(range[2] - range[1]))
+            plotWithArgs(persp, args=argsPersp,
+                         myargs=list(x=trm$x, y=trm$y, z=trm$value, xlab=paste("\n", trm$xlab), 
+                                     ylab=paste("\n", trm$ylab), zlab=paste("\n", "coef"), 
+                                     main=trm$main, theta=30, zlim=zlim,
+                                     phi=30, ticktype="detailed",
+                                     col=getColPersp(trm$value)))
+          } 
+        }
+        # image for 2-dim effects
+        if(trm$dim == 2 & !pers){        
+          plotWithArgs(image, args=argsImage,
+                       myargs=list(x=trm$y, y=trm$x, z=t(trm$value), xlab=trm$ylab, ylab=trm$xlab, 
+                                   main=trm$main, col = heat.colors(length(trm$x)^2)))          
+          plotWithArgs(contour, args=argsContour,
+                       myargs=list(trm$y, trm$x, z=t(trm$value), add = TRUE))
+          
+          if(rug){
+            ##points(expand.grid(bl_data[[i]][[1]], bl_data[[i]][[2]]))
+            if(grepl("bhist", trm$main)){
+              rug(x$yind, ticksize = 0.02)
+            }else{
+              ifelse(grepl("by", trm$main) | ( !any(class(x)=="FDboostLong") && grepl("%X", trm$main) ) ,
+                     rug(bl_data[[i]][[3]], ticksize = 0.02),
+                     rug(bl_data[[i]][[2]], ticksize = 0.02))
+            }
+            ifelse(grepl("bsignal", trm$main) | grepl("bfpc", trm$main) | grepl("bhist", trm$main),
+                   rug(attr(bl_data[[i]][[1]], "signalIndex"), ticksize = 0.02, side=2),
+                   rug(bl_data[[i]][[1]], ticksize = 0.02, side=2))
+          }
+        }        
+      }
+      ### 3 dim plots
+      # persp-plot for 3-dim effects
+      if(trm$dim == 3 & pers){
+        for(j in 1:length(trm$z)){
+          plotWithArgs(persp, args=argsPersp,
+                       myargs=list(x=trm$x, y=trm$y, z=trm$value[[j]], xlab=paste("\n", trm$xlab), 
+                                   ylab=paste("\n", trm$ylab), zlab=paste("\n", "coef"), 
+                                   theta=30, phi=30, ticktype="detailed", 
+                                   zlim=range(trm$value), col=getColPersp(trm$value[[j]]), 
+                                   main= paste(trm$zlab ,"=", round(trm$z[j],2), ": ", trm$main, sep=""))
+          )         
+        }
+      }
+      # image for 3-dim effects
+      if(trm$dim == 3 & !pers){
+        for(j in 1:length(trm$z)){
+          plotWithArgs(image, args=argsImage,
+                       myargs=list(x=trm$x, y=trm$y, z=trm$value[[j]], xlab=trm$xlab, ylab=trm$ylab,
+                                   col = heat.colors(length(trm$x)^2), zlim=range(trm$value),
+                                   main= paste(trm$zlab ,"=", round(trm$z[j],2), ": ", trm$main, sep="")))
+          plotWithArgs(contour, args=argsContour,
+                       myargs=list(trm$x, trm$y, trm$value[[j]], xlab=trm$xlab, add = TRUE))
+          if(rug){
+            points(bl_data[[i]][[1]], bl_data[[i]][[2]]) 
+          }
+        }        
+      }
+      
+    }  ## end function myplot()
+    
+    for(i in 1:length(terms)){
+      
+      trm <- terms[[i]] 
       
       ### call to function myplot()
       if(is.null(trm$numberLevels)){

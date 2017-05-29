@@ -444,7 +444,6 @@ FDboost <- function(formula,          ### response ~ xvars
                     offset = NULL,    ### optional
                     offset_control = o_control(), ### optional specification of offset model
                     check0 = FALSE,    ### check sum-to-zero-constraint of the fitted effects?
-                    #offset_control = list(k_min = 20, silent = TRUE),
                     ...)              ### goes directly to mboost
 {
   dots <- list(...)
@@ -1169,6 +1168,9 @@ FDboost <- function(formula,          ### response ~ xvars
 
   ret$offsetFDboost <- offsetFDboost # offset as specified in call to FDboost 
   ret$offsetMboost <- offsetMboost # offset as given to mboost 
+  
+  # information whether the model contains an itercept
+  ret$withIntercept <- formula_intercept
       
   # save the call
   ret$call <- match.call()

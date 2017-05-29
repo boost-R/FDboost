@@ -1637,7 +1637,7 @@ X_fpc <- function(mf, vary, args) {
   
   if(ncol(X1)!=length(xind)) stop(xname, ": Dimension of signal matrix and its index do not match.")
   
-  ## <FIXME> is the following statemen on fpca.sc() correct??
+  ## <FIXME> is the following statement on fpca.sc() correct??
   ## does it work correctly with argvals = xind
   
   ## do FPCA on X1 (code of refund::ffpc adapted) using xind as argvals 
@@ -1645,7 +1645,7 @@ X_fpc <- function(mf, vary, args) {
     decomppars <- list(argvals = xind, pve = args$pve, npc = args$npc, useSymm = TRUE)
     decomppars$Y <- X1
     ## functional covariate is per default centered per time-point
-    klX <- do.call(fpca.sc, decomppars)
+    klX <- do.call(refund::fpca.sc, decomppars)
     
     ## add the solution of the decomposition to args
     args$klX <- klX

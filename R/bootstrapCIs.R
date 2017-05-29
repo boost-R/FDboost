@@ -527,8 +527,6 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
     
     ## for interaction effects like "bhistx(x) %X% bolsc(z)"
     if(!is.null(temp$numberLevels)){
-      ## TODO: make plots for all levels of temp$numberLevels
-      ## temp$dim <- temp[[1]]$dim
       temp <- temp[[1]]
       warning("Of the composed base-learner ", l, " only the first effect is plotted.")
     }

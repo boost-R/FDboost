@@ -40,7 +40,7 @@ covariates at which the estimated effects are evaluated.}
 \value{
 If \code{raw = FALSE}, a list containing 
 \itemize{
- \item \code{pterms} a matrix containing the parametric / non-functional coefficients. 
+ \item \code{offset} a list with plot information for the offset.
  \item \code{smterms} a named list with one entry for each smooth term in the model. 
  Each entry contains
     \itemize{

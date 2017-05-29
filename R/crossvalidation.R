@@ -206,9 +206,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
       }else{
         integration_weights <- integrationWeights(X1 = object$response, object$yind, object$id)
       }
-    }else{ 
-      ## fixme: is that always what we want?
-      ## integration_weights <- model.weights(object)
+    }else{ ## numInt == "equal"
       integration_weights <- rep(1, length(object$response))
       ## correct integration weights for matrix valued response like possibly in Binomial()
       if( class(object)[1] == "FDboostScalar") integration_weights <- rep(1, NROW(object$response))
@@ -496,7 +494,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
       ## make sure dispatch works correctly
       class(mod) <- class(object)
       
-      fun(mod) # TODO make extra argument dat_oobweights available? 
+      fun(mod) # Provide an extra argument for dat_oobweights?
     }
   }
   
@@ -1367,8 +1365,7 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
     if(commonRange & is.null(ylim)){ 
       ylim <- range(x$predCV[which])
     }
-    # <FIXME> use extra ylim for functional offset?
-
+    
     ### loop over base-learners
     for(l in which){
       
@@ -1486,8 +1483,6 @@ plot_bootstrapped_coef <- function(temp, l,
   
   
   if(!is.null(temp$numberLevels)){
-    ## TODO: make plots for all levels of temp$numberLevels
-    ## temp$dim <- temp[[1]]$dim
     temp <- temp[[1]]
     warning("Of the composed base-learner ", l, " only the first effect is plotted.")
   }

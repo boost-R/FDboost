@@ -39,11 +39,8 @@
 #' Alternatively a vector of length \code{nrow(response)} containing  
 #' positive weights can be specified.
 #' @param data a data frame or list containing the variables in the model.
-#' @param weights (1) a numeric vector of weights for observational units, 
-#' i.e. \code{length(weights)} has to be \code{nrow(response)},
-#' (2) alternatively weights can be specified for single observations then
-#' \code{length(weights)} has to be \code{nrow(response)}*\code{ncol(response)}
-#' per default weights is constantly 1. 
+#' @param weights only for internal use to specify resampling weights;
+#' per default all weights are equal to 1. 
 #' @param offset_control parameters for the estimation of the offset, 
 #' defaults to \code{o_control(k_min = 20, silent = TRUE)}, see \code{\link{o_control}}.  
 #' @param offset a numeric vector to be used as offset over the index of the response (optional).
@@ -554,6 +551,9 @@ FDboost <- function(formula,          ### response ~ xvars
 
   }
   
+  if(scalarResponse & numInt != "equal") 
+    stop("Integration weights numInt must be set to 'equal' for scalar response.")
+  
   ## extract time from timeformula 
   yind <- all.vars(timeformula)[[1]]
   stopifnot(length(yind) == 1)
@@ -786,7 +786,7 @@ FDboost <- function(formula,          ### response ~ xvars
   }
 
   #### get the specified df for each base-learner
-  ## <FIXME> does not take into account base-learners that do not have brackets
+  ## does not take into account base-learners that do not have brackets
   if(length(tmp) == 0){
     bl_df <- NULL
   }else{
@@ -820,7 +820,6 @@ FDboost <- function(formula,          ### response ~ xvars
     ## adjust the df in the timeformula
     call_tfm <- as.call(parse(text = tfm)[[1]])
     if(!is.null(bl_df)) call_tfm$df <- df_effects
-    ## <FIXME> is there are nicer way to get a string from the call 
     tfm_df <- paste0(deparse(call_tfm), collapse = "")
 
     ## for FLAM model with %O% use anisotropic Kronecker product for not penalizing in direction of ONEx

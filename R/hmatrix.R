@@ -77,7 +77,6 @@ hmatrix <- function(time, id, x, argvals=1:ncol(x),
   stopifnot(length(time)==length(id))
     
   # convert x to a matrix, especially if x is of class AsIs
-  # <FIXME> is there a more elegant way for this?
   x <- matrix(x, ncol=ncol(x), nrow=nrow(x))  
    
   #### check argvals and x

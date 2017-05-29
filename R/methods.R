@@ -510,7 +510,7 @@ residuals.FDboost <- function(object, ...){
 #' 
 #' @return If \code{raw = FALSE}, a list containing 
 #' \itemize{
-#'  \item \code{pterms} a matrix containing the parametric / non-functional coefficients. 
+#'  \item \code{offset} a list with plot information for the offset.
 #'  \item \code{smterms} a named list with one entry for each smooth term in the model. 
 #'  Each entry contains
 #'     \itemize{
@@ -544,9 +544,6 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
     
     # List to be returned
     ret <- list()
-    
-    ## <FIXME> all linear terms should be part of pterms?
-    # ret$pterms <- NULL 
     
     ## offset as first element
     ret$offset$x <- seq( min(object$yind), max(object$yind), l=n1)

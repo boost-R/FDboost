@@ -704,7 +704,6 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
   }
   
   ### compute condition number of Ds^t Ds
-  ### <FIXME> possibel to use argument stand here?
   Ds <- (X1 * L) %*% Bs
   ## DstDs <- crossprod(Ds)
   ## e_DstDs <- try(eigen(DstDs))
@@ -798,7 +797,7 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
   } ## end of computation of logCondDs_hist for historical effects
   
   getOverlap <- function(subset, X1, L, Bs, K){
-    # <FIXME> case that all observations are 0, kernel is everything -> kernel overlap
+    # In the case that all observations are 0, kernel is everything -> kernel overlap
     if(all(X1[ , subset]==0)){
       return(5)
     }
@@ -1122,14 +1121,14 @@ reweightData <- function(data, argvals, vars,
     # construct a list for new hmatrices
     newHmats <- vector("list", length(nhm))
     
-    # construct the new hmatrices
+    ## construct the new hmatrices
     for(j in 1:length(nhm)){
       
       ## check that idvars == idvars[[1]] and match id-variables in all hmatrix-objects
       if(!is.null(idvars) && !(all.equal(c(getId(data[[nhm[j]]])), c(data[[idvars[1]]])) == "TRUE")) 
         stop("id variable in hmatrix object must be equal to idvars")
       
-      # subset hmatrix
+      ## subset hmatrix
       newHmats[[j]] <- subset_hmatrix(data[[nhm[j]]], index = index, compress = compress)
       
       if( any(class(data[[nhm[j]]]) == "AsIs") ){
@@ -1139,7 +1138,7 @@ reweightData <- function(data, argvals, vars,
     }
     names(newHmats) <- nhm
     
-  }else{ # if there are no hmatrices, set the list and corresponding names to NULL
+  }else{ ## if there are no hmatrices, set the list and corresponding names to NULL
     
     newHmats <- NULL
     nhm <- NULL
@@ -1150,9 +1149,10 @@ reweightData <- function(data, argvals, vars,
   ## do the indexing for the variables in long format 
   if(!is.null(longvars)){
     if(any(idvars %in% longvars)) longvars <- longvars[!longvars %in% idvars]
+    ## create weights and index in long format
     weights_long <- weights[data[[idvars[1]]]]
     index_long <- rep(1:length(weights_long), weights_long)
-    ## TODO do that within "recycle data"
+    ## indexing variables in long format
     temp_long <- lapply(longvars, function(nameWithoutDim) data[[nameWithoutDim]][index_long])
     
     #### create new id variable 1, 2, 3, ... that can be used for FDboost()
@@ -1171,7 +1171,7 @@ reweightData <- function(data, argvals, vars,
     my_index_long <- index_long 
     my_temp_idvars <- temp_idvars
     i <- 1
-    # add 0.1^1 to duplicates, 0.1^1 + 0.1^2 = 0.11 to triplicates, ...
+    ## add 0.1^1 to duplicates, 0.1^1 + 0.1^2 = 0.11 to triplicates, ...
     while(any(duplicated(my_index_long))){ # loop until no more duplicates in the data  
       my_temp_idvars[duplicated(my_index_long)] <- my_temp_idvars[duplicated(my_index_long)] + 0.1^i
       my_index_long[duplicated(my_index_long)] <- my_index_long[duplicated(my_index_long)] + 0.1^i
@@ -1187,12 +1187,12 @@ reweightData <- function(data, argvals, vars,
   }
   
   ## compute idvars_new in hmatrix-part or in longvars part, but add to data here 
-  # if idvars exist, subset accordingly;
-  # idvars has to be the same for all hmatrix-objects and response! 
+  ## if idvars exist, subset accordingly;
+  ## idvars has to be the same for all hmatrix-objects and response! 
   if(!is.null(idvars)){
     
     ## only works for common observation grid of response
-    # idvars_new <- rep(1:length(index), nc) # index = c(1, 1, 2) -> 1, 2, 3
+    ## idvars_new <- rep(1:length(index), nc) # index = c(1, 1, 2) -> 1, 2, 3
     
     for(ifr in idvars){
       data[[ifr]] <- idvars_new
@@ -1203,7 +1203,7 @@ reweightData <- function(data, argvals, vars,
   
   inAVs <- nd %in% argvals
   
-  # recycle data
+  ## recycle data
   data <- c(lapply(nd[!isVec & !inAVs], function(nameWithDim) data[[nameWithDim]][index, , drop=FALSE]),
             lapply(nd[isVec & !inAVs], function(nameWithoutDim) data[[nameWithoutDim]][index]), 
             newHmats, 

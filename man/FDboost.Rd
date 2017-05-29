@@ -35,11 +35,8 @@ positive weights can be specified.}
 
 \item{data}{a data frame or list containing the variables in the model.}
 
-\item{weights}{(1) a numeric vector of weights for observational units, 
-i.e. \code{length(weights)} has to be \code{nrow(response)},
-(2) alternatively weights can be specified for single observations then
-\code{length(weights)} has to be \code{nrow(response)}*\code{ncol(response)}
-per default weights is constantly 1.}
+\item{weights}{only for internal use to specify resampling weights;
+per default all weights are equal to 1.}
 
 \item{offset}{a numeric vector to be used as offset over the index of the response (optional).
 If no offset is specified, per default \code{offset = NULL} which means that a 

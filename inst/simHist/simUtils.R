@@ -643,11 +643,10 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
   #  warning("<k> (" , bsdim , ") larger than effective rank of <", xname, "> (", maxK, "). ", 
   #          "Effect identifiable only through penalty.")
   #}
-  ## <FIXME> automatically use less basis-functions in case of problems?
+  ## automatically use less basis-functions in case of problems?
   ## you would have to change args$knots accordingly
   
   ### compute condition number of Ds^t Ds
-  ### <FIXME> possibel to use argument stand here?
   Ds <- (X1 * L) %*% Bs
   DstDs <- crossprod(Ds)
   e_DstDs <- try(eigen(DstDs))

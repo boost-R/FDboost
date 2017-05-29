@@ -3,16 +3,18 @@
 year <- 2017
 vers <- "0.3-0"
 
-citHeader("To cite package 'FDboost' itself use the manual;  
-to cite functional linear array models use Brockhaus et al. (2015).")
+citHeader("To cite package 'FDboost' itself use the manual;
+to cite functional linear array models use Brockhaus et al. (2015);
+to cite models with historical effects use Brockhaus et al. (2017);
+to cite models with factor-specific historical effects use Ruegamer (2016).")
 
 citEntry(
  entry = "manual",
  title = "FDboost: Boosting Functional Regression Models",
  author = "Sarah Brockhaus, David Ruegamer",
  year = year,
- textVersion = paste("Brockhaus, S. and R\"ugamer, D.", "(",year,"),", "FDboost: Boosting Functional Regression Models",
-                     "R package version", vers)
+ textVersion = paste0("Brockhaus, S. and Ruegamer, D. ", "(",year,"), ", "FDboost: Boosting Functional Regression Models, ",
+                     "R package version ", vers)
 )
 
 
@@ -27,3 +29,27 @@ citEntry(
  pages = "279--300",
  textVersion="Brockhaus, S., Scheipl, F., Hothorn, T., and Greven, S. (2015), The Functional Linear Array Model. Statistical Modelling, 15(3), 279-300."
 ) 
+
+
+citEntry(
+ entry = "Article",
+ author="Brockhaus, Sarah and Melcher, Michael and Leisch, Friedrich and Greven, Sonja",
+ title="Boosting flexible functional regression models with a high number of functional historical effects",
+ journal="Statistics and Computing",
+ year="2017",
+ volume="27",
+ number="4",
+ pages="913--926",
+ textVersion="Brockhaus, S., Melcher, M., Leisch, F., and Greven, S. (2017), Boosting flexible functional regression models with a high number of functional historical effects. Statistics and Computing, 27(4), 913-926."
+)
+
+citEntry(
+ entry = "Article",
+ author = "Ruegamer, David and Brockhaus, Sarah and Gentsch, Kornelia and Scherer, Klaus and Greven, Sonja",
+ title = "Boosting Factor-Specific Functional Historical Models for the Detection of Synchronisation in Bioelectrical Signals",
+ journal = "ArXiv e-prints",
+ eprint = "1609.06070",
+ year = "2016",
+ month = "sep",
+ textVersion="Ruegamer, D., Brockhaus, S., Gentsch, K., Scherer, K., and Greven, S. (2016), Boosting Factor-Specific Functional Historical Models for the Detection of Synchronisation in Bioelectrical Signals, ArXiv e-prints 1609.06070."
+)

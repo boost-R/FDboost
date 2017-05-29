@@ -749,7 +749,7 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
   ### overlap measure of Larsson and Villani 2001
   ### as proposed by Scheipl and Greven 2015
   getOverlap <- function(subset, X1, L, Bs, K){
-    # <FIXME> case that all observations are 0, kernel is everything -> kernel overlap
+    # In the case that all observations are 0, kernel is everything -> kernel overlap
     if(all(X1[ , subset]==0)){
       return(5)
     }

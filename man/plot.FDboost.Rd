@@ -57,7 +57,8 @@ If \code{FALSE}, image/contour-plots (\code{\link[graphics]{image}},
 \code{\link[graphics]{contour}}) are drawn for 2- and 3-dimensional effects.}
 
 \item{commonRange}{logical, defaults to \code{FALSE}, 
-if \code{TRUE} the range over all effects is the same (so far not implemented).}
+if \code{TRUE} the range over all effects is the same 
+(does not affect perspecitve or image plots).}
 
 \item{...}{other arguments, passed to \code{funplot} (only used in plotPredicted)}
 

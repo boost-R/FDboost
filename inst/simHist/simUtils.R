@@ -870,7 +870,7 @@ getDiags <- function(m, data, bl=2, cut=.995){
     Ps <- get("args", environment(m$baselearner[[bl]]$dpp))$K1
     
     D <- extract(m, "design", which=bl)[[1]]
-    ### <FIXME> multiply the penalty matrix with the corresponding lambda??
+    ### multiply the penalty matrix with the corresponding lambda??
     ### should be irrelevant for boosting, as there is only one lambda in both directions
     P <- extract(m, "penalty", which=bl)[[1]]
     # P <- extract(m, "lambda")[[bl]]

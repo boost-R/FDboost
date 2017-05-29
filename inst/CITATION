@@ -9,9 +9,9 @@ to cite functional linear array models use Brockhaus et al. (2015).")
 citEntry(
  entry = "manual",
  title = "FDboost: Boosting Functional Regression Models",
- author = "Sarah Brockhaus, David R\"ugamer",
+ author = "Sarah Brockhaus, David Ruegamer",
  year = year,
- textVersion = paste("Brockhaus, S. ", "(", year, ")", "FDboost: Boosting Functional Regression Models",
+ textVersion = paste("Brockhaus, S. and R\"ugamer, D.", "(",year,"),", "FDboost: Boosting Functional Regression Models",
                      "R package version", vers)
 )
 

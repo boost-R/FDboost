@@ -24,8 +24,9 @@ bhist(x, s, time, index = NULL, limits = "s<=t", standard = c("no",
   knots = 10, boundary.knots = NULL, degree = 3, differences = 1,
   df = 4, lambda = NULL, penalty = c("ps", "pss"), check.ident = FALSE)
 
-bfpc(x, s, index = NULL, df = 4, lambda = NULL, pve = 0.99,
-  npc = NULL, npc.max = 15, getEigen = TRUE)
+bfpc(x, s, index = NULL, df = 4, lambda = NULL, penalty = c("identity",
+  "inverse", "no"), pve = 0.99, npc = NULL, npc.max = 15,
+  getEigen = TRUE)
 }
 \arguments{
 \item{x}{matrix of functional variable x(s). The functional covariate has to be 
@@ -76,9 +77,12 @@ See the help on the argument \code{center} of \code{\link[mboost]{bbs}}.}
 that all trajectories have the same mean 
 (then a shift in the coefficient function is not identifiable).}
 
-\item{penalty}{by default, \code{penalty="ps"}, the difference penalty for P-splines is used, 
-for \code{penalty="pss"} the penalty matrix is transformed to have full rank, 
-so called shrinkage approach by Marra and Wood (2011)}
+\item{penalty}{for \code{bsignal}, by default, \code{penalty = "ps"}, the difference penalty for P-splines is used, 
+for \code{penalty = "pss"} the penalty matrix is transformed to have full rank, 
+so called shrinkage approach by Marra and Wood (2011). 
+For \code{bfpc} the penalty can be either \code{"identity"} for a ridge penalty 
+(the default) or \code{"inverse"} to use the matrix with the inverse eigenvalues 
+on the diagonal as penalty matrix or \code{"no"} for no penalty.}
 
 \item{check.ident}{use checks for identifiability of the effect, based on Scheipl and Greven (2016) 
 for linear functional effect using \code{bsignal} and 

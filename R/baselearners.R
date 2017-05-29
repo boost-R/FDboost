@@ -187,7 +187,7 @@ integrationWeightsLeft <- function(X1, xind, leftWeight = c("first", "mean", "ze
 hyper_signal <- function(mf, vary, inS="smooth", knots = 10, boundary.knots = NULL, degree = 3,
                       differences = 1, df = 4, lambda = NULL, center = FALSE,
                       cyclic = FALSE, constraint = "none", deriv = 0L, 
-                      Z=NULL, penalty="ps", check.ident = FALSE,
+                      Z=NULL, penalty = "ps", check.ident = FALSE,
                       s=NULL) {
   
   knotf <- function(x, knots, boundary.knots) {
@@ -427,9 +427,12 @@ X_bsignal <- function(mf, vary, args) {
 #' \code{Z} can be calculated as the transformation matrix for a sum-to-zero constraint in the case
 #' that all trajectories have the same mean 
 #' (then a shift in the coefficient function is not identifiable).
-#' @param penalty by default, \code{penalty="ps"}, the difference penalty for P-splines is used, 
-#' for \code{penalty="pss"} the penalty matrix is transformed to have full rank, 
-#' so called shrinkage approach by Marra and Wood (2011)
+#' @param penalty for \code{bsignal}, by default, \code{penalty = "ps"}, the difference penalty for P-splines is used, 
+#' for \code{penalty = "pss"} the penalty matrix is transformed to have full rank, 
+#' so called shrinkage approach by Marra and Wood (2011). 
+#' For \code{bfpc} the penalty can be either \code{"identity"} for a ridge penalty 
+#' (the default) or \code{"inverse"} to use the matrix with the inverse eigenvalues 
+#' on the diagonal as penalty matrix or \code{"no"} for no penalty. 
 #' @param check.ident use checks for identifiability of the effect, based on Scheipl and Greven (2016) 
 #' for linear functional effect using \code{bsignal} and 
 #' based on Brockhaus et al. (2017) for historical effects using \code{bhist}
@@ -641,11 +644,11 @@ X_bsignal <- function(mf, vary, args) {
 #' 
 #' @export
 ### P-spline base-learner for signal matrix with index vector
-bsignal <- function(x, s, index = NULL, inS=c("smooth", "linear", "constant"), #by = NULL,
+bsignal <- function(x, s, index = NULL, inS = c("smooth", "linear", "constant"), #by = NULL,
                     knots = 10, boundary.knots = NULL, degree = 3, differences = 1, df = 4, 
                     lambda = NULL, center = FALSE, 
                     cyclic = FALSE, Z = NULL, 
-                    penalty=c("ps","pss"), check.ident = FALSE
+                    penalty = c("ps","pss"), check.ident = FALSE
 ){
   
   if (!is.null(lambda)) df <- NULL
@@ -1619,15 +1622,15 @@ bhist <- function(x, s, time, index = NULL, #by = NULL,
 ### hyper parameters for signal baselearner with eigenfunctions as bases, FPCA-based
 hyper_fpc <- function(mf, vary, df = 4, lambda = NULL, 
                       pve = 0.99, npc = NULL, npc.max = 15, getEigen=TRUE, 
-                      s=NULL) {
+                      s=NULL, penalty = "identity") {
   ## prediction is usually set in/by newX() 
   list(df = df, lambda = lambda, pve = pve, npc = npc, npc.max = npc.max, 
-       getEigen = getEigen, s = s, prediction = FALSE)
+       getEigen = getEigen, s = s, penalty = penalty, prediction = FALSE)
 }
 
 ### model.matrix for FPCA based functional base-learner
 X_fpc <- function(mf, vary, args) {  
-  #print("X_fpc") 
+ 
   stopifnot(is.data.frame(mf))
   xname <- names(mf)
   X1 <- as.matrix(mf)
@@ -1635,13 +1638,14 @@ X_fpc <- function(mf, vary, args) {
   if(is.null(xind)) xind <- args$s # if the attribute is NULL use the s of the model fit
   #print(xind)
   
-  if(ncol(X1)!=length(xind)) stop(xname, ": Dimension of signal matrix and its index do not match.")
+  if(ncol(X1) != length(xind)) stop(xname, ": Dimension of signal matrix and its index do not match.")
   
   ## <FIXME> is the following statement on fpca.sc() correct??
   ## does it work correctly with argvals = xind
   
   ## do FPCA on X1 (code of refund::ffpc adapted) using xind as argvals 
   if(is.null(args$klX)){
+    
     decomppars <- list(argvals = xind, pve = args$pve, npc = args$npc, useSymm = TRUE)
     decomppars$Y <- X1
     ## functional covariate is per default centered per time-point
@@ -1663,6 +1667,7 @@ X_fpc <- function(mf, vary, args) {
     ## all(round(klX$scores,6) == round(scale(X1, center=klX$mu, scale=FALSE) %*% klX$efunctions, 6))
     
   }else{
+    
     klX <- args$klX 
     ## compute scores on new X1 observations
     if(ncol(X1) == length(klX$mu) && all(args$s == xind)){
@@ -1681,25 +1686,27 @@ X_fpc <- function(mf, vary, args) {
       X <-(scale(X1, center=approxMu, scale=FALSE) %*% approxEfunctions)
       ## <FIXME> use integration weights?
       #X <- 1/args$a*(scale(X1, center=approxMu, scale=FALSE) %*% approxEfunctions)
-    }  
+    } 
+    
   }
 
   colnames(X) <- paste(xname, ".PC", 1:ncol(X), sep = "")
   
-  ### Penalty matrix: diagonal matrix of inverse eigen-values
-  ### implicit assumption: important eigen-functions of X process 
-  ### are more important in shape of beta
-  ## K <- diag(1/klX$evalues[args$subset])
+  ## set up the penalty matrix 
+  K <- switch(args$penalty, 
+              ### use the identity matrix for penalization
+              ### all eigenfunctions are penalized with the same strength
+              identity = diag(rep(1, length = length(args$subset))),  
+              ## Penalty matrix: diagonal matrix of inverse eigen-values
+              ## implicit assumption: important eigen-functions of X process 
+              ## are more important in shape of beta
+              inverse = diag(1 / klX$evalues[args$subset]), 
+              ### no penalty at all, as regularization is done by truncating the number of PCs used
+              ### gives bad estimates
+              no = matrix(0, ncol = length(args$subset), nrow = length(args$subset))
+  )
   
-  ### use the identity matrix for penalization
-  ### all eigenfunctions are penalized with the same strength
-  K <- diag(rep(1, length=length(args$subset)))
-  
-  ### no penalty at all, as regularization is done by truncating the number of PCs used
-  ### gives bad estimates
-  # K <- matrix(0, ncol=length(args$subset), nrow=length(args$subset))
-  
-  return(list(X = X, K = K, args=args))
+  return(list(X = X, K = K, args = args))
 }
 
 
@@ -1710,14 +1717,15 @@ X_fpc <- function(mf, vary, args) {
 #' @rdname bsignal
 #' @export
 bfpc <- function(x, s, index = NULL, df = 4, 
-                 lambda = NULL, pve = 0.99, npc = NULL, npc.max = 15, getEigen=TRUE
+                 lambda = NULL, penalty = c("identity", "inverse", "no"), 
+                 pve = 0.99, npc = NULL, npc.max = 15, getEigen=TRUE
 ){
   
   if (!is.null(lambda)) df <- NULL
   
   cll <- match.call()
   cll[[1]] <- as.name("bfpc")
-  #print(cll)
+  penalty <- match.arg(penalty)
   
   if (!requireNamespace("refund", quietly = TRUE))
     stop("The package refund is needed for the function 'fpca.sc'.\nTo use the bfpc baseleaner, please install the package 'refund'.")
@@ -1755,7 +1763,7 @@ bfpc <- function(x, s, index = NULL, df = 4,
   temp <- X_fpc(mf, vary, 
                 args = hyper_fpc(mf, vary, df = df, lambda = lambda, 
                                  pve = pve, npc = npc, npc.max = npc.max, 
-                                 s = s))
+                                 s = s, penalty = penalty))
   ## save the FPCA in args
   ##str(temp$args)
   

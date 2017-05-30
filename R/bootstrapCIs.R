@@ -452,7 +452,8 @@ bootstrapCI <- function(object, which = NULL,
               B_inner = B_inner,
               which = which,
               levels = levels, 
-              yind = object$yind)
+              yind = object$yind,
+              family = object$family@name)
   
   class(ret) <- "bootstrapCI"
   
@@ -540,7 +541,8 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
       }else{ 
         ## temp$dim == 1 like in scalar response with bsignal()
         ## put each fold into one list entry 
-        if(length(x$yind) <= 1){ # scalar response 
+        if(length(x$yind) <= 1 & x$family != "Binomial Distribution (similar to glm)"){ 
+          # scalar response and not Binomial
           temp$value <- split(temp_CI, rep(1:x$B_outer, each = length(temp_CI)/x$B_outer))
         }else{
           temp$value <- split(temp_CI, rep(1:x$B_outer, length(temp_CI)/x$B_outer))

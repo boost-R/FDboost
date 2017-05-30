@@ -264,13 +264,13 @@ mod1 <- FDboost(vis ~ 1 + bolsc(T_C, df = 2) + bolsc(T_A, df = 2),
   cvm1 <- cvrisk(mod1, folds = folds1, grid = 1:500)
   ## plot(cvm1)
   mstop(cvm1)
-}
-
+  
 ## look at the model
 summary(mod1)
 coef(mod1)
-## plot(mod1)
-## plotPredicted(mod1, lwdPred = 2)
+plot(mod1)
+plotPredicted(mod1, lwdPred = 2)
+}
 
 ######## Example for scalar-on-function-regression 
 data("fuelSubset", package = "FDboost")
@@ -386,7 +386,7 @@ mod4 <- FDboost(vis ~ 1 + bols(T_C, contrasts.arg = "contr.sum", intercept = FAL
                 numInt = "Riemann", family = QuantReg(),
                 offset = NULL, offset_control = o_control(k_min = 9),
                 data = dataIrregular, control = boost_control(mstop = 50, nu = 0.4))
-summary(mod4)
+## summary(mod4)
 ## plot(mod4)
 ## plotPredicted(mod4, lwdPred = 2)
 

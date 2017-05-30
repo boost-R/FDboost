@@ -540,7 +540,7 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
       }else{ 
         ## temp$dim == 1 like in scalar response with bsignal()
         ## put each fold into one list entry 
-        temp$value <- split(temp_CI, rep(1:x$B_outer, each = length(temp_CI)/x$B_outer)) 
+        temp$value <- split(temp_CI, rep(1:x$B_outer, length(temp_CI)/x$B_outer)) 
       }
       
     }else{

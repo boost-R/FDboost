@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
-\section{Changes in FDboost version 0.3-0 (2017-05-16)}{
+\section{Changes in FDboost version 0.3-0 (2017-05-31)}{
     \subsection{User-visible changes}{
     \itemize{
     \item new function \code{bootstrapCI()} to compute bootstrapped coefficients 

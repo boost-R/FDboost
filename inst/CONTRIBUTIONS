@@ -13,7 +13,7 @@ The package "FDboost" contains modified code from other R packages.
 		   hyper_histx, X_histx, X_histx (see R/baselearnersX.R),
 		   %A%, %A0%, %Xc% (see R/constrainedX.R),
 		   stabsel (see R/stabsel.R)
-- gamboostLSS: FDboostLSS, FDboostLSS_fit, cvrisk.FDboostLSS (see R/FDboostLSS.R)
+- gamboostLSS: FDboostLSS (see R/FDboostLSS.R)
 - refund: check_ident, trace_lv, penalty_pss, expand.call, safeDeparse (see R/utilityFunctions.R)
 
 

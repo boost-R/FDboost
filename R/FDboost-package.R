@@ -12,6 +12,7 @@
 #' resulting in scalar-on-function, function-on-scalar and function-on-function regression. 
 #' Details on the functional regression models that can be fitted with \pkg{FDboost}
 #' can be found in Brockhaus et al. (2015, 2016, 2017) and Ruegamer et al. (2016).  
+#' A hands-on tutorial for the package can be found at \url{https://arxiv.org/abs/1705.10662}.
 #' 
 #' Using component-wise gradient boosting as fitting procedure, \pkg{FDboost} relies on 
 #' the R package \pkg{mboost} (Hothorn et al., 2017). 
@@ -26,6 +27,10 @@
 #' This can be done using the function \code{\link{applyFolds}}. 
 #' 
 #' @references 
+#' Brockhaus, S., Ruegamer, D. and Greven, S. (2017):
+#' Boosting Functional Regression Models with FDboost.
+#' \url{https://arxiv.org/abs/1705.10662}
+#' 
 #' Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 #' The functional linear array model. Statistical Modelling, 15(3), 279-300. 
 #' 

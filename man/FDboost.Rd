@@ -95,7 +95,8 @@ be for example time.
 Possible effects are, e.g., a smooth intercept \eqn{\beta_0(t)}, 
 a linear functional effect \eqn{\int x_i(s)\beta(s,t)ds}, 
 potentially with integration limits depending on \eqn{t}, 
-smooth and linear effects of scalar covariates \eqn{f(z_i,t)} or \eqn{z_i \beta(t)}.
+smooth and linear effects of scalar covariates \eqn{f(z_i,t)} or \eqn{z_i \beta(t)}. 
+A hands-on tutorial for the package can be found at \url{https://arxiv.org/abs/1705.10662}.
 }
 \details{
 In matrix representation of functional response and covariates each row 
@@ -421,6 +422,10 @@ pred <- predict(mod4, newdata = newd)
                 
 }
 \references{
+Brockhaus, S., Ruegamer, D. and Greven, S. (2017):
+Boosting Functional Regression Models with FDboost.
+\url{https://arxiv.org/abs/1705.10662}
+
 Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 The functional linear array model. Statistical Modelling, 15(3), 279-300. 
 

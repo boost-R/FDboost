@@ -1626,8 +1626,9 @@ plot_bootstrapped_coef <- function(temp, l,
         temp$value[sapply(temp$value, function(x) is.null(dim(x)))] <- list(matrix(0, ncol=20, nrow=length(quantx)))
         
         if(is.null(temp$z)){
-          myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x, ]) # first column
-          
+          # myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x, ]) # first column
+          myRow <- t(temp$value[[which(quantx[j]==temp$x)]])
+                     
           plot_curves(x_i = temp$y, y_i = myRow, xlab_i = temp$ylab, 
                       main_i = paste(temp$main, " at ", temp$xlab,"=" ,quantx[j], sep = ""), 
                       ylim_i = ylim)

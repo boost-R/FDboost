@@ -258,7 +258,9 @@ bootstrapCI <- function(object, which = NULL,
   
   isFacSpecEffect <- sapply(1:nrEffects, 
                             function(i) "numberLevels" %in% names(coefs[[1]]$smterms[[i]]))
-  
+  # check for time-varying factor effects
+  isFacEffect <- sapply(1:nrEffects, function(i) is.factor(coefs[[1]]$smterms[[i]]$x))
+
   # check for intercept
   withIntercept <- any(names(coefs[[1]]) == "intercept")
   
@@ -285,14 +287,18 @@ bootstrapCI <- function(object, which = NULL,
   
   # check for effect surfaces
   isSurface <- sapply(1:nrEffects, function(i) !is.null(coefs[[1]]$smterms[[i]]$y) )
+  # do not treat time-varying factor effects as surfaces
+  isSurface[isFacEffect] <- FALSE
   
   # reduce lists for non surface effects
-  listOfCoefs[!isFacSpecEffect & !isSurface] <- lapply(listOfCoefs[!isFacSpecEffect & !isSurface], 
-                                          function(x) do.call("rbind", x))
+  listOfCoefs[!isFacSpecEffect & !isSurface & !isFacEffect] <- 
+    lapply(listOfCoefs[!isFacSpecEffect & !isSurface & !isFacEffect], 
+           function(x) do.call("rbind", x))
   
-  listOfCoefs[isFacSpecEffect | isSurface] <- lapply(listOfCoefs[isFacSpecEffect | isSurface],
-                                         function(x) lapply(x, function(y) do.call("rbind", lapply(y, c))))
-  
+  listOfCoefs[isFacSpecEffect | isSurface] <- 
+    lapply(listOfCoefs[isFacSpecEffect | isSurface],
+           function(x) lapply(x, function(y) do.call("rbind", lapply(y, c))))
+
   # add information about the values of the covariate
   # and change format
   for(i in 1:length(listOfCoefs)){
@@ -308,7 +314,7 @@ bootstrapCI <- function(object, which = NULL,
     }
 
     aty <- NA
-    if(isSurface[i]) aty <- coefs[[1]]$smterms[[i]]$y 
+    if(isSurface[i] | isFacEffect[i]) aty <- coefs[[1]]$smterms[[i]]$y 
     if(isFacSpecEffect[i]) aty <- coefs[[1]]$smterms[[i]][[1]]$y 
 
     # format functional factors
@@ -551,13 +557,22 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
       }
       
     }else{
-      ## for interaction effects like "bhistx(x) %X% bolsc(z)" 
-      ## the values are already a list 
-      temp$value <- lapply(temp_CI, function(x) x[1, ])
-    }
+ 
+      if(is.null(temp$numberLevels) & is.factor(temp$x)){
+        
+        ## for time-varying factor effects
+        temp$value <- temp_CI
+
+      }else{
+        
+        ## for interaction effects like "bhistx(x) %X% bolsc(z)" 
+        ## the values are already a list
+        temp$value <- lapply(temp_CI, function(x) x[1, ])
+      
+      }
+    }    
     
-    
-    if(!is.null(temp$dim) && temp$dim == 2){
+    if(!is.null(temp$dim) && temp$dim == 2 & !is.factor(temp$x)){
       temp$value <- lapply(temp$value, function(xx) 
         matrix(xx, ncol = sqrt(length(xx)), nrow = sqrt(length(xx)), byrow = FALSE) )
     }

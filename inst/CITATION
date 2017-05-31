@@ -3,7 +3,7 @@
 year <- 2017
 vers <- "0.3-0"
 
-citHeader("To cite package 'FDboost' itself use the manual and Brockhaus et al. (2017a);
+citHeader("To cite package 'FDboost' itself use the manual (Brockhaus and Ruegamer 2017) and the tutorial (Brockhaus et al. 2017a);
 to cite functional linear array models use Brockhaus et al. (2015);
 to cite models with historical effects use Brockhaus et al. (2017b);
 to cite models with factor-specific historical effects use Ruegamer (2016).")
@@ -25,7 +25,7 @@ citEntry(
  year = "2017",
  eprint = "1705.10662",
  month = "may",
- textVersion="Ruegamer, D., Brockhaus, S., and Greven, S. (2017a), Boosting Functional Regression Models with FDboost, ArXiv e-prints 1705.10662."
+ textVersion="Brockhaus, S., Ruegamer, D., and Greven, S. (2017a), Boosting Functional Regression Models with FDboost, ArXiv e-prints 1705.10662."
 ) 
 
 citEntry(

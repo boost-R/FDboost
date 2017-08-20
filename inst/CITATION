@@ -1,7 +1,7 @@
 
 
 year <- 2017
-vers <- "0.3-0"
+vers <- "0.3-1"
 
 citHeader("To cite package 'FDboost' itself use the manual (Brockhaus and Ruegamer 2017) and the tutorial (Brockhaus et al. 2017a);
 to cite functional linear array models use Brockhaus et al. (2015);
@@ -11,7 +11,7 @@ to cite models with factor-specific historical effects use Ruegamer (2016).")
 citEntry(
  entry = "manual",
  title = "FDboost: Boosting Functional Regression Models",
- author = "Sarah Brockhaus, David Ruegamer",
+ author = "Sarah Brockhaus and David Ruegamer",
  year = year,
  textVersion = paste0("Brockhaus, S. and Ruegamer, D. ", "(",year,"), ", "FDboost: Boosting Functional Regression Models, ",
                      "R package version ", vers)
@@ -43,7 +43,7 @@ citEntry(
 
 citEntry(
  entry = "Article",
- author="Brockhaus, Sarah and Melcher, Michael and Leisch, Friedrich and Greven, Sonja",
+ author="Sarah Brockhaus and Michael Melcher and Friedrich Leisch, and Sonja Greven",
  title="Boosting flexible functional regression models with a high number of functional historical effects",
  journal="Statistics and Computing",
  year="2017",
@@ -55,7 +55,7 @@ citEntry(
 
 citEntry(
  entry = "Article",
- author = "Ruegamer, David and Brockhaus, Sarah and Gentsch, Kornelia and Scherer, Klaus and Greven, Sonja",
+ author = "David Ruegamer, Sarah Brockhaus, Kornelia Gentsch, Klaus Scherer, and Sonja Greven",
  title = "Boosting Factor-Specific Functional Historical Models for the Detection of Synchronisation in Bioelectrical Signals",
  journal = "ArXiv e-prints",
  eprint = "1609.06070",

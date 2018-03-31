@@ -74,7 +74,7 @@ The call of \code{dpp} returns an object of class
 \description{
 Base-learners that fit historical functional effects that can be used with the 
 tensor product, as, e.g., \code{hbistx(...) \%X\% bolsc(...)}, to form interaction 
-effects (Ruegamer et al., 2016).  
+effects (Ruegamer et al., 2018).  
 For expert use only! May show unexpected behavior  
 compared to other base-learners for functional data!
 }
@@ -89,7 +89,7 @@ where \eqn{T1} is the minimal index of \eqn{t} of the response \eqn{Y(t)}.
 \code{bhistx} can only be used if \eqn{Y(t)} and \eqn{x(s)} are observd over
 the same domain \eqn{s,t \in [T1, T2]}. 
 The base-learner \code{bhistx} can be used to set up complex interaction effects 
-like factor-specific historical  effects as discussed in Ruegamer et al. (2016). 
+like factor-specific historical  effects as discussed in Ruegamer et al. (2018). 
 
 Note that the data has to be supplied as a \code{hmatrix} object for 
 model fit and predictions.
@@ -147,9 +147,9 @@ Statistics and Computing, 27(4), 913-926.
 Marra, G. and Wood, S.N. (2011): Practical variable selection for generalized additive models. 
 Computational Statistics & Data Analysis, 55, 2372-2387.
 
-Ruegamer D., Brockhaus, S., Gentsch K., Scherer, K., Greven, S. (2016). Detecting synchronisation in 
-EEG- and EMG-Signals via boosted functional historical models. 
-\url{http://arxiv.org/abs/1609.06070}
+Ruegamer D., Brockhaus, S., Gentsch K., Scherer, K., Greven, S. (2018). 
+Boosting factor-specific functional historical models for the detection of synchronization in bioelectrical signals. 
+Journal of the Royal Statistical Society: Series C (Applied Statistics), 67, 621-642.
 
 Scheipl, F., Staicu, A.-M. and Greven, S. (2015): 
 Functional Additive Mixed Models, Journal of Computational and Graphical Statistics, 24(2), 477-501.

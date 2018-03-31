@@ -23,15 +23,13 @@
 }
 \details{
   The aim is to explain potentials in the EMG signal by study settings as well as
-  the EEG signal (see Ruegamer et al., 2016).
+  the EEG signal (see Ruegamer et al., 2018).
 }
 \source{
   
   Gentsch,  K.,  Grandjean,  D.  and  Scherer,  K.  R.  (2014)  Coherence  explored  between  emotion components:  Evidence from event-related potentials and facial electromyography. Biological Psychology, 98, 70-81.
   
- Ruegamer D., Brockhaus, S., Gentsch K., Scherer, K., Greven, S. (2016). Detecting synchronisation in 
- EEG- and EMG-Signals via boosted functional historical models. 
- \url{http://arxiv.org/abs/1609.06070} 
+ Ruegamer D., Brockhaus, S., Gentsch K., Scherer, K., Greven, S. (2018). Boosting factor-specific functional historical models for the detection of synchronization in bioelectrical signals. Journal of the Royal Statistical Society: Series C (Applied Statistics), 67, 621-642. 
   
 }
 \examples{

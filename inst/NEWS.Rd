@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
+\section{Changes in FDboost version 0.3-1 (2018-03-31)}{
+  \subsection{Miscellaneous}{
+    \itemize{
+    \item replace cBind which is deprecated with cbind
+    } 
+  }
+}
+
 \section{Changes in FDboost version 0.3-0 (2017-05-31)}{
     \subsection{User-visible changes}{
     \itemize{
@@ -28,7 +36,7 @@
 	  \item restructure FDboostLSS() such that it calls mboostLSS_fit() from \pkg{gamboostLSS} 2.0-0  
 	  \item in \pkg{FDboost}, set \code{options("mboost_indexmin" = +Inf)} to disable the 
 	        internal use of ties in model fitting, as this breaks some methods for models with response 
-	        in long format and for models containing \code{bhsitx}, 
+	        in long format and for models containing \code{bhistx}, 
 	        see issue \href{https://github.com/boost-R/FDboost/issues/10}{#10}
 	  \item deprecate \code{validateFDboost()}, 
 	        use \code{applyFolds()} and \code{bootstrapCI()} instead

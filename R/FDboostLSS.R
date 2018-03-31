@@ -3,7 +3,7 @@
 #' 
 #' Function for fitting generalized additive models for location, scale and shape (GAMLSS)  
 #' with functional data using component-wise gradient boosting, for details see 
-#' Brockhaus et al. (2015a). 
+#' Brockhaus et al. (2018). 
 #' 
 #' @param formula a symbolic description of the model to be fit. 
 #' If \code{formula} is a single formula, the same formula is used for all distribution parameters. 
@@ -26,7 +26,7 @@
 #' @param weights does not work!
 #' @param method fitting method, currently two methods are supported: 
 #' \code{"cyclic"} (see Mayr et al., 2012) and \code{"noncyclic"} 
-#' (algorithm with inner loss of Thomas et al., 2016).
+#' (algorithm with inner loss of Thomas et al., 2018).
 #' @param ... additional arguments passed to \code{\link[FDboost]{FDboost}}, 
 #' including, \code{family} and \code{control}.
 #' 
@@ -34,9 +34,9 @@
 #' \code{FDboostLSS} calls \code{FDboost} to fit the distribution parameters of a GAMLSS - 
 #' a functional boosting model is fitted for each parameter of the response distribution.  
 #' In \code{\link[gamboostLSS]{mboostLSS}}, details on boosting of GAMLSS based on 
-#' Mayr et al. (2012) and Thomas et al. (2016) are given.   
+#' Mayr et al. (2012) and Thomas et al. (2018) are given.   
 #' In \code{\link{FDboost}}, details on boosting regression models with functional variables 
-#' are given (Brockhaus et al., 2015b, Brockhaus et al., 2017). 
+#' are given (Brockhaus et al., 2015, Brockhaus et al., 2017). 
 #' 
 #' @return An object of class \code{FDboostLSS} that inherits from \code{mboostLSS}. 
 #' The \code{FDboostLSS}-object is a named list containing one list entry per distribution parameter
@@ -50,17 +50,16 @@
 #' @keywords models, nonlinear 
 #' 
 #' @references 
-#' Brockhaus, S. and Fuest, A. and Mayr, A. and Greven, S. (2015a): 
-#' Functional regression models for location, scale and shape applied to stock returns. 
-#' In: Friedl H. and Wagner H. (eds), 
-#' Proceedings of the 30th International Workshop on Statistical Modelling: 117-122.  
-#'
-#' Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015b). 
+#' Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015). 
 #' The functional linear array model. Statistical Modelling, 15(3), 279-300.
 #' 
 #' Brockhaus, S., Melcher, M., Leisch, F. and Greven, S. (2017): 
 #' Boosting flexible functional regression models with a high number of functional historical effects,  
 #' Statistics and Computing, 27(4), 913-926.
+#' 
+#' Brockhaus, S., Fuest, A., Mayr, A. and Greven, S. (2018): 
+#' Signal regression models for location, scale and shape with an application to stock returns. 
+#' Journal of the Royal Statistical Society: Series C (Applied Statistics), 67, 665-686. 
 #' 
 #' Mayr, A., Fenske, N., Hofner, B., Kneib, T. and Schmid, M. (2012): 
 #' Generalized additive models for location, scale and shape for high-dimensional 
@@ -71,11 +70,10 @@
 #' Generalized additive models for location, scale and shape (with discussion). 
 #' Journal of the Royal Statistical Society: Series C (Applied Statistics), 54(3), 507-554. 
 #' 
-#' Thomas, J., Mayr, A., Bischl, B., Schmid, M., Smith, A., and Hofner, B. (2016), 
+#' Thomas, J., Mayr, A., Bischl, B., Schmid, M., Smith, A., and Hofner, B. (2018), 
 #' Gradient boosting for distributional regression - faster tuning and improved 
 #' variable selection via noncyclical updates. 
-#' Accepted for publication in Statistics and Computing.  
-#' Preliminary version: \url{http://arxiv.org/abs/1611.10171}.
+#' Statistics and Computing, 28, 673-687. 
 #' 
 #' @examples 
 #' ########### simulate Gaussian scalar-on-function data

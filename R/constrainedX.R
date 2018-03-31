@@ -17,15 +17,15 @@
 #' Use, e.g., in a model call to \code{FDboost}, following the scheme, 
 #' \code{y ~ 1 + bolsc(x1) + bolsc(x2) + bols(x1) \%Xc\% bols(x2)}, 
 #' where \code{1} induces a global intercept and \code{x1}, \code{x2} are factor variables, 
-#' see Ruegamer et al. (2016).  
+#' see Ruegamer et al. (2018).  
 #' 
 #' @references 
 #' Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 #' The functional linear array model. Statistical Modelling, 15(3), 279-300.
 #' 
-#' Ruegamer D., Brockhaus, S., Gentsch K., Scherer, K., Greven, S. (2016). Detecting synchronisation in 
-#' EEG- and EMG-Signals via boosted functional historical models. 
-#' \url{http://arxiv.org/abs/1609.06070}
+#' Ruegamer D., Brockhaus, S., Gentsch K., Scherer, K., Greven, S. (2018). 
+#' Boosting factor-specific functional historical models for the detection of synchronization in bioelectrical signals. 
+#' Journal of the Royal Statistical Society: Series C (Applied Statistics), 67, 621-642.
 #' 
 #' @author Sarah Brockhaus, David Ruegamer
 #' 

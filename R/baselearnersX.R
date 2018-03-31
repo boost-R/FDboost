@@ -141,7 +141,6 @@ X_histx <- function(mf, vary, args) {
   if(MATRIX){
     # message("use sparse matrix in X_hist")
     diag <- Diagonal
-    cbind <- cBind
     
     ## <enhancement> it would be nicer to construct the matrix directly as sparse matrix 
     

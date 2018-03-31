@@ -1223,7 +1223,6 @@ X_hist <- function(mf, vary, args) {
   if(MATRIX){
     #message("use sparse matrix in X_hist")
     diag <- Diagonal
-    cbind <- cBind
     ###### more efficient construction of X1des directly as sparse matrix 
     #     ### compute the design matrix as sparse matrix
     #     if(args$format == "wide"){
@@ -1850,7 +1849,6 @@ X_bbsc <- function(mf, vary, args) {
   MATRIX <- MATRIX && options("mboost_useMatrix")$mboost_useMatrix
   if (MATRIX) {
     diag <- Diagonal
-    cbind <- cBind
     for (i in 1:length(mm)){
       tmp <- attributes(mm[[i]])[c("degree", "knots", "Boundary.knots")]
       mm[[i]] <- Matrix(mm[[i]])
@@ -1868,11 +1866,7 @@ X_bbsc <- function(mf, vary, args) {
         colnames(ret) <- paste(colnames(ret), colnames(by)[i], sep = ":")
         ret
       })
-      if (is(X, "Matrix")) {
-        X <- do.call("cBind", DM)
-      } else {
-        X <- do.call("cbind", DM)
-      }
+      X <- do.call("cbind", DM)
     }
     if (args$differences > 0){
       if (!args$cyclic) {
@@ -2364,7 +2358,6 @@ X_olsc <- function(mf, vary, args) {
     MATRIX <- MATRIX && options("mboost_useMatrix")$mboost_useMatrix
     if (MATRIX) {
       diag <- Diagonal
-      cbind <- cBind
       if (!is(X, "Matrix"))
         X <- Matrix(X)
     }
@@ -2376,11 +2369,7 @@ X_olsc <- function(mf, vary, args) {
         colnames(ret) <- paste(colnames(ret), colnames(by)[i], sep = ":")
         ret
       })
-      if (is(X, "Matrix")) {
-        X <- do.call("cBind", DM)
-      } else {
-        X <- do.call("cbind", DM)
-      }
+      X <- do.call("cbind", DM)
     }
   }
   

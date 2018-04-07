@@ -1218,7 +1218,6 @@ X_hist <- function(mf, vary, args) {
   ### Compute the design matrix as sparse or normal matrix 
   ### depending on dimensions of the final design matrix
   MATRIX <- any(c(nrow(ind0), ncol(Bs)) > c(50, 50)) #MATRIX <- any(dim(X) > c(500, 50))
-  print(MATRIX)
   MATRIX <- MATRIX && options("mboost_useMatrix")$mboost_useMatrix 
 
   if(MATRIX){

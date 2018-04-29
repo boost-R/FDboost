@@ -85,25 +85,24 @@ y <- rnorm(mean = mu, sd = sigma, n = n) ## draw respone y_i ~ N(mu_i, sigma_i)
 ## save data as list containing s as well 
 dat_list <- list(y = y, z = z, x = I(x), s = s)
 
-## model fit assuming Gaussian location scale model 
+## model fit with noncyclic algorithm assuming Gaussian location scale model 
 m_boost <- FDboostLSS(list(mu = y ~ bols(z, df = 2) + bsignal(x, s, df = 2, knots = 16), 
                            sigma = y ~ bols(z, df = 2) + bsignal(x, s, df = 2, knots = 16)), 
-                           timeformula = NULL, data = dat_list)
+                           timeformula = NULL, data = dat_list, method = "noncyclic")
 summary(m_boost)
 
 \dontrun{
  if(require(gamboostLSS)){
-  ## find optimal number of boosting iterations on a grid in [1, 500]
+  ## find optimal number of boosting iterations on a grid in 1:1000
   ## using 5-fold bootstrap
-  grid <-  make.grid(c(mu = 500, sigma = 500), length.out = 10)
   ## takes some time, easy to parallelize on Linux
   set.seed(123) 
   cvr <- cvrisk(m_boost, folds = cv(model.weights(m_boost[[1]]), B = 5),
-                grid = grid, trace = FALSE)
+                grid = 1:1000, trace = FALSE)
   ## use model at optimal stopping iterations 
-  m_boost <- m_boost[mstop(cvr)] ## [c(172, 63)]
+  m_boost <- m_boost[mstop(cvr)] ## 832
    
-  ## plot smooth effects of functional covariates
+  ## plot smooth effects of functional covariates for mu and sigma
   par(mfrow = c(1,2))
   plot(m_boost$mu, which = 2, ylim = c(0,5))
   lines(s, sin(s*pi)*5, col = 3, lwd = 2)

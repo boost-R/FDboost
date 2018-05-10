@@ -1,7 +1,13 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
-\section{Changes in FDboost version 0.3-1 (2018-03-31)}{
+\section{Changes in FDboost version 0.3-1 (2018-05-10)}{
+  \subsection{Bug-fixes}{
+    \itemize{
+    \item \code{cvrisk} has per default adequate folds for a noncyclic fitted FDboostLSS model,  
+          see isssue \href{https://github.com/boost-R/FDboost/issues/14}{#14} 
+    }
+    }
   \subsection{Miscellaneous}{
     \itemize{
     \item replace cBind which is deprecated with cbind

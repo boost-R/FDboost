@@ -2,7 +2,7 @@ Package: FDboost
 Type: Package
 Title: Boosting Functional Regression Models
 Version: 0.3-1
-Date: 2018-03-31
+Date: 2018-05-10
 Authors@R: c(person("Sarah", "Brockhaus", role = c("aut", "cre"),
 		            email = "Sarah.Brockhaus@stat.uni-muenchen.de"), 
 			 person("David", "Ruegamer", role = "aut", 

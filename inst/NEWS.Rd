@@ -1,11 +1,19 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
+\section{Changes in FDboost version 0.3-2 (2018-07-18)}{
+  \subsection{Bug-fixes}{
+    \itemize{
+    \item Deprecated argument \code{corrected} in \code{cvrisk} removed.
+    }
+    }
+}
+
 \section{Changes in FDboost version 0.3-1 (2018-05-10)}{
   \subsection{Bug-fixes}{
     \itemize{
     \item \code{cvrisk} has per default adequate folds for a noncyclic fitted FDboostLSS model,  
-          see isssue \href{https://github.com/boost-R/FDboost/issues/14}{#14} 
+          see issue \href{https://github.com/boost-R/FDboost/issues/14}{#14} 
     }
     }
   \subsection{Miscellaneous}{

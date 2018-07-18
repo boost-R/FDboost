@@ -1099,7 +1099,8 @@ FDboost <- function(formula,          ### response ~ xvars
         
         # no time-specific offset -> constant offset is estimated within mboost()
       }else{
-        stop("User specified offset must be of length 1 for irregularly observed response.") 
+        if(dots$family@name != "Poisson Likelihood") # allow for Poisson case (survival models)
+          stop("User specified offset must be of length 1 for irregularly observed response.")
       }
       
 

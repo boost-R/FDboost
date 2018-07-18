@@ -17,7 +17,7 @@ applyFolds(object, folds = cv(rep(1, length(unique(object$id))), type =
 
 \method{cvrisk}{FDboost}(object, folds = cvLong(id = object$id, weights =
   model.weights(object)), grid = 1:mstop(object), papply = mclapply,
-  fun = NULL, corrected = TRUE, mc.preschedule = FALSE, ...)
+  fun = NULL, mc.preschedule = FALSE, ...)
 
 cvLong(id, weights = rep(1, l = length(id)), type = c("bootstrap", "kfold",
   "subsampling", "curves"), B = ifelse(type == "kfold", 10, 25), prob = 0.5,
@@ -59,8 +59,6 @@ For details see \code{\link[parallel]{mclapply}}.}
 behaviour of \code{applyFolds} with hmatrix objects when using nested resampling.}
 
 \item{...}{further arguments passed to \code{\link[parallel]{mclapply}}}
-
-\item{corrected}{see \code{\link[mboost]{cvrisk}}.}
 
 \item{id}{the id-vector as integers 1, 2, ... specifying which observations belong to the same curve, 
 deprecated in \code{cvMa()}.}

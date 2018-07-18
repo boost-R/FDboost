@@ -22,7 +22,6 @@
 #' The risk function must return a scalar numeric value for vector valued imput.  
 #' @param numInt only exists in \code{applyFolds}; the scheme for numerical integration, 
 #' see \code{numInt} in \code{\link{FDboost}}. 
-#' @param corrected see \code{\link[mboost]{cvrisk}}. 
 #' @param mc.preschedule Defaults to \code{FALSE}. Preschedule tasks if are parallelized using \code{mclapply}?  
 #' For details see \code{\link[parallel]{mclapply}}. 
 #' @param ... further arguments passed to \code{\link[parallel]{mclapply}} 
@@ -1657,7 +1656,7 @@ plot_bootstrapped_coef <- function(temp, l,
 cvrisk.FDboost <- function(object, folds = cvLong(id=object$id, weights=model.weights(object)),
                            grid = 1:mstop(object),
                            papply = mclapply,
-                           fun = NULL, corrected = TRUE, mc.preschedule = FALSE, ...){
+                           fun = NULL, mc.preschedule = FALSE, ...){
   
   if(!length(unique(object$offset)) == 1) message("The smooth offset is fixed over all folds.")
   
@@ -1671,7 +1670,7 @@ cvrisk.FDboost <- function(object, folds = cvLong(id=object$id, weights=model.we
   ret <- cvrisk(object = object, folds = folds,
                 grid = grid,
                 papply = papply,
-                fun = fun, corrected = corrected, mc.preschedule = mc.preschedule, ...)
+                fun = fun, mc.preschedule = mc.preschedule, ...)
   return(ret) 
 }
 

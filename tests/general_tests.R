@@ -57,24 +57,34 @@ if(require(refund)){
   ## GAMLSS with functional response 
   mlss <- FDboostLSS(Y ~ 1 + bsignal(X1, svals, knots = 6, df = 4), 
                      timeformula = ~ bbs(tvals, knots = 9, df = 3, differences = 1), 
-                     control = boost_control(mstop = 10), data = dat)
+                     control = boost_control(mstop = 10), data = dat, 
+                     method = "noncyclic")
   
   
   ################################################################
   ######### test some methods and utility functions 
   
   ## test plot()
-  par(mfrow = c(4,4))
+  par(mfrow = c(1,1))
   plot(m, ask = FALSE)
   plot(ml, ask = FALSE)
   plot(ms, ask = FALSE)
-  plot(mlss$mu, ask = FALSE); plot(mlss$sigma, ask = FALSE)
+  plot(mlss$mu, ask = FALSE) 
+  plot(mlss$sigma, ask = FALSE)
   
   ## test applyFolds()
   set.seed(123)
   applyFolds(m, folds = cv(rep(1, length(unique(m$id))), B = 2), grid = 0:5)
   applyFolds(ml, folds = cv(rep(1, length(unique(ml$id))), B = 2), grid = 0:5)
   applyFolds(ms, folds = cv(rep(1, length(unique(ms$id))), B = 2), grid = 0:5)
+
+  ## test cvrisk()
+  set.seed(123)
+  cvrisk(m, folds = cvLong(id = m$id, weights = model.weights(m), B = 2), grid = 0:5)
+  cvrisk(ml, folds = cvLong(id = ml$id, weights = model.weights(ml), B = 2), grid = 0:5)
+  cvrisk(ms, folds = cvLong(id = ms$id, weights = model.weights(ms), B = 2), grid = 0:5)
+  cvrisk(mlss, folds = cv(model.weights(mlss[[1]]), B = 2),
+         grid = 1:5, trace = FALSE)
   
   
 }

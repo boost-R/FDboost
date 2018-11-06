@@ -75,12 +75,24 @@ integrationWeights <- function(X1, xind, id = NULL){
   
   # compute integraion weights for irregular data in long format
   if(!is.null(id)){
-    Lneu <- tapply(xind, id, FUN = function(x) colMeans(rbind(c(0, diff(x)), c(diff(x), 0))) )
+    Lneu <- tapply(xind, id, FUN = function(x) {
+      unsorted <- is.unsorted(x, strictly = FALSE)
+      if(unsorted) {xorder <- order(x)
+      x <- sort(x)}
+      w <- colMeans(rbind(c(0, diff(x)), c(diff(x), 0)))
+      if(unsorted) w[order(xorder)] else w} ) # re-order if necessary
     Lneu <- unlist(Lneu)
     names(Lneu) <- NULL    
     return(Lneu) 
   }  
   
+  # sort xind values while calculating the weights 
+  unsorted <- is.unsorted(xind, strictly = FALSE)
+  if(unsorted) {
+    xorder <- order(xind)
+    X1 <- X1[, xorder]
+    xind <- sort(xind)
+  }
   ## special case that grid has equal distances = regular grid
   if(all( abs(diff(xind) - mean(diff(xind))) < .Machine$double.eps *10^10 )){
     ## use the first difference 
@@ -138,10 +150,10 @@ integrationWeights <- function(X1, xind, id = NULL){
     }
     )
     
-    return(t(Lneu))  
+    if(unsorted) return(t(Lneu)[,order(xorder)]) else return(t(Lneu))
     
   }else{ 
-    return(L)
+    if(unsorted) return(L[,order(xorder)]) else return(L)
   }
 }
 
@@ -155,7 +167,12 @@ integrationWeights <- function(X1, xind, id = NULL){
 integrationWeightsLeft <- function(X1, xind, leftWeight = c("first", "mean", "zero")){
   
   if(ncol(X1) != length(xind)) stop("Dimension of xind and X1 do not match")
-  # !is.unsorted(xind, strictly = FALSE) # is xind sorted?
+  unsorted <- is.unsorted(xind, strictly = FALSE) # is xind sorted?
+  if(unsorted) {
+    xorder <- order(xind)
+    X1 <- X1[, xorder]
+    xind <- sort(xind)
+  }
   
   leftWeight <- match.arg(leftWeight)
   
@@ -170,7 +187,7 @@ integrationWeightsLeft <- function(X1, xind, leftWeight = c("first", "mean", "ze
 
   L <- matrix(Li, nrow=nrow(X1), ncol=ncol(X1), byrow=TRUE)
   
-  return(L)
+  if(unsorted) return(L[,order(xorder)]) else return(L) # re-order if necessary
 }
 
 

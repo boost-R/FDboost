@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
+\section{Changes in FDboost version 0.3-3 (2018-11-15)}{
+  \subsection{Bug-fixes}{
+    \itemize{
+    \item Adapted functions \code{integrationWeights} and \code{integrationWeightsLeft} for unsorted time variables. 
+    }
+    }
+}
+
 \section{Changes in FDboost version 0.3-2 (2018-08-04)}{
   \subsection{Bug-fixes}{
     \itemize{

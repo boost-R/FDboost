@@ -55,7 +55,7 @@
 #' Journal of the Royal Statistical Society: Series C (Applied Statistics), 67, 621-642.
 #' 
 #' @author 
-#' Sarah Brockhaus and David Ruegamer 
+#' Sarah Brockhaus, David Ruegamer and Almond Stoecker
 #' 
 #' @aliases FDboost_package package-FDboost FDboost-package
 #' 

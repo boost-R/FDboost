@@ -1,12 +1,14 @@
 Package: FDboost
 Type: Package
 Title: Boosting Functional Regression Models
-Version: 0.3-2
-Date: 2018-08-04
+Version: 0.3-3
+Date: 2018-11-15
 Authors@R: c(person("Sarah", "Brockhaus", role = c("aut", "cre"),
 		            email = "Sarah.Brockhaus@stat.uni-muenchen.de"), 
 			 person("David", "Ruegamer", role = "aut", 
 			        email = "david.ruegamer@stat.uni-muenchen.de"),
+			 person("Almond", "Stoecker", role = "aut", 
+			        email = "almond.stoecker@stat.uni-muenchen.de"),
 			 person("Torsten", "Hothorn", role = "ctb"), 
 			 person("with contributions by many others", "(see inst/CONTRIBUTIONS)", role = "ctb"))
 Description: Regression models for functional data, i.e., scalar-on-function,

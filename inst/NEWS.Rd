@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
-\section{Changes in FDboost version 0.3-2 (2018-07-19)}{
+\section{Changes in FDboost version 0.3-2 (2018-08-04)}{
   \subsection{Bug-fixes}{
     \itemize{
     \item Deprecated argument \code{corrected} in \code{cvrisk} removed.

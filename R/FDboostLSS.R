@@ -75,6 +75,10 @@
 #' variable selection via noncyclical updates. 
 #' Statistics and Computing, 28, 673-687. 
 #' 
+#' Stoecker, A., Brockhaus, S., Schaffer, S., von Bronk, B., Opitz, M., and Greven, S. (2019): 
+#' Boosting Functional Response Models for Location, Scale and Shape with an Application to Bacterial Competition. 
+#' \url{https://arxiv.org/abs/1809.09881}
+#' 
 #' @examples 
 #' ########### simulate Gaussian scalar-on-function data
 #' n <- 500 ## number of observations

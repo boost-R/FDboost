@@ -135,7 +135,11 @@ Journal of the Royal Statistical Society: Series C (Applied Statistics), 54(3), 
 Thomas, J., Mayr, A., Bischl, B., Schmid, M., Smith, A., and Hofner, B. (2018), 
 Gradient boosting for distributional regression - faster tuning and improved 
 variable selection via noncyclical updates. 
-Statistics and Computing, 28, 673-687.
+Statistics and Computing, 28, 673-687. 
+
+Stoecker, A., Brockhaus, S., Schaffer, S., von Bronk, B., Opitz, M., and Greven, S. (2019): 
+Boosting Functional Response Models for Location, Scale and Shape with an Application to Bacterial Competition. 
+\url{https://arxiv.org/abs/1809.09881}
 }
 \seealso{
 Note that \code{FDboostLSS} calls \code{\link{FDboost}} directly.

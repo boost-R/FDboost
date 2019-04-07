@@ -45,7 +45,7 @@ If you do not want to use a time-specific offset, set \code{offset = "scalar"} t
 like in \code{mboost}.}
 
 \item{offset_control}{parameters for the estimation of the offset, 
-defaults to \code{o_control(k_min = 20, silent = TRUE)}, see \code{\link{o_control}}.}
+defaults to \code{o_control()}, see \code{\link{o_control}}.}
 
 \item{check0}{logical, for response in matrix form, i.e. response that is observed on a common grid, 
 check the fitted effects for the sum-to-zero constraint 

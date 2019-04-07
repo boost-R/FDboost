@@ -65,5 +65,5 @@ Journal of the Royal Statistical Society: Series C (Applied Statistics), 67, 621
 \code{\link{applyFolds}} for model tuning via resampling methods.
 }
 \author{
-Sarah Brockhaus and David Ruegamer
+Sarah Brockhaus, David Ruegamer and Almond Stoecker
 }

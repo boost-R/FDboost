@@ -43,7 +43,7 @@
 #' @param weights only for internal use to specify resampling weights;
 #' per default all weights are equal to 1. 
 #' @param offset_control parameters for the estimation of the offset, 
-#' defaults to \code{o_control(k_min = 20, silent = TRUE)}, see \code{\link{o_control}}.  
+#' defaults to \code{o_control()}, see \code{\link{o_control}}.  
 #' @param offset a numeric vector to be used as offset over the index of the response (optional).
 #' If no offset is specified, per default \code{offset = NULL} which means that a 
 #' smooth time-specific offset is computed and used before the model fit to center the data. 

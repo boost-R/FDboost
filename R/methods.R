@@ -231,17 +231,20 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
         xname <- object$baselearner[[i]]$get_names()[1] 
         indname <- attr(object$baselearner[[i]]$get_data()[[xname]], "indname")  # does not work for %X% 
         ## if two ore more base-learners are connected by %X%, find the functional variable 
+        ## the loop is necessary if more than one functioal covaraites are used in the same bl
         if(grepl("%X", names(object$baselearner)[i])){
           form <- strsplit(object$baselearner[[i]]$get_call(), "%X")[[1]]
           findFun <- grepl("bhist", form) | grepl("bconcurrent", form) | grepl("bsignal", form) | grepl("bfpc", form)
-          form <- form[findFun]
-          if(sum(findFun)!=1){stop("Can only predict effect of one functional effect in %X% or %Xc%.")}
-          xname <- object$baselearner[[i]]$get_names()[findFun][1]
-          fun_call <- strsplit(names(object$baselearner)[[i]], "%.{1,3}%")[[1]][findFun]
-          if(substr(fun_call,1,1) == "\"") fun_call <- substr(fun_call, 2, nchar(fun_call)-1)
-          fun_call <- gsub(pattern = "\\\"", replacement = "", x = fun_call, fixed=TRUE)
-          fun_call <- gsub(pattern = "\\", replacement = "", x = fun_call, fixed=TRUE)
-          indname <- all.vars(formula(paste("Y~", fun_call)))[3] # variabes are Y, x, s, (time)
+          xname <- c()
+          indname <- c()
+          for(j in which(findFun)){
+            xname[j] <- object$baselearner[[i]]$get_names()[j][1]
+            fun_call <- strsplit(names(object$baselearner)[[i]], "%.{1,3}%")[[1]][j]
+            fun_call <- gsub(pattern = "\\\"", replacement = "", x = fun_call, fixed=TRUE)
+            fun_call <- gsub(pattern = "\\", replacement = "", x = fun_call, fixed=TRUE)
+            fun_call <- gsub(pattern = "\"", replacement = "", x = fun_call, fixed=TRUE)
+            indname[j] <- all.vars(formula(paste("Y~", fun_call)))[3] # variabes are Y, x, s, (time)
+          }
         }
 
         if(i %in% c(posBhist, posBconc)){
@@ -250,14 +253,18 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
           indnameY <- NULL
         }
 
-        attr(newdata[[xname]], "indname") <- indname
-        attr(newdata[[xname]], "xname") <- xname
-        attr(newdata[[xname]], "signalIndex") <-  if(indname!="xindDefault") newdata[[indname]] else seq(0,1,l=ncol(newdata[[xname]]))
-        ## convert matrix to model matrix, so that as.data.frame(newdata[[xname]]) 
-        ## retains matrix-structure if newdata is a list
-        if( class(newdata[[xname]])[1] == "matrix" ) class(newdata[[xname]])[1] <- "model.matrix"
+        for(j in 1:length(xname)){
+          attr(newdata[[xname[j]]], "indname") <- indname[j]
+          attr(newdata[[xname[j]]], "xname") <- xname[j]
+          attr(newdata[[xname[j]]], "signalIndex") <-  if(indname[j]!="xindDefault") newdata[[indname[j]]] else seq(0,1,l=ncol(newdata[[xname[j]]]))
+          ## convert matrix to model matrix, so that as.data.frame(newdata[[xname]]) 
+          ## retains matrix-structure if newdata is a list
+          if( class(newdata[[xname[j]]])[1] == "matrix" ) class(newdata[[xname[j]]])[1] <- "model.matrix"
+        }
+
         
         if(i %in% c(posBhist, posBconc)){
+          if(length(xname) > 1) stop("Cannot deal with interactions of funtional covariates in historical or concurrent effects.")
           attr(newdata[[indnameY]], "indnameY") <-  indnameY
           attr(newdata[[xname]], "indexY") <-  if(indnameY!="xindDefault") newdata[[indnameY]] else seq(0,1,l=ncol(newdata[[xname]]))
           if(any(classObject=="FDboostLong")){

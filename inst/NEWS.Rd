@@ -1,10 +1,12 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
-\section{Changes in FDboost version 0.3-3 (2018-11-15)}{
+\section{Changes in FDboost version 0.3-3 (2019-04-07)}{
   \subsection{Bug-fixes}{
     \itemize{
     \item Adapted functions \code{integrationWeights} and \code{integrationWeightsLeft} for unsorted time variables. 
+    \item Change code in predict.FDboost() such that interaction effects of two functional 
+    covariates such as \code{bsignal() \%X\% bsignal()} can be predicted with new data. 
     }
     }
 }

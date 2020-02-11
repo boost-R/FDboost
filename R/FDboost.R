@@ -632,7 +632,9 @@ FDboost <- function(formula,          ### response ~ xvars
     }else{
       stopifnot(is.null(dim(response))) ## stopifnot(is.vector(response))
       # check length of response and its time and index
-      stopifnot(length(response) == length(time) & length(response) == length(id))
+      if(is.list(time))
+        stopifnot(all(length(response) == sapply(time, length)) & length(response) == length(id)) else
+          stopifnot(length(response) == length(time) & length(response) == length(id))
       
       if(any(is.na(response))) warning("For non-grid observations the response should not contain missing values.")
       if( !all(sort(unique(id)) == 1:length(unique(id))) ) stop("id has to be integers 1, 2, 3,..., N.")

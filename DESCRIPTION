@@ -16,9 +16,9 @@ Description: Regression models for functional data, i.e., scalar-on-function,
     by a component-wise gradient boosting algorithm.
 Depends:
     R (>= 3.5.0),
-    methods,
     mboost (>= 2.9-0)
 Imports:
+    methods,
     graphics,
     grDevices,
     utils,
@@ -54,7 +54,7 @@ Collate:
     'methods.R'
     'stabsel.R'
     'utilityFunctions.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.0
 BugReports: https://github.com/boost-R/FDboost/issues
 URL: https://github.com/boost-R/FDboost
 VignetteBuilder: knitr

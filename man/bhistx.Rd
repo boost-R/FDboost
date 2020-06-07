@@ -4,11 +4,22 @@
 \alias{bhistx}
 \title{Base-learners for Functional Covariates}
 \usage{
-bhistx(x, limits = "s<=t", standard = c("no", "time", "length"),
-  intFun = integrationWeightsLeft, inS = c("smooth", "linear", "constant"),
-  inTime = c("smooth", "linear", "constant"), knots = 10,
-  boundary.knots = NULL, degree = 3, differences = 1, df = 4,
-  lambda = NULL, penalty = c("ps", "pss"), check.ident = FALSE)
+bhistx(
+  x,
+  limits = "s<=t",
+  standard = c("no", "time", "length"),
+  intFun = integrationWeightsLeft,
+  inS = c("smooth", "linear", "constant"),
+  inTime = c("smooth", "linear", "constant"),
+  knots = 10,
+  boundary.knots = NULL,
+  degree = 3,
+  differences = 1,
+  df = 4,
+  lambda = NULL,
+  penalty = c("ps", "pss"),
+  check.ident = FALSE
+)
 }
 \arguments{
 \item{x}{object of type \code{hmatrix} containing time, index and functional covariate; 

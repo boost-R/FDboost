@@ -3,12 +3,20 @@
 \name{plot.bootstrapCI}
 \alias{plot.bootstrapCI}
 \alias{print.bootstrapCI}
-\alias{print.bootstrapCI}
 \title{Methods for objects of class bootstrapCI}
 \usage{
-\method{plot}{bootstrapCI}(x, which = NULL, pers = TRUE,
-  commonRange = TRUE, showNumbers = FALSE, showQuantiles = TRUE,
-  ask = TRUE, probs = c(0.25, 0.5, 0.75), ylim = NULL, ...)
+\method{plot}{bootstrapCI}(
+  x,
+  which = NULL,
+  pers = TRUE,
+  commonRange = TRUE,
+  showNumbers = FALSE,
+  showQuantiles = TRUE,
+  ask = TRUE,
+  probs = c(0.25, 0.5, 0.75),
+  ylim = NULL,
+  ...
+)
 
 \method{print}{bootstrapCI}(x, ...)
 }

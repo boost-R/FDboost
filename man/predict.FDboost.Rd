@@ -4,8 +4,7 @@
 \alias{predict.FDboost}
 \title{Prediction for boosted functional regression model}
 \usage{
-\method{predict}{FDboost}(object, newdata = NULL, which = NULL,
-  toFDboost = TRUE, ...)
+\method{predict}{FDboost}(object, newdata = NULL, which = NULL, toFDboost = TRUE, ...)
 }
 \arguments{
 \item{object}{a fitted \code{FDboost}-object}

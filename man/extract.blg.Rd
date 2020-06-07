@@ -4,8 +4,13 @@
 \alias{extract.blg}
 \title{Extract information of a base-learner}
 \usage{
-\method{extract}{blg}(object, what = c("design", "penalty", "index"),
-  asmatrix = FALSE, expand = FALSE, ...)
+\method{extract}{blg}(
+  object,
+  what = c("design", "penalty", "index"),
+  asmatrix = FALSE,
+  expand = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{a base-learner}

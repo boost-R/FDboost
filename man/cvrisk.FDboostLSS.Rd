@@ -4,9 +4,15 @@
 \alias{cvrisk.FDboostLSS}
 \title{Cross-validation for FDboostLSS}
 \usage{
-\method{cvrisk}{FDboostLSS}(object, folds = cvLong(id = object[[1]]$id,
-  weights = model.weights(object[[1]])), grid = NULL, papply = mclapply,
-  trace = TRUE, fun = NULL, ...)
+\method{cvrisk}{FDboostLSS}(
+  object,
+  folds = cvLong(id = object[[1]]$id, weights = model.weights(object[[1]])),
+  grid = NULL,
+  papply = mclapply,
+  trace = TRUE,
+  fun = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{an object of class \code{FDboostLSS}.}

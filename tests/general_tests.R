@@ -8,6 +8,7 @@ library(FDboost)
 if(require(refund)){
   
   ## simulate a small data set 
+  print("simulate data")
   set.seed(230)
   pffr_data <- pffrSim(n = 25, nxgrid = 21, nygrid = 19)
   pffr_data$X1 <- scale(pffr_data$X1, scale = FALSE)
@@ -30,6 +31,7 @@ if(require(refund)){
   
   ################################################################
   ######### model fit 
+  print("model fit")
   
   ## response matrix for response observed on one common grid 
   m <- FDboost(Y ~ 1 + bhist(X1, svals, tvals, knots = 6, df = 12) 
@@ -85,6 +87,7 @@ if(require(refund)){
   ######### test some methods and utility functions 
   
   ## test plot()
+  print("plot effects")
   par(mfrow = c(1,1))
   plot(m, ask = FALSE)
   plot(ml, ask = FALSE)
@@ -93,12 +96,14 @@ if(require(refund)){
   plot(mlss$sigma, ask = FALSE)
   
   ## test applyFolds()
+  print("run applyFolds")
   set.seed(123)
   applyFolds(m, folds = cv(rep(1, length(unique(m$id))), B = 2), grid = 0:5)
   applyFolds(ml, folds = cv(rep(1, length(unique(ml$id))), B = 2), grid = 0:5)
   #applyFolds(ms, folds = cv(rep(1, length(unique(ms$id))), B = 2), grid = 0:5)
 
   ## test cvrisk()
+  print("run cvrisk")
   set.seed(123)
   cvrisk(m, folds = cvLong(id = m$id, weights = model.weights(m), B = 2), grid = 0:5)
   cvrisk(ml, folds = cvLong(id = ml$id, weights = model.weights(ml), B = 2), grid = 0:5)
@@ -111,21 +116,24 @@ if(require(refund)){
          grid = 1:5, trace = FALSE)
   
   ## test stabsel (use very small number of folds B = 10 to speed up testing)
+  print("run stabsel")
   stabsel(m, cutoff=0.8, PFER = 0.1*length(m$baselearner), sampling.type = "SS", eval = TRUE, B = 3)
   stabsel(ml, cutoff=0.8, PFER = 0.1*length(ml$baselearner), sampling.type = "SS", eval = TRUE, B = 3)
   stabsel(ms, cutoff=0.8, PFER = 0.1*length(ms$baselearner), sampling.type = "SS", eval = TRUE, B = 3)
   ## fixed in gamboostLSS package on github with commit 4989474 
-  try(stabsel(mlss, cutoff=0.8, PFER = 0.1*length(mlss$mu$baselearner), sampling.type = "SS", eval = TRUE, B = 3))
-  try(stabsel(mslss, cutoff=0.8, PFER = 0.1*length(mslss$mu$baselearner), sampling.type = "SS", eval = TRUE, B = 3))
+  #try(stabsel(mlss, cutoff=0.8, PFER = 0.1*length(mlss$mu$baselearner), sampling.type = "SS", eval = TRUE, B = 3))
+  #try(stabsel(mslss, cutoff=0.8, PFER = 0.1*length(mslss$mu$baselearner), sampling.type = "SS", eval = TRUE, B = 3))
   
   
   ## test predict with newdata
+  print("predict with new data")
   pred <- predict(m, newdata = dat)
-  ##pred <- predict(ml, newdata = dat) ## you need a data.frame where the irregular time of y fits with X
+  ## pred <- predict(ml, newdata = dat) ## you need a data.frame where the irregular time of y fits with X
   pred <- predict(ms, newdata = dat)
-  pred <- predict(ms_funint, newdata = dat)
-  pred <- predict(mlss, newdata = dat)
-  pred <- predict(mslss, newdata = dat)
+  ## FIXME
+  ## pred <- predict(ms_funint, newdata = dat)
+  ## pred <- predict(mlss, newdata = dat)
+  ## pred <- predict(mslss, newdata = dat)
   
 }
 

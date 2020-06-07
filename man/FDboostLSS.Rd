@@ -4,9 +4,16 @@
 \alias{FDboostLSS}
 \title{Model-based Gradient Boosting for Functional GAMLSS}
 \usage{
-FDboostLSS(formula, timeformula, data = list(), families = GaussianLSS(),
-  control = boost_control(), weights = NULL, method = c("cyclic",
-  "noncyclic"), ...)
+FDboostLSS(
+  formula,
+  timeformula,
+  data = list(),
+  families = GaussianLSS(),
+  control = boost_control(),
+  weights = NULL,
+  method = c("cyclic", "noncyclic"),
+  ...
+)
 }
 \arguments{
 \item{formula}{a symbolic description of the model to be fit. 

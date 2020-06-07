@@ -4,9 +4,18 @@
 \alias{coef.FDboost}
 \title{Coefficients of boosted functional regression model}
 \usage{
-\method{coef}{FDboost}(object, raw = FALSE, which = NULL,
-  computeCoef = TRUE, returnData = FALSE, n1 = 40, n2 = 40, n3 = 20,
-  n4 = 10, ...)
+\method{coef}{FDboost}(
+  object,
+  raw = FALSE,
+  which = NULL,
+  computeCoef = TRUE,
+  returnData = FALSE,
+  n1 = 40,
+  n2 = 40,
+  n3 = 20,
+  n4 = 10,
+  ...
+)
 }
 \arguments{
 \item{object}{a fitted \code{FDboost}-object}

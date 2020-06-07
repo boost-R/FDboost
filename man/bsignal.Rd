@@ -5,28 +5,72 @@
 \alias{bconcurrent}
 \alias{bhist}
 \alias{bfpc}
-\alias{bconcurrent}
-\alias{bhist}
-\alias{bfpc}
 \title{Base-learners for Functional Covariates}
 \usage{
-bsignal(x, s, index = NULL, inS = c("smooth", "linear", "constant"),
-  knots = 10, boundary.knots = NULL, degree = 3, differences = 1,
-  df = 4, lambda = NULL, center = FALSE, cyclic = FALSE, Z = NULL,
-  penalty = c("ps", "pss"), check.ident = FALSE)
+bsignal(
+  x,
+  s,
+  index = NULL,
+  inS = c("smooth", "linear", "constant"),
+  knots = 10,
+  boundary.knots = NULL,
+  degree = 3,
+  differences = 1,
+  df = 4,
+  lambda = NULL,
+  center = FALSE,
+  cyclic = FALSE,
+  Z = NULL,
+  penalty = c("ps", "pss"),
+  check.ident = FALSE
+)
 
-bconcurrent(x, s, time, index = NULL, knots = 10, boundary.knots = NULL,
-  degree = 3, differences = 1, df = 4, lambda = NULL, cyclic = FALSE)
+bconcurrent(
+  x,
+  s,
+  time,
+  index = NULL,
+  knots = 10,
+  boundary.knots = NULL,
+  degree = 3,
+  differences = 1,
+  df = 4,
+  lambda = NULL,
+  cyclic = FALSE
+)
 
-bhist(x, s, time, index = NULL, limits = "s<=t", standard = c("no",
-  "time", "length"), intFun = integrationWeightsLeft, inS = c("smooth",
-  "linear", "constant"), inTime = c("smooth", "linear", "constant"),
-  knots = 10, boundary.knots = NULL, degree = 3, differences = 1,
-  df = 4, lambda = NULL, penalty = c("ps", "pss"), check.ident = FALSE)
+bhist(
+  x,
+  s,
+  time,
+  index = NULL,
+  limits = "s<=t",
+  standard = c("no", "time", "length"),
+  intFun = integrationWeightsLeft,
+  inS = c("smooth", "linear", "constant"),
+  inTime = c("smooth", "linear", "constant"),
+  knots = 10,
+  boundary.knots = NULL,
+  degree = 3,
+  differences = 1,
+  df = 4,
+  lambda = NULL,
+  penalty = c("ps", "pss"),
+  check.ident = FALSE
+)
 
-bfpc(x, s, index = NULL, df = 4, lambda = NULL, penalty = c("identity",
-  "inverse", "no"), pve = 0.99, npc = NULL, npc.max = 15,
-  getEigen = TRUE)
+bfpc(
+  x,
+  s,
+  index = NULL,
+  df = 4,
+  lambda = NULL,
+  penalty = c("identity", "inverse", "no"),
+  pve = 0.99,
+  npc = NULL,
+  npc.max = 15,
+  getEigen = TRUE
+)
 }
 \arguments{
 \item{x}{matrix of functional variable x(s). The functional covariate has to be 
@@ -211,7 +255,7 @@ if(require(refund)){
 
 #########
 # model with linear functional effect, use bsignal()
-# Y(t) = f(t) + \\int X1(s)\\beta(s,t)ds + eps
+# Y(t) = f(t) + \int X1(s)\beta(s,t)ds + eps
 set.seed(2121)
 data1 <- pffrSim(scenario = "ff", n = 40)
 data1$X1 <- scale(data1$X1, scale = FALSE)
@@ -245,7 +289,7 @@ m1_pffr <- pffr(Y ~ ff(X1, xind = s), yind = t, data = data1)
 
 ############################################
 # model with functional historical effect, use bhist() 
-# Y(t) = f(t)  + \\int_0^t X1(s)\\beta(s,t)ds + eps
+# Y(t) = f(t)  + \int_0^t X1(s)\beta(s,t)ds + eps
 set.seed(2121)
 mylimits <- function(s, t){
   (s < t) | (s == t)

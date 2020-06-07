@@ -4,8 +4,15 @@
 \alias{update.FDboost}
 \title{Function to update FDboost objects}
 \usage{
-\method{update}{FDboost}(object, weights = NULL, oobweights = NULL,
-  risk = NULL, trace = NULL, ..., evaluate = TRUE)
+\method{update}{FDboost}(
+  object,
+  weights = NULL,
+  oobweights = NULL,
+  risk = NULL,
+  trace = NULL,
+  ...,
+  evaluate = TRUE
+)
 }
 \arguments{
 \item{object}{fitted FDboost-object}
@@ -23,7 +30,7 @@ Returns the call of (\code{evaluate = FALSE}) or the updated (\code{evaluate = T
 Function to update FDboost objects
 }
 \examples{
-######## Example from \\code{?FDboost}
+######## Example from \code{?FDboost}
 data("viscosity", package = "FDboost") 
 ## set time-interval that should be modeled
 interval <- "101"

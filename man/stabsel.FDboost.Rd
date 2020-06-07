@@ -4,11 +4,21 @@
 \alias{stabsel.FDboost}
 \title{Stability Selection}
 \usage{
-\method{stabsel}{FDboost}(x, refitSmoothOffset = TRUE, cutoff, q, PFER,
-  folds = cvLong(x$id, weights = rep(1, l = length(x$id)), type =
-  "subsampling", B = B), B = ifelse(sampling.type == "MB", 100, 50),
-  assumption = c("unimodal", "r-concave", "none"), sampling.type = c("SS",
-  "MB"), papply = mclapply, verbose = TRUE, eval = TRUE, ...)
+\method{stabsel}{FDboost}(
+  x,
+  refitSmoothOffset = TRUE,
+  cutoff,
+  q,
+  PFER,
+  folds = cvLong(x$id, weights = rep(1, l = length(x$id)), type = "subsampling", B = B),
+  B = ifelse(sampling.type == "MB", 100, 50),
+  assumption = c("unimodal", "r-concave", "none"),
+  sampling.type = c("SS", "MB"),
+  papply = mclapply,
+  verbose = TRUE,
+  eval = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{fitted FDboost-object}

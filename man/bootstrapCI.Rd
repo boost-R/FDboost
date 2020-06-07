@@ -4,10 +4,17 @@
 \alias{bootstrapCI}
 \title{Function to compute bootstrap confidence intervals}
 \usage{
-bootstrapCI(object, which = NULL, resampling_fun_outer = NULL,
-  resampling_fun_inner = NULL, B_outer = 100, B_inner = 25,
-  type_inner = c("bootstrap", "kfold", "subsampling"), levels = c(0.05,
-  0.95), ...)
+bootstrapCI(
+  object,
+  which = NULL,
+  resampling_fun_outer = NULL,
+  resampling_fun_inner = NULL,
+  B_outer = 100,
+  B_inner = 25,
+  type_inner = c("bootstrap", "kfold", "subsampling"),
+  levels = c(0.05, 0.95),
+  ...
+)
 }
 \arguments{
 \item{object}{a fitted model object of class \code{FDboost}, 
@@ -92,7 +99,7 @@ treats its effect as constantly zero.
 if(require(refund)){
 #########
 # model with linear functional effect, use bsignal()
-# Y(t) = f(t) + \\int X1(s)\\beta(s,t)ds + eps
+# Y(t) = f(t) + \int X1(s)\beta(s,t)ds + eps
 set.seed(2121)
 data1 <- pffrSim(scenario = "ff", n = 40)
 data1$X1 <- scale(data1$X1, scale = FALSE)

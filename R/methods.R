@@ -111,7 +111,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
   # toFDboost is only meaningful for array-data
   if(any(class(object) == "FDboostScalar") |  any(class(object) == "FDboostLong")) toFDboost <- FALSE
 
-  if(!is.null(dots$aggregate) && dots$aggregate != "sum"){
+  if(!is.null(dots$aggregate) && dots$aggregate[1] != "sum"){
     if(length(which) > 1 ) stop("For aggregate != 'sum', only one effect, or which=NULL are possible.")
     if(toFDboost & class(object)[1] == "FDboost"){ 
       toFDboost <- FALSE

@@ -1,6 +1,9 @@
 
 
 library(FDboost)
+library(gamboostLSS)
+
+# print(sessionInfo())
 
 ################################################################
 ######### simulate some data 
@@ -25,7 +28,7 @@ if(require(refund)){
   
   # second functional covariate
   dat$s2 <- seq(0, 1, l = 15)
-  dat$X2 <- matrix(rnorm(25 * 15), nrow = 25)
+  dat$X2 <- I(matrix(rnorm(25 * 15), nrow = 25))
   dat$X2 <- scale(dat$X2, scale = FALSE)
   
   
@@ -34,12 +37,12 @@ if(require(refund)){
   print("model fit")
   
   ## response matrix for response observed on one common grid 
-  m <- FDboost(Y ~ 1 + bhist(X1, svals, tvals, knots = 6, df = 12) 
-               + bsignal(X1, svals, knots = 6, df = 4)
-               + bbsc(xsmoo, knots = 6, df = 4) 
-               + bolsc(xte1, df = 4)
-               + brandomc(xte2, df = 4), 
-               timeformula = ~ bbs(tvals, knots = 9, df = 3, differences = 1), 
+  m <- FDboost(Y ~ 1 + bhist(X1, svals, tvals, knots = 10, df = 6) 
+               + bsignal(X1, svals, knots = 6, df = 3)
+               + bbsc(xsmoo, knots = 6, df = 3) 
+               + bolsc(xte1, df = 3)
+               + brandomc(xte2, df = 3), 
+               timeformula = ~ bbs(tvals, knots = 9, df = 2, differences = 1), 
                control = boost_control(mstop = 10), data = dat)
   
   ## response in long format
@@ -57,27 +60,28 @@ if(require(refund)){
   ms <- FDboost(Y_scalar ~ 1 + bsignal(X1, svals, knots = 6, df = 2)
                 + bbs(xsmoo, knots = 6, df = 2, differences = 1) 
                 + bols(xte1, df = 2) 
-                + bols(xte2, df = 2), 
+                + bols(xte2, df = 2)
+                + bols(xfactor, df = 2), 
                 timeformula = NULL, 
                 control = boost_control(mstop = 50), data = dat)
   
   ## scalar response and interaction effect between two functional variables
   ms_funint <- FDboost(Y_scalar ~ 1 + 
-                         bsignal(X1, svals, knots = 6, df = 3) %X% bsignal(X2, s2, knots = 6, df = 3), 
+                         bsignal(X1, svals, knots = 9, df = 3) %X% bsignal(X2, s2, knots = 9, df = 3), 
                 timeformula = NULL, 
                 control = boost_control(mstop = 50), data = dat)
   
   ## GAMLSS with functional response 
-  mlss <- FDboostLSS(Y ~ 1 + bsignal(X1, svals, knots = 6, df = 4)               
-                     + bbsc(xsmoo, knots = 6, df = 4) 
-                     + bolsc(xte1, df = 4), 
+  mlss <- FDboostLSS(Y ~ 1 + bsignal(X1, svals, knots = 6, df = 3)               
+                     + bbsc(xsmoo, knots = 6, df = 3) 
+                     + bolsc(xte1, df = 3), 
                      timeformula = ~ bbs(tvals, knots = 9, df = 3, differences = 1), 
-                     control = boost_control(mstop = 10), data = dat, 
+                     control = boost_control(mstop = 20), data = dat, 
                      method = "noncyclic")
   
   ## GAMLSS with scalar response 
-  mslss <- FDboostLSS(Y_scalar ~ 1 + bsignal(X1, svals, knots = 6, df = 4)
-                      + bbs(xsmoo, knots = 6, df = 4, differences = 1), 
+  mslss <- FDboostLSS(Y_scalar ~ 1 + bsignal(X1, svals, knots = 6, df = 3)
+                      + bbs(xsmoo, knots = 6, df = 3, differences = 1), 
                       timeformula = NULL, 
                       control = boost_control(mstop = 50), data = dat, 
                       method = "noncyclic")
@@ -115,25 +119,29 @@ if(require(refund)){
   cvrisk(mslss, folds = cv(model.weights(mslss[[1]]), B = 2),
          grid = 1:5, trace = FALSE)
   
-  ## test stabsel (use very small number of folds B = 10 to speed up testing)
+  ## test stabsel (use very small number of folds, B = 10, to speed up testing)
   print("run stabsel")
   stabsel(m, cutoff=0.8, PFER = 0.1*length(m$baselearner), sampling.type = "SS", eval = TRUE, B = 3)
+  stabsel(m, cutoff=0.8, PFER = 0.1*length(m$baselearner), sampling.type = "SS", eval = TRUE, B = 3, 
+          refitSmoothOffset = FALSE)
+  
   stabsel(ml, cutoff=0.8, PFER = 0.1*length(ml$baselearner), sampling.type = "SS", eval = TRUE, B = 3)
   stabsel(ms, cutoff=0.8, PFER = 0.1*length(ms$baselearner), sampling.type = "SS", eval = TRUE, B = 3)
+  ## FIXME: this is broken again 
   ## fixed in gamboostLSS package on github with commit 4989474 
-  #try(stabsel(mlss, cutoff=0.8, PFER = 0.1*length(mlss$mu$baselearner), sampling.type = "SS", eval = TRUE, B = 3))
-  #try(stabsel(mslss, cutoff=0.8, PFER = 0.1*length(mslss$mu$baselearner), sampling.type = "SS", eval = TRUE, B = 3))
+  ##stabsel(mlss, cutoff=0.8, PFER = 0.1*length(mlss$mu$baselearner), sampling.type = "SS", eval = TRUE, B = 3)
+  ##stabsel(mslss, cutoff=0.8, PFER = 0.1*length(mslss$mu$baselearner), sampling.type = "SS", eval = TRUE, B = 3)
   
   
   ## test predict with newdata
   print("predict with new data")
   pred <- predict(m, newdata = dat)
-  ## pred <- predict(ml, newdata = dat) ## you need a data.frame where the irregular time of y fits with X
+  ## for this predict() with newdata, you need a data.frame where the irregular time of y fits with X
+  ## pred <- predict(ml, newdata = dat)
   pred <- predict(ms, newdata = dat)
-  ## FIXME
-  ## pred <- predict(ms_funint, newdata = dat)
-  ## pred <- predict(mlss, newdata = dat)
-  ## pred <- predict(mslss, newdata = dat)
+  pred <- predict(ms_funint, newdata = dat)
+  pred <- predict(mlss, newdata = dat)
+  pred <- predict(mslss, newdata = dat)
   
 }
 

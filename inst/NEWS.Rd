@@ -2,8 +2,15 @@
 \title{News for Package 'FDboost'}
 
 \section{Changes in FDboost version 0.3-3 (2020-06-13)}{
+\subsection{New feature}{
+\itemize{
+    \item Now it is possible to specify several time variabels as well as
+    factor time variabels in the timeformula.  
+    This feature is needed for the manifoldboost package. 
+    }
+}
 \subsection{Miscellaneous}{
-    \itemize{
+\itemize{
     \item The function stabsel.FDboost() now uses applyFolds() instead of validateFDboost() to do 
     cross-validation with recomputation of the smooth offset. This is only relevant for models with functional response. 
     This will change the results if the model contains base-learners like bbsc() or bolsc(), 
@@ -19,7 +26,7 @@
     by setting dots$aggregate[1] != "sum", in predict.FDboost(); such that it also works with the default, 
     where aggregate is a vector of length 3 and later on the first argument is used, using match.arg()
     }
-    }
+}
 }
 
 \section{Changes in FDboost version 0.3-2 (2018-08-04)}{

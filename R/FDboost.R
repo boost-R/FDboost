@@ -968,6 +968,18 @@ FDboost <- function(formula,          ### response ~ xvars
   ### offset == "scalar", or offset = numeric of length 1, or scalar response
   ### -> use one scalar/user-specified offset like in mboost
   
+  ### in case of factor or multiple time variables set offset to 0 and give a warning
+  if(is.list(time) | is.factor(time)) {
+    .offsetwarning <- is.null(offset)
+    if(!.offsetwarning & offset == "scalar")
+        .offsetwarning <- TRUE
+    if(.offsetwarning) {
+      offset <- 0
+      warning("In case of factor or multiple time variables no default offset implemented, yet.
+              offset is set to 0.")
+    } 
+  }
+  
   ## remember the offset-specification of FDboost
   offsetFDboost <- offset
   

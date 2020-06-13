@@ -971,8 +971,9 @@ FDboost <- function(formula,          ### response ~ xvars
   ### in case of factor or multiple time variables set offset to 0 and give a warning
   if(is.list(time) | !is.numeric(time)) {
     .offsetwarning <- is.null(offset)
-    if(!.offsetwarning & offset == "scalar")
-        .offsetwarning <- TRUE
+    if(!.offsetwarning) {
+      .offsetwarning <- (offset == "scalar")
+    }
     if(.offsetwarning) {
       offset <- 0
       warning("In case of factor or multiple time variables no default offset implemented, yet.

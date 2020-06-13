@@ -3,7 +3,6 @@
 \name{summary.FDboost}
 \alias{summary.FDboost}
 \alias{print.FDboost}
-\alias{print.FDboost}
 \title{Print and summary of a boosted functional regression model}
 \usage{
 \method{summary}{FDboost}(object, ...)

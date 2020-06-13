@@ -9,13 +9,6 @@
 \alias{getIdLab}
 \alias{getXLab}
 \alias{getArgvalsLab}
-\alias{getId}
-\alias{getX}
-\alias{getArgvals}
-\alias{getTimeLab}
-\alias{getIdLab}
-\alias{getXLab}
-\alias{getArgvalsLab}
 \title{Generic functions to asses attributes of functional data objects}
 \usage{
 getTime(object)

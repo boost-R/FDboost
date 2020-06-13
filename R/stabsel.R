@@ -152,12 +152,11 @@ stabsel.FDboost <- function(x, refitSmoothOffset = TRUE,
   if( !is.null(x$call$offset) && x$call$offset == "scalar" ) refitSmoothOffset <- FALSE
 
   if(refitSmoothOffset){
-    message("Use validateFDboost() to recompute the smooth offset in each fold.")
-    ## folds are on level of single observations 
-    ## but validateFDboost() expects folds on the level of curves 
+    message("Use applyFolds() to recompute the smooth offset in each fold.")
+    ## folds are on level of single observations
+    ## but applyFolds() expects folds on the level of curves
     folds <- folds[! duplicated(x$id), ]
-    ss <- validateFDboost(x, fun = fun,
-                 folds = folds, getCoefCV = FALSE, ...)$fun_ret #, papply = papply 
+    ss <- applyFolds(x, fun = fun, folds = folds, ...)
                   
   }else{
     ss <- cvrisk(x, fun = fun,

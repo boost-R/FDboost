@@ -4,8 +4,15 @@
 \alias{funMSE}
 \title{Functional MSE}
 \usage{
-funMSE(object, overTime = TRUE, breaks = object$yind, global = FALSE,
-  relative = FALSE, root = FALSE, ...)
+funMSE(
+  object,
+  overTime = TRUE,
+  breaks = object$yind,
+  global = FALSE,
+  relative = FALSE,
+  root = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{fitted FDboost-object}

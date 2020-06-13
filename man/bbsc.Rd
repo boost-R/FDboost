@@ -4,17 +4,33 @@
 \alias{bbsc}
 \alias{brandomc}
 \alias{bolsc}
-\alias{bolsc}
-\alias{brandomc}
 \title{Constrained Base-learners for Scalar Covariates}
 \usage{
-bbsc(..., by = NULL, index = NULL, knots = 10, boundary.knots = NULL,
-  degree = 3, differences = 2, df = 4, lambda = NULL, center = FALSE,
-  cyclic = FALSE)
+bbsc(
+  ...,
+  by = NULL,
+  index = NULL,
+  knots = 10,
+  boundary.knots = NULL,
+  degree = 3,
+  differences = 2,
+  df = 4,
+  lambda = NULL,
+  center = FALSE,
+  cyclic = FALSE
+)
 
-bolsc(..., by = NULL, index = NULL, intercept = TRUE, df = NULL,
-  lambda = 0, K = NULL, weights = NULL,
-  contrasts.arg = "contr.treatment")
+bolsc(
+  ...,
+  by = NULL,
+  index = NULL,
+  intercept = TRUE,
+  df = NULL,
+  lambda = 0,
+  K = NULL,
+  weights = NULL,
+  contrasts.arg = "contr.treatment"
+)
 
 brandomc(..., contrasts.arg = "contr.dummy", df = 4)
 }

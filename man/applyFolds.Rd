@@ -5,27 +5,50 @@
 \alias{cvMa}
 \alias{cvLong}
 \alias{cvrisk.FDboost}
-\alias{cvrisk.FDboost}
-\alias{cvLong}
-\alias{cvMa}
 \title{Cross-Validation and Bootstrapping over Curves}
 \usage{
-applyFolds(object, folds = cv(rep(1, length(unique(object$id))), type =
-  "bootstrap"), grid = 1:mstop(object), fun = NULL, riskFun = NULL,
-  numInt = object$numInt, papply = mclapply, mc.preschedule = FALSE,
-  showProgress = TRUE, compress = FALSE, ...)
+applyFolds(
+  object,
+  folds = cv(rep(1, length(unique(object$id))), type = "bootstrap"),
+  grid = 1:mstop(object),
+  fun = NULL,
+  riskFun = NULL,
+  numInt = object$numInt,
+  papply = mclapply,
+  mc.preschedule = FALSE,
+  showProgress = TRUE,
+  compress = FALSE,
+  ...
+)
 
-\method{cvrisk}{FDboost}(object, folds = cvLong(id = object$id, weights =
-  model.weights(object)), grid = 1:mstop(object), papply = mclapply,
-  fun = NULL, mc.preschedule = FALSE, ...)
+\method{cvrisk}{FDboost}(
+  object,
+  folds = cvLong(id = object$id, weights = model.weights(object)),
+  grid = 1:mstop(object),
+  papply = mclapply,
+  fun = NULL,
+  mc.preschedule = FALSE,
+  ...
+)
 
-cvLong(id, weights = rep(1, l = length(id)), type = c("bootstrap", "kfold",
-  "subsampling", "curves"), B = ifelse(type == "kfold", 10, 25), prob = 0.5,
-  strata = NULL)
+cvLong(
+  id,
+  weights = rep(1, l = length(id)),
+  type = c("bootstrap", "kfold", "subsampling", "curves"),
+  B = ifelse(type == "kfold", 10, 25),
+  prob = 0.5,
+  strata = NULL
+)
 
-cvMa(ydim, weights = rep(1, l = ydim[1] * ydim[2]), type = c("bootstrap",
-  "kfold", "subsampling", "curves"), B = ifelse(type == "kfold", 10, 25),
-  prob = 0.5, strata = NULL, ...)
+cvMa(
+  ydim,
+  weights = rep(1, l = ydim[1] * ydim[2]),
+  type = c("bootstrap", "kfold", "subsampling", "curves"),
+  B = ifelse(type == "kfold", 10, 25),
+  prob = 0.5,
+  strata = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{fitted FDboost-object}
@@ -97,7 +120,7 @@ hyper-parameter selection.
 \details{
 The number of boosting iterations is an important hyper-parameter of boosting.   
 It be chosen using the functions \code{applyFolds} or \code{cvrisk.FDboost}. Those functions 
-they compute honest, i.e., out-of-bag, estimates of the empirical risk for different 
+compute honest, i.e., out-of-bag, estimates of the empirical risk for different 
 numbers of boosting iterations. 
 The weights (zero weights correspond to test cases) are defined via the folds matrix, 
 see \code{\link[mboost]{cvrisk}} in package mboost. 

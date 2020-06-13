@@ -3,7 +3,6 @@
 \name{integrationWeights}
 \alias{integrationWeights}
 \alias{integrationWeightsLeft}
-\alias{integrationWeightsLeft}
 \title{Functions to compute integration weights}
 \usage{
 integrationWeights(X1, xind, id = NULL)

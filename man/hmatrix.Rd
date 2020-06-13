@@ -4,8 +4,16 @@
 \alias{hmatrix}
 \title{A S3 class for univariate functional data on a common grid}
 \usage{
-hmatrix(time, id, x, argvals = 1:ncol(x), timeLab = "t",
-  idLab = "wideIndex", xLab = "x", argvalsLab = "s")
+hmatrix(
+  time,
+  id,
+  x,
+  argvals = 1:ncol(x),
+  timeLab = "t",
+  idLab = "wideIndex",
+  xLab = "x",
+  argvalsLab = "s"
+)
 }
 \arguments{
 \item{time}{set of argument values of the response in long format, 

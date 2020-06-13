@@ -4,10 +4,19 @@
 \alias{validateFDboost}
 \title{Cross-Validation and Bootstrapping over Curves}
 \usage{
-validateFDboost(object, response = NULL, folds = cv(rep(1,
-  length(unique(object$id))), type = "bootstrap"), grid = 1:mstop(object),
-  fun = NULL, getCoefCV = TRUE, riskopt = c("mean", "median"),
-  mrdDelete = 0, refitSmoothOffset = TRUE, showProgress = TRUE, ...)
+validateFDboost(
+  object,
+  response = NULL,
+  folds = cv(rep(1, length(unique(object$id))), type = "bootstrap"),
+  grid = 1:mstop(object),
+  fun = NULL,
+  getCoefCV = TRUE,
+  riskopt = c("mean", "median"),
+  mrdDelete = 0,
+  refitSmoothOffset = TRUE,
+  showProgress = TRUE,
+  ...
+)
 }
 \arguments{
 \item{object}{fitted FDboost-object}

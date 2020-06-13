@@ -182,7 +182,7 @@ if(FALSE){
 }
 
 
-## for uncorrelated resiaudls
+## for uncorrelated residuals
 #   P_nu.5 <- diag(35)
 #   print("Residuals are uncorrelated!")
 

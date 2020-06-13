@@ -4,8 +4,7 @@
 \alias{o_control}
 \title{Function to control estimation of smooth offset}
 \usage{
-o_control(k_min = 20, rule = 2, silent = TRUE, cyclic = FALSE,
-  knots = NULL)
+o_control(k_min = 20, rule = 2, silent = TRUE, cyclic = FALSE, knots = NULL)
 }
 \arguments{
 \item{k_min}{maximal number of k in s()}

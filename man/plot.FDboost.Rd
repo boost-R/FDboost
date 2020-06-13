@@ -4,16 +4,33 @@
 \alias{plot.FDboost}
 \alias{plotPredicted}
 \alias{plotResiduals}
-\alias{plotPredicted}
-\alias{plotResiduals}
 \title{Plot the fit or the coefficients of a boosted functional regression model}
 \usage{
-\method{plot}{FDboost}(x, raw = FALSE, rug = TRUE, which = NULL,
-  includeOffset = TRUE, ask = TRUE, n1 = 40, n2 = 40, n3 = 20,
-  n4 = 11, onlySelected = TRUE, pers = FALSE, commonRange = FALSE, ...)
+\method{plot}{FDboost}(
+  x,
+  raw = FALSE,
+  rug = TRUE,
+  which = NULL,
+  includeOffset = TRUE,
+  ask = TRUE,
+  n1 = 40,
+  n2 = 40,
+  n3 = 20,
+  n4 = 11,
+  onlySelected = TRUE,
+  pers = FALSE,
+  commonRange = FALSE,
+  ...
+)
 
-plotPredicted(x, subset = NULL, posLegend = "topleft", lwdObs = 1,
-  lwdPred = 1, ...)
+plotPredicted(
+  x,
+  subset = NULL,
+  posLegend = "topleft",
+  lwdObs = 1,
+  lwdPred = 1,
+  ...
+)
 
 plotResiduals(x, subset = NULL, posLegend = "topleft", ...)
 }

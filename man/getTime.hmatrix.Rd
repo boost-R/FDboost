@@ -8,13 +8,7 @@
 \alias{getTimeLab.hmatrix}
 \alias{getXLab.hmatrix}
 \alias{getArgvalsLab.hmatrix}
-\alias{getId.hmatrix}
-\alias{getX.hmatrix}
-\alias{getArgvals.hmatrix}
-\alias{getTimeLab.hmatrix}
 \alias{getIdLab.hmatrix}
-\alias{getXLab.hmatrix}
-\alias{getArgvalsLab.hmatrix}
 \title{Extract attributes of hmatrix}
 \usage{
 \method{getTime}{hmatrix}(object)

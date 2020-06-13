@@ -1,12 +1,23 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
-\section{Changes in FDboost version 0.3-3 (2019-04-07)}{
+\section{Changes in FDboost version 0.3-3 (2020-06-13)}{
+\subsection{Miscellaneous}{
+    \itemize{
+    \item The function stabsel.FDboost() now uses applyFolds() instead of validateFDboost() to do 
+    cross-validation with recomputation of the smooth offset. This is only relevant for models with functional response. 
+    This will change the results if the model contains base-learners like bbsc() or bolsc(), 
+    as applyFolds() also recomputes the Z-matrix for those base-learners. 
+    }
+}
   \subsection{Bug-fixes}{
     \itemize{
     \item Adapted functions \code{integrationWeights} and \code{integrationWeightsLeft} for unsorted time variables. 
     \item Change code in predict.FDboost() such that interaction effects of two functional 
-    covariates such as \code{bsignal() \%X\% bsignal()} can be predicted with new data. 
+    covariates such as \code{bsignal() \%X\% bsignal()} can be predicted with new data.
+    \item Adapt FDboost to R 4.0.1: explicitely use the first entry of dots$aggregate, 
+    by setting dots$aggregate[1] != "sum", in predict.FDboost(); such that it also works with the default, 
+    where aggregate is a vector of length 3 and later on the first argument is used, using match.arg()
     }
     }
 }

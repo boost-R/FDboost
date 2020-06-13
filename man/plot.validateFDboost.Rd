@@ -4,7 +4,6 @@
 \alias{mstop.validateFDboost}
 \alias{print.validateFDboost}
 \alias{plot.validateFDboost}
-\alias{mstop.validateFDboost}
 \alias{plotPredCoef}
 \title{Methods for objects of class validateFDboost}
 \usage{
@@ -12,14 +11,33 @@
 
 \method{print}{validateFDboost}(x, ...)
 
-\method{plot}{validateFDboost}(x, riskopt = c("mean", "median"),
-  ylab = attr(x, "risk"), xlab = "Number of boosting iterations",
-  ylim = range(x$oobrisk), which = 1, modObject = NULL,
-  predictNA = FALSE, names.arg = NULL, ask = TRUE, ...)
+\method{plot}{validateFDboost}(
+  x,
+  riskopt = c("mean", "median"),
+  ylab = attr(x, "risk"),
+  xlab = "Number of boosting iterations",
+  ylim = range(x$oobrisk),
+  which = 1,
+  modObject = NULL,
+  predictNA = FALSE,
+  names.arg = NULL,
+  ask = TRUE,
+  ...
+)
 
-plotPredCoef(x, which = NULL, pers = TRUE, commonRange = TRUE,
-  showNumbers = FALSE, showQuantiles = TRUE, ask = TRUE, terms = TRUE,
-  probs = c(0.25, 0.5, 0.75), ylim = NULL, ...)
+plotPredCoef(
+  x,
+  which = NULL,
+  pers = TRUE,
+  commonRange = TRUE,
+  showNumbers = FALSE,
+  showQuantiles = TRUE,
+  ask = TRUE,
+  terms = TRUE,
+  probs = c(0.25, 0.5, 0.75),
+  ylim = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{object of class \code{validateFDboost}}

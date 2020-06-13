@@ -4,8 +4,16 @@
 \alias{reweightData}
 \title{Function to Reweight Data}
 \usage{
-reweightData(data, argvals, vars, longvars = NULL, weights, index,
-  idvars = NULL, compress = FALSE)
+reweightData(
+  data,
+  argvals,
+  vars,
+  longvars = NULL,
+  weights,
+  index,
+  idvars = NULL,
+  compress = FALSE
+)
 }
 \arguments{
 \item{data}{a named list or data.frame.}

@@ -42,7 +42,7 @@
 #' 
 #' @details The number of boosting iterations is an important hyper-parameter of boosting.   
 #' It be chosen using the functions \code{applyFolds} or \code{cvrisk.FDboost}. Those functions 
-#' they compute honest, i.e., out-of-bag, estimates of the empirical risk for different 
+#' compute honest, i.e., out-of-bag, estimates of the empirical risk for different 
 #' numbers of boosting iterations. 
 #' The weights (zero weights correspond to test cases) are defined via the folds matrix, 
 #' see \code{\link[mboost]{cvrisk}} in package mboost. 

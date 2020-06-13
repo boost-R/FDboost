@@ -4,8 +4,7 @@
 \alias{funRsquared}
 \title{Functional R-squared}
 \usage{
-funRsquared(object, overTime = TRUE, breaks = object$yind, global = FALSE,
-  ...)
+funRsquared(object, overTime = TRUE, breaks = object$yind, global = FALSE, ...)
 }
 \arguments{
 \item{object}{fitted FDboost-object}

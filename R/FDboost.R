@@ -558,15 +558,24 @@ FDboost <- function(formula,          ### response ~ xvars
   if(scalarResponse & numInt != "equal") 
     stop("Integration weights numInt must be set to 'equal' for scalar response.")
   
-  ## extract time from timeformula 
-  yind <- all.vars(timeformula)[[1]]
-  stopifnot(length(yind) == 1)
-  nameyind <- yind
-  assign(yind, data[[yind]])
-  time <- data[[yind]]
-  stopifnot(is.numeric(time))
-  data[[yind]] <- NULL
-  attr(time, "nameyind") <- nameyind
+  ## extract time(s) from timeformula 
+  yind <- all.vars(timeformula)
+  if(length(yind) == 1) {
+    yind <- yind[[1]]
+    nameyind <- yind
+    assign(yind, data[[yind]])
+    time <- data[[yind]]
+    if(!is.numeric(time)) warning("Non-numeric time variable specified. 
+                                'plot' and other convenience functions potentially not designed for that, yet.")
+    data[[yind]] <- NULL
+    attr(time, "nameyind") <- nameyind
+  } else {
+    warning("More than one variable specified in time formula, 
+                                'plot' and other convenience functions potentially not designed for that, yet.")
+    nameyind <- yind
+    for(yind_ in yind) assign(yind_, data[[yind_]])
+    time <- data[yind]
+  }
   
   ### extract covariates
   # data <- as.data.frame(data)
@@ -610,7 +619,9 @@ FDboost <- function(formula,          ### response ~ xvars
       # <SB> dataframe is list and can contain time-points of functional covariates of arbitrary length
       # if (nrow(data) > 0) stopifnot(nrow(response) == nrow(data))
       nr <- nrow(response)
-      stopifnot(ncol(response) == length(time))
+      if(!is.list(time))
+        stopifnot(ncol(response) == length(time)) else
+          stopifnot(all(ncol(response) == sapply(time[sapply(time, is.vector)], length)))
       nc <- ncol(response)
       dresponse <- as.vector(response) # column-wise stacking of response 
       ## convert characters to factor 
@@ -621,7 +632,9 @@ FDboost <- function(formula,          ### response ~ xvars
     }else{
       stopifnot(is.null(dim(response))) ## stopifnot(is.vector(response))
       # check length of response and its time and index
-      stopifnot(length(response) == length(time) & length(response) == length(id))
+      if(is.list(time))
+        stopifnot(all(length(response) == sapply(time, length)) & length(response) == length(id)) else
+          stopifnot(length(response) == length(time) & length(response) == length(id))
       
       if(any(is.na(response))) warning("For non-grid observations the response should not contain missing values.")
       if( !all(sort(unique(id)) == 1:length(unique(id))) ) stop("id has to be integers 1, 2, 3,..., N.")
@@ -708,6 +721,9 @@ FDboost <- function(formula,          ### response ~ xvars
       cfm <- paste("bols(ONEtime, intercept = FALSE, df = ", c_df ,")")
     }
   }
+  
+  # make brackets around timeformula if more than one variable is involved
+  if(length(all.vars(timeformula)) > 1) tfm <- paste("(", tfm, ")")
 
   # expand formula as Kronecker or tensor product 
   if(is.null(id)){
@@ -757,55 +773,61 @@ FDboost <- function(formula,          ### response ~ xvars
 
   ####### find the number of df for each base-learner 
   ## for a fair selection of bl the df must be equal in all bl
-  get_df <- function(bl){
-    split_bl <- unlist(strsplit(bl, split = "%.{1,3}%"))
-    all_df <- c()
-    for(i in 1:length(split_bl)){
-      parti <- parse(text = split_bl[i])[[1]] 
-      parti <- expand.call(definition = get(as.character(parti[[1]])), call = parti)
-      dfi <- parti$df # df of part i in bl 
-      if(is.symbol(dfi) || (!is.numeric(dfi) && is.numeric(eval(dfi)))) dfi <- eval(dfi) 
-      lambdai <- parti$lambda # if lambda is present, df is ignored 
-      if(is.symbol(lambdai)) lambdai <- eval(lambdai)
-      if(!is.null(dfi)){
-        all_df[i] <- dfi 
-      }else{ ## for df = NULL, the value of lambda is used 
-        if(lambdai == 0){
-          all_df[i] <-  NCOL(extract(with(data, eval(parti)), "design"))
-        }else{
-          all_df[i] <- "" ## dont know df 
-        }
-        if(grepl("%X.{0,3}%", bl)){ ## special behaviour of %X%
-          all_df[i] <- 1
-        } 
-      }
-    }
-    if(any(all_df == "")){
-      ret <- NULL
-    }else{
-      ret <- prod(all_df) # global df for bl is product of all df 
-      if( identical(ret, numeric(0)) ) ret <- NULL
-    } 
-    return(ret)
-  }
-
-  #### get the specified df for each base-learner
-  ## does not take into account base-learners that do not have brackets
-  if(length(tmp) == 0){
+  if(is.list(time)) {
+    warning("For timeformulas with multiple variables dfs are not checked automatically.
+            Please make sure that all base-learner df are equal to ensure a fair selection.")
     bl_df <- NULL
-  }else{
-    bl_df <- vector("list", length(tmp))
-    bl_df[equalBrackets] <- lapply(tmp[equalBrackets], function(x) try(get_df(x)))
-    bl_df <- unlist(bl_df[equalBrackets & (!sapply(bl_df, class) %in% "try-error")])
-    #print(bl_df)
-    
-    if( !is.null(bl_df) && any(abs(bl_df - bl_df[1]) > .Machine$double.eps * 10^10) ){
-      warning("The base-learners differ in the degrees of freedom.")
+  } else {
+    get_df <- function(bl){
+      split_bl <- unlist(strsplit(bl, split = "%.{1,3}%"))
+      all_df <- c()
+      for(i in 1:length(split_bl)){
+        parti <- parse(text = split_bl[i])[[1]] 
+        parti <- expand.call(definition = get(as.character(parti[[1]])), call = parti)
+        dfi <- parti$df # df of part i in bl 
+        if(is.symbol(dfi) || (!is.numeric(dfi) && is.numeric(eval(dfi)))) dfi <- eval(dfi) 
+        lambdai <- parti$lambda # if lambda is present, df is ignored 
+        if(is.symbol(lambdai)) lambdai <- eval(lambdai)
+        if(!is.null(dfi)){
+          all_df[i] <- dfi 
+        }else{ ## for df = NULL, the value of lambda is used 
+          if(lambdai == 0){
+            all_df[i] <-  NCOL(extract(with(data, eval(parti)), "design"))
+          }else{
+            all_df[i] <- "" ## dont know df 
+          }
+          if(grepl("%X.{0,3}%", bl)){ ## special behaviour of %X%
+            all_df[i] <- 1
+          } 
+        }
+      }
+      if(any(all_df == "")){
+        ret <- NULL
+      }else{
+        ret <- prod(all_df) # global df for bl is product of all df 
+        if( identical(ret, numeric(0)) ) ret <- NULL
+      } 
+      return(ret)
     }
-    
-    if(!is.null(bl_df)){
-      df_timeformula <- get_df(tfm) 
-      df_effects <- min(bl_df)
+  
+    #### get the specified df for each base-learner
+    ## does not take into account base-learners that do not have brackets
+    if(length(tmp) == 0){
+      bl_df <- NULL
+    }else{
+      bl_df <- vector("list", length(tmp))
+      bl_df[equalBrackets] <- lapply(tmp[equalBrackets], function(x) try(get_df(x)))
+      bl_df <- unlist(bl_df[equalBrackets & (!sapply(bl_df, class) %in% "try-error")])
+      #print(bl_df)
+      
+      if( !is.null(bl_df) && any(abs(bl_df - bl_df[1]) > .Machine$double.eps * 10^10) ){
+        warning("The base-learners differ in the degrees of freedom.")
+      }
+      
+      if(!is.null(bl_df)){
+        df_timeformula <- get_df(tfm) 
+        df_effects <- min(bl_df)
+      }
     }
   }
 

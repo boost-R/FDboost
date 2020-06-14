@@ -122,7 +122,7 @@ if(require(refund)){
   print("run applyFolds")
   set.seed(123)
   applyFolds(m, folds = cv(rep(1, length(unique(m$id))), B = 2), grid = 0:5)
-  applyFolds(ml, folds = cv(rep(1, length(unique(ml$id))), B = 2), grid = 0:5)
+  #applyFolds(ml, folds = cv(rep(1, length(unique(ml$id))), B = 2), grid = 0:5)
   #applyFolds(ms, folds = cv(rep(1, length(unique(ms$id))), B = 2), grid = 0:5)
 
   ## test cvrisk()

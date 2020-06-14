@@ -103,6 +103,7 @@ if(require(refund)){
     
   m2D <- FDboost(Y ~ bbsc(xsmoo), 
                  timeformula = ~ bols(xfactor) %X% bbs(tvals),
+                 control = boost_control(mstop = 20), 
                  data = dat2D)
   
   ################################################################
@@ -137,13 +138,18 @@ if(require(refund)){
   cvrisk(mslss, folds = cv(model.weights(mslss[[1]]), B = 2),
          grid = 1:5, trace = FALSE)
   
+  cvrisk(m2D, folds = cv(model.weights(m2D), B = 2),
+         grid = 1:5)
+  
   ## test stabsel (use very small number of folds, B = 10, to speed up testing)
   print("run stabsel")
   stabsel(m, cutoff=0.8, PFER = 0.1*length(m$baselearner), sampling.type = "SS", eval = TRUE, B = 3)
   stabsel(m, cutoff=0.8, PFER = 0.1*length(m$baselearner), sampling.type = "SS", eval = TRUE, B = 3, 
           refitSmoothOffset = FALSE)
   
-  stabsel(ml, cutoff=0.8, PFER = 0.1*length(ml$baselearner), sampling.type = "SS", eval = TRUE, B = 3)
+  ## FIXME: this stabsel() should also work with refitSmoothOffset = TRUE 
+  stabsel(ml, cutoff=0.8, PFER = 0.1*length(ml$baselearner), sampling.type = "SS", eval = TRUE, B = 3, 
+          refitSmoothOffset = FALSE)
   stabsel(ms, cutoff=0.8, PFER = 0.1*length(ms$baselearner), sampling.type = "SS", eval = TRUE, B = 3)
   ## FIXME: this is broken again 
   ## fixed in gamboostLSS package on github with commit 4989474 

@@ -86,6 +86,24 @@ if(require(refund)){
                       control = boost_control(mstop = 50), data = dat, 
                       method = "noncyclic")
   
+  ## response matrix with factor + continuous time variable
+  
+  # linear array model implemented only for matrices
+  # => tvals and factor for dimensions have to be flattened
+  dat2D <- with(dat, expand.grid(
+    tvals = tvals, 
+    xfactor = factor(2:3)
+  ))
+  dat2D <- as.list(dat2D[order(dat2D$xfactor), ])
+  dat2D$Y <- cbind(
+    dat$Y[dat$xfactor == "2", ],
+    dat$Y[dat$xfactor == "3", ]
+    )
+  dat2D$xsmoo <- dat$xsmoo[dat$xfactor == "2"] 
+    
+  m2D <- FDboost(Y ~ bbsc(xsmoo), 
+                 timeformula = ~ bols(xfactor) %X% bbs(tvals),
+                 data = dat2D)
   
   ################################################################
   ######### test some methods and utility functions 

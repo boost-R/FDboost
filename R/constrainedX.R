@@ -6,12 +6,13 @@
 #' @param bl1 base-learner 1, e.g. \code{bols(x1)}
 #' @param bl2 base-learner 2, e.g. \code{bols(x2)}
 #' 
-#' @details Similar to \code{\%X\%} in package mboost, see \code{\link[mboost]{\%X\%}}, 
+#' @details Similar to \code{\%X\%} in package \code{mboost}, see 
+#' \code{\link[mboost:baselearners]{\%X\%}}, 
 #' a row tensor product of linear base-learners is returned by \code{\%Xc\%}. 
 #' \code{\%Xc\%} applies a sum-to-zero constraint to the design matrix suitable for
 #' functional response if an interaction of two scalar covariates is specified 
 #' in the case that the model contains a global intercept and both main effects, 
-#' as the interaction is centerd around the intercept and centered around the two main effects. 
+#' as the interaction is centered around the intercept and centered around the two main effects. 
 #' See Web Appendix A of Brockhaus et al. (2015) for details on how to enforce the constraint 
 #' for the functional intercept.   
 #' Use, e.g., in a model call to \code{FDboost}, following the scheme, 

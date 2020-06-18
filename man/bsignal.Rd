@@ -87,7 +87,7 @@ where index is an integer of length greater or equal to \code{NROW(x)}.}
 which is the index of the functional covariates x(s).}
 
 \item{knots}{either the number of knots or a vector of the positions 
-of the interior knots (for more details see \code{\link[mboost]{bbs}}).}
+of the interior knots (for more details see \code{\link[mboost:baselearners]{bbs}}).}
 
 \item{boundary.knots}{boundary points at which to anchor the B-spline basis 
 (default the range of the data). A vector (of length 2) 
@@ -105,13 +105,13 @@ large amount of smoothing and thus to "weaker" base-learners.}
 
 \item{lambda}{smoothing parameter of the penalty, computed from \code{df} when \code{df} is specified.}
 
-\item{center}{See \code{\link[mboost]{bbs}}. 
+\item{center}{See \code{\link[mboost:baselearners]{bbs}}. 
 The effect is re-parameterized such that the unpenalized part of the fit is subtracted and only 
 the penalized effect is fitted, using a spectral decomposition of the penalty matrix.  
 The unpenalized, parametric part has then to be included in separate 
 base-learners using \code{bsignal(..., inS = 'constant')} or \code{bsignal(..., inS = 'linear')} 
 for first (\code{difference = 1}) and second (\code{difference = 2}) order difference penalty respectively. 
-See the help on the argument \code{center} of \code{\link[mboost]{bbs}}.}
+See the help on the argument \code{center} of \code{\link[mboost:baselearners]{bbs}}.}
 
 \item{cyclic}{if \code{cyclic = TRUE} the fitted coefficient function coincides at the boundaries 
 (useful for cyclic covariates such as day time etc.).}

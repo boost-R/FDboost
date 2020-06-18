@@ -23,11 +23,12 @@ defaults to 25 bootstrap samples, resampling whole curves}
 
 \item{grid}{defaults to a grid up to the current number of boosting iterations. 
 The default generates the grid according to the defaults of 
-\code{\link[gamboostLSS]{cvrisk.mboostLSS}} and \code{\link[gamboostLSS]{cvrisk.nc_mboostLSS}} for
+\code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}} and 
+\code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.nc_mboostLSS}} for
 models with cyclic or noncyclic fitting.}
 
 \item{papply}{(parallel) apply function, defaults to \code{\link[parallel]{mclapply}}, 
-see \code{\link[gamboostLSS]{cvrisk.mboostLSS}} for details}
+see \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}} for details.}
 
 \item{trace}{print status information during cross-validation? Defaults to \code{TRUE}.}
 
@@ -41,7 +42,7 @@ may extract any other characteristic of the cross-validated models. These are re
 An object of class \code{cvriskLSS} (when \code{fun} was not specified), 
 basically a matrix containing estimates of the empirical risk for a varying number 
 of bootstrap iterations. \code{plot} and \code{print} methods are available as well as an 
-\code{mstop} method, see \code{\link[gamboostLSS]{cvrisk.mboostLSS}}.
+\code{mstop} method, see \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}}.
 }
 \description{
 Multidimensional cross-validated estimation of the empirical risk for hyper-parameter selection, 
@@ -49,10 +50,12 @@ for an object of class \code{FDboostLSS} setting the folds per default to resamp
 }
 \details{
 The function \code{cvrisk.FDboostLSS} is a wrapper for 
-\code{\link[gamboostLSS]{cvrisk.mboostLSS}} in package gamboostLSS.  
-It overrieds the default for the folds, so that the folds are sampled on the level of curves 
+\code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}} in 
+package \code{gamboostLSS}.  
+It overrides the default for the folds, so that the folds are sampled on the level of curves 
 (not on the level of single observations, which does not make sense for functional response).
 }
 \seealso{
-\code{\link[gamboostLSS]{cvrisk.mboostLSS}} in packge gamboostLSS.
+\code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}} in 
+package \code{gamboostLSS}.
 }

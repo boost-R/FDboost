@@ -308,7 +308,7 @@ X_histx <- function(mf, vary, args) {
 #' note that \code{timeLab} in the \code{hmatrix}-object must be equal to 
 #' the name of the time-variable in \code{timeformula} in the \code{FDboost}-call
 #' @param knots either the number of knots or a vector of the positions 
-#' of the interior knots (for more details see \code{\link[mboost]{bbs})}.
+#' of the interior knots (for more details see \code{\link[mboost:baselearners]{bbs})}.
 #' @param boundary.knots boundary points at which to anchor the B-spline basis 
 #' (default the range of the data). A vector (of length 2) 
 #' for the lower and the upper boundary knot can be specified.

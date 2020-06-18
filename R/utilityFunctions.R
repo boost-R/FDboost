@@ -4,7 +4,7 @@
 #' @param k_min maximal number of k in s()
 #' @param rule which rule to use in approx() of the response before calculating the 
 #' global mean, rule=1 means no extrapolation, rule=2 means to extrapolate the 
-#' closest non-missing value, see \code{\link[stats]{approx}}
+#' closest non-missing value, see \code{\link[stats:approxfun]{approx}}
 #' @param silent print error messages of model fit?
 #' @param cyclic defaults to FALSE, if TRUE cyclic splines are used
 #' @param knots arguments knots passed to \code{\link[mgcv]{gam}}

@@ -44,7 +44,7 @@ either a factor or numeric variable.}
 \item{index}{a vector of integers for expanding the variables in \code{...}.}
 
 \item{knots}{either the number of knots or a vector of the positions 
-of the interior knots (for more details see \code{\link[mboost]{bbs}}).}
+of the interior knots (for more details see \code{\link[mboost:baselearners]{bbs}}).}
 
 \item{boundary.knots}{boundary points at which to anchor the B-spline basis 
 (default the range of the data). A vector (of length 2) 
@@ -63,7 +63,7 @@ large amount of smoothing and thus to "weaker" base-learners.}
 \item{lambda}{smoothing parameter of the penalty, computed from \code{df} when 
 \code{df} is specified.}
 
-\item{center}{See \code{\link[mboost]{bbs}}.}
+\item{center}{See \code{\link[mboost:baselearners]{bbs}}.}
 
 \item{cyclic}{if \code{cyclic = TRUE} the fitted values coincide at 
 the boundaries (useful for cyclic covariates such as day time etc.).}
@@ -80,7 +80,7 @@ package \code{mboost}, namely "contr.dummy". This contrast is used per default
 in \code{brandomc}. It leads to a 
 dummy coding as returned by \code{model.matrix(~ x - 1)} were the 
 intercept is implicitly included but each factor level gets a 
-separate effect estimate (for more details see \code{\link[mboost]{brandom}}).}
+separate effect estimate (for more details see \code{\link[mboost:baselearners]{brandom}}).}
 }
 \value{
 Equally to the base-learners of package \code{mboost}: 
@@ -98,8 +98,8 @@ with functional response
 }
 \details{
 The base-learners \code{bbsc}, \code{bolsc} and \code{brandomc} are 
-the base-learners \code{\link[mboost]{bbs}}, \code{\link[mboost]{bols}} and 
-\code{\link[mboost]{brandom}} with additional identifiability constraints. 
+the base-learners \code{\link[mboost:baselearners]{bbs}}, \code{\link[mboost:baselearners]{bols}} and 
+\code{\link[mboost:baselearners]{brandom}} with additional identifiability constraints. 
 The constraints enforce that 
 \eqn{\sum_{i} \hat h(x_i, t) = 0} for all \eqn{t}, so that 
 effects varying over \eqn{t} can be interpreted as deviations 
@@ -161,7 +161,8 @@ Functional Additive Mixed Models, Journal of Computational and Graphical Statist
 }
 \seealso{
 \code{\link{FDboost}} for the model fit. 
-\code{\link[mboost]{bbs}}, \code{\link[mboost]{bols}} and \code{\link[mboost]{brandom}} for the 
+\code{\link[mboost:baselearners]{bbs}}, \code{\link[mboost:baselearners]{bols}} 
+and \code{\link[mboost:baselearners]{brandom}} for the 
 corresponding base-learners in \code{mboost}.
 }
 \author{

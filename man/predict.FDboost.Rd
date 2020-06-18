@@ -25,7 +25,7 @@ a list is returned.}
 (i.e. response is supplied as matrix): should the predictions be returned as matrix, or list 
 of matrices instead of vectors}
 
-\item{...}{additional arguments passed on to \code{\link[mboost]{predict.mboost}()}.}
+\item{...}{additional arguments passed on to \code{\link[mboost:methods]{predict.mboost}()}.}
 }
 \value{
 a matrix or list of predictions depending on values of unlist and which
@@ -34,7 +34,7 @@ a matrix or list of predictions depending on values of unlist and which
 Takes a fitted \code{FDboost}-object produced by \code{\link{FDboost}()} and produces 
  predictions given a new set of values for the model covariates or the original 
  values used for the model fit. This is a wrapper
- function for \code{\link[mboost]{predict.mboost}()}
+ function for \code{\link[mboost:methods]{predict.mboost}()}
 }
 \seealso{
 \code{\link{FDboost}} for the model fit 

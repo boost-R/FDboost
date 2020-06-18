@@ -78,7 +78,7 @@ print.FDboost <- function(x, ...) {
 #'  Takes a fitted \code{FDboost}-object produced by \code{\link{FDboost}()} and produces 
 #'  predictions given a new set of values for the model covariates or the original 
 #'  values used for the model fit. This is a wrapper
-#'  function for \code{\link[mboost]{predict.mboost}()}
+#'  function for \code{\link[mboost:methods]{predict.mboost}()}
 #' 
 #' @param object a fitted \code{FDboost}-object
 #' @param newdata a named list or a data frame containing the values of the model 
@@ -94,7 +94,7 @@ print.FDboost <- function(x, ...) {
 #' @param toFDboost logical, defaults to \code{TRUE}. In case of regular response in wide format 
 #' (i.e. response is supplied as matrix): should the predictions be returned as matrix, or list 
 #' of matrices instead of vectors
-#' @param ...  additional arguments passed on to \code{\link[mboost]{predict.mboost}()}.
+#' @param ...  additional arguments passed on to \code{\link[mboost:methods]{predict.mboost}()}.
 #' 
 #' @seealso \code{\link{FDboost}} for the model fit 
 #' and \code{\link{plotPredicted}} for a plot of the observed values and their predictions.
@@ -1918,8 +1918,10 @@ update.FDboost <- function(object, weights = NULL, oobweights = NULL, risk = NUL
 #' observations. \code{expand = TRUE} is equivalent to \code{extract(B)[extract(B, what = "index"),]} 
 #' for a base-learner \code{B}.
 #' @param ... currently not used
+#' 
 #' @method extract blg
-#' @seealso \code{\link[mboost]{extract}} for the \code{extract} function of the package mboost
+#' @seealso \code{\link[mboost:methods]{extract}} for the \code{extract} function 
+#' of the package \code{mboost}.
 extract.blg <- function(object, what = c("design", "penalty", "index"),
                         asmatrix = FALSE, expand = FALSE, ...){
   what <- match.arg(what)

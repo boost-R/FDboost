@@ -47,7 +47,7 @@ which is the index of the functional covariates x(s).}
 which is the index of the functional response y(time).}
 
 \item{knots}{either the number of knots or a vector of the positions 
-of the interior knots (for more details see \code{\link[mboost]{bbs})}.}
+of the interior knots (for more details see \code{\link[mboost:baselearners]{bbs})}.}
 
 \item{boundary.knots}{boundary points at which to anchor the B-spline basis 
 (default the range of the data). A vector (of length 2) 

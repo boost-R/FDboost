@@ -121,7 +121,7 @@ matrix can be written as the Kronecker product of two marginal design
 matrices yielding a functional linear array model (FLAM), 
 see Brockhaus et al. (2015) for details. 
 The Kronecker product of two marginal bases is implemented in R-package mboost 
-in the function \code{\%O\%}, see \code{\link[mboost]{\%O\%}}. 
+in the function \code{\%O\%}, see \code{\link[mboost:baselearners]{\%O\%}}. 
 
 When \code{\%O\%} is called with a specification of \code{df} in both base-learners, 
 e.g., \code{bbs(x1, df = df1) \%O\% bbs(t, df = df2)}, the global \code{df} for the 
@@ -139,14 +139,14 @@ to be specified (as formula!) to define which observations belong to which curve
 In this case the base-learners are built as row tensor-products of marginal base-learners, 
 see Scheipl et al. (2015) and Brockhaus et al. (2017), for details on how to set up the effects. 
 The row tensor product of two marginal bases is implemented in R-package mboost 
-in the function \code{\%X\%}, see \code{\link[mboost]{\%X\%}}. 
+in the function \code{\%X\%}, see \code{\link[mboost:baselearners]{\%X\%}}. 
 
 A scalar response can be seen as special case of a functional response with only
 one time-point, and thus it can be represented as FLAM with basis 1 in 
 time-direction, use \code{timeformula = ~bols(1)}. In this case, a penalty in the 
 time-direction is used, see Brockhaus et al. (2015) for details.  
 Alternatively, the scalar response is fitted as scalar response, like in the function
-\code{\link[mboost]{mboost}} in package mboost. 
+\code{\link[mboost:mboost]{mboost}} in package mboost. 
 The advantage of using \code{FDboost} in that case 
 is that methods for the functional base-learners are available, e.g., \code{plot}. 
 
@@ -158,7 +158,8 @@ see \code{\link[mboost]{Family}} for a list of implemented families.
 
 With \code{FDboost} the following covariate effects can be estimated by specifying 
 the following effects in the \code{formula}
-(similar to function \code{\link[refund]{pffr}} in R-package \code{\link[refund]{refund}}). 
+(similar to function \code{\link[refund]{pffr}} 
+in R-package \code{\link[refund:refund-package]{refund}}). 
 The \code{timeformula} is used to expand the effects in \code{t}-direction. 
 \itemize{
 \item Linear functional effect of scalar (numeric or factor) covariate \eqn{z} that varies 
@@ -213,7 +214,7 @@ It is not possible to specify df larger than the rank of the design matrix.
 For base-learners with rank-deficient penalty, it is not possible to specify df smaller than the 
 rank of the null space of the penalty (e.g., in \code{bbs} unpenalized part of P-splines). 
 The df of the base-learners in an FDboost-object can be checked using \code{extract(object, "df")}, 
-see \code{\link[mboost]{extract}}.  
+see \code{\link[mboost:methods]{extract}}.  
 
 The most important tuning parameter of component-wise gradient boosting 
 is the number of boosting iterations. It is recommended to use the number of 
@@ -457,5 +458,7 @@ for possible base-learners.
 \author{
 Sarah Brockhaus, Torsten Hothorn
 }
-\keyword{models,}
+\keyword{models}
 \keyword{nonlinear}
+\keyword{regression}
+\keyword{smooth}

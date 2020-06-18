@@ -19,10 +19,10 @@
 #' @param data a data frame or list containing the variables in the model.
 #' @param families an object of class \code{families}. It can be either one of the pre-defined distributions 
 #' that come along with the package \code{gamboostLSS} or a new distribution specified by the user 
-#' (see \code{\link[gamboostLSS]{Families}} for details). 
-#' Per default, the two-parametric \code{\link[gamboostLSS]{GaussianLSS}} family is used.
+#' (see \code{\link[gamboostLSS:Families]{Families}} for details). 
+#' Per default, the two-parametric \code{\link[gamboostLSS:Families]{GaussianLSS}} family is used.
 #' @param control  a list of parameters controlling the algorithm. 
-#' For more details see \code{\link[mboost]{boost_control}}.  
+#' For more details see \code{\link[mboost:boost_control]{boost_control}}.  
 #' @param weights does not work!
 #' @param method fitting method, currently two methods are supported: 
 #' \code{"cyclic"} (see Mayr et al., 2012) and \code{"noncyclic"} 
@@ -47,7 +47,7 @@
 #' 
 #' @seealso Note that \code{FDboostLSS} calls \code{\link{FDboost}} directly.  
 #' 
-#' @keywords models, nonlinear 
+#' @keywords models regression nonlinear smooth
 #' 
 #' @references 
 #' Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015). 
@@ -170,10 +170,11 @@ FDboostLSS <- function(formula, timeformula, data = list(), families = GaussianL
 #' defaults to 25 bootstrap samples, resampling whole curves  
 #' @param grid defaults to a grid up to the current number of boosting iterations. 
 #' The default generates the grid according to the defaults of 
-#' \code{\link[gamboostLSS]{cvrisk.mboostLSS}} and \code{\link[gamboostLSS]{cvrisk.nc_mboostLSS}} for
+#' \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}} and 
+#' \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.nc_mboostLSS}} for
 #' models with cyclic or noncyclic fitting.  
 #' @param papply (parallel) apply function, defaults to \code{\link[parallel]{mclapply}}, 
-#' see \code{\link[gamboostLSS]{cvrisk.mboostLSS}} for details 
+#' see \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}} for details.  
 #' @param trace print status information during cross-validation? Defaults to \code{TRUE}.
 #' @param fun if \code{fun} is \code{NULL}, the out-of-sample risk is returned. 
 #' \code{fun}, as a function of \code{object}, 
@@ -181,16 +182,18 @@ FDboostLSS <- function(formula, timeformula, data = list(), families = GaussianL
 #' @param ... additional arguments passed to \code{\link[parallel]{mclapply}}.
 #' 
 #' @details The function \code{cvrisk.FDboostLSS} is a wrapper for 
-#' \code{\link[gamboostLSS]{cvrisk.mboostLSS}} in package gamboostLSS.  
-#' It overrieds the default for the folds, so that the folds are sampled on the level of curves 
+#' \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}} in 
+#' package \code{gamboostLSS}.  
+#' It overrides the default for the folds, so that the folds are sampled on the level of curves 
 #' (not on the level of single observations, which does not make sense for functional response).  
 #' 
 #' @return An object of class \code{cvriskLSS} (when \code{fun} was not specified), 
 #' basically a matrix containing estimates of the empirical risk for a varying number 
 #' of bootstrap iterations. \code{plot} and \code{print} methods are available as well as an 
-#' \code{mstop} method, see \code{\link[gamboostLSS]{cvrisk.mboostLSS}}.
+#' \code{mstop} method, see \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}}.
 #' 
-#' @seealso \code{\link[gamboostLSS]{cvrisk.mboostLSS}} in packge gamboostLSS. 
+#' @seealso \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}} in 
+#' package \code{gamboostLSS}. 
 #' 
 #' @export
 ## wrapper for cvrisk of gamboostLSS, specifying folds on the level of curves

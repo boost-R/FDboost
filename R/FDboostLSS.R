@@ -170,29 +170,26 @@ FDboostLSS <- function(formula, timeformula, data = list(), families = GaussianL
 #' defaults to 25 bootstrap samples, resampling whole curves  
 #' @param grid defaults to a grid up to the current number of boosting iterations. 
 #' The default generates the grid according to the defaults of 
-#' \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}} and 
-#' \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.nc_mboostLSS}} for
-#' models with cyclic or noncyclic fitting.  
-#' @param papply (parallel) apply function, defaults to \code{\link[parallel]{mclapply}}, 
-#' see \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}} for details.  
+#' \code{\link{cvrisk.mboostLSS}} which are different for models with cyclic or noncyclic fitting.  
+#' @param papply (parallel) apply function, defaults to \code{\link{mclapply}}, 
+#' see \code{\link{cvrisk.mboostLSS}} for details.  
 #' @param trace print status information during cross-validation? Defaults to \code{TRUE}.
 #' @param fun if \code{fun} is \code{NULL}, the out-of-sample risk is returned. 
 #' \code{fun}, as a function of \code{object}, 
 #' may extract any other characteristic of the cross-validated models. These are returned as is.
-#' @param ... additional arguments passed to \code{\link[parallel]{mclapply}}.
+#' @param ... additional arguments passed to \code{\link{mclapply}}.
 #' 
 #' @details The function \code{cvrisk.FDboostLSS} is a wrapper for 
-#' \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}} in 
-#' package \code{gamboostLSS}.  
+#' \code{cvrisk.mboostLSS} in package \code{gamboostLSS}.  
 #' It overrides the default for the folds, so that the folds are sampled on the level of curves 
 #' (not on the level of single observations, which does not make sense for functional response).  
 #' 
 #' @return An object of class \code{cvriskLSS} (when \code{fun} was not specified), 
 #' basically a matrix containing estimates of the empirical risk for a varying number 
 #' of bootstrap iterations. \code{plot} and \code{print} methods are available as well as an 
-#' \code{mstop} method, see \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}}.
+#' \code{mstop} method, see \code{\link{cvrisk.mboostLSS}}.
 #' 
-#' @seealso \code{\link[gamboostLSS:cvrisk.mboostLSS]{cvrisk.mboostLSS}} in 
+#' @seealso \code{\link{cvrisk.mboostLSS}} in 
 #' package \code{gamboostLSS}. 
 #' 
 #' @export

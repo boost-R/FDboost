@@ -10,8 +10,8 @@
 #' @param showProgress logical, defaults to \code{TRUE}.
 #' @param compress logical, defaults to \code{FALSE}. Only used to force a meaningful
 #' behaviour of \code{applyFolds} with hmatrix objects when using nested resampling.
-#' @param papply (parallel) apply function, defaults to \code{\link[parallel]{mclapply}}, 
-#' see \code{\link[mboost]{cvrisk}} for details.  
+#' @param papply (parallel) apply function, defaults to \code{\link{mclapply}} from 
+#' R package \code{parallel}, see \code{\link[mboost]{cvrisk}} for details.  
 #' @param fun if \code{fun} is \code{NULL}, the out-of-bag risk is returned. 
 #' \code{fun}, as a function of \code{object}, 
 #' may extract any other characteristic of the cross-validated models. These are returned as is.
@@ -23,8 +23,8 @@
 #' @param numInt only exists in \code{applyFolds}; the scheme for numerical integration, 
 #' see \code{numInt} in \code{\link{FDboost}}. 
 #' @param mc.preschedule Defaults to \code{FALSE}. Preschedule tasks if they are parallelized using \code{mclapply}.   
-#' For details see \code{\link[parallel]{mclapply}}. 
-#' @param ... further arguments passed to \code{\link[parallel]{mclapply}} 
+#' For details see \code{\link{mclapply}}. 
+#' @param ... further arguments passed to the (parallel) apply function. 
 #' 
 #' @param id the id-vector as integers 1, 2, ... specifying which observations belong to the same curve, 
 #' deprecated in \code{cvMa()}. 

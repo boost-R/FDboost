@@ -70,18 +70,18 @@ The risk function must return a scalar numeric value for vector valued input.}
 \item{numInt}{only exists in \code{applyFolds}; the scheme for numerical integration, 
 see \code{numInt} in \code{\link{FDboost}}.}
 
-\item{papply}{(parallel) apply function, defaults to \code{\link[parallel]{mclapply}}, 
-see \code{\link[mboost]{cvrisk}} for details.}
+\item{papply}{(parallel) apply function, defaults to \code{\link{mclapply}} from 
+R package \code{parallel}, see \code{\link[mboost]{cvrisk}} for details.}
 
 \item{mc.preschedule}{Defaults to \code{FALSE}. Preschedule tasks if they are parallelized using \code{mclapply}.
-For details see \code{\link[parallel]{mclapply}}.}
+For details see \code{\link{mclapply}}.}
 
 \item{showProgress}{logical, defaults to \code{TRUE}.}
 
 \item{compress}{logical, defaults to \code{FALSE}. Only used to force a meaningful
 behaviour of \code{applyFolds} with hmatrix objects when using nested resampling.}
 
-\item{...}{further arguments passed to \code{\link[parallel]{mclapply}}}
+\item{...}{further arguments passed to the (parallel) apply function.}
 
 \item{id}{the id-vector as integers 1, 2, ... specifying which observations belong to the same curve, 
 deprecated in \code{cvMa()}.}

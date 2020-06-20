@@ -64,7 +64,28 @@ check the fitted effects for the sum-to-zero constraint
 including, \code{family} and \code{control}.}
 }
 \value{
-
+An object of class \code{FDboost} that inherits from \code{mboost}.
+Special \code{\link{predict.FDboost}}, \code{\link{coef.FDboost}} and 
+\code{\link{plot.FDboost}} methods are available. 
+The methods of \code{\link{mboost}} are available as well, 
+e.g., \code{\link[mboost:methods]{extract}}. 
+The \code{FDboost}-object is a named list containing: 
+\item{...}{all elements of an \code{mboost}-object}
+\item{yname}{the name of the response}
+\item{ydim}{dimension of the response matrix, if the response is represented as such}
+\item{yind}{the observation (time-)points of the response, i.e. the evaluation points, 
+      with its name as attribute}
+\item{data}{the data that was used for the model fit}
+\item{id}{the id variable of the response}
+\item{predictOffset}{the function to predict the smooth offset}
+\item{offsetFDboost}{offset as specified in call to FDboost} 
+\item{offsetMboost}{offset as given to mboost}
+\item{call}{the call to \code{FDboost}}
+\item{callEval}{the evaluated function call to \code{FDboost} without data}
+\item{numInt}{value of argument \code{numInt} determining the numerical integration scheme}
+\item{timeformula}{the time-formula}
+\item{formulaFDboost}{the formula with which \code{FDboost} was called}
+\item{formulaMboost}{the formula with which \code{mboost} was called within \code{FDboost}}
 }
 \description{
 Gradient boosting for optimizing arbitrary loss functions, where component-wise models 

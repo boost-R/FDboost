@@ -178,9 +178,8 @@
 #' \code{\link{plot.FDboost}} methods are available. 
 #' The methods of \code{\link{mboost}} are available as well, 
 #' e.g., \code{\link[mboost:methods]{extract}}. 
-#' 
 #' The \code{FDboost}-object is a named list containing: 
-#' \item{...}{all elements of an \code{mboost}-object
+#' \item{...}{all elements of an \code{mboost}-object}
 #' \item{yname}{the name of the response}
 #' \item{ydim}{dimension of the response matrix, if the response is represented as such}
 #' \item{yind}{the observation (time-)points of the response, i.e. the evaluation points, 

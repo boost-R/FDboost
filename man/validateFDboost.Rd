@@ -48,7 +48,7 @@ Defaults to \code{TRUE}. In \code{\link[mboost]{cvrisk}} the offset of the origi
 
 \item{showProgress}{logical, defaults to \code{TRUE}.}
 
-\item{...}{further arguments passed to \code{\link[parallel]{mclapply}}}
+\item{...}{further arguments passed to \code{\link{mclapply}}}
 }
 \value{
 The function \code{validateFDboost} returns a \code{validateFDboost}-object, 

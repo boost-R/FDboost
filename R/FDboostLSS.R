@@ -19,10 +19,10 @@
 #' @param data a data frame or list containing the variables in the model.
 #' @param families an object of class \code{families}. It can be either one of the pre-defined distributions 
 #' that come along with the package \code{gamboostLSS} or a new distribution specified by the user 
-#' (see \code{\link[gamboostLSS:Families]{Families}} for details). 
-#' Per default, the two-parametric \code{\link[gamboostLSS:Families]{GaussianLSS}} family is used.
+#' (see \code{\link{Families}} for details). 
+#' Per default, the two-parametric \code{\link{GaussianLSS}} family is used.
 #' @param control  a list of parameters controlling the algorithm. 
-#' For more details see \code{\link[mboost:boost_control]{boost_control}}.  
+#' For more details see \code{\link{boost_control}}.  
 #' @param weights does not work!
 #' @param method fitting method, currently two methods are supported: 
 #' \code{"cyclic"} (see Mayr et al., 2012) and \code{"noncyclic"} 

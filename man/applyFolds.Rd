@@ -64,8 +64,8 @@ may extract any other characteristic of the cross-validated models. These are re
 \item{riskFun}{only exists in \code{applyFolds}; allows to compute other risk functions than the risk 
 of the family that was specified in object. 
 Must be specified as function of arguments \code{(y, f, w = 1)}, where \code{y} is the 
-observed response, \code{f} is the prediciton from the model and \code{w} is the weight. 
-The risk function must return a scalar numeric value for vector valued imput.}
+observed response, \code{f} is the prediction from the model and \code{w} is the weight. 
+The risk function must return a scalar numeric value for vector valued input.}
 
 \item{numInt}{only exists in \code{applyFolds}; the scheme for numerical integration, 
 see \code{numInt} in \code{\link{FDboost}}.}
@@ -73,7 +73,7 @@ see \code{numInt} in \code{\link{FDboost}}.}
 \item{papply}{(parallel) apply function, defaults to \code{\link[parallel]{mclapply}}, 
 see \code{\link[mboost]{cvrisk}} for details.}
 
-\item{mc.preschedule}{Defaults to \code{FALSE}. Preschedule tasks if are parallelized using \code{mclapply}?
+\item{mc.preschedule}{Defaults to \code{FALSE}. Preschedule tasks if they are parallelized using \code{mclapply}.
 For details see \code{\link[parallel]{mclapply}}.}
 
 \item{showProgress}{logical, defaults to \code{TRUE}.}

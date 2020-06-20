@@ -18,11 +18,11 @@
 #' @param riskFun only exists in \code{applyFolds}; allows to compute other risk functions than the risk 
 #' of the family that was specified in object. 
 #' Must be specified as function of arguments \code{(y, f, w = 1)}, where \code{y} is the 
-#' observed response, \code{f} is the prediciton from the model and \code{w} is the weight. 
-#' The risk function must return a scalar numeric value for vector valued imput.  
+#' observed response, \code{f} is the prediction from the model and \code{w} is the weight. 
+#' The risk function must return a scalar numeric value for vector valued input.  
 #' @param numInt only exists in \code{applyFolds}; the scheme for numerical integration, 
 #' see \code{numInt} in \code{\link{FDboost}}. 
-#' @param mc.preschedule Defaults to \code{FALSE}. Preschedule tasks if are parallelized using \code{mclapply}?  
+#' @param mc.preschedule Defaults to \code{FALSE}. Preschedule tasks if they are parallelized using \code{mclapply}.   
 #' For details see \code{\link[parallel]{mclapply}}. 
 #' @param ... further arguments passed to \code{\link[parallel]{mclapply}} 
 #' 
@@ -576,7 +576,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #' \code{fun}, as a function of \code{object}, 
 #' may extract any other characteristic of the cross-validated models. These are returned as is.
 #' 
-#' @param ... further arguments passed to \code{\link[parallel]{mclapply}} 
+#' @param ... further arguments passed to \code{\link{mclapply}} 
 #' 
 #' @details The number of boosting iterations is an important hyper-parameter of boosting  
 #' and can be chosen using the function \code{validateFDboost} as they compute

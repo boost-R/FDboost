@@ -60,40 +60,18 @@ defaults to \code{o_control()}, see \code{\link{o_control}}.}
 check the fitted effects for the sum-to-zero constraint 
 \eqn{h_j(x_i)(t) = 0} for all \eqn{t} and give a warning if it is not fulfilled. Defaults to \code{FALSE}.}
 
-\item{...}{additional arguments passed to \code{\link[mboost]{mboost}}, 
+\item{...}{additional arguments passed to \code{\link{mboost}}, 
 including, \code{family} and \code{control}.}
 }
 \value{
-An object of class \code{FDboost} that inherits from \code{mboost}.
-Special \code{\link{predict.FDboost}}, \code{\link{coef.FDboost}} and 
-\code{\link{plot.FDboost}} methods are available. 
-The methods of \code{\link[mboost]{mboost}} are available as well, 
-e.g., \code{\link[mboost]{extract}}. 
 
-The \code{FDboost}-object is a named list containing: 
-\item{...}{all elements of an \code{\link[mboost]{mboost}-object}}
-\item{yname}{the name of the response}
-\item{ydim}{dimension of the response matrix, if the response is represented as such}
-\item{yind}{the observation (time-)points of the response, i.e. the evaluation points, 
-      with its name as attribute}
-\item{data}{the data that was used for the model fit}
-\item{id}{the id variable of the response}
-\item{predictOffset}{the function to predict the smooth offset}
-\item{offsetFDboost}{offset as specified in call to FDboost} 
-\item{offsetMboost}{offset as given to mboost}
-\item{call}{the call to \code{FDboost}}
-\item{callEval}{the evaluated function call to \code{FDboost} without data}
-\item{numInt}{value of argument \code{numInt} determining the numerical integration scheme}
-\item{timeformula}{the time-formula}
-\item{formulaFDboost}{the formula with which \code{FDboost} was called}
-\item{formulaMboost}{the formula with which \code{mboost} was called within \code{FDboost}}
 }
 \description{
 Gradient boosting for optimizing arbitrary loss functions, where component-wise models 
 are utilized as base-learners in the case of functional responses. 
 Scalar responses are treated as the special case where each functional response has 
 only one observation. 
-This function is a wrapper for \code{mboost}'s \code{\link[mboost]{mboost}} and its 
+This function is a wrapper for \code{mboost}'s \code{\link{mboost}} and its 
 siblings to fit models of the general form 
 \deqn{\xi(Y_i(t) | X_i = x_i) = \sum_{j} h_j(x_i, t), i = 1, ..., N,} 
 with a functional (but not necessarily continuous) response \eqn{Y(t)}, 
@@ -116,7 +94,7 @@ response evaluations \eqn{Y_i(t_g)} are stacked internally into one long vector.
 
 If it is possible to represent the model as a generalized linear array model 
 (Currie et al., 2006), the array structure is used for an efficient implementation, 
-see \code{\link[mboost]{mboost}}. This is only possible if the design 
+see \code{\link{mboost}}. This is only possible if the design 
 matrix can be written as the Kronecker product of two marginal design 
 matrices yielding a functional linear array model (FLAM), 
 see Brockhaus et al. (2015) for details. 
@@ -146,12 +124,12 @@ one time-point, and thus it can be represented as FLAM with basis 1 in
 time-direction, use \code{timeformula = ~bols(1)}. In this case, a penalty in the 
 time-direction is used, see Brockhaus et al. (2015) for details.  
 Alternatively, the scalar response is fitted as scalar response, like in the function
-\code{\link[mboost:mboost]{mboost}} in package mboost. 
+\code{\link{mboost}} in package mboost. 
 The advantage of using \code{FDboost} in that case 
 is that methods for the functional base-learners are available, e.g., \code{plot}. 
 
 The desired regression type is specified by the \code{family}-argument, 
-see the help-page of \code{\link[mboost]{mboost}}. For example a mean regression model is obtained by  
+see the help-page of \code{\link{mboost}}. For example a mean regression model is obtained by  
 \code{family = Gaussian()} which is the default or median regression 
 by \code{family = QuantReg()}; 
 see \code{\link[mboost]{Family}} for a list of implemented families. 
@@ -451,7 +429,7 @@ Scheipl, F., Staicu, A.-M. and Greven, S. (2015):
 Functional additive mixed models, Journal of Computational and Graphical Statistics, 24(2), 477-501.
 }
 \seealso{
-Note that \link{FDboost} calls \code{\link[mboost]{mboost}} directly.  
+Note that \link{FDboost} calls \code{\link{mboost}} directly.  
 See, e.g., \code{\link[FDboost]{bsignal}} and \code{\link[FDboost]{bbsc}} 
 for possible base-learners.
 }

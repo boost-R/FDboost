@@ -5,7 +5,7 @@
 #' are utilized as base-learners in the case of functional responses. 
 #' Scalar responses are treated as the special case where each functional response has 
 #' only one observation. 
-#' This function is a wrapper for \code{mboost}'s \code{\link[mboost]{mboost}} and its 
+#' This function is a wrapper for \code{mboost}'s \code{\link{mboost}} and its 
 #' siblings to fit models of the general form 
 #' \deqn{\xi(Y_i(t) | X_i = x_i) = \sum_{j} h_j(x_i, t), i = 1, ..., N,} 
 #' with a functional (but not necessarily continuous) response \eqn{Y(t)}, 
@@ -52,7 +52,7 @@
 #' @param check0 logical, for response in matrix form, i.e. response that is observed on a common grid, 
 #' check the fitted effects for the sum-to-zero constraint 
 #' \eqn{h_j(x_i)(t) = 0} for all \eqn{t} and give a warning if it is not fulfilled. Defaults to \code{FALSE}. 
-#' @param ... additional arguments passed to \code{\link[mboost]{mboost}}, 
+#' @param ... additional arguments passed to \code{\link{mboost}}, 
 #' including, \code{family} and \code{control}.
 #' 
 #' @details In matrix representation of functional response and covariates each row 
@@ -63,7 +63,7 @@
 #' 
 #' If it is possible to represent the model as a generalized linear array model 
 #' (Currie et al., 2006), the array structure is used for an efficient implementation, 
-#' see \code{\link[mboost]{mboost}}. This is only possible if the design 
+#' see \code{\link{mboost}}. This is only possible if the design 
 #' matrix can be written as the Kronecker product of two marginal design 
 #' matrices yielding a functional linear array model (FLAM), 
 #' see Brockhaus et al. (2015) for details. 
@@ -93,12 +93,12 @@
 #' time-direction, use \code{timeformula = ~bols(1)}. In this case, a penalty in the 
 #' time-direction is used, see Brockhaus et al. (2015) for details.  
 #' Alternatively, the scalar response is fitted as scalar response, like in the function
-#' \code{\link[mboost:mboost]{mboost}} in package mboost. 
+#' \code{\link{mboost}} in package mboost. 
 #' The advantage of using \code{FDboost} in that case 
 #' is that methods for the functional base-learners are available, e.g., \code{plot}. 
 #' 
 #' The desired regression type is specified by the \code{family}-argument, 
-#' see the help-page of \code{\link[mboost]{mboost}}. For example a mean regression model is obtained by  
+#' see the help-page of \code{\link{mboost}}. For example a mean regression model is obtained by  
 #' \code{family = Gaussian()} which is the default or median regression 
 #' by \code{family = QuantReg()}; 
 #' see \code{\link[mboost]{Family}} for a list of implemented families. 
@@ -176,11 +176,11 @@
 #' @return An object of class \code{FDboost} that inherits from \code{mboost}.
 #' Special \code{\link{predict.FDboost}}, \code{\link{coef.FDboost}} and 
 #' \code{\link{plot.FDboost}} methods are available. 
-#' The methods of \code{\link[mboost]{mboost}} are available as well, 
-#' e.g., \code{\link[mboost]{extract}}. 
+#' The methods of \code{\link{mboost}} are available as well, 
+#' e.g., \code{\link[mboost:methods]{extract}}. 
 #' 
 #' The \code{FDboost}-object is a named list containing: 
-#' \item{...}{all elements of an \code{\link[mboost]{mboost}-object}}
+#' \item{...}{all elements of an \code{mboost}-object
 #' \item{yname}{the name of the response}
 #' \item{ydim}{dimension of the response matrix, if the response is represented as such}
 #' \item{yind}{the observation (time-)points of the response, i.e. the evaluation points, 
@@ -199,7 +199,7 @@
 #' 
 #' @author Sarah Brockhaus, Torsten Hothorn
 #' 
-#' @seealso Note that \link{FDboost} calls \code{\link[mboost]{mboost}} directly.  
+#' @seealso Note that \link{FDboost} calls \code{\link{mboost}} directly.  
 #' See, e.g., \code{\link[FDboost]{bsignal}} and \code{\link[FDboost]{bbsc}} 
 #' for possible base-learners. 
 #' 

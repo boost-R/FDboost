@@ -33,11 +33,11 @@ a named list of one-sided formulas.}
 
 \item{families}{an object of class \code{families}. It can be either one of the pre-defined distributions 
 that come along with the package \code{gamboostLSS} or a new distribution specified by the user 
-(see \code{\link[gamboostLSS:Families]{Families}} for details). 
-Per default, the two-parametric \code{\link[gamboostLSS:Families]{GaussianLSS}} family is used.}
+(see \code{\link{Families}} for details). 
+Per default, the two-parametric \code{\link{GaussianLSS}} family is used.}
 
 \item{control}{a list of parameters controlling the algorithm. 
-For more details see \code{\link[mboost:boost_control]{boost_control}}.}
+For more details see \code{\link{boost_control}}.}
 
 \item{weights}{does not work!}
 

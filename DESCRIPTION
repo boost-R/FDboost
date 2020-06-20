@@ -2,7 +2,7 @@ Package: FDboost
 Type: Package
 Title: Boosting Functional Regression Models
 Version: 0.3-3
-Date: 2020-06-18
+Date: 2020-06-20
 Authors@R: c(person("Sarah", "Brockhaus", role = c("aut", "cre"),
 		            email = "Sarah.Brockhaus@stat.uni-muenchen.de"), 
 			 person("David", "Ruegamer", role = "aut", 
@@ -39,7 +39,7 @@ Suggests:
     refund,
     testthat
 License: GPL-2
-Packaged: 2020-06-18 19:54:33 UTC; brockhaus
+Packaged: 2020-06-20 12:19:33 UTC; brockhaus
 Collate:
     'aaa.R'
     'FDboost-package.R'

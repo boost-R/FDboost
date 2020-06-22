@@ -1,7 +1,7 @@
 Package: FDboost
 Type: Package
 Title: Boosting Functional Regression Models
-Version: 0.3-3
+Version: 0.3-4
 Date: 2020-06-20
 Authors@R: c(person("Sarah", "Brockhaus", role = c("aut", "cre"),
 		            email = "Sarah.Brockhaus@stat.uni-muenchen.de"), 
@@ -13,7 +13,10 @@ Authors@R: c(person("Sarah", "Brockhaus", role = c("aut", "cre"),
 			 person("with contributions by many others", "(see inst/CONTRIBUTIONS)", role = "ctb"))
 Description: Regression models for functional data, i.e., scalar-on-function,
     function-on-scalar and function-on-function regression models, are fitted
-    by a component-wise gradient boosting algorithm.
+    by a component-wise gradient boosting algorithm. 
+	For a manual on how to use FDboost, 
+	see Brockhaus, Ruegamer, Greven (2017): Boosting Functional Regression Models with FDboost, 
+	https://arxiv.org/abs/1705.10662
 Depends:
     R (>= 3.5.0),
     mboost (>= 2.9-0)

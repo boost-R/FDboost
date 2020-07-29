@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
+\section{Changes in FDboost version 0.3-4 (2020-07-29)}{
+  \subsection{Bug-fixes}{
+    \itemize{
+    \item Deprecated argument \code{LINPACK} in \code{solve} removed.
+    }
+    }
+}
+
 \section{Changes in FDboost version 0.3-3 (2020-06-13)}{
 \subsection{New feature}{
 \itemize{

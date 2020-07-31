@@ -5,6 +5,8 @@
 #   https://github.com/craigcitro/r-travis/wiki
 
 language: r
+  - release
+  - devel
 sudo: required
 dist: trusty
 

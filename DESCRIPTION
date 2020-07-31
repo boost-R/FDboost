@@ -11,6 +11,7 @@ Authors@R: c(person("Sarah", "Brockhaus", role = c("aut", "cre"),
 			        email = "almond.stoecker@hu-berlin.de"),
 			 person("Torsten", "Hothorn", role = "ctb"), 
 			 person("with contributions by many others", "(see inst/CONTRIBUTIONS)", role = "ctb"))
+Maintainer: David Ruegamer <david.ruegamer@gmail.com>
 Description: Regression models for functional data, i.e., scalar-on-function,
     function-on-scalar and function-on-function regression models, are fitted
     by a component-wise gradient boosting algorithm. 

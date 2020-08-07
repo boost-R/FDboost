@@ -3,9 +3,9 @@ Type: Package
 Title: Boosting Functional Regression Models
 Version: 0.3-4
 Date: 2020-07-31
-Authors@R: c(person("Sarah", "Brockhaus", role = c("aut", "cre"),
+Authors@R: c(person("Sarah", "Brockhaus", role = "aut",
 		            email = "Sarah.Brockhaus@stat.uni-muenchen.de"), 
-			 person("David", "Ruegamer", role = "aut", 
+			 person("David", "Ruegamer", role = c("aut", "cre"), 
 			        email = "david.ruegamer@stat.uni-muenchen.de"),
 			 person("Almond", "Stoecker", role = "aut", 
 			        email = "almond.stoecker@hu-berlin.de"),

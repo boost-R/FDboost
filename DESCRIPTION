@@ -6,7 +6,7 @@ Date: 2020-07-31
 Authors@R: c(person("Sarah", "Brockhaus", role = "aut",
 		            email = "Sarah.Brockhaus@stat.uni-muenchen.de"), 
 			 person("David", "Ruegamer", role = c("aut", "cre"), 
-			        email = "david.ruegamer@stat.uni-muenchen.de"),
+			        email = "david.ruegamer@gmail.com"),
 			 person("Almond", "Stoecker", role = "aut", 
 			        email = "almond.stoecker@hu-berlin.de"),
 			 person("Torsten", "Hothorn", role = "ctb"), 

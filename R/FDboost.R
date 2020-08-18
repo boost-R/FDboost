@@ -943,7 +943,11 @@ FDboost <- function(formula,          ### response ~ xvars
   
   ### multiply integration weights numInt to weights and w
   if(is.numeric(numInt)){
-    if(length(numInt) != length(time)) stop("Length of integration weights and time vector are not equal.")
+    .numInt_len_check <- if(is.list(time))
+      all(length(numInt) == sapply(time, length))  else 
+        length(numInt) == length(time)
+    if(!.numInt_len_check) 
+      stop("Length of integration weights and time vector are not equal.")
     weights <- weights * numInt
     data_weights <- numInt
     if(!is.null(ydim)){ ## only blow up for array model
@@ -952,7 +956,9 @@ FDboost <- function(formula,          ### response ~ xvars
     }
   }else{
     if(!numInt %in% c("equal", "Riemann")) warning("argument numInt is ignored as it is neither numeric nor one of (\"equal\", \"Riemann\")")
-    if(numInt == "Riemann"){ 
+    if(numInt == "Riemann"){
+      if(!is.numeric(time)) 
+        stop("Riemann integration weights only implemented for a single numeric time variable.")
       data_weights <- as.vector(integrationWeights(X1 = response, time, id = id))
       w <- w * data_weights
     }

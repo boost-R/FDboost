@@ -384,7 +384,7 @@ X_histx <- function(mf, vary, args) {
 #' 
 #' Scheipl, F., Staicu, A.-M. and Greven, S. (2015): 
 #' Functional Additive Mixed Models, Journal of Computational and Graphical Statistics, 24(2), 477-501.
-#' \url{http://arxiv.org/abs/1207.5947} 
+#' \url{https://arxiv.org/abs/1207.5947} 
 #' 
 #' Scheipl, F. and Greven, S. (2016): Identifiability in penalized function-on-function regression models. 
 #' Electronic Journal of Statistics, 10(1), 495-526. 

@@ -8,7 +8,7 @@ language: r
   - release
   - devel
 sudo: required
-dist: trusty
+dist: bionic
 
 env:
   - _R_S3_METHOD_LOOKUP_BASEENV_AFTER_GLOBALENV_=true

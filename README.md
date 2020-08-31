@@ -18,7 +18,7 @@ by a component-wise gradient boosting algorithm.
 For installation instructions see below.
 
 Instructions on how to use `FDboost` can be found in various places:
-- Read the tutorial paper [arXiv:1705.10662](https://arxiv.org/abs/1705.10662)
+- Read the tutorial paper [doi:10.18637/jss.v094.i10](doi:10.18637/jss.v094.i10)
 - Have a look at the manual, which also contains example code
 - Check the vignettes: 
   - [function-on-function regression](https://cran.r-project.org/web/packages/FDboost/vignettes/FLAM_canada.pdf)

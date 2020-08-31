@@ -17,7 +17,7 @@
 #' a linear functional effect \eqn{\int x_i(s)\beta(s,t)ds}, 
 #' potentially with integration limits depending on \eqn{t}, 
 #' smooth and linear effects of scalar covariates \eqn{f(z_i,t)} or \eqn{z_i \beta(t)}. 
-#' A hands-on tutorial for the package can be found at \url{https://arxiv.org/abs/1705.10662}.
+#' A hands-on tutorial for the package can be found at <doi:10.18637/jss.v094.i10>.
 #' 
 #' @param formula a symbolic description of the model to be fit. 
 #' Per default no intercept is added, only a smooth offset, see argument \code{offset}. 

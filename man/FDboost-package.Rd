@@ -36,7 +36,7 @@ This can be done using the function \code{\link{applyFolds}}.
 \references{
 Brockhaus, S., Ruegamer, D. and Greven, S. (2017):
 Boosting Functional Regression Models with FDboost.
-\url{https://arxiv.org/abs/1705.10662}
+<doi:10.18637/jss.v094.i10>
 
 Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 The functional linear array model. Statistical Modelling, 15(3), 279-300. 

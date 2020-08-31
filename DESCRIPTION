@@ -1,7 +1,7 @@
 Package: FDboost
 Type: Package
 Title: Boosting Functional Regression Models
-Version: 0.3-4
+Version: 1.0-0
 Date: 2020-08-31
 Authors@R: c(person("Sarah", "Brockhaus", role = "aut",
 		            email = "Sarah.Brockhaus@stat.uni-muenchen.de"), 

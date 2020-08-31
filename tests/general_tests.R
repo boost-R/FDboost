@@ -5,8 +5,8 @@ library(gamboostLSS)
 
 # print(sessionInfo())
 
-################################################################
-######### simulate some data 
+# simulated data ----------------------------------------------------------
+
 
 if(require(refund)){
   
@@ -31,9 +31,9 @@ if(require(refund)){
   dat$X2 <- I(matrix(rnorm(25 * 15), nrow = 25))
   dat$X2 <- scale(dat$X2, scale = FALSE)
   
-  
-  ################################################################
-  ######### model fit 
+
+  # model fit ---------------------------------------------------------------
+
   print("model fit")
   
   ## response matrix for response observed on one common grid 
@@ -106,8 +106,8 @@ if(require(refund)){
                  control = boost_control(mstop = 20), 
                  data = dat2D)
   
-  ################################################################
-  ######### test some methods and utility functions 
+  
+  # test some methods and utility functions  --------------------------------
   
   ## test plot()
   print("plot effects")
@@ -168,4 +168,30 @@ if(require(refund)){
   pred <- predict(mslss, newdata = dat)
   
 }
+
+
+
+# sof: fuel data ----------------------------------------------------------
+
+## prediction with functional variable as numeric matrix, see Issue #17
+data(fuelSubset)
+fuel <- fuelSubset[c('heatan', 'h2o', 'UVVIS', 'uvvis.lambda')]
+str(fuel$UVVIS) # numeric matrix
+
+sof <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 20, df = 4) + 
+                 bbs(h2o, df = 4),
+               timeformula = ~bols(1), data = fuel)
+
+# Predict with newdata
+pred <- predict(sof, newdata = fuel)
+
+# with interaction term
+sof_int <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 9, df = 9) + 
+                 bsignal(NIR, nir.lambda, knots = 9, df = 9) +
+                 bsignal(UVVIS, uvvis.lambda, knots = 9, df = 3) %X% bsignal(NIR, nir.lambda, knots = 9, df = 3),
+               timeformula = ~bols(1), data = fuelSubset)
+
+# Predict with newdata
+pred <- predict(sof_int, newdata = fuelSubset)
+
 

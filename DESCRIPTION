@@ -2,7 +2,7 @@ Package: FDboost
 Type: Package
 Title: Boosting Functional Regression Models
 Version: 0.3-4
-Date: 2020-07-31
+Date: 2020-08-31
 Authors@R: c(person("Sarah", "Brockhaus", role = "aut",
 		            email = "Sarah.Brockhaus@stat.uni-muenchen.de"), 
 			 person("David", "Ruegamer", role = c("aut", "cre"), 
@@ -58,7 +58,7 @@ Collate:
     'methods.R'
     'stabsel.R'
     'utilityFunctions.R'
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 BugReports: https://github.com/boost-R/FDboost/issues
 URL: https://github.com/boost-R/FDboost
 VignetteBuilder: knitr

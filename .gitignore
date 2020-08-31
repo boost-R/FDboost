@@ -5,3 +5,5 @@
 /vignettes/*.log
 /vignettes/*.tex
 /vignettes/*.gz
+doc
+Meta

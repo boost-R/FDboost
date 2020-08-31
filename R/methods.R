@@ -257,9 +257,9 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
           attr(newdata[[xname[j]]], "indname") <- indname[j]
           attr(newdata[[xname[j]]], "xname") <- xname[j]
           attr(newdata[[xname[j]]], "signalIndex") <-  if(indname[j]!="xindDefault") newdata[[indname[j]]] else seq(0,1,l=ncol(newdata[[xname[j]]]))
-          ## convert matrix to model matrix, so that as.data.frame(newdata[[xname]]) 
+          ## convert matrix to class AsIs using I(), so that as.data.frame(newdata[[xname]]) 
           ## retains matrix-structure if newdata is a list
-          if( class(newdata[[xname[j]]])[1] == "matrix" ) class(newdata[[xname[j]]])[1] <- "model.matrix"
+          if( class(newdata[[xname[j]]])[1] == "matrix" ) newdata[[xname[j]]] <- I(newdata[[xname[j]]])
         }
 
         

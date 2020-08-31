@@ -173,6 +173,8 @@ if(require(refund)){
 
 # sof: fuel data ----------------------------------------------------------
 
+print("run checks with fuel data")
+
 ## prediction with functional variable as numeric matrix, see Issue #17
 data(fuelSubset)
 fuel <- fuelSubset[c('heatan', 'h2o', 'UVVIS', 'uvvis.lambda')]
@@ -193,5 +195,19 @@ sof_int <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 9, df = 9) +
 
 # Predict with newdata
 pred <- predict(sof_int, newdata = fuelSubset)
+
+
+
+# fof: fuel data -----------------------------------------------------------
+
+## model does not make sense, but is good for checking
+
+# function-on-function with bsignal
+fof <- FDboost(UVVIS ~ bsignal(NIR, nir.lambda, knots = 9, df = 9),
+               timeformula = ~ bbs(uvvis.lambda), data = fuelSubset)
+
+pred <- predict(fof, newdata = fuelSubset)
+
+
 
 

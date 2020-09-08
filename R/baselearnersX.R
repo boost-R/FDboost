@@ -421,7 +421,7 @@ X_histx <- function(mf, vary, args) {
 #' mod <- FDboost(Y ~ 1 + bhistx(x = X1h, df = 5, knots = 5) %X% bols(zlong), 
 #'               timeformula = ~ bbs(tvals, knots = 10), data = dataList)
 #'
-#' \dontrun{
+#' \donttest{
 #'   # find the optimal mstop over 5-fold bootstrap (small example to reduce run time)
 #'   cv <- cvrisk(mod, folds = cv(model.weights(mod), B = 5))
 #'   mstop(cv)

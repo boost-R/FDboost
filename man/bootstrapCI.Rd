@@ -13,6 +13,7 @@ bootstrapCI(
   B_inner = 25,
   type_inner = c("bootstrap", "kfold", "subsampling"),
   levels = c(0.05, 0.95),
+  verbose = TRUE,
   ...
 )
 }
@@ -57,6 +58,8 @@ bootstrap, k-fold cross-validation and subsampling are implemented.}
 
 \item{levels}{the confidence levels required. If NULL, the 
 raw results are returned.}
+
+\item{verbose}{if \code{TRUE}, information will be printed in the console}
 
 \item{...}{further arguments passed to \code{\link{applyFolds}} if
 the default for \code{resampling_fun_outer} is used}
@@ -113,7 +116,7 @@ m1 <- FDboost(Y ~ 1 + bsignal(x = X1, s = s, knots = 8, df = 3),
 
 }
               
-\dontrun{             
+\donttest{             
 # a short toy example with to few folds  
 # and up to 200 boosting iterations 
 bootCIs <- bootstrapCI(m1[200], B_inner = 2, B_outer = 5) 
@@ -135,14 +138,14 @@ B = 10 # 10-fold for inner resampling
 ), mc.cores = 10) # use ten cores
 }
 
-\dontrun{
+\donttest{
 bootCIs <- bootstrapCI(m1, resampling_fun_inner = my_inner_fun)
 }
 
 ## We can also use the ... argument to parallelize the applyFolds
 ## function in the outer resampling 
 
-\dontrun{
+\donttest{
 bootCIs <- bootstrapCI(m1, mc.cores = 30)
 }
 
@@ -187,7 +190,7 @@ mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.
                timeformula = NULL, data = fuelSubset) 
 
 
-\dontrun{
+\donttest{
 # takes some time, because of defaults: B_outer = 100, B_inner = 25
 bootCIs <- bootstrapCI(mod2)
 }
@@ -195,7 +198,7 @@ bootCIs <- bootstrapCI(mod2)
 ## run with a larger number of outer bootstrap samples
 ## and only 10-fold for validation of each outer fold
 ## WARNING: This may take very long!
-\dontrun{
+\donttest{
 bootCIs <- bootstrapCI(mod2, B_outer = 1000, B_inner = 10)
 }
 

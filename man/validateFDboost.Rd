@@ -91,7 +91,7 @@ can be useful in simulation studies where the true value of the response is know
 the model fit the response is used with noise.
 }
 \examples{
-\dontrun{
+\donttest{
 if(require(fda)){
  ## load the data
  data("CanadianWeather", package = "fda")

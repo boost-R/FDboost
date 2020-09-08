@@ -110,7 +110,7 @@ E(Y_i) = \int \mbox{NIR}_i(s_1)\beta_1(s_1)ds_1 + \int \mbox{UVVIS}_i(s_2)\beta_
  + \int \mbox{dNIR}_i(s_3)\beta_1(s_3)ds_3 + \int \mbox{dUVVIS}_i(s_4)\beta_2(s_4)ds_4,
 \]
 with $Y_i$ being the humidity and NIR, UVVIS are the spectra and dNIR, dUVVIS the respective derivatives, measured over $s_1,\ldots, s_4$ respectively.
-The optimal stopping iteration is determined by 10-fold bootstrap.
+The optimal stopping iteration is determined by 10-fold bootstrap (better use multiple cores).
 
 <<humidity-model, echo = TRUE, eval=FALSE>>=
 modH2O <- FDboost(h2o ~ bsignal(UVVIS, uvvis.lambda, knots=40, df=4) 
@@ -122,7 +122,7 @@ modH2O <- FDboost(h2o ~ bsignal(UVVIS, uvvis.lambda, knots=40, df=4)
 set.seed(212)
 cvmH2O <- suppressWarnings(cvrisk(modH2O, grid=seq(100, 5000, by=100), 
                               folds=cv( model.weights(modH2O), 
-                              type = "bootstrap", B = 10), mc.cores=10))
+                              type = "bootstrap", B = 10), mc.cores = 1))
 
 par(mfrow=c(1,2))
 plot(cvmH2O)
@@ -193,13 +193,13 @@ mod <- FDboost(formula, timeformula=~bols(1), data=fuel)
 mod <- mod[198]
 @
 
-The optimal stopping iteration is determined by 50-fold bootstrap. We compute in each bootstrap-sample the coefficient functions to get an idea of the variability of the estimates.
+The optimal stopping iteration is determined by 50-fold bootstrap. We compute in each bootstrap-sample the coefficient functions to get an idea of the variability of the estimates (better use multiple cores).
 <<cv-model-spec, echo=TRUE, eval=FALSE>>=
 ## get optimal mstop and do bootstrapping for coefficient estimates
 set.seed(2703)
 val <- validateFDboost(mod, 
                        folds=cv(model.weights(mod), type = "bootstrap", B = 50),
-                       grid = 10:500, mc.cores=10)
+                       grid = 10:500, mc.cores = 1)
 
 mopt <- val$grid[which.min(colMeans(val$oobrisk))]
 print(mopt)

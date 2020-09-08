@@ -35,7 +35,7 @@ if(require(fda)){
   ## only use time-points 1:16 of variable age
   datTr <- truncateTime(funVar=c("hgtm","hgtf"), time="age", newtime=1:16, data=dat)
   
-  \dontrun{
+  \donttest{
   par(mfrow=c(1,2))
   with(dat, funplot(age, hgtm, main="Original data"))
   with(datTr, funplot(age, hgtm, main="Yearly data"))

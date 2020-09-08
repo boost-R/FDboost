@@ -597,7 +597,7 @@ X_bsignal <- function(mf, vary, args) {
 #'               control = boost_control(mstop = 21))
 #' 
 #' ## search optimal mSTOP
-#' \dontrun{
+#' \donttest{
 #'   set.seed(123)
 #'   cv <- validateFDboost(m1, grid = 1:100) # 21 iterations
 #' }
@@ -607,7 +607,7 @@ X_bsignal <- function(mf, vary, args) {
 #' s <- attr(data1, "xindex")
 #' m1_pffr <- pffr(Y ~ ff(X1, xind = s), yind = t, data = data1)
 #' 
-#' \dontrun{
+#' \donttest{
 #'   par(mfrow = c(2, 2))
 #'   plot(m1, which = 1); plot(m1, which = 2) 
 #'   plot(m1_pffr, select = 1, shift = m1_pffr$coefficients["(Intercept)"]) 
@@ -634,7 +634,7 @@ X_bsignal <- function(mf, vary, args) {
 #'               control = boost_control(mstop = 40))
 #'               
 #' ## search optimal mSTOP
-#' \dontrun{
+#' \donttest{
 #'   set.seed(123)
 #'   cv2 <- validateFDboost(m2, grid = 1:100) # 40 iterations
 #' }               
@@ -644,7 +644,7 @@ X_bsignal <- function(mf, vary, args) {
 #' s <- attr(data2, "xindex")
 #' m2_pffr <- pffr(Y ~ ff(X1, xind = s, limits = "s<=t"), yind = t, data = data2)
 #' 
-#' \dontrun{
+#' \donttest{
 #' par(mfrow = c(2, 2))
 #' plot(m2, which = 1); plot(m2, which = 2)
 #' ## plot of smooth intercept does not contain m1_pffr$coefficients["(Intercept)"]
@@ -2168,7 +2168,7 @@ hyper_bbsc <- function(Z, ...){
 #' m1 <- FDboost(y ~ 1 + bolsc(z1_fac, df = 1), timeformula = ~ bbs(t, df = 6), data = dat)
 #' 
 #' # look for optimal mSTOP using cvrisk() or validateFDboost()
-#'  \dontrun{
+#'  \donttest{
 #' cvm <- cvrisk(m1, grid = 1:500)
 #' m1[mstop(cvm)]
 #' }

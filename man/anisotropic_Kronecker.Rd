@@ -130,7 +130,7 @@ mod1k0$formulaMboost
 ## ...
                 
 ## compare estimated coefficients
-\dontrun{
+\donttest{
 par(mfrow=c(4, 2))
 plot(mod1, which = 1)
 plot(mod1a, which = 1)

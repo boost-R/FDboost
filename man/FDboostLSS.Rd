@@ -98,7 +98,7 @@ m_boost <- FDboostLSS(list(mu = y ~ bols(z, df = 2) + bsignal(x, s, df = 2, knot
                            timeformula = NULL, data = dat_list, method = "noncyclic")
 summary(m_boost)
 
-\dontrun{
+\donttest{
  if(require(gamboostLSS)){
   ## find optimal number of boosting iterations on a grid in 1:1000
   ## using 5-fold bootstrap

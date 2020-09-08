@@ -136,7 +136,7 @@ dat$y <- apply(mut, 2, function(x) rnorm(mean = x, sd = sigma, n = n))
 m1 <- FDboost(y ~ 1 + bolsc(z1_fac, df = 1), timeformula = ~ bbs(t, df = 6), data = dat)
 
 # look for optimal mSTOP using cvrisk() or validateFDboost()
- \dontrun{
+ \donttest{
 cvm <- cvrisk(m1, grid = 1:500)
 m1[mstop(cvm)]
 }

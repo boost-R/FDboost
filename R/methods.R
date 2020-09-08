@@ -1382,6 +1382,9 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
                          n1 = 40, n2 = 40, n3 = 20, n4 = 11,
                          onlySelected = TRUE, pers = FALSE, commonRange = FALSE, ...){
   
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  
   ### Get further arguments passed to the different plot-functions
   dots <- list(...)
   

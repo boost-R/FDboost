@@ -37,7 +37,7 @@ o_control <- function(k_min=20, rule=2, silent=TRUE, cyclic=FALSE, knots=NULL) {
 #'   ## only use time-points 1:16 of variable age
 #'   datTr <- truncateTime(funVar=c("hgtm","hgtf"), time="age", newtime=1:16, data=dat)
 #'   
-#'   \dontrun{
+#'   \donttest{
 #'   par(mfrow=c(1,2))
 #'   with(dat, funplot(age, hgtm, main="Original data"))
 #'   with(datTr, funplot(age, hgtm, main="Yearly data"))
@@ -73,7 +73,7 @@ truncateTime <- function(funVar, time, newtime, data){
 #' Missing values are imputed by linear interpolation. Parts that are
 #' interpolated are plotted by dotted lines, parts with non-missing values as solid lines.
 #' @examples 
-#' \dontrun{
+#' \donttest{
 #' ### examples for regular data in wide format
 #' data(viscosity)
 #' with(viscosity, funplot(timeAll, visAll, pch=20))
@@ -86,6 +86,9 @@ funplot <- function(x, y, id=NULL, rug=TRUE, ...){
   
   ### Get further arguments passed to the matplot-functions
   dots <- list(...)
+  
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   
   getArguments <- function(x, dots=dots){
     if(any(names(dots) %in% names(x))){

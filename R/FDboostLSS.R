@@ -109,7 +109,7 @@
 #'                            timeformula = NULL, data = dat_list, method = "noncyclic")
 #' summary(m_boost)
 #' 
-#' \dontrun{
+#' \donttest{
 #'  if(require(gamboostLSS)){
 #'   ## find optimal number of boosting iterations on a grid in 1:1000
 #'   ## using 5-fold bootstrap

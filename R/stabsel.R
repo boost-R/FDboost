@@ -88,7 +88,7 @@
 #' folds <- cvLong(modAll$id, weights = rep(1, l = length(modAll$id)), 
 #'                 type = "subsampling", B = 5) 
 #'     
-#' \dontrun{        
+#' \donttest{        
 #' ## stability selection with refit of the smooth intercept 
 #' stabsel_parameters(q = 3, PFER = 1, p = 6, sampling.type = "SS")
 #' sel1 <- stabsel(modAll, q = 3, PFER = 1, folds = folds, grid = 1:200, sampling.type = "SS")

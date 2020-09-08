@@ -193,7 +193,7 @@ mod <- FDboost(l10precip ~ 1 + bolsc(region, df = 4) +
                data = canada)
 mod <- mod[75]
 
-\dontrun{
+\donttest{
   #### create folds for 3-fold bootstrap: one weight for each curve
   set.seed(123)
   folds_bs <- cv(weights = rep(1, mod$ydim[1]), type = "bootstrap", B = 3)
@@ -208,7 +208,7 @@ mod <- mod[75]
   cvr3 <- cvrisk(mod, folds = folds_bs_long, grid = 1:75)
 }
 
-\dontrun{
+\donttest{
   ## plot the out-of-bag risk
   par(mfrow = c(1,3))
   plot(cvr); legend("topright", lty=2, paste(mstop(cvr)))

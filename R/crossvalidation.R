@@ -126,7 +126,7 @@
 #'                data = canada)
 #' mod <- mod[75]
 #' 
-#' \dontrun{
+#' \donttest{
 #'   #### create folds for 3-fold bootstrap: one weight for each curve
 #'   set.seed(123)
 #'   folds_bs <- cv(weights = rep(1, mod$ydim[1]), type = "bootstrap", B = 3)
@@ -141,7 +141,7 @@
 #'   cvr3 <- cvrisk(mod, folds = folds_bs_long, grid = 1:75)
 #' }
 #' 
-#' \dontrun{
+#' \donttest{
 #'   ## plot the out-of-bag risk
 #'   par(mfrow = c(1,3))
 #'   plot(cvr); legend("topright", lty=2, paste(mstop(cvr)))
@@ -158,7 +158,8 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
                        grid = 1:mstop(object), fun = NULL, 
                        riskFun = NULL, numInt = object$numInt, 
                        papply = mclapply, 
-                       mc.preschedule = FALSE, showProgress = TRUE, 
+                       mc.preschedule = FALSE, 
+                       showProgress = TRUE, 
                        compress = FALSE,
                        ...) {
   
@@ -612,7 +613,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #' \item{fun_ret}{list of what fun returns if fun was specified}
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' if(require(fda)){
 #'  ## load the data
 #'  data("CanadianWeather", package = "fda")
@@ -1217,6 +1218,9 @@ plot.validateFDboost <- function(x, riskopt=c("mean", "median"),
   # get the position in the grid of mopt
   mpos <- which(x$grid == mopt)
   
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  
   if(length(which) > 1) par(ask = ask)
   
   if(1 %in% which){
@@ -1346,6 +1350,9 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
   stopifnot(any(class(x) == "validateFDboost"))
 
   if(is.null(which)) which <- 1:length(x$coefCV)
+  
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   
   if(length(which) > 1) par(ask = ask)
   

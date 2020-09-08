@@ -245,7 +245,7 @@
 #'                offset = NULL, offset_control = o_control(k_min = 9),
 #'                data = viscosity, control=boost_control(mstop = 100, nu = 0.4))
 #' 
-#' \dontrun{
+#' \donttest{
 #'   #### find optimal mstop over 5-fold bootstrap, small number of folds for example
 #'   #### do the resampling on the level of curves
 #'   
@@ -313,7 +313,7 @@
 #'                + bsignal(NIR, nir.lambda, knots = 40, df = 4, check.ident = FALSE), 
 #'                timeformula = ~ bols(1), data = fuelSubset, control = boost_control(mstop = 200))
 #'                
-#' \dontrun{   
+#' \donttest{   
 #'   ## bootstrap to find optimal mstop takes some time
 #'   set.seed(123)      
 #'   folds2 <- cv(weights = model.weights(mod2), B = 10)     
@@ -346,7 +346,7 @@
 #'                   control = boost_control(mstop = 60), 
 #'                   data = CanadianWeather) 
 #'  
-#'  \dontrun{                  
+#'  \donttest{                  
 #'    #### find the optimal mstop over 5-fold bootstrap 
 #'    ## using the function applyFolds 
 #'    set.seed(123)
@@ -398,7 +398,7 @@
 #' ## plot(mod4)
 #' ## plotPredicted(mod4, lwdPred = 2)
 #' 
-#' \dontrun{
+#' \donttest{
 #'   ## Find optimal mstop, small grid/low B for a fast example
 #'   set.seed(123)
 #'   folds4 <- cv(rep(1, length(unique(mod4$id))), B = 3)

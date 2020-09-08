@@ -27,7 +27,7 @@ Missing values are imputed by linear interpolation. Parts that are
 interpolated are plotted by dotted lines, parts with non-missing values as solid lines.
 }
 \examples{
-\dontrun{
+\donttest{
 ### examples for regular data in wide format
 data(viscosity)
 with(viscosity, funplot(timeAll, visAll, pch=20))

@@ -37,7 +37,7 @@
 #' @param numInt integration scheme for the integration of the loss function.
 #' One of \code{c("equal", "Riemann")} meaning equal weights of 1 or 
 #' trapezoidal Riemann weights.
-#' Alternatively a vector of length \code{nrow(response)} containing  
+#' Alternatively a vector of length \code{ncol(response)} containing  
 #' positive weights can be specified.
 #' @param data a data frame or list containing the variables in the model.
 #' @param weights only for internal use to specify resampling weights;

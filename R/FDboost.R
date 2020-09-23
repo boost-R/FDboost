@@ -555,7 +555,7 @@ FDboost <- function(formula,          ### response ~ xvars
 
   }
   
-  if(scalarResponse & numInt != "equal") 
+  if(scalarResponse & !identical(numInt,"equal")) 
     stop("Integration weights numInt must be set to 'equal' for scalar response.")
   
   ## extract time(s) from timeformula 
@@ -948,10 +948,8 @@ FDboost <- function(formula,          ### response ~ xvars
         length(numInt) == length(time)
     if(!.numInt_len_check) 
       stop("Length of integration weights and time vector are not equal.")
-    weights <- weights * numInt
     data_weights <- numInt
     if(!is.null(ydim)){ ## only blow up for array model
-      w <- rep(weights, each = nr)
       data_weights <- rep(data_weights, each = nr)
     }
   }else{
@@ -960,9 +958,9 @@ FDboost <- function(formula,          ### response ~ xvars
       if(!is.numeric(time)) 
         stop("Riemann integration weights only implemented for a single numeric time variable.")
       data_weights <- as.vector(integrationWeights(X1 = response, time, id = id))
-      w <- w * data_weights
     }
   }
+  w <- w * data_weights
   
   ### set weights of missing values to 0
   if(sum(is.na(dresponse)) > 0){

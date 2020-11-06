@@ -573,7 +573,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
     if(is.null(which)) which <- 1:length(object$baselearner)
     
     ## special case of ~1 intercept specification with scalar response
-    if( class(object)[1] == "FDboostScalar" && 
+    if( inherits(object, "FDboostScalar") && 
         any(which == 1) && 
         length(object$coef(which = 1)[[1]]) == 1 ){
       ret$intercept <- object$coef(which = 1)[[1]]
@@ -801,7 +801,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
           
           if(trm$dim == 2){
             
-            if("FDboostScalar" %in% class(object)){ ### scalar response 
+            if(inherits(object, "FDboostScalar")){ ### scalar response 
               position_time <- 2
               y <- yg <- 1
               varnms <- c(varnms[1], "ONEtime", varnms[2])
@@ -973,7 +973,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
         
         
         # if %X% was used in combination with factor variables make a list of data-frames
-        if(!any(class(object) == "FDboostLong") && grepl("%X", trm$get_call())){
+        if(!inherits(object, "FDboostLong") && grepl("%X", trm$get_call())){
           dlist <- NULL
 
           ## if %X% was used in combination with factor variables make a list of data-frames
@@ -1183,7 +1183,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
       
       ## it is necessary to expand the dataframe!
       if(!grepl("bhistx(", trm$get_call(), fixed=TRUE) && 
-         class(object)[1] == "FDboostLong" && !grepl("bconcurrent", trm$get_call())){
+         inherits(object, "FDboostLong") && !grepl("bconcurrent", trm$get_call())){
         #print(attr(d, "varnms"))
         vari <- names(d)[1]
         if(is.factor(d[[vari]])){

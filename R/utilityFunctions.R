@@ -87,8 +87,9 @@ funplot <- function(x, y, id=NULL, rug=TRUE, ...){
   ### Get further arguments passed to the matplot-functions
   dots <- list(...)
   
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
+  ## AS: caused bug, couldn't see necessity here
+  # oldpar <- par(no.readonly = TRUE)
+  # on.exit(par(oldpar))
   
   getArguments <- function(x, dots=dots){
     if(any(names(dots) %in% names(x))){

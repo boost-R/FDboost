@@ -16,7 +16,7 @@ If \code{inverse = FALSE}, \code{f} should integrate to zero, see Details.}
 positive integration weights. If \code{w} has length one, this
 weight is used for all function values. The integral of \eqn{f} is approximated
 via \eqn{\int_{\mathcal{T}} f \, \mathrm{d}\mu \approx 
-\sum_{j=1}^m}{\int_T f d\mu \approx \sum_{j=1}^m} \code{w}\eqn{_j} \code{f}\eqn{_j},
+\sum_{j=1}^m}{\sum_{j=1}^m} \code{w}\eqn{_j} \code{f}\eqn{_j},
 where \eqn{m} equals the length of \code{f}.}
 
 \item{inverse}{if \code{TRUE}, the inverse clr transformation is computed.}
@@ -109,8 +109,8 @@ predictions <- t(apply(predictions_clr, 1, clr, inverse = TRUE))
 }
 \references{
 Maier, E.-M., Stoecker, A., Fitzenberger, B., Greven, S. (2021):
-Boosting flexible regression models for compositional data and probability densities in Bayes Hilbert spaces.
-Journal, vol(number), pages.
+Additive Density-on-Scalar Regression in Bayes Hilbert Spaces With an Application to Gender Economics.
+arXiv preprint arXiv:.
 }
 \author{
 Eva-Maria Maier

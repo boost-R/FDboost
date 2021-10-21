@@ -12,7 +12,7 @@
 #' positive integration weights. If \code{w} has length one, this
 #' weight is used for all function values. The integral of \eqn{f} is approximated
 #' via \eqn{\int_{\mathcal{T}} f \, \mathrm{d}\mu \approx 
-#' \sum_{j=1}^m}{\int_T f d\mu \approx \sum_{j=1}^m} \code{w}\eqn{_j} \code{f}\eqn{_j},
+#' \sum_{j=1}^m}{\sum_{j=1}^m} \code{w}\eqn{_j} \code{f}\eqn{_j},
 #' where \eqn{m} equals the length of \code{f}.
 #' @param inverse if \code{TRUE}, the inverse clr transformation is computed.
 #' 
@@ -61,8 +61,8 @@
 #' 
 #' @references 
 #' Maier, E.-M., Stoecker, A., Fitzenberger, B., Greven, S. (2021):
-#' Boosting flexible regression models for compositional data and probability densities in Bayes Hilbert spaces.
-#' Journal, vol(number), pages.
+#' Additive Density-on-Scalar Regression in Bayes Hilbert Spaces With an Application to Gender Economics.
+#' arXiv preprint arXiv:.
 #' 
 #' @examples
 #' ### Continuous case (T = [0, 1] with Lebesgue measure):
@@ -104,6 +104,7 @@
 #' @export
 clr <- function(f, w = 1, inverse = FALSE) {
   stopifnot("inverse must be TRUE or FALSE." = inverse %in% c(TRUE, FALSE))
+  stopifnot("f must be numeric." = is.numeric(f))
   stopifnot("f contains missing values." = !(anyNA(f)))
   n <- length(f)
   if (length(w) == 1) {
@@ -115,13 +116,13 @@ clr <- function(f, w = 1, inverse = FALSE) {
   if (!inverse) {
     stopifnot("As a density, f must be positive." = all(f > 0))
     if (!isTRUE(all.equal(int_f, 1, tolerance = 0.01))) {
-      warning(paste0("The density to transform is not a probability density with respect to the specified reference measure. Its integral is ",
+      warning(paste0("f is not a probability density with respect to w. Its integral is ",
                      round(int_f, 2), "."))
     }
     return(log(f) - 1 / sum(w) * sum(log(f) * w))
   } else {
     if (!isTRUE(all.equal(int_f, 0, tolerance = 0.01))) {
-      warning(paste0("The function to transform does not integrate to zero with respect to the specified reference measure. Its integral is ",
+      warning(paste0("f does not integrate to zero with respect to w. Its integral is ",
                      round(int_f, 2), "."))
     }
     return(exp(f) / sum(exp(f) * w))
@@ -185,7 +186,7 @@ clr <- function(f, w = 1, inverse = FALSE) {
 #' 
 #' @references 
 #' Maier, E.-M., Stoecker, A., Fitzenberger, B., Greven, S. (2021):
-#' Boosting flexible regression models for compositional data and probability densities in Bayes Hilbert spaces.
+#' Additive Density-on-Scalar Regression in Bayes Hilbert Spaces With an Application to Gender Economics.
 #' Journal, vol(number), pages.
 #' 
 #' @examples

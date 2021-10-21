@@ -109,7 +109,7 @@ par(mfrow = c(1, 1))
 }
 \references{
 Maier, E.-M., Stoecker, A., Fitzenberger, B., Greven, S. (2021):
-Boosting flexible regression models for compositional data and probability densities in Bayes Hilbert spaces.
+Additive Density-on-Scalar Regression in Bayes Hilbert Spaces With an Application to Gender Economics.
 Journal, vol(number), pages.
 }
 \seealso{

@@ -10,8 +10,9 @@ FDboost
 `FDboost` Boosting Functional Regression Models.
 
 The package FDboost fits regression models for functional data, i.e., 
-scalar-on-function, function-on-scalar and function-on-function regression models, 
+scalar-on-function, function-on-scalar, and function-on-function regression models,
 by a component-wise gradient boosting algorithm. 
+Furthermore, it can be used to fit density-on-scalar regression models.
 
 ## Using FDboost
 
@@ -24,6 +25,7 @@ Instructions on how to use `FDboost` can be found in various places:
   - [function-on-function regression](https://cran.r-project.org/web/packages/FDboost/vignettes/FLAM_canada.pdf)
   - [scalar-on-function regression](https://cran.r-project.org/web/packages/FDboost/vignettes/FLAM_fuel.pdf)
   - [function-on-scalar regression](https://cran.r-project.org/web/packages/FDboost/vignettes/FLAM_viscosity.pdf)
+  - [density-on-scalar regression](https://github.com/Eva2703/FDboost/blob/BayesSpace/vignettes/density-on-scalar_birth.pdf)
 
 ## Issues & Feature Requests
 

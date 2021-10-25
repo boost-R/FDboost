@@ -61,8 +61,8 @@
 #' 
 #' @references 
 #' Maier, E.-M., Stoecker, A., Fitzenberger, B., Greven, S. (2021):
-#' Additive Density-on-Scalar Regression in Bayes Hilbert Spaces With an Application to Gender Economics.
-#' arXiv preprint arXiv:.
+#' Additive Density-on-Scalar Regression in Bayes Hilbert Spaces with an Application to Gender Economics.
+#' arXiv preprint arXiv:2110.11771.
 #' 
 #' @examples
 #' ### Continuous case (T = [0, 1] with Lebesgue measure):
@@ -186,8 +186,8 @@ clr <- function(f, w = 1, inverse = FALSE) {
 #' 
 #' @references 
 #' Maier, E.-M., Stoecker, A., Fitzenberger, B., Greven, S. (2021):
-#' Additive Density-on-Scalar Regression in Bayes Hilbert Spaces With an Application to Gender Economics.
-#' Journal, vol(number), pages.
+#' Additive Density-on-Scalar Regression in Bayes Hilbert Spaces with an Application to Gender Economics.
+#' arXiv preprint arXiv:2110.11771.
 #' 
 #' @examples
 #' data("birthDistribution", package = "FDboost")

@@ -300,7 +300,7 @@ plot_birth_densities(predictions, ylim = range(birthDistribution$birth_densities
 \begin{itemize}
 \item[] Brockhaus, S., Scheipl, F., Hothorn, T., and Greven, S. (2015). The functional linear array model.
         \textit{Statistical Modelling} 15(3), 279--300.
-\item[] Maier, E.-M., St\"ocker, A., Fitzenberger, B., Greven, S. (2021). Additive Density-on-Scalar Regression in Bayes Hilbert Spaces With an Application to Gender Economics. \textit{arXiv preprint arXiv:.}
+\item[] Maier, E.-M., St\"ocker, A., Fitzenberger, B., Greven, S. (2021). Additive Density-on-Scalar Regression in Bayes Hilbert Spaces with an Application to Gender Economics. \textit{arXiv preprint arXiv:2110.11771.}
 \end{itemize}
 
 

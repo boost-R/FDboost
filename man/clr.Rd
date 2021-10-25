@@ -109,8 +109,8 @@ predictions <- t(apply(predictions_clr, 1, clr, inverse = TRUE))
 }
 \references{
 Maier, E.-M., Stoecker, A., Fitzenberger, B., Greven, S. (2021):
-Additive Density-on-Scalar Regression in Bayes Hilbert Spaces With an Application to Gender Economics.
-arXiv preprint arXiv:.
+Additive Density-on-Scalar Regression in Bayes Hilbert Spaces with an Application to Gender Economics.
+arXiv preprint arXiv:2110.11771.
 }
 \author{
 Eva-Maria Maier

@@ -1,0 +1,7 @@
+#' Factorize tensor product effect
+#'
+#' @export
+
+factorize <- factorise <- function(x, ...) {
+  UseMethod("factorize")
+}

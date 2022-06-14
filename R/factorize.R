@@ -1,6 +1,9 @@
 
 #' Factorize tensor product effects
 #' 
+#' @param x input 
+#' @param ... additional parameters
+#' 
 #' @export
 #' @name factorize
 

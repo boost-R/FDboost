@@ -57,7 +57,7 @@ Collate:
     'methods.R'
     'stabsel.R'
     'utilityFunctions.R'
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.0
 BugReports: https://github.com/boost-R/FDboost/issues
 URL: https://github.com/boost-R/FDboost
 VignetteBuilder: knitr

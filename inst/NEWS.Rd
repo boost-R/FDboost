@@ -1,6 +1,15 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
+\section{Changes in FDboost version 1.0-3 (2022-06-15)}{
+  \subsection{New feature}{
+    \itemize{
+    \item Function \code{factorize} added for tensor-product factorization of 
+    estimated effects or models.
+    }
+    }
+}
+
 \section{Changes in FDboost version 0.3-4 (2020-08-31)}{
   \subsection{Bug-fixes}{
     \itemize{

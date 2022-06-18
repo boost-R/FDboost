@@ -1,6 +1,18 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
+\section{Changes in FDboost version 1.0-1 (2021-10-25)}{
+  \subsection{New feature}{
+  \itemize{
+  \item New function \code{clr} to compute the centered-log-ratio transform and its
+  inverse for density-on-scalar regression in Bayes spaces.
+  \item New dataset \code{birthDistribution}.
+  \item New vignette illustrating density-on-function regression on 
+  the \code{birthDistribution} data.
+  }
+  }
+}
+
 \section{Changes in FDboost version 0.3-4 (2020-08-31)}{
   \subsection{Bug-fixes}{
     \itemize{

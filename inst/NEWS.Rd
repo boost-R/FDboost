@@ -1,6 +1,16 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
+\section{Changes in FDboost version 1.0-2 (2021-06-29)}{
+  \subsection{Miscellaneous}{
+  \itemize{
+  \item Anisotropic tensor-product operators \code{b1 \%A0\% b2} and \code{b1 \%Xa0\% b2} now 
+  also working when \code{lambda} is specified for \code{b1} and \code{df} is specified for \code{b2}
+  (or vice versa).
+  }
+  }
+}
+
 \section{Changes in FDboost version 0.3-4 (2020-08-31)}{
   \subsection{Bug-fixes}{
     \itemize{

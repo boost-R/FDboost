@@ -93,7 +93,7 @@ cols <- c("cornflowerblue", "darkseagreen", "darkred")
 opar <- par(mfrow = c(3,2))
 wch <- c(1,2,10)
 for(w in 1:length(wch)) {
-  plot(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
+  plot.mboost(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
        main = names(fac$resp$baselearner[wch[w]]))
   lines(sort(t), ft[[w]][order(t)]*max(d), col = cols[w], lty = 2)
   plot(fac$cov, which = wch[w], 
@@ -158,7 +158,7 @@ ratio <- -max(abs(predict(fac$resp, which = 1))) / max(abs(predict(fac2$resp, wh
 opar <- par(mfrow = c(3,2))
 wch <- c(1,2,10)
 for(w in 1:length(wch)) {
-  plot(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
+  plot.mboost(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
                                 main = names(fac$resp$baselearner[wch[w]]))
   
   lines(sort(griddata$t), 

@@ -20,7 +20,7 @@ Furthermore, the package can be used to fit density-on-scalar regression models.
 Details on the functional regression models that can be fitted with \pkg{FDboost}
 can be found in Brockhaus et al. (2015, 2017, 2018) and Ruegamer et al. (2018).  
 A hands-on tutorial for the package can be found 
-in Brockhaus, Ruegamer and Greven (2017), see \url{https://arxiv.org/abs/1705.10662}.
+in Brockhaus, Ruegamer and Greven (2020), see \url{https://doi.org/10.18637/jss.v094.i10}.
 For density-on-scalar regression models see Maier et al. (2021).
 
 Using component-wise gradient boosting as fitting procedure, \pkg{FDboost} relies on 
@@ -44,8 +44,9 @@ functional main effect directions, which can be separately plotted allowing to
 visualize more complex effect structures.
 }
 \references{
-Brockhaus, S., Ruegamer, D. and Greven, S. (2017):
-Boosting Functional Regression Models with FDboost.
+Brockhaus, S., Ruegamer, D. and Greven, S. (2020):
+Boosting Functional Regression Models with FDboost. 
+Journal of Statistical Software, 94(10), 1–50.
 <doi:10.18637/jss.v094.i10>
 
 Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 

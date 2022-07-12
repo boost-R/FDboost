@@ -1,8 +1,8 @@
 Package: FDboost
 Type: Package
 Title: Boosting Functional Regression Models
-Version: 1.0-0
-Date: 2020-08-31
+Version: 1.1-0
+Date: 2022-06-14
 Authors@R: c(person("Sarah", "Brockhaus", role = "aut",
 		            email = "Sarah.Brockhaus@stat.uni-muenchen.de"), 
 			 person("David", "Ruegamer", role = c("aut", "cre"), 
@@ -41,7 +41,7 @@ Suggests:
     refund,
     testthat
 License: GPL-2
-Packaged: 2020-06-20 12:19:33 UTC; brockhaus
+Packaged: 2022-06-14 12:19:33 UTC; brockhaus
 Collate:
     'aaa.R'
     'FDboost-package.R'
@@ -52,12 +52,14 @@ Collate:
     'clr_functions.R'
     'constrainedX.R'
     'crossvalidation.R'
+    'factorize.R'
     'FDboostLSS.R'
     'hmatrix.R'
     'methods.R'
     'stabsel.R'
     'utilityFunctions.R'
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.0
+Encoding: UTF-8
 BugReports: https://github.com/boost-R/FDboost/issues
 URL: https://github.com/boost-R/FDboost
 VignetteBuilder: knitr

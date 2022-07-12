@@ -1,7 +1,6 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
-
 \section{Changes in FDboost version 1.1-0 (2022-07-12)}{
   \subsection{Miscellaneous}{
   \itemize{
@@ -17,6 +16,8 @@
   \item New dataset \code{birthDistribution}.
   \item New vignette illustrating density-on-function regression on 
   the \code{birthDistribution} data.
+  \item Function \code{factorize} added for tensor-product factorization of 
+    estimated effects or models.
   }
   }
 }

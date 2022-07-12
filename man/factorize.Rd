@@ -31,13 +31,16 @@ for response and covariates, respectively, as base-learners.
 \description{
 Factorize an FDboost tensor product model into the response and covariate parts 
 \deqn{h_j(x, t) = \sum_{k} v_j^{(k)}(t) h_j^{(k)}(x), j = 1, ..., J,}
-for effect visualization as proposed in Stoecker and Greven (2021).
+for effect visualization as proposed in Stoecker, Steyer and Greven (2022).
 }
 \details{
 The mboost infrastructure is used for handling the orthogonal response 
 directions \eqn{v_j^{(k)}(t)} in one \code{mboost}-object 
 (with \eqn{k} running over iteration indices) and the effects into the respective 
-directions \eqn{h_j^{(k)}(t)} in another, both of subclass \code{FDboost_fac}.
+directions \eqn{h_j^{(k)}(t)} in another \code{mboost}-object, 
+both of subclass \code{FDboost_fac}. 
+The number of boosting iterations of \code{FDboost_fac}-objects cannot be 
+further increased as in regular \code{mboost}-objects.
 }
 \examples{
 library(FDboost)
@@ -135,7 +138,7 @@ cols <- c("cornflowerblue", "darkseagreen", "darkred")
 opar <- par(mfrow = c(3,2))
 wch <- c(1,2,10)
 for(w in 1:length(wch)) {
-  plot(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
+  plot.mboost(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
        main = names(fac$resp$baselearner[wch[w]]))
   lines(sort(t), ft[[w]][order(t)]*max(d), col = cols[w], lty = 2)
   plot(fac$cov, which = wch[w], 
@@ -200,7 +203,7 @@ ratio <- -max(abs(predict(fac$resp, which = 1))) / max(abs(predict(fac2$resp, wh
 opar <- par(mfrow = c(3,2))
 wch <- c(1,2,10)
 for(w in 1:length(wch)) {
-  plot(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
+  plot.mboost(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
                                 main = names(fac$resp$baselearner[wch[w]]))
   
   lines(sort(griddata$t), 
@@ -292,7 +295,7 @@ cols <- c("cornflowerblue", "darkseagreen", "darkred")
 opar <- par(mfrow = c(3,2))
 wch <- c(1,2,10)
 for(w in 1:length(wch)) {
-  plot(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
+  plot.mboost(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
        main = names(fac$resp$baselearner[wch[w]]))
   lines(t, ft[[w]]*max(d), col = cols[w], lty = 2)
   plot(fac$cov, which = wch[w], 
@@ -326,7 +329,7 @@ cf <- coef(fac$resp, which = 1)
 
 }
 \references{
-Stoecker, A. and Greven, S. (2021):
+Stoecker, A., Steyer L. and Greven, S. (2022):
 Functional additive models on manifolds of planar shapes and forms
 <arXiv:2109.02624>
 }

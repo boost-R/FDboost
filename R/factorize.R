@@ -3,7 +3,7 @@
 #' 
 #' Factorize an FDboost tensor product model into the response and covariate parts 
 #' \deqn{h_j(x, t) = \sum_{k} v_j^{(k)}(t) h_j^{(k)}(x), j = 1, ..., J,}
-#' for effect visualization as proposed in Stoecker and Greven (2021).
+#' for effect visualization as proposed in Stoecker, Steyer and Greven (2022).
 #'
 #' @param x a model object of class FDboost.
 #' @param ... other arguments passed to methods.
@@ -11,7 +11,10 @@
 #' @details The mboost infrastructure is used for handling the orthogonal response 
 #' directions \eqn{v_j^{(k)}(t)} in one \code{mboost}-object 
 #' (with \eqn{k} running over iteration indices) and the effects into the respective 
-#' directions \eqn{h_j^{(k)}(t)} in another, both of subclass \code{FDboost_fac}.
+#' directions \eqn{h_j^{(k)}(t)} in another \code{mboost}-object, 
+#' both of subclass \code{FDboost_fac}. 
+#' The number of boosting iterations of \code{FDboost_fac}-objects cannot be 
+#' further increased as in regular \code{mboost}-objects.
 #'
 #' @return a list of two mboost models of class \code{FDboost_fac} containing basis functions
 #' for response and covariates, respectively, as base-learners.
@@ -24,7 +27,7 @@
 #' @seealso [FDboost_fac-class]
 #'
 #' @references 
-#' Stoecker, A. and Greven, S. (2021):
+#' Stoecker, A., Steyer L. and Greven, S. (2022):
 #' Functional additive models on manifolds of planar shapes and forms
 #' <arXiv:2109.02624>
 #' 

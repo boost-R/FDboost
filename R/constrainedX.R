@@ -862,9 +862,7 @@ NULL
   args2 <- environment(bl2$dpp)$args
   l1 <- args1$lambda
   l2 <- args2$lambda
-  if (xor(is.null(l1), is.null(l2)))
-    stop("you cannot mix lambda and df in ",
-         sQuote("%A0%"))
+  
   if (!is.null(l1) && !is.null(l2)) {
     ### there is no common lambda!
     args <- list(lambda = NA, df = NA)
@@ -877,27 +875,35 @@ NULL
     args <- list(lambda = NULL,
                  df = ifelse(is.null(df1), 1, df1) *
                    ifelse(is.null(df2), 1, df2))
-
-    ## case that df equals nr columns of design matrix -> no penalty -> lambda = 0
-    if( ncol(environment(bl1$dpp)$X) - df1 < .Machine$double.eps*10^10){ 
-      args$lambda1 <- 0 
-      if( ncol(environment(bl1$dpp)$X) - df1 < - .Machine$double.eps*10^10){
-        warning("Specified df in ", bl1$get_call(), " are higher than the number of columns, ",  
-                "which is ", ncol(environment(bl1$dpp)$X), ".")
+    
+    if(!is.null(l1)) {
+      args$lambda1 <- l1 
+    } else {
+      ## case that df equals nr columns of design matrix -> no penalty -> lambda = 0
+      if( ncol(environment(bl1$dpp)$X) - df1 < .Machine$double.eps*10^10){ 
+        args$lambda1 <- 0 
+        if( ncol(environment(bl1$dpp)$X) - df1 < - .Machine$double.eps*10^10){
+          warning("Specified df in ", bl1$get_call(), " are higher than the number of columns, ",  
+                  "which is ", ncol(environment(bl1$dpp)$X), ".")
+        }
+      }else{
+        args$lambda1 <- 1
       }
-    }else{
-      args$lambda1 <- 1
     }
     
-    ## case that df equals nr columns of design matrix
-    if( ncol(environment(bl2$dpp)$X) - df2 < .Machine$double.eps*10^10){ 
-      args$lambda2 <- 0 
-      if( ncol(environment(bl2$dpp)$X) - df2 < - .Machine$double.eps*10^10){
-        warning("Specified df in ", bl2$get_call(), " are higher than the number of columns, ",  
-                "which is ", ncol(environment(bl2$dpp)$X), ".")
+    if(!is.null(l2)) {
+      args$lambda2 <- l2
+    } else {
+      ## case that df equals nr columns of design matrix
+      if( ncol(environment(bl2$dpp)$X) - df2 < .Machine$double.eps*10^10){ 
+        args$lambda2 <- 0 
+        if( ncol(environment(bl2$dpp)$X) - df2 < - .Machine$double.eps*10^10){
+          warning("Specified df in ", bl2$get_call(), " are higher than the number of columns, ",  
+                  "which is ", ncol(environment(bl2$dpp)$X), ".")
+        }
+      }else{
+        args$lambda2 <- 1
       }
-    }else{
-      args$lambda2 <- 1
     }
 
     if(args$lambda1 != 0 & args$lambda2 != 0) 
@@ -1021,10 +1027,6 @@ NULL
   l1 <- args1$lambda
   l2 <- args2$lambda
   
-  if (xor(is.null(l1), is.null(l2)))
-    stop("you cannot mix lambda and df in ",
-         sQuote("%Xa0%"))
-  
   if (!is.null(l1) && !is.null(l2)) {
     args <- list(lambda = 1, df = NULL)
     
@@ -1037,27 +1039,34 @@ NULL
     args <- list(lambda = NULL,
                  df = ifelse(is.null(df1), 1, df1) * 
                    ifelse(is.null(df2), 1, df2))
-    
-    ## case that df equals nr columns of design matrix -> no penalty -> lambda = 0
-    if( ncol(environment(bl1$dpp)$X) - df1 < .Machine$double.eps*10^10){ 
-      args$lambda1 <- 0 
-      if( ncol(environment(bl1$dpp)$X) - df1 < - .Machine$double.eps*10^10){
-        warning("Specified df in ", bl1$get_call(), " are higher than the number of columns, ",  
-                "which is ", ncol(environment(bl1$dpp)$X), ".")
+    if(!is.null(l1)) {
+      args$lambda1 <- l1
+    } else {
+      ## case that df equals nr columns of design matrix -> no penalty -> lambda = 0
+      if( ncol(environment(bl1$dpp)$X) - df1 < .Machine$double.eps*10^10){ 
+        args$lambda1 <- 0 
+        if( ncol(environment(bl1$dpp)$X) - df1 < - .Machine$double.eps*10^10){
+          warning("Specified df in ", bl1$get_call(), " are higher than the number of columns, ",  
+                  "which is ", ncol(environment(bl1$dpp)$X), ".")
+        }
+      }else{
+        args$lambda1 <- 1
       }
-    }else{
-      args$lambda1 <- 1
     }
     
-    ## case that df equals nr columns of design matrix
-    if( ncol(environment(bl2$dpp)$X) - df2 < .Machine$double.eps*10^10){ 
-      args$lambda2 <- 0 
-      if( ncol(environment(bl2$dpp)$X) - df2 < - .Machine$double.eps*10^10){
-        warning("Specified df in ", bl2$get_call(), " are higher than the number of columns, ",  
-                "which is ", ncol(environment(bl2$dpp)$X), ".")
+    if(!is.null(l2)) {
+      args$lambda2 <- l2
+    } else {
+      ## case that df equals nr columns of design matrix
+      if( ncol(environment(bl2$dpp)$X) - df2 < .Machine$double.eps*10^10){ 
+        args$lambda2 <- 0 
+        if( ncol(environment(bl2$dpp)$X) - df2 < - .Machine$double.eps*10^10){
+          warning("Specified df in ", bl2$get_call(), " are higher than the number of columns, ",  
+                  "which is ", ncol(environment(bl2$dpp)$X), ".")
+        }
+      }else{
+        args$lambda2 <- 1
       }
-    }else{
-      args$lambda2 <- 1
     }
     
     if(args$lambda1 != 0 & args$lambda2 != 0) 

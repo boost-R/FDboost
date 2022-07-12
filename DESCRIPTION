@@ -49,6 +49,7 @@ Collate:
     'baselearners.R'
     'baselearnersX.R'
     'bootstrapCIs.R'
+    'clr_functions.R'
     'constrainedX.R'
     'crossvalidation.R'
     'FDboostLSS.R'

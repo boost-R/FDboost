@@ -1,12 +1,22 @@
 \name{NEWS}
 \title{News for Package 'FDboost'}
 
-\section{Changes in FDboost version 1.0-2 (2021-06-29)}{
+
+\section{Changes in FDboost version 1.1-0 (2022-07-12)}{
   \subsection{Miscellaneous}{
   \itemize{
   \item Anisotropic tensor-product operators \code{b1 \%A0\% b2} and \code{b1 \%Xa0\% b2} now 
   also working when \code{lambda} is specified for \code{b1} and \code{df} is specified for \code{b2}
   (or vice versa).
+  }
+  }
+  \subsection{New feature}{
+  \itemize{
+  \item New function \code{clr} to compute the centered-log-ratio transform and its
+  inverse for density-on-scalar regression in Bayes spaces.
+  \item New dataset \code{birthDistribution}.
+  \item New vignette illustrating density-on-function regression on 
+  the \code{birthDistribution} data.
   }
   }
 }

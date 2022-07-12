@@ -39,7 +39,7 @@ contain integers 1, 2, 3, ..., N.}
 \item{numInt}{integration scheme for the integration of the loss function.
 One of \code{c("equal", "Riemann")} meaning equal weights of 1 or 
 trapezoidal Riemann weights.
-Alternatively a vector of length \code{nrow(response)} containing  
+Alternatively a vector of length \code{ncol(response)} containing  
 positive weights can be specified.}
 
 \item{data}{a data frame or list containing the variables in the model.}

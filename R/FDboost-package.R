@@ -29,6 +29,15 @@
 #' cross-validation or bootstrap. 
 #' This can be done using the function \code{\link{applyFolds}}. 
 #' 
+#' Aside from common effect surface plots, tensor product factorization via the 
+#' function \code{\link{factorize}} presents an alternative tool for visualization 
+#' of estimated effects for non-linear function-on-scalar models 
+#' (Stoecker, Steyer and Greven (2022), \url{https://arxiv.org/abs/2109.02624}). 
+#' After factorization, effects are decomposed multiple scalar effects into 
+#' functional main effect directions, which can be separately plotted allowing to 
+#' visualize more complex effect structures.  
+#' 
+#' 
 #' @references 
 #' Brockhaus, S., Ruegamer, D. and Greven, S. (2017):
 #' Boosting Functional Regression Models with FDboost.
@@ -59,6 +68,10 @@
 #' Ruegamer D., Brockhaus, S., Gentsch K., Scherer, K., Greven, S. (2018). 
 #' Boosting factor-specific functional historical models for the detection of synchronization in bioelectrical signals. 
 #' Journal of the Royal Statistical Society: Series C (Applied Statistics), 67, 621-642.
+#' 
+#' Stoecker A., Steyer L., Greven S. (2022):
+#' Functional Additive Models on Manifolds of Planar Shapes and Forms.
+#' arXiv preprint arXiv:2109.02624.
 #' 
 #' @author 
 #' Sarah Brockhaus, David Ruegamer and Almond Stoecker

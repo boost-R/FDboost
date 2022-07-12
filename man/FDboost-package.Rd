@@ -33,7 +33,15 @@ Like the fitting procedures in \pkg{mboost}, the function \code{FDboost} DOES NO
 select an appropriate stopping iteration. This must be chosen by the user.  
 The user can determine an adequate stopping iteration by resampling methods like 
 cross-validation or bootstrap. 
-This can be done using the function \code{\link{applyFolds}}.
+This can be done using the function \code{\link{applyFolds}}. 
+
+Aside from common effect surface plots, tensor product factorization via the 
+function \code{\link{factorize}} presents an alternative tool for visualization 
+of estimated effects for non-linear function-on-scalar models 
+(Stoecker, Steyer and Greven (2022), \url{https://arxiv.org/abs/2109.02624}). 
+After factorization, effects are decomposed multiple scalar effects into 
+functional main effect directions, which can be separately plotted allowing to 
+visualize more complex effect structures.
 }
 \references{
 Brockhaus, S., Ruegamer, D. and Greven, S. (2017):
@@ -65,6 +73,10 @@ arXiv preprint arXiv:2110.11771.
 Ruegamer D., Brockhaus, S., Gentsch K., Scherer, K., Greven, S. (2018). 
 Boosting factor-specific functional historical models for the detection of synchronization in bioelectrical signals. 
 Journal of the Royal Statistical Society: Series C (Applied Statistics), 67, 621-642.
+
+Stoecker A., Steyer L., Greven S. (2022):
+Functional Additive Models on Manifolds of Planar Shapes and Forms.
+arXiv preprint arXiv:2109.02624.
 }
 \seealso{
 \code{\link{FDboost}} for the main fitting function and 

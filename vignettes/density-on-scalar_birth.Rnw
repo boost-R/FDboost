@@ -235,11 +235,13 @@ model <- FDboost(birth_densities_clr ~ 1 + bolsc(sex, df = 1) +
 @
 
 To determine the optimal stopping iteration we perform a $10$-fold bootstrap.
-This is rather time-consuming (especially in the continuous case, when the response densities are evaluated at many grid-values) and preferably should be executed parallelized on multiple cores.
+This is rather time-consuming (especially in the continuous case, when the response densities are evaluated at many grid-values) and preferably should be executed parallelized on multiple cores. In order to avoid long compilation times for the vignette, the following code is commented out, but it should be possible to obtain the same stopping iteration within a few minutes.
 <<get-mstop, echo = TRUE, message=FALSE>>=
-set.seed(1708)
-folds <- applyFolds(model, folds = cv(rep(1, model$ydim[1]), type = "bootstrap", B = 10))
-model <- model[mstop(folds)] # mstop(folds): 999
+# set.seed(1708)
+# folds <- applyFolds(model, folds = cv(rep(1, model$ydim[1]), type = "bootstrap", B = 10))
+# ms <- mstop(folds) # = 999
+ms <- 999 
+model <- model[ms] 
 @
 
 Our final object \texttt{model} contains the fit of model~\eqref{model_clr}, i.e., on clr-level.

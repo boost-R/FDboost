@@ -14,7 +14,7 @@
 #' Details on the functional regression models that can be fitted with \pkg{FDboost}
 #' can be found in Brockhaus et al. (2015, 2017, 2018) and Ruegamer et al. (2018).  
 #' A hands-on tutorial for the package can be found 
-#' in Brockhaus, Ruegamer and Greven (2020), see \url{https://doi.org/10.18637/jss.v094.i10}.
+#' in Brockhaus, Ruegamer and Greven (2020), see <doi:10.18637/jss.v094.i10>.
 #' For density-on-scalar regression models see Maier et al. (2021).
 #' 
 #' Using component-wise gradient boosting as fitting procedure, \pkg{FDboost} relies on 

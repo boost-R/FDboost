@@ -127,7 +127,8 @@ par(opar)
 fac <- factorize(m)
 
 vi <- as.data.frame(varimp(fac$cov))
-lattice::barchart(variable ~ reduction, group = blearner, vi, stack = TRUE)
+# if(require(lattice))
+#   barchart(variable ~ reduction, group = blearner, vi, stack = TRUE)
 
 cbind(d^2, sort(vi$reduction, decreasing = TRUE)[1:3])
 
@@ -207,11 +208,13 @@ for(w in 1:length(wch)) {
                                 main = names(fac$resp$baselearner[wch[w]]))
   
   lines(sort(griddata$t), 
-        ratio*predict(fac2$resp, which = wch[w])[order(griddata$t)], col = cols[w], lty = 2)
+        ratio*predict(fac2$resp, which = wch[w])[order(griddata$t)], 
+        col = cols[w], lty = 2)
   plot(fac$cov, which = wch[w], 
        main = names(fac$cov$baselearner[wch[w]]))
   this_x <- fac2$cov$model.frame(which = wch[w])[[1]][[1]]
-    lines(sort(this_x), 1/ratio*predict(fac2$cov, which = wch[w])[order(this_x)], col = cols[w], lty = 1)
+    lines(sort(this_x), 1/ratio*predict(fac2$cov, which = wch[w])[order(this_x)], 
+          col = cols[w], lty = 1)
 }
 par(opar)
 
@@ -284,7 +287,8 @@ par(opar)
 fac <- factorize(m)
 
 vi <- as.data.frame(varimp(fac$cov))
-lattice::barchart(variable ~ reduction, group = blearner, vi, stack = TRUE)
+# if(require(lattice))
+#   barchart(variable ~ reduction, group = blearner, vi, stack = TRUE)
 
 cbind(d^2, vi$reduction[c(1:2, 10)])
 

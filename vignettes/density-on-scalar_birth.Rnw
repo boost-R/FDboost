@@ -10,6 +10,8 @@
 \usepackage{authblk}
 \usepackage[left=25mm, right=25mm, top=20mm, bottom=20mm]{geometry}
 %\usepackage[nolists]{endfloat}
+%\usepackage{mathspec}
+\usepackage{dsfont}
 \usepackage{bbm}
 
 %\VignetteEngine{knitr::knitr}
@@ -211,7 +213,7 @@ In the continuous case, the sum is proportional to the integral numerically, if 
 Thus, using \texttt{bbsc} is suitable in this case, as well.
 Second, we must specify the B-spline basis in \texttt{bbsc} appropriately. 
 The continuous case is straightforward, e.g., by using cubic B-splines.
-In our discrete case, a suitable (unconstrained) basis is $(\mathbbm{1}_{\{1\}}, \ldots, \mathbbm{1}_{\{12\}}) \in L^2 ( \delta)^{12}$, where $\mathbbm{1}_{A}$ denotes the indicator function of $A \in \mathcal{A}$.
+In our discrete case, a suitable (unconstrained) basis is $(\mathds{1}_{\{1\}}, \ldots, \mathds{1}_{\{12\}}) \in L^2 ( \delta)^{12}$, where $\mathds{1}_{A}$ denotes the indicator function of $A \in \mathcal{A}$.
 This results in the identity matrix as design matrix.
 In \texttt{bbs()} (or \texttt{bbsc()}, which yields the corresponding constrained basis), this can be achieved using \texttt{degree = 1} with knots equal to $\mathcal{T}$.
 

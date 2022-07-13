@@ -65,7 +65,8 @@ par(opar)
 fac <- factorize(m)
 
 vi <- as.data.frame(varimp(fac$cov))
-lattice::barchart(variable ~ reduction, group = blearner, vi, stack = TRUE)
+# if(require(lattice))
+#   barchart(variable ~ reduction, group = blearner, vi, stack = TRUE)
 
 cbind(d^2, vi$reduction[c(1:2, 10)])
 

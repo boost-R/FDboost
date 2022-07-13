@@ -1284,7 +1284,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
 
     ## short names for the terms, if shortnames() does not work, use the original names
     shrtlbls <- try(unlist(lapply(names(object$baselearner), shortnames)))
-    if(class(shrtlbls)=="try-error") shrtlbls <- names(object$baselearner) 
+    if(inherits(shrtlbls, "try-error")) shrtlbls <- names(object$baselearner) 
     
     ###### just return the data that is used for the prediction
     if(returnData){
@@ -1697,14 +1697,14 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       rm(temp)
     }
     
-    if(class(terms)!="list") terms <- list(terms)
+    if(!inherits(terms,"list")) terms <- list(terms)
     if(mstop(x) > 0 && length(which) == 1 && which == 0) terms[[1]] <- offset
     if(length(which) == 1 && length(terms[[1]]) == 1 && terms[[1]] == 0){ terms[[1]] <- rep(0, l=length(x$yind)) }
     
     #if(length(which)==1 && !any(class(x)=="FDboostLong")) terms <- list(terms) 
     
     shrtlbls <- try(coef(x, which=which, computeCoef=FALSE))# get short names
-    if(class(shrtlbls) == "try-error"){
+    if(inherits(shrtlbls, "try-error")){
       shrtlbls <- names(x$baselearner)[which[which!=0]]
       if(0 %in% which) shrtlbls <- c("offset", which)
     }

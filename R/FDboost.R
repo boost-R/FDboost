@@ -431,8 +431,8 @@
 #' @import methods Matrix mboost
 #' @importFrom grDevices heat.colors rgb
 #' @importFrom graphics abline barplot contour legend lines matplot par persp plot points
-#' @importFrom utils getS3method packageDescription
-#' @importFrom stats approx as.formula coef complete.cases fitted formula lm median model.matrix model.weights na.omit predict quantile sd terms.formula variable.names 
+#' @importFrom utils relist getS3method packageDescription
+#' @importFrom stats setNames approx as.formula coef complete.cases fitted formula lm median model.matrix model.weights na.omit predict quantile sd terms.formula variable.names 
 #' @importFrom gamboostLSS GaussianLSS GaussianMu GaussianSigma make.grid cvrisk.mboostLSS mboostLSS_fit
 #' @importFrom stabs stabsel stabsel_parameters 
 #' @importFrom splines bs splineDesign
@@ -471,8 +471,8 @@ FDboost <- function(formula,          ### response ~ xvars
   }
   
   ## check formulas
-  if(class(try(id)) == "try-error") stop("id must either be NULL or a formula object.")
-  if(missing(timeformula) || class(try(timeformula)) == "try-error") 
+  if(inherits(try(id), "try-error")) stop("id must either be NULL or a formula object.")
+  if(missing(timeformula) || inherits(try(timeformula),  "try-error")) 
     stop("timeformula must either be NULL or a formula object.")
     stopifnot(class(formula) == "formula")
   if(!is.null(timeformula)) stopifnot(class(timeformula) == "formula")
@@ -817,7 +817,7 @@ FDboost <- function(formula,          ### response ~ xvars
     }else{
       bl_df <- vector("list", length(tmp))
       bl_df[equalBrackets] <- lapply(tmp[equalBrackets], function(x) try(get_df(x)))
-      bl_df <- unlist(bl_df[equalBrackets & (!sapply(bl_df, class) %in% "try-error")])
+      bl_df <- unlist(bl_df[equalBrackets & (!sapply(bl_df, function(x) inherits(x,  "try-error")))])
       #print(bl_df)
       
       if( !is.null(bl_df) && any(abs(bl_df - bl_df[1]) > .Machine$double.eps * 10^10) ){
@@ -1066,7 +1066,7 @@ FDboost <- function(formula,          ### response ~ xvars
                             silent = offset_control$silent )
         }
         
-        if(any(class(modOffset) == "try-error")){
+        if(inherits(modOffset, "try-error")){
           warning(paste("Could not fit the smooth offset by adaptive splines (default), use a simple spline expansion with 5 df instead.",
                         if(offset_control$cyclic) "This offset is not cyclic!"))
           if(round(length(time)/2) < 8) warning("Most likely because of too few time-points.")
@@ -1121,7 +1121,7 @@ FDboost <- function(formula,          ### response ~ xvars
                             silent = offset_control$silent )
         }
         
-        if(any(class(modOffset) == "try-error")){
+        if(inherits(modOffset, "try-error")){
           warning(paste("Could not fit the smooth offset by adaptive splines (default), use a simple spline expansion with 5 df instead.",
                         if(offset_control$cyclic) "This offset is not cyclic!"))
           if(round(length(time)/2) < 8) warning("Most likely because of too few time-points.")

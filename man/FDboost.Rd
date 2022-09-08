@@ -400,19 +400,6 @@ mod4 <- FDboost(vis ~ 1 + bols(T_C, contrasts.arg = "contr.sum", intercept = FAL
 ## plot(mod4)
 ## plotPredicted(mod4, lwdPred = 2)
 
-\donttest{
-  ## Find optimal mstop, small grid/low B for a fast example
-  set.seed(123)
-  folds4 <- cv(rep(1, length(unique(mod4$id))), B = 3)
-  appl4 <- applyFolds(mod4, folds = folds4, grid = 1:50)
-  ## val4 <- validateFDboost(mod4, folds = folds4, grid = 1:50)
-
-  set.seed(123)
-  folds4long <- cvLong(id = mod4$id, weights = model.weights(mod4), B = 3)
-  cvm4 <- cvrisk(mod4, folds = folds4long, grid = 1:50)
-  mstop(cvm4)
-}
-
 ## Be careful if you want to predict newdata with irregular response,  
 ## as the argument index is not considered in the prediction of newdata. 
 ## Thus, all covariates have to be repeated according to the number of observations 

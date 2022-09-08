@@ -20,6 +20,9 @@
 #' where \code{1} induces a global intercept and \code{x1}, \code{x2} are factor variables, 
 #' see Ruegamer et al. (2018).  
 #' 
+#' @return An object of class \code{blg} (base-learner generator) with a \code{dpp} function 
+#' as for other \code{\link[mboost:baselearners]{baselearners}}.
+#' 
 #' @references 
 #' Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 #' The functional linear array model. Statistical Modelling, 15(3), 279-300.
@@ -611,8 +614,10 @@ bl_lin_matrix_a <- function(blg, Xfun, args) {
 #' \code{\%Xa0\%} computes like \code{\%X\%} the row tensor product of two base-learners, 
 #' with the difference that it sets the penalty for one direction to zero. 
 #' Thus, \code{\%Xa0\%} behaves to \code{\%X\%} analogously like \code{\%A0\%} to \code{\%O\%}. 
-#'  
 #' 
+#' @return An object of class \code{blg} (base-learner generator) with a \code{dpp} function 
+#' as for other \code{\link[mboost:baselearners]{baselearners}}.
+#'  
 #' @references 
 #' Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015): 
 #' The functional linear array model. Statistical Modelling, 15(3), 279-300. 

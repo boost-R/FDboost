@@ -11,6 +11,10 @@ bl1 \%Xc\% bl2
 
 \item{bl2}{base-learner 2, e.g. \code{bols(x2)}}
 }
+\value{
+An object of class \code{blg} (base-learner generator) with a \code{dpp} function 
+as for other \code{\link[mboost:baselearners]{baselearners}}.
+}
 \description{
 Combining single base-learners to form new, more complex base-learners, with
 an identifiability constraint to center the interaction around the intercept and

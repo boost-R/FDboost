@@ -143,9 +143,10 @@
 #' 
 #' \donttest{
 #'   ## plot the out-of-bag risk
-#'   par(mfrow = c(1,3))
+#'   oldpar <- par(mfrow = c(1,3))
 #'   plot(cvr); legend("topright", lty=2, paste(mstop(cvr)))
 #'   plot(cvr3); legend("topright", lty=2, paste(mstop(cvr3)))
+#'   par(oldpar)
 #' }
 #' 
 #'}
@@ -659,7 +660,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #'   cvr3 <- cvrisk(mod, folds = folds_bs_long, grid = 1:75)
 #' 
 #'   ## plot the out-of-bag risk
-#'   par(mfrow = c(1,3))
+#'   oldpar <- par(mfrow = c(1,3))
 #'   plot(cvr); legend("topright", lty=2, paste(mstop(cvr)))
 #'   plot(cvr2)
 #'   plot(cvr3); legend("topright", lty=2, paste(mstop(cvr3)))
@@ -678,6 +679,8 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #'   plotPredCoef(cvr_jackknife, which = 3) 
 #'   ## plot coefficients per fold for 2nd effect
 #'   plotPredCoef(cvr_jackknife, which = 2, terms = FALSE)
+#'   
+#'   par(oldpar)
 #' 
 #'}
 #'}
@@ -1199,6 +1202,8 @@ print.validateFDboost <- function(x, ...){
 #' and residuals as determined by \code{validateFDboost}. The function \code{plotPredCoef} plots the 
 #' coefficients that were estimated in the folds - only possible if the argument getCoefCV is \code{TRUE} in 
 #' the call to \code{validateFDboost}. 
+#' 
+#' @return No return value (plot method) or the object itself (print method)
 #' 
 #' @aliases mstop.validateFDboost
 #' 

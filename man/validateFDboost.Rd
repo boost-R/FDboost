@@ -137,7 +137,7 @@ mod <- mod[75]
   cvr3 <- cvrisk(mod, folds = folds_bs_long, grid = 1:75)
 
   ## plot the out-of-bag risk
-  par(mfrow = c(1,3))
+  oldpar <- par(mfrow = c(1,3))
   plot(cvr); legend("topright", lty=2, paste(mstop(cvr)))
   plot(cvr2)
   plot(cvr3); legend("topright", lty=2, paste(mstop(cvr3)))
@@ -156,6 +156,8 @@ mod <- mod[75]
   plotPredCoef(cvr_jackknife, which = 3) 
   ## plot coefficients per fold for 2nd effect
   plotPredCoef(cvr_jackknife, which = 2, terms = FALSE)
+  
+  par(oldpar)
 
 }
 }

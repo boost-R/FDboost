@@ -210,9 +210,10 @@ mod <- mod[75]
 
 \donttest{
   ## plot the out-of-bag risk
-  par(mfrow = c(1,3))
+  oldpar <- par(mfrow = c(1,3))
   plot(cvr); legend("topright", lty=2, paste(mstop(cvr)))
   plot(cvr3); legend("topright", lty=2, paste(mstop(cvr3)))
+  par(oldpar)
 }
 
 }

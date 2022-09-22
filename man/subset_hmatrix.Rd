@@ -15,6 +15,9 @@ for each curve to select}
 \item{compress}{logical, defaults to \code{TRUE}. Only used to force a meaningful
 behaviour of \code{applyFolds} with hmatrix objects when using nested resampling.}
 }
+\value{
+a \code{hmatrix} object
+}
 \description{
 Subsets hmatrix according to an index
 }

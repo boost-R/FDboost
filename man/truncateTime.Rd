@@ -36,10 +36,11 @@ if(require(fda)){
   datTr <- truncateTime(funVar=c("hgtm","hgtf"), time="age", newtime=1:16, data=dat)
   
   \donttest{
-  par(mfrow=c(1,2))
+  oldpar <- par(mfrow=c(1,2))
   with(dat, funplot(age, hgtm, main="Original data"))
   with(datTr, funplot(age, hgtm, main="Yearly data"))
   par(mfrow=c(1,1))   
+  par(oldpar)
   }
 }
 }

@@ -34,6 +34,9 @@ is observed, by default \code{1:ncol(x)}}
 
 \item{argvalsLab}{name of the argument for the covariate by default \code{s}}
 }
+\value{
+An matrix object of type \code{"hmatrix"}
+}
 \description{
 The hmatrix class represents data for a functional historical effect. 
 The class is basically a matrix containing the time and the id for the observations of the 
@@ -82,7 +85,7 @@ mydat <- data.frame(I(myhmatrix), z=rnorm(3)[id1])
 str(mydat)
 str(mydat[id1 \%in\% c(2, 3), ])
 str(myhmatrix[id1 \%in\% c(2, 3), ])
- 
+
 }
 \seealso{
 \code{\link{getTime.hmatrix}} to extract attributes, 

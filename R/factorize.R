@@ -47,6 +47,7 @@ factorize <- factorise <- function(x, ...) {
 #' or for the whole model simultaneously.
 #'
 #' @method factorize FDboost
+#' @return A factorized model
 #' @export 
 #' @rdname factorize
 factorize.FDboost <- function(x, newdata = NULL, newweights = 1, blwise = TRUE, ...) {
@@ -328,7 +329,8 @@ NULL
 #' @export
 #' @name predict.FDboost_fac
 #' @aliases plot.FDboost_fac
-#' 
+#' @return A matrix of predictions (for predict method) or no 
+#' return value (plot method)
 #' @seealso [factorize(), factorize.FDboost()]
 #'
 predict.FDboost_fac <- function(object, newdata = NULL, which = NULL, ...) {

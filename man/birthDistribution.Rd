@@ -63,7 +63,7 @@ data("birthDistribution", package = "FDboost")
 # Plot densities
 year_col <- rainbow(70, start = 0.5, end = 1)
 year_lty <- c(1, 2, 4, 5)
-par(mfrow = c(1, 2))
+oldpar <- par(mfrow = c(1, 2))
 funplot(1:12, birthDistribution$birth_densities[1:70, ], ylab = "densities", xlab = "month", 
         xaxp = c(1, 12, 11), pch = 20, col = year_col, lty = year_lty, main = "Male")
 funplot(1:12, birthDistribution$birth_densities[71:140, ], ylab = "densities", xlab = "month", 
@@ -105,7 +105,7 @@ funplot(1:12, predictions[1:70, ], ylab = "predictions", xlab = "month", ylim = 
         xaxp = c(1, 12, 11), pch = 20, col = year_col, lty = year_lty, main = "Male")
 funplot(1:12, predictions[71:140, ], ylab = "predictions", xlab = "month", ylim = pred_ylim,
         xaxp = c(1, 12, 11), pch = 20, col = year_col, lty = year_lty, main = "Female")
-par(mfrow = c(1, 1))
+par(oldpar)
 }
 \references{
 Maier, E.-M., Stoecker, A., Fitzenberger, B., Greven, S. (2021):

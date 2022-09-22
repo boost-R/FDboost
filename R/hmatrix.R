@@ -66,6 +66,8 @@
 #' str(mydat)
 #' str(mydat[id1 %in% c(2, 3), ])
 #' str(myhmatrix[id1 %in% c(2, 3), ])
+#' 
+#' @return An matrix object of type \code{"hmatrix"}
 #'  
 #' @export
 hmatrix <- function(time, id, x, argvals=1:ncol(x), 
@@ -120,7 +122,7 @@ hmatrix <- function(time, id, x, argvals=1:ncol(x),
 #' @seealso \code{\link{hmatrix}} for the h.atrix class. 
 #' 
 #' @aliases getId getX getArgvals getTimeLab getIdLab getXLab getArgvalsLab
-#'
+#' @return properties of a hmatrix or fmatrix
 #' @export
 getTime <- function(object) { UseMethod("getTime", object) }
 
@@ -165,6 +167,7 @@ getArgvalsLab <- function(object) { UseMethod("getArgvalsLab", object) }
 #' \code{getIdLab}, \code{getXLab}, \code{getArgvalsLab} for an object of class \code{hmatrix}.  
 #' 
 #' @aliases getId.hmatrix getX.hmatrix getArgvals.hmatrix getTimeLab.hmatrix getXLab.hmatrix getArgvalsLab.hmatrix
+#' @return properties of a hmatrix
 #'
 #' @export
 getTime.hmatrix <- function(object) object[ , 1, drop=TRUE]
@@ -203,7 +206,7 @@ getArgvalsLab.hmatrix <- function(object) attr(object, "argvalsLab")
 #' 
 #' is.hmatrix tests if its argument is an object of class hmatrix.   
 #' @param object object of class hmatrix
-#'
+#' @return logical value
 #' @export
 is.hmatrix <- function(object){
   inherits(object, "hmatrix")
@@ -231,7 +234,7 @@ is.hmatrix <- function(object){
 #' From the functional covariate \code{x} rows are selected accordingly.
 #'  
 #' @seealso ?"["
-#'
+#' @return a \code{"hmatrix"} object
 #' @export 
 `[.hmatrix` <- function(x, i, j, ..., drop=FALSE) {
   
@@ -272,7 +275,7 @@ is.hmatrix <- function(object){
 #' repeated accordingly so that two vectors of the same length are returned. 
 #' @param time the observation points
 #' @param id the id for the curve 
-#'
+#' @return a list with \code{time} and \code{id}
 #' @export
 wide2long <- function(time, id){
   newtime <- rep(time, each=length(unique(id)))
@@ -303,6 +306,8 @@ wide2long <- function(time, id){
 #' try(resMat2 <- subset_hmatrix(resMat, index = index2))
 #' resMat <- subset_hmatrix(hmat, index = index1, compress = FALSE)
 #' try(resMat2 <- subset_hmatrix(resMat, index = index2))
+#' 
+#' @return a \code{hmatrix} object
 #'
 #' @export
 subset_hmatrix <- function(x, index, compress = TRUE)

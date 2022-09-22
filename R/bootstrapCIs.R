@@ -490,7 +490,7 @@ bootstrapCI <- function(object, which = NULL,
 #' @details \code{plot.bootstrapCI} plots the bootstrapped coefficients.
 #' 
 #' @aliases print.bootstrapCI
-#' 
+#' @return No return value (plot method) or \code{x} itself (print method)
 #' @method plot bootstrapCI
 #' 
 #' @export

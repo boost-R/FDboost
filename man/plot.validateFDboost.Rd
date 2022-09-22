@@ -84,6 +84,9 @@ predicted values of the whole model can be compared to the predictions of the cr
 \item{probs}{vector of quantiles to be used in the plotting of 2-dimensional coefficients surfaces,
 defaults to \code{probs = c(0.25, 0.5, 0.75)}}
 }
+\value{
+No return value (plot method) or the object itself (print method)
+}
 \description{
 Methods for objects that are fitted to determine the optimal mstop and the 
 prediction error of a model fitted by FDboost.

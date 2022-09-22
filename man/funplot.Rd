@@ -18,6 +18,9 @@ or vector or functional observations, in this case id has to be specified}
 
 \item{...}{further arguments passed to \code{\link[graphics]{matplot}}.}
 }
+\value{
+see \code{\link[graphics]{matplot}}
+}
 \description{
 Plot functional data with linear interpolation of missing values
 }

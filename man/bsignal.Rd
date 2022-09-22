@@ -245,9 +245,8 @@ mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.
                + bsignal(NIR, nir.lambda, knots = 40, df=4, check.ident = FALSE), 
                timeformula = NULL, data = fuelSubset) 
 summary(mod2) 
-## plot(mod2)
 
-
+ 
 ###############################################
 ### data simulation like in manual of pffr::ff
 
@@ -280,10 +279,11 @@ s <- attr(data1, "xindex")
 m1_pffr <- pffr(Y ~ ff(X1, xind = s), yind = t, data = data1)
 
 \donttest{
-  par(mfrow = c(2, 2))
+  oldpar <- par(mfrow = c(2, 2))
   plot(m1, which = 1); plot(m1, which = 2) 
   plot(m1_pffr, select = 1, shift = m1_pffr$coefficients["(Intercept)"]) 
   plot(m1_pffr, select = 2)
+  par(oldpar)
 }
 
 
@@ -317,12 +317,12 @@ s <- attr(data2, "xindex")
 m2_pffr <- pffr(Y ~ ff(X1, xind = s, limits = "s<=t"), yind = t, data = data2)
 
 \donttest{
-par(mfrow = c(2, 2))
+oldpar <- par(mfrow = c(2, 2))
 plot(m2, which = 1); plot(m2, which = 2)
 ## plot of smooth intercept does not contain m1_pffr$coefficients["(Intercept)"]
 plot(m2_pffr, select = 1, shift = m2_pffr$coefficients["(Intercept)"]) 
 plot(m2_pffr, select = 2) 
-
+par(oldpar)
 }
 
 

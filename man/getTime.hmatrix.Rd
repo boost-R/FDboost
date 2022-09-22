@@ -30,6 +30,9 @@
 \arguments{
 \item{object}{object of class hmatrix}
 }
+\value{
+properties of a hmatrix
+}
 \description{
 Extract attributes of an object of class \code{hmatrix}.
 }

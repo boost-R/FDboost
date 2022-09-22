@@ -142,10 +142,6 @@ mod <- FDboost(Y ~ 1 + bhistx(x = X1h, df = 5, knots = 5) \%X\% bols(zlong),
   cv <- cvrisk(mod, folds = cv(model.weights(mod), B = 5))
   mstop(cv)
   mod[mstop(cv)]
-  
-  appl1 <- applyFolds(mod, folds = cv(rep(1, length(unique(mod$id))), type = "bootstrap", B = 5))
-
- # plot(mod)
 }
 }
 

@@ -11,6 +11,9 @@ wide2long(time, id)
 
 \item{id}{the id for the curve}
 }
+\value{
+a list with \code{time} and \code{id}
+}
 \description{
 Transform id and time from wide format into long format, i.e., time and id are 
 repeated accordingly so that two vectors of the same length are returned.

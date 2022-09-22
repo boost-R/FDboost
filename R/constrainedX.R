@@ -683,7 +683,7 @@ bl_lin_matrix_a <- function(blg, Xfun, args) {
 #'                 
 #' ## compare estimated coefficients
 #' \donttest{
-#' par(mfrow=c(4, 2))
+#' oldpar <- par(mfrow=c(4, 2))
 #' plot(mod1, which = 1)
 #' plot(mod1a, which = 1)
 #' plot(mod1, which = 2)
@@ -692,6 +692,7 @@ bl_lin_matrix_a <- function(blg, Xfun, args) {
 #' plot(mod1a, which = 3)
 #' funplot(mod1$yind, predict(mod1, which=4))
 #' funplot(mod1$yind, predict(mod1a, which=4))
+#' par(oldpar)
 #' }
 #' 
 #' @name anisotropic_Kronecker

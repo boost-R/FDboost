@@ -19,6 +19,9 @@ vectors or empty (missing) or NULL. Numeric values are coerced to integer as by 
 (or just a matrix). This only works for extracting elements, not for the 
 replacement, defaults to \code{FALSE}.}
 }
+\value{
+a \code{"hmatrix"} object
+}
 \description{
 Operator acting on hmatrix preserving the attributes when rows are extracted.
 }

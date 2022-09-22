@@ -89,6 +89,9 @@ Per default all observations are plotted.}
 
 \item{lwdPred}{lwd of predicted curves (only used in plotPredicted)}
 }
+\value{
+no return value (plot method)
+}
 \description{
 Takes a fitted \code{FDboost}-object produced by \code{\link{FDboost}()} and 
 plots the fitted effects or the coefficient-functions/surfaces.

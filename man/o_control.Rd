@@ -19,6 +19,9 @@ closest non-missing value, see \code{\link[stats:approxfun]{approx}}}
 
 \item{knots}{arguments knots passed to \code{\link[mgcv]{gam}}}
 }
+\value{
+a list with controls
+}
 \description{
 Function to control estimation of smooth offset
 }

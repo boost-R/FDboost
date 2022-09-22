@@ -42,6 +42,9 @@ defaults to \code{probs = c(0.25, 0.5, 0.75)}}
 
 \item{...}{additional arguments passed to callies.}
 }
+\value{
+No return value (plot method) or \code{x} itself (print method)
+}
 \description{
 Methods for objects that are fitted to compute bootstrap confidence intervals.
 }

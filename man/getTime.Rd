@@ -30,6 +30,9 @@ getArgvalsLab(object)
 \arguments{
 \item{object}{an R-object, currently implemented for hmatrix and fmatrix}
 }
+\value{
+properties of a hmatrix or fmatrix
+}
 \description{
 Extract attributes of an object.
 }

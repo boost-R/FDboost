@@ -29,6 +29,10 @@ the variable name.}
 \item{main}{the plot title. By default, base-learner names are used with 
 component numbers \code{[k]}.}
 }
+\value{
+A matrix of predictions (for predict method) or no 
+return value (plot method)
+}
 \description{
 Prediction and plotting for factorized FDboost model components
 }

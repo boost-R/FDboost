@@ -9,6 +9,9 @@ is.hmatrix(object)
 \arguments{
 \item{object}{object of class hmatrix}
 }
+\value{
+logical value
+}
 \description{
 is.hmatrix tests if its argument is an object of class hmatrix.
 }

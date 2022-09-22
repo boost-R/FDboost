@@ -8,7 +8,7 @@
 #' @param silent print error messages of model fit?
 #' @param cyclic defaults to FALSE, if TRUE cyclic splines are used
 #' @param knots arguments knots passed to \code{\link[mgcv]{gam}}
-#' 
+#' @return a list with controls
 #' @export 
 o_control <- function(k_min=20, rule=2, silent=TRUE, cyclic=FALSE, knots=NULL) { 
   RET <- list(k_min=k_min, rule=rule, silent=silent, cyclic=cyclic, knots=knots)
@@ -38,10 +38,11 @@ o_control <- function(k_min=20, rule=2, silent=TRUE, cyclic=FALSE, knots=NULL) {
 #'   datTr <- truncateTime(funVar=c("hgtm","hgtf"), time="age", newtime=1:16, data=dat)
 #'   
 #'   \donttest{
-#'   par(mfrow=c(1,2))
+#'   oldpar <- par(mfrow=c(1,2))
 #'   with(dat, funplot(age, hgtm, main="Original data"))
 #'   with(datTr, funplot(age, hgtm, main="Yearly data"))
 #'   par(mfrow=c(1,1))   
+#'   par(oldpar)
 #'   }
 #' }
 #' @export 
@@ -81,6 +82,7 @@ truncateTime <- function(funVar, time, newtime, data){
 #'   with(fda::growth, funplot(age, t(hgtm)))
 #' }
 #' }
+#' @return see \code{\link[graphics]{matplot}}
 #' @export
 funplot <- function(x, y, id=NULL, rug=TRUE, ...){
   

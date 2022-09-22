@@ -110,11 +110,12 @@ summary(m_boost)
   m_boost <- m_boost[mstop(cvr)] ## 832
    
   ## plot smooth effects of functional covariates for mu and sigma
-  par(mfrow = c(1,2))
+  oldpar <- par(mfrow = c(1,2))
   plot(m_boost$mu, which = 2, ylim = c(0,5))
   lines(s, sin(s*pi)*5, col = 3, lwd = 2)
   plot(m_boost$sigma, which = 2, ylim = c(-2.5,2.5))
   lines(s, -cos(s*pi)*2, col = 3, lwd = 2)
+  par(oldpar)
  }
 }
 }

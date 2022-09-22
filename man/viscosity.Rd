@@ -45,8 +45,7 @@ hard so the measurements should be interpreted as a qualitative measure of harde
  end <- which(viscosity$timeAll==as.numeric(interval))
  viscosity$vis <- log(viscosity$visAll[,1:end])
  viscosity$time <- viscosity$timeAll[1:end]
- # with(viscosity, funplot(time, vis, pch=16, cex=0.2))
-
+ 
  ## fit median regression model with 100 boosting iterations,
  ## step-length 0.4 and smooth time-specific offset
  ## the factors are in effect coding -1, 1 for the levels

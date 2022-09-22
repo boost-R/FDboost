@@ -27,6 +27,8 @@ or for the whole model simultaneously.}
 \value{
 a list of two mboost models of class \code{FDboost_fac} containing basis functions
 for response and covariates, respectively, as base-learners.
+
+A factorized model
 }
 \description{
 Factorize an FDboost tensor product model into the response and covariate parts 

@@ -25,6 +25,9 @@ The default is to use the mean over all integration weights, \code{"mean"}.
 Alternatively one can use the first integration weight, \code{"first"}, or 
 use the distance to zero, \code{"zero"}.}
 }
+\value{
+Matrix with integration
+}
 \description{
 Computes trapezoidal integration weights (Riemann sums) for a functional variable 
 \code{X1} that has evaluation points \code{xind}.

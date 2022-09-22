@@ -1373,7 +1373,7 @@ getColPersp <- function(z, col1 = "tomato", col2 = "lightblue"){
 #' 
 #' @seealso \code{\link{FDboost}} for the model fit and 
 #' \code{\link{coef.FDboost}} for the calculation of the coefficient functions. 
-#' 
+#' @return no return value (plot method)
 #' @method plot FDboost
 #' @export
 ### function to plot raw values or coefficient-functions/surfaces of a model 

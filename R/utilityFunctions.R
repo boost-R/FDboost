@@ -1184,6 +1184,8 @@ reweightData <- function(data, argvals, vars,
       i <- i + 1
     }
     idvars_new <- c(factor(my_temp_idvars))
+    # regain 1:n ids format expected by FDboost 
+    idvars_new <- as.numeric(idvars_new)
     ## check whether id variable of hmatrix-object and id variable of long variables are equal
     if(!is.null(idvars_new_hmatrix)){
       if(!all(idvars_new == idvars_new_hmatrix)) 

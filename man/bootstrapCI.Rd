@@ -130,23 +130,26 @@ plot(bootCIs, ask = FALSE)
 
 ## now speed things up by defining the inner resampling
 ## function with parallelization based on mclapply (does not work on Windows)
+isWindows <- Sys.info()['sysname']=="Windows"
 
 my_inner_fun <- function(object){ 
 cvrisk(object, folds = cvLong(id = object$id, weights = 
 model.weights(object), 
 B = 10 # 10-fold for inner resampling
-), mc.cores = 10) # use ten cores
+), mc.cores = if(isWindows) 1 else 10) # use ten cores
 }
 
 \donttest{
-bootCIs <- bootstrapCI(m1, resampling_fun_inner = my_inner_fun)
+bootCIs <- bootstrapCI(m1, resampling_fun_inner = my_inner_fun, 
+                       B_outer = 5) # small B_outer to speed up
 }
 
 ## We can also use the ... argument to parallelize the applyFolds
 ## function in the outer resampling 
 
 \donttest{
-bootCIs <- bootstrapCI(m1, mc.cores = 30)
+bootCIs <- bootstrapCI(m1, mc.cores = if(isWindows) 1 else 30, 
+                       B_inner = 5, B_outer = 3)
 }
 
 ## Now let's parallelize the outer resampling and use 
@@ -155,17 +158,23 @@ bootCIs <- bootstrapCI(m1, mc.cores = 30)
 my_inner_fun <- function(object){ 
 cvrisk(object, folds = cvLong(id = object$id, weights = 
 model.weights(object), type = "kfold", # use CV
-B = 10, # 10-fold for inner resampling
+B = 5, # 5-fold for inner resampling
 ),
-mc.cores = 10) # use ten cores
+mc.cores = if(isWindows) 1 else 5) # use five cores
 }
 
 # use applyFolds for outer function to avoid messing up weights
 my_outer_fun <- function(object, fun){
 applyFolds(object = object,
 folds = cv(rep(1, length(unique(object$id))), 
-type = "bootstrap", B = 100), fun = fun,
-mc.cores = 10) # parallelize on 10 cores
+type = "bootstrap", B = 10), fun = fun,
+mc.cores = if(isWindows) 1 else 10) # parallelize on 10 cores
+}
+
+\donttest{
+bootCIs <- bootstrapCI(m1, resampling_fun_inner = my_inner_fun,
+                       resampling_fun_outer = my_outer_fun,
+                       B_inner = 5, B_outer = 10) 
 }
 
 ######## Example for scalar-on-function-regression with bsignal() 
@@ -192,15 +201,10 @@ mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 40, df = 4, check.
 
 \donttest{
 # takes some time, because of defaults: B_outer = 100, B_inner = 25
-bootCIs <- bootstrapCI(mod2)
+bootCIs <- bootstrapCI(mod2, B_outer = 10, B_inner = 5)
+           # in practice, rather set B_outer = 1000
 }
 
-## run with a larger number of outer bootstrap samples
-## and only 10-fold for validation of each outer fold
-## WARNING: This may take very long!
-\donttest{
-bootCIs <- bootstrapCI(mod2, B_outer = 1000, B_inner = 10)
-}
 
 }
 \author{

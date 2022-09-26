@@ -148,7 +148,6 @@
 #' bootCIs <- bootstrapCI(m1, resampling_fun_inner = my_inner_fun,
 #'                        resampling_fun_outer = my_outer_fun,
 #'                        B_inner = 5, B_outer = 10) 
-# -> provide B_inner & B_outer only for enabling default plot
 #' }
 #' 
 #' ######## Example for scalar-on-function-regression with bsignal() 

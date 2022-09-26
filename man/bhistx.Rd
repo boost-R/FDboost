@@ -125,8 +125,8 @@ X1h <- with(dataList, hmatrix(time = rep(tvals, each = n), id = rep(1:n, nygrid)
 dataList$X1h <- I(X1h)   
 dataList$svals <- attr(data1, "xindex")
 ## add a factor variable 
-dataList$zlong <- factor(gl(n = 2, k = n/2, length = n*nygrid), levels = 1:3)  
-dataList$z <- factor(gl(n = 2, k = n/2, length = n), levels = 1:3)
+dataList$zlong <- factor(gl(n = 2, k = n/2, length = n*nygrid), levels = 1:2)  
+dataList$z <- factor(gl(n = 2, k = n/2, length = n), levels = 1:2)
 
 ## do the model fit with main effect of bhistx() and interaction of bhistx() and bolsc()
 mod <- FDboost(Y ~ 1 + bhistx(x = X1h, df = 5, knots = 5) + 
@@ -142,6 +142,10 @@ mod <- FDboost(Y ~ 1 + bhistx(x = X1h, df = 5, knots = 5) \%X\% bols(zlong),
   cv <- cvrisk(mod, folds = cv(model.weights(mod), B = 5))
   mstop(cv)
   mod[mstop(cv)]
+  
+  appl1 <- applyFolds(mod, folds = cv(rep(1, length(unique(mod$id))), type = "bootstrap", B = 5))
+
+ # plot(mod)
 }
 }
 

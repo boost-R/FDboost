@@ -409,8 +409,8 @@ X_histx <- function(mf, vary, args) {
 #' dataList$X1h <- I(X1h)   
 #' dataList$svals <- attr(data1, "xindex")
 #' ## add a factor variable 
-#' dataList$zlong <- factor(gl(n = 2, k = n/2, length = n*nygrid), levels = 1:3)  
-#' dataList$z <- factor(gl(n = 2, k = n/2, length = n), levels = 1:3)
+#' dataList$zlong <- factor(gl(n = 2, k = n/2, length = n*nygrid), levels = 1:2)  
+#' dataList$z <- factor(gl(n = 2, k = n/2, length = n), levels = 1:2)
 #'
 #' ## do the model fit with main effect of bhistx() and interaction of bhistx() and bolsc()
 #' mod <- FDboost(Y ~ 1 + bhistx(x = X1h, df = 5, knots = 5) + 

@@ -460,9 +460,10 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
         }
         
         # compute risk with integration weights like in FDboost::validateFDboost
-        risk <- sapply(grid, function(g){riskfct( response_oobweights, 
-                                                  withCallingHandlers(predict(mod[g], newdata = dat_oobweights, toFDboost = FALSE), warning = h2), 
-                                                  w = oobwstand )}) ## oobwstand[oobweights[object$id] != 0 ]
+        risk <- sapply(grid, function(g){riskfct( 
+          response_oobweights, 
+          withCallingHandlers(predict(mod[g], newdata = dat_oobweights, toFDboost = FALSE), warning = h2), 
+          w = oobwstand )}) ## oobwstand[oobweights[object$id] != 0 ]
         
       }else{
         
@@ -474,9 +475,10 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
         }
         
         # compute risk with integration weights like in FDboost::validateFDboost
-        risk <- sapply(grid, function(g){riskfct( response_oobweights, 
-                                                  withCallingHandlers(predict(mod[g], newdata = dat_oobweights, toFDboost = FALSE), warning = h2), 
-                                                  w = oobwstand[oobweights != 0 ])})
+        risk <- sapply(grid, function(g){riskfct( 
+          response_oobweights, 
+          withCallingHandlers(predict(mod[g], newdata = dat_oobweights, toFDboost = FALSE), warning = h2), 
+          w = oobwstand[oobweights != 0 ])})
         
       }
 

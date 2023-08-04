@@ -158,7 +158,7 @@ see \code{\link[mboost]{Family}} for a list of implemented families.
 With \code{FDboost} the following covariate effects can be estimated by specifying 
 the following effects in the \code{formula}
 (similar to function \code{\link[refund]{pffr}} 
-in R-package \code{\link[refund:refund-package]{refund}}). 
+in R-package refund. 
 The \code{timeformula} is used to expand the effects in \code{t}-direction. 
 \itemize{
 \item Linear functional effect of scalar (numeric or factor) covariate \eqn{z} that varies 

@@ -646,7 +646,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #' mod <- mod[75]
 #' 
 #'   #### create folds for 3-fold bootstrap: one weight for each curve
-#'   set.seed(123)
+#'   set.seed(124)
 #'   folds_bs <- cv(weights = rep(1, mod$ydim[1]), type = "bootstrap", B = 3)
 #' 
 #'   ## compute out-of-bag risk on the 3 folds for 1 to 75 boosting iterations  
@@ -670,7 +670,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #'   ## plot the estimated coefficients per fold
 #'   ## more meaningful for higher number of folds, e.g., B = 100 
 #'   par(mfrow = c(2,2))
-#'   plotPredCoef(cvr2, terms = FALSE, which = 2)
+#'   plotPredCoef(cvr2, terms = FALSE, which = 1)
 #'   plotPredCoef(cvr2, terms = FALSE, which = 3)
 #'   
 #'   ## compute out-of-bag risk and predictions for leaving-one-curve-out cross-validation

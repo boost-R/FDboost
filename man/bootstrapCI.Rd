@@ -128,15 +128,10 @@ bootCIs$mstops
 plot(bootCIs, ask = FALSE)
 }
 
-## now speed things up by defining the inner resampling
-## function with parallelization based on mclapply (does not work on Windows)
-isWindows <- Sys.info()['sysname']=="Windows"
-
 my_inner_fun <- function(object){ 
 cvrisk(object, folds = cvLong(id = object$id, weights = 
-model.weights(object), 
-B = 10 # 10-fold for inner resampling
-), mc.cores = if(isWindows) 1 else 10) # use ten cores
+model.weights(object), B = 2) # 10-fold for inner resampling
+) 
 }
 
 \donttest{
@@ -148,8 +143,7 @@ bootCIs <- bootstrapCI(m1, resampling_fun_inner = my_inner_fun,
 ## function in the outer resampling 
 
 \donttest{
-bootCIs <- bootstrapCI(m1, mc.cores = if(isWindows) 1 else 30, 
-                       B_inner = 5, B_outer = 3)
+bootCIs <- bootstrapCI(m1, B_inner = 5, B_outer = 3)
 }
 
 ## Now let's parallelize the outer resampling and use 
@@ -159,16 +153,14 @@ my_inner_fun <- function(object){
 cvrisk(object, folds = cvLong(id = object$id, weights = 
 model.weights(object), type = "kfold", # use CV
 B = 5, # 5-fold for inner resampling
-),
-mc.cores = if(isWindows) 1 else 5) # use five cores
+)) # use five cores
 }
 
 # use applyFolds for outer function to avoid messing up weights
 my_outer_fun <- function(object, fun){
 applyFolds(object = object,
 folds = cv(rep(1, length(unique(object$id))), 
-type = "bootstrap", B = 10), fun = fun,
-mc.cores = if(isWindows) 1 else 10) # parallelize on 10 cores
+type = "bootstrap", B = 10), fun = fun) # parallelize on 10 cores
 }
 
 \donttest{

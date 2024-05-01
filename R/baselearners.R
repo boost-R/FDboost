@@ -2368,9 +2368,11 @@ X_olsc <- function(mf, vary, args) {
       args$contrasts.arg <- NULL
     }
     X <- model.matrix(as.formula(fm), data = mf, contrasts.arg = args$contrasts.arg)
-    if (DUMMY)
+    if (DUMMY) {
       attr(X, "contrasts") <- lapply(attr(X, "contrasts"),
                                      function(x) x <- "contr.dummy")
+      args$contrasts.arg <- "contr.dummy"
+    }
     contr <- attr(X, "contrasts")
     if (!args$intercept)
       X <- X[ , -1, drop = FALSE]

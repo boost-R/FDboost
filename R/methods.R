@@ -480,7 +480,8 @@ residuals.FDboost <- function(object, ...){
   
   if(!any(class(object)=="FDboostLong")){
     resid <- matrix(object$resid())
-    resid <- matrix(resid, nrow = NROW(resid))
+    ydim <- ifelse(is.null(object$ydim[1]), NROW(resid), object$ydim[1])
+    resid <- matrix(resid, nrow = ydim)
     resid[is.na(object$response)] <- NA 
   }else{
     resid <- object$resid()

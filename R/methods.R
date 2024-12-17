@@ -479,7 +479,9 @@ fitted.FDboost <- function(object, toFDboost = TRUE, ...) {
 residuals.FDboost <- function(object, ...){
   
   if(!any(class(object)=="FDboostLong")){
-    resid <- matrix(object$resid(), nrow=object$ydim[1])
+    resid <- matrix(object$resid())
+    ydim <- ifelse(is.null(object$ydim[1]), NROW(resid), object$ydim[1])
+    resid <- matrix(resid, nrow = ydim)
     resid[is.na(object$response)] <- NA 
   }else{
     resid <- object$resid()

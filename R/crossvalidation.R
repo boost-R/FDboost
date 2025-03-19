@@ -505,7 +505,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   OOBweights <- matrix(rep(sample_weights, ncol(folds)), ncol = ncol(folds))
   OOBweights[folds > 0] <- 0
   
-  if (all.equal(papply, mclapply) == TRUE) {
+  if (isTRUE(all.equal(papply, mclapply))) {
     oobrisk <- papply(1:ncol(folds),
                       function(i) try(dummyfct(weights = folds[, i],
                                                oobweights = OOBweights[, i]),

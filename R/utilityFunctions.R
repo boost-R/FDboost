@@ -1107,7 +1107,7 @@ reweightData <- function(data, argvals, vars,
   
   ## check that all idvars are equal
   if(length(idvars)>1)
-    if(!all(sapply(data[idvars][-1],function(x)all.equal(data[idvars][[1]],x)=="TRUE")))
+    if(!all(sapply(data[idvars][-1],function(x) isTRUE(all.equal(data[idvars][[1]], x)))))
       stop("All idvars must be identical.")
   idvars_new <- NULL
   
@@ -1131,7 +1131,7 @@ reweightData <- function(data, argvals, vars,
     for(j in 1:length(nhm)){
       
       ## check that idvars == idvars[[1]] and match id-variables in all hmatrix-objects
-      if(!is.null(idvars) && !(all.equal(c(getId(data[[nhm[j]]])), c(data[[idvars[1]]])) == "TRUE")) 
+      if(!is.null(idvars) && !isTRUE(all.equal(c(getId(data[[nhm[j]]])), c(data[[idvars[1]]]))))
         stop("id variable in hmatrix object must be equal to idvars")
       
       ## subset hmatrix

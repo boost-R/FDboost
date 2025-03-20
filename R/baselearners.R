@@ -759,7 +759,7 @@ bsignal <- function(x, s, index = NULL, inS = c("smooth", "linear", "constant"),
       if(length(value) != names(mf[1]))
         stop(sQuote("value"), " must have same length as ",
              sQuote("names(mf[1])"))
-      for (i in 1:length(value)){
+      for (i in seq_along(value)){
         cll[[i+1]] <<- as.name(value[i])
       }
       attr(mf, "names") <<- value
@@ -1042,7 +1042,7 @@ bconcurrent <- function(x, s, time, index = NULL, #by = NULL,
       if(length(value) != names(mf[1]))
         stop(sQuote("value"), " must have same length as ",
              sQuote("names(mf[1])"))
-      for (i in 1:length(value)){
+      for (i in seq_along(value)){
         cll[[i+1]] <<- as.name(value[i])
       }
       attr(mf, "names") <<- value
@@ -1254,7 +1254,7 @@ X_hist <- function(mf, vary, args) {
     #       tempj <- unlist(apply(!ind0, 1, which)) # in which columns are the values? 
     #       ## i: row numbers: one row number per observation of response, 
     #       #     repeat the row number for each entry
-    #       X1des <- sparseMatrix(i=rep(1:length(id), times=rowSums(!ind0)), j=tempj,
+    #       X1des <- sparseMatrix(i=rep(seq_along(id), times=rowSums(!ind0)), j=tempj,
     #                             x=X1[cbind(rep(id, t=rowSums(!ind0)), tempj)], dims=dim(ind0))
     #       # object.size(X1des)
     #       rm(tempj)       
@@ -1360,7 +1360,7 @@ X_hist <- function(mf, vary, args) {
     
   # stack design-matrix of response nobs times in wide format
   if(args$format == "wide"){
-    Bt <- Bt[rep(1:length(yind), each=nobs), ]
+    Bt <- Bt[rep(seq_along(yind), each=nobs), ]
   }
   
   if(! mboost_intern(Bt, fun = "isMATRIX") ) Bt <- matrix(Bt, ncol=1)
@@ -1574,7 +1574,7 @@ bhist <- function(x, s, time, index = NULL, #by = NULL,
       if(length(value) != names(mf[1]))
         stop(sQuote("value"), " must have same length as ",
              sQuote("names(mf[1])"))
-      for (i in 1:length(value)){
+      for (i in seq_along(value)){
         cll[[i+1]] <<- as.name(value[i])
       }
       attr(mf, "names") <<- value
@@ -1805,7 +1805,7 @@ bfpc <- function(x, s, index = NULL, df = 4,
       if(length(value) != names(mf[1]))
         stop(sQuote("value"), " must have same length as ",
              sQuote("names(mf[1])"))
-      for (i in 1:length(value)){
+      for (i in seq_along(value)){
         cll[[i+1]] <<- as.name(value[i])
       }
       attr(mf, "names") <<- value
@@ -1867,7 +1867,7 @@ X_bbsc <- function(mf, vary, args) {
   MATRIX <- MATRIX && options("mboost_useMatrix")$mboost_useMatrix
   if (MATRIX) {
     diag <- Diagonal
-    for (i in 1:length(mm)){
+    for (i in seq_along(mm)){
       tmp <- attributes(mm[[i]])[c("degree", "knots", "Boundary.knots")]
       mm[[i]] <- Matrix(mm[[i]])
       attributes(mm[[i]])[c("degree", "knots", "Boundary.knots")] <- tmp
@@ -2285,7 +2285,7 @@ bbsc <- function(..., by = NULL, index = NULL, knots = 10, boundary.knots = NULL
       if(length(value) != length(colnames(mf)))
         stop(sQuote("value"), " must have same length as ",
              sQuote("colnames(mf)"))
-      for (i in 1:length(value)){
+      for (i in seq_along(value)){
         cll[[i+1]] <<- as.name(value[i])
       }
       attr(mf, "names") <<- value
@@ -2559,7 +2559,7 @@ bolsc <- function(..., by = NULL, index = NULL, intercept = TRUE, df = NULL,
       if(length(value) != length(colnames(mf)))
         stop(sQuote("value"), " must have same length as ",
              sQuote("colnames(mf)"))
-      for (i in 1:length(value)){
+      for (i in seq_along(value)){
         cll[[i+1]] <<- as.name(value[i])
       }
       attr(mf, "names") <<- value

@@ -54,7 +54,7 @@ truncateTime <- function(funVar, time, newtime, data){
   ret <- data
   ret[[time]] <- newtime
   
-  for(i in 1:length(funVar)){
+  for(i in seq_along(funVar)){
     ret[[funVar[i]]] <- ret[[funVar[i]]][ , data[[time]] %in% newtime] 
   }  
   rm(data)
@@ -153,7 +153,7 @@ funplot <- function(x, y, id=NULL, rug=TRUE, ...){
     stopifnot(length(x)==length(y) & length(y)==length(id))
     
     idOrig <- id
-    for(i in 1:length(unique(idOrig))){
+    for(i in seq_along(unique(idOrig))){
       id[idOrig==unique(idOrig)[i]] <- i
     }
     
@@ -228,7 +228,7 @@ plotPredicted <- function(x, subset=NULL, posLegend="topleft", lwdObs=1, lwdPred
   
   if(any(class(x) == "FDboostScalar")){
     
-    if(is.null(subset)) subset <- 1:length(x$response)
+    if(is.null(subset)) subset <- seq_along(x$response)
     response <- x$response[subset, drop=FALSE] 
     pred <- fitted(x)[subset, drop=FALSE]
     pred[is.na(response)] <- NA
@@ -296,7 +296,7 @@ plotResiduals <- function(x, subset=NULL, posLegend="topleft", ...){
   
   if(any(class(x) == "FDboostScalar")){
     
-    if(is.null(subset)) subset <- 1:length(x$response)
+    if(is.null(subset)) subset <- seq_along(x$response)
     response <- x$response[subset, drop=FALSE] 
     resid <- x$resid()[subset, drop=FALSE]
     
@@ -349,7 +349,7 @@ getYYhatTime <- function(object, breaks=object$yind){
     yInter <- t(apply(y, 1, function(x) approx(object$yind, x, xout=time)$y))
     # Get dataframe to predict values at time
     newdata <- list()
-    for(j in 1:length(object$baselearner)){
+    for(j in seq_along(object$baselearner)){
       datVarj <- object$baselearner[[j]]$get_data()
       if(grepl("bconcurrent", names(object$baselearner)[j])){
         datVarj <- t(apply(datVarj[[1]], 1, function(x) approx(object$yind, x, xout=time)$y))
@@ -415,7 +415,7 @@ funRsquared <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,
     yhat <- object$fitted()
     time <- object$yind
     id <- object$id
-    if(is.null(id)) id <- 1:length(y)
+    if(is.null(id)) id <- seq_along(y)
     if(overTime & !global) {
       overTime <- FALSE
       message("For scalar or irregualr response the functional R-squared cannot be computed over time.")
@@ -532,7 +532,7 @@ funMSE <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,
     yhat <- object$fitted()
     time <- object$yind
     id <- object$id
-    if(is.null(id)) id <- 1:length(y)
+    if(is.null(id)) id <- seq_along(y)
     if(overTime & !global) {
       overTime <- FALSE
       message("For scalar or irregualr response the functional MSE cannot be computed over time.")
@@ -619,7 +619,7 @@ funMRD <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,  ...
     yhat <- object$fitted()
     time <- object$yind
     id <- object$id
-    if(is.null(id)) id <- 1:length(y)
+    if(is.null(id)) id <- seq_along(y)
     if(overTime & !global) {
       overTime <- FALSE
       message("For scalar or irregualr response the functional MRD cannot be computed over time.")
@@ -734,7 +734,7 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
     if( length(yind) < nrow(X1des) | all(table(yind) / max(id) > 0.8) ){
       if(is.null(t_unique)) t_unique <- sort(unique(yind))
       logCondDs_hist <- rep(NA, length=length(t_unique))
-      for(k in 1:length(t_unique)){
+      for(k in seq_along(t_unique)){
         Ds_t <- X1des[yind==t_unique[k], ] # get rows of Ds corresponding to yind
         ind0Bs_t <- ind0Bs[yind==t_unique[k], ] # get rows of ind0Bs corresponding to yind
         # only keep columns that are not completely 0, otherwise matrix is always rank deficient
@@ -829,7 +829,7 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
   if(!is.null(limits)){  
     
     subs <- list()
-    for(k in 1:length(t_unique)){
+    for(k in seq_along(t_unique)){
       subs[[k]] <- which(limits(s=xind, t=t_unique[k]))
     }
     cumOverlapKe <- sapply(subs, getOverlap, X1=X1, L=L, Bs=Bs, K=K)
@@ -1128,7 +1128,7 @@ reweightData <- function(data, argvals, vars,
     newHmats <- vector("list", length(nhm))
     
     ## construct the new hmatrices
-    for(j in 1:length(nhm)){
+    for(j in seq_along(nhm)){
       
       ## check that idvars == idvars[[1]] and match id-variables in all hmatrix-objects
       if(!is.null(idvars) && !isTRUE(all.equal(c(getId(data[[nhm[j]]])), c(data[[idvars[1]]]))))
@@ -1157,7 +1157,7 @@ reweightData <- function(data, argvals, vars,
     if(any(idvars %in% longvars)) longvars <- longvars[!longvars %in% idvars]
     ## create weights and index in long format
     weights_long <- weights[data[[idvars[1]]]]
-    index_long <- rep(1:length(weights_long), weights_long)
+    index_long <- rep(seq_along(weights_long), weights_long)
     ## indexing variables in long format
     temp_long <- lapply(longvars, function(nameWithoutDim) data[[nameWithoutDim]][index_long])
     
@@ -1200,7 +1200,7 @@ reweightData <- function(data, argvals, vars,
   if(!is.null(idvars)){
     
     ## only works for common observation grid of response
-    ## idvars_new <- rep(1:length(index), nc) # index = c(1, 1, 2) -> 1, 2, 3
+    ## idvars_new <- rep(seq_along(index), nc) # index = c(1, 1, 2) -> 1, 2, 3
     
     for(ifr in idvars){
       data[[ifr]] <- idvars_new

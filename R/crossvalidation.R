@@ -248,7 +248,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   ## problem with index for bl containing index, and you do not get s for bsignal/bhist
   if(FALSE){
     dathelp2 <- list()
-    for(j in 1:length(object$baselearner)){
+    for(j in seq_along(object$baselearner)){
       dat_bl_j <- object$baselearner[[j]]$get_data() ## object$baselearner[[j]]$model.frame()
       # if the variable is already present, do not add it again
       dathelp2 <- c(dathelp2, dat_bl_j[!names(dat_bl_j) %in% names(dathelp2)])
@@ -317,7 +317,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
     
     # for each missing variable get the first baselearner, which contains the variable
     blWithMissVars <- lapply(names_variables[whMiss], function(w) 
-      unlist(lapply(1:length(object$baselearner), function(i) if(
+      unlist(lapply(seq_along(object$baselearner), function(i) if(
         any( grepl(w, object$baselearner[[i]]$get_names() ) )) return(i))
       )[1])
     
@@ -352,7 +352,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
     if(any(isFac)){
       namesFac <- names(isFac)[isFac]
       
-      for(i in 1:length(namesFac)){
+      for(i in seq_along(namesFac)){
         
       if(length(levels(droplevels(dathelp[[namesFac[i]]]))) != 
          length(levels(droplevels(dat_weights[[namesFac[i]]]))))
@@ -963,11 +963,11 @@ validateFDboost <- function(object, response = NULL,
     oobpreds <- matrix(nrow = nrow(oobpreds0[[1]]), ncol = ncol(oobpreds0[[1]]))
     
     if(any(class(object) == "FDboostLong")){
-      for(i in 1:length(oobpreds0)){ # i runs over observed trajectories, i.e. over id 
+      for(i in seq_along(oobpreds0)){ # i runs over observed trajectories, i.e. over id
         oobpreds[id == i, ]  <- oobpreds0[[i]][id == i, ] 
       }
     }else{
-      for(j in 1:length(oobpreds0)){
+      for(j in seq_along(oobpreds0)){
         oobpreds[folds[ , j] == 0] <- oobpreds0[[j]][folds[ , j] == 0] 
       }
     }
@@ -1008,7 +1008,7 @@ validateFDboost <- function(object, response = NULL,
     
     ### estimates of coefficients
     timeHelp <- seq(min(modRisk[[1]]$mod$yind), max(modRisk[[1]]$mod$yind), l = 40)
-    for(l in 1:length(modRisk[[1]]$mod$baselearner)){
+    for(l in seq_along(modRisk[[1]]$mod$baselearner)){
       # estimate the coefficients for the model of the first fold
       my_coef <- coef(modRisk[[1]]$mod[optimalMstop], 
            which = l, n1 = 40, n2 = 20, n3 = 15, n4 = 10)$smterms[[1]]
@@ -1023,7 +1023,7 @@ validateFDboost <- function(object, response = NULL,
         attr(coefCV[[l]]$value, "offset") <- NULL # as offset is the same within one model
         
         # add estimates for the models of the other folds
-        coefCV[[l]]$value <- lapply(1:length(modRisk), function(g){
+        coefCV[[l]]$value <- lapply(seq_along(modRisk), function(g){
           ret <- coef(modRisk[[g]]$mod[optimalMstop], 
                       which = l, n1 = 40, n2 = 20, n3 = 15, n4 = 10)$smterms[[1]]$value
           #         if(l==1){
@@ -1036,7 +1036,7 @@ validateFDboost <- function(object, response = NULL,
         ## %X% with numberLevels coefficient values in a list
         ## lapply(1:coefCV[[l]]$numberLevels, function(x) coefCV[[l]][[x]]$value)
         for(j in 1:coefCV[[l]]$numberLevels){
-          coefCV[[l]][[j]]$value <- lapply(1:length(modRisk), function(g){
+          coefCV[[l]][[j]]$value <- lapply(seq_along(modRisk), function(g){
             ret <- coef(modRisk[[g]]$mod[optimalMstop], 
                         which = l, n1 = 40, n2 = 20, n3 = 15, n4 = 10)$smterms[[1]][[j]]$value
             attr(ret, "offset") <- NULL # as offset is the same within one model
@@ -1048,7 +1048,7 @@ validateFDboost <- function(object, response = NULL,
     }
     
     ## predict offset
-    offset <- sapply(1:length(modRisk), function(g){
+    offset <- sapply(seq_along(modRisk), function(g){
       # offset is vector of length yind or numeric of length 1 for constant offset
       ret <- modRisk[[g]]$mod$predictOffset(time = timeHelp)
       if( length(ret) == 1 & length(object$yind) > 1 ) ret <- rep(ret, length(timeHelp))
@@ -1063,7 +1063,7 @@ validateFDboost <- function(object, response = NULL,
     # only makes sense for type="curves" with leaving-out one curve per fold!!
     if(grepl("curves", type)){
       for(l in 1:(length(modRisk[[1]]$mod$baselearner)+1)){
-        predCV[[l]] <- t(sapply(1:length(modRisk), function(g){
+        predCV[[l]] <- t(sapply(seq_along(modRisk), function(g){
           if(l == 1){ # save offset of model
             # offset is vector of length yind or numeric of length 1 for constant offset
             ret <- modRisk[[g]]$mod[optimalMstop]$predictOffset(object$yind) 
@@ -1356,7 +1356,7 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
   
   stopifnot(any(class(x) == "validateFDboost"))
 
-  if(is.null(which)) which <- 1:length(x$coefCV)
+  if(is.null(which)) which <- seq_along(x$coefCV)
   
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
@@ -1365,7 +1365,7 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
   
   if(terms){
     
-    if(all(which == 1:length(x$coefCV))){
+    if(all(which == seq_along(x$coefCV))){
       which <- 1:(length(x$coefCV)+1)
     }else{
       which <- which + 1 
@@ -1387,7 +1387,7 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
         
         funplot(x$yind, unlist(x$predCV[[l]]), id=x$id, col="white", 
                 main=names(x$predCV)[l], xlab=attr(x$yind, "nameyind"), ylab="coef", ylim=ylim, ...)
-        for(i in 1:length(x$predCV[[l]])){
+        for(i in seq_along(x$predCV[[l]])){
           lines(x$yind[x$id==i], x$predCV[[l]][[i]], lwd=1, col=i)
           if(showNumbers){
             points(x$yind[x$id==i], x$predCV[[l]][[i]], type="p", pch=paste0(i))
@@ -1562,7 +1562,7 @@ plot_bootstrapped_coef <- function(temp, l,
     
     # set lower triangular matrix to NA for historic effect
     if(grepl("bhist", temp$main)){
-      for(k in 1:length(temp$value)){
+      for(k in seq_along(temp$value)){
         temp$value[[k]][temp$value[[k]]==0] <- NA
       }
     }
@@ -1575,7 +1575,7 @@ plot_bootstrapped_coef <- function(temp, l,
       # plot coefficient surfaces at different pointwise quantiles
       if(pers){ 
         matvec <- sapply(temp$value, c)
-        for(k in 1:length(probs)){
+        for(k in seq_along(probs)){
           
           tempZ <- matrix(apply(matvec, 1, quantile, probs=probs[k], na.rm=TRUE), ncol=length(temp$x))
           
@@ -1592,7 +1592,7 @@ plot_bootstrapped_coef <- function(temp, l,
         
       }else{ # do 2-dim plots
 
-        # for(j in 1:length(quanty)){ 
+        # for(j in seq_along(quanty)){
         #   
         #   myCol <- sapply(temp$value, function(x) x[, quanty[j]==temp$y]) # first column
         #   
@@ -1602,7 +1602,7 @@ plot_bootstrapped_coef <- function(temp, l,
         #   
         # } # end loop over quanty
         # 
-        # for(j in 1:length(quantx)){  
+        # for(j in seq_along(quantx)){
         #   myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x, ]) # first column
         #   
         #   plot_curves(x_i = temp$x, y_i = myRow, xlab_i = temp$xlab, 
@@ -1612,7 +1612,7 @@ plot_bootstrapped_coef <- function(temp, l,
         # }
         
         matvec <- sapply(temp$value, c)
-        for(k in 1:length(probs)){
+        for(k in seq_along(probs)){
           
           tempZ <- matrix(apply(matvec, 1, quantile, probs=probs[k], na.rm=TRUE), ncol=length(temp$x))
           
@@ -1633,7 +1633,7 @@ plot_bootstrapped_coef <- function(temp, l,
       
     }else{ # temp$x is factor
       
-      for(j in 1:length(quantx)){ 
+      for(j in seq_along(quantx)){
         
         # impute matrix of 0 if effect was never chosen
         temp$value[sapply(temp$value, function(x) is.null(dim(x)))] <- list(matrix(0, ncol=20, nrow=length(quantx)))

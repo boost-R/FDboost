@@ -138,7 +138,7 @@ stabsel.FDboost <- function(x, refitSmoothOffset = TRUE,
   
   fun <- function(model) {
     xs <- selected(model)
-    qq <- sapply(1:length(xs), function(x) length(unique(xs[1:x])))
+    qq <- sapply(seq_along(xs), function(x) length(unique(xs[1:x])))
     xs[qq > q] <- xs[1]
     xs
   }
@@ -184,7 +184,7 @@ stabsel.FDboost <- function(x, refitSmoothOffset = TRUE,
     m <- mstop(x)
   }
   ret <- matrix(0, nrow = length(ibase), ncol = m)
-  for (i in 1:length(ss)) {
+  for (i in seq_along(ss)) {
     tmp <- sapply(ibase, function(x)
       ifelse(x %in% ss[[i]], which(ss[[i]] == x)[1], m + 1))
     ret <- ret + t(sapply(tmp, function(x) c(rep(0, x - 1), rep(1, m - x + 1))))

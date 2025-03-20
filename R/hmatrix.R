@@ -15,7 +15,7 @@
 #' @param id specify to which curve the point belongs to, id from 1, 2, ..., n.  
 #' @param x matrix of functional covariate, each trajectory is in one row 
 #' @param argvals set of argument values, i.e., the common gird at which the functional covariate 
-#' is observed, by default \code{1:ncol(x)}
+#' is observed, by default \code{seq_len(ncol(x))}
 #' @param timeLab name of the time axis, by default \code{t}
 #' @param idLab name of the id variable, by default \code{wideIndex}
 #' @param xLab name of the functional variable, by default NULL
@@ -70,7 +70,7 @@
 #' @return An matrix object of type \code{"hmatrix"}
 #'  
 #' @export
-hmatrix <- function(time, id, x, argvals=1:ncol(x), 
+hmatrix <- function(time, id, x, argvals=seq_len(ncol(x)), 
                     timeLab="t", idLab="wideIndex", xLab="x", argvalsLab="s"){
    
   ## check that id is integer valued containing 1, 2, 3, ..., n 

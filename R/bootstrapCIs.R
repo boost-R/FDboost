@@ -251,7 +251,7 @@ bootstrapCI <- function(object, which = NULL,
   
   ########## format coefficients #########
   # number of baselearners
-  nrEffects <- max(sapply(1:length(coefs), 
+  nrEffects <- max(sapply(seq_along(coefs),
                           function(i) length(coefs[[i]]$smterms)))
   
   isFacSpecEffect <- sapply(1:nrEffects, 
@@ -272,10 +272,10 @@ bootstrapCI <- function(object, which = NULL,
   { 
     if(isFacSpecEffect[i]){
       # factor specific effect
-      lapply(1:length(coefs), function(j) lapply(1:(coefs[[1]]$smterms[[i]]$numberLevels), 
+      lapply(seq_along(coefs), function(j) lapply(1:(coefs[[1]]$smterms[[i]]$numberLevels),
                                                  function(k) coefs[[j]]$smterms[[i]][[k]]$value))
     }else{
-      lapply(1:length(coefs), function(j) coefs[[j]]$smterms[[i]]$value)
+      lapply(seq_along(coefs), function(j) coefs[[j]]$smterms[[i]]$value)
     }
   })
   
@@ -299,7 +299,7 @@ bootstrapCI <- function(object, which = NULL,
 
   # add information about the values of the covariate
   # and change format
-  for(i in 1:length(listOfCoefs)){
+  for(i in seq_along(listOfCoefs)){
     
     if(isFacSpecEffect[i]){
       
@@ -319,7 +319,7 @@ bootstrapCI <- function(object, which = NULL,
     if(is.list(listOfCoefs[[i]]) & is.factor(atx)){
       
       # combine each factor level
-      listOfCoefs[[i]] <- lapply(1:length(levels(droplevels(atx))),
+      listOfCoefs[[i]] <- lapply(seq_along(levels(droplevels(atx))),
                                  function(faclevnr) t(sapply(listOfCoefs[[i]], function(x) x[faclevnr,])))
       isSurface[i] <- FALSE
       
@@ -375,7 +375,7 @@ bootstrapCI <- function(object, which = NULL,
   listOfQuantiles <- vector("list", length(listOfCoefs))
   
   # calculate quantiles
-  for(i in 1:length(listOfCoefs)){
+  for(i in seq_along(listOfCoefs)){
     
     # for matrix object
     if(is.matrix(listOfCoefs[[i]]) & !is.list(listOfCoefs[[i]])){
@@ -418,7 +418,7 @@ bootstrapCI <- function(object, which = NULL,
              
              if(is.list(x)){
                
-               for(j in 1:length(x)){
+               for(j in seq_along(x)){
                  
                  if(!is.null(dim(x[[j]]))){
                    rownames(x[[j]]) <- levels
@@ -512,7 +512,7 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
     
   }
   
-  if(is.null(which)) which <- 1:length(x$raw_results)
+  if(is.null(which)) which <- seq_along(x$raw_results)
   
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))

@@ -258,7 +258,7 @@ is.hmatrix <- function(object){
   if(missing(j) || is.symbol(j)){ 
     
     tempId <- r[ ,2] # get the id of the corresponding rows
-    tempId <- (1:length(unique(tempId)))[factor(tempId)]  # transform the id to 1, 2, 3, ...        
+    tempId <- (seq_along(unique(tempId)))[factor(tempId)]  # transform the id to 1, 2, 3, ...
     
     return( hmatrix(time=r[ ,1], id=tempId, 
                   x=xAttr$x[unique(r[ ,2]), , drop=FALSE], argvals = xAttr$argvals, 
@@ -332,7 +332,7 @@ subset_hmatrix <- function(x, index, compress = TRUE)
     resMat <- rbind(resMat, 
                     matrix(c(rep(t, sum(idInT)), # for time points in hmatrix
                              index[idInT], # for id in hmatrix
-                             (1:length(index))[idInT]), # for idvars 
+                             (seq_along(index))[idInT]), # for idvars
                            ncol=3))
     
   }
@@ -345,7 +345,7 @@ subset_hmatrix <- function(x, index, compress = TRUE)
     # id with duplicates
     idvars <- c(factor(resMat[,2])) 
     # correct ordering
-    idvars <- (1:length(unique(idvars)))[factor(idvars)] 
+    idvars <- (seq_along(unique(idvars)))[factor(idvars)]
     
     # rewrite index for actual matrix
     index <- unique(index)

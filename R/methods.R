@@ -150,7 +150,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
         classes <- lapply(newdata, class)
         alln <- c()
         alllengthYind <- c()
-        for(i in 1:length(classes)){
+        for(i in seq_along(classes)){
           if( any(classes[[i]] == "hmatrix" ) ){
             # number of trajectories
             n <- length(unique(newdata[[i]][,2]) ) 
@@ -188,7 +188,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
       if(is.list(newdata) | is.data.frame(newdata)){
         classes <- lapply(newdata, class)
         alllengthYind <- c(lengthYind)
-        for(i in 1:length(classes)){
+        for(i in seq_along(classes)){
           if( any(classes[[i]] == "hmatrix" ) ){
             # total number of observation points
             lengthYind <- length(newdata[[i]][,1])
@@ -220,7 +220,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
     posBconc <- grep("bconcurrent(", names(object$baselearner), fixed = TRUE)
     posBhist <- grep("bhist(", names(object$baselearner), fixed = TRUE)
     whichHelp <- which
-    if(is.null(which)) whichHelp <- 1:length(object$baselearner)
+    if(is.null(which)) whichHelp <- seq_along(object$baselearner)
     posBsignal <- whichHelp[whichHelp %in% posBsignal]
     posBconc <- whichHelp[whichHelp %in% posBconc]
     posBhist <- whichHelp[whichHelp %in% posBhist]
@@ -253,7 +253,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
           indnameY <- NULL
         }
 
-        for(j in 1:length(xname)){
+        for(j in seq_along(xname)){
           attr(newdata[[xname[j]]], "indname") <- indname[j]
           attr(newdata[[xname[j]]], "xname") <- xname[j]
           attr(newdata[[xname[j]]], "signalIndex") <-  if(indname[j]!="xindDefault") newdata[[indname[j]]] else seq(0,1,l=ncol(newdata[[xname[j]]]))
@@ -504,7 +504,7 @@ residuals.FDboost <- function(object, ...){
 #' If \code{raw = TRUE} the coefficients of the model are returned. 
 #' @param which a subset of base-learners for which the coefficients
 #' should be computed (numeric vector), 
-#' defaults to NULL which is the same as \code{which=1:length(object$baselearner)}.
+#' defaults to NULL which is the same as \code{which=seq_along(object$baselearner)}.
 #' In the special case of \code{which=0}, only the coefficients of the offset are returned.
 #' @param computeCoef defaults to \code{TRUE}, if \code{FALSE} only the names of the terms are returned
 #' @param returnData return the dataset which is used to get the coefficient estimates as 
@@ -572,7 +572,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
       }  
     }
     
-    if(is.null(which)) which <- 1:length(object$baselearner)
+    if(is.null(which)) which <- seq_along(object$baselearner)
     
     ## special case of ~1 intercept specification with scalar response
     if( inherits(object, "FDboostScalar") && 
@@ -722,9 +722,9 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
               }else{ # two %X%
                 z1levels <- sort(unique(z1))
                 temp_d <- 1
-                for(j in 1:length(zlevels)){ # loop over z 
+                for(j in seq_along(zlevels)){ # loop over z
                   d[[ trm$get_names()[position_z] ]] <- zlevels[j] # use j-th factor level of z
-                  for(k in 1:length(z1levels)){ # loop over z1
+                  for(k in seq_along(z1levels)){ # loop over z
                     d[[ trm$get_names()[position_z1] ]] <- z1levels[k] # use k-th factor level of z1
                     attr(d, "add_main") <- paste0(trm$get_names()[position_z], "=", zlevels[j], ", ", 
                                                  trm$get_names()[position_z1], "=", z1levels[k])
@@ -986,9 +986,9 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
             
             dlist <- vector("list", numberLevels)
             temp_d <- 1
-            for(j in 1:length(xlevels)){ # loop over x 
+            for(j in seq_along(xlevels)){ # loop over x
               d[[1]] <- xlevels[j] # use j-th factor level of x
-              for(k in 1:length(zlevels)){ # loop over z
+              for(k in seq_along(zlevels)){ # loop over z
                 d[[3]] <- zlevels[k] # use k-th factor level of z
                 attr(d, "xm") <- d[[1]]
                 attr(d, "zm") <- d[[3]]
@@ -1003,7 +1003,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
               numberLevels <- nlevels(z)
               zlevels <- sort(unique(z))
               dlist <- vector("list", numberLevels)
-              for(j in 1:length(zlevels)){ # loop over z 
+              for(j in seq_along(zlevels)){ # loop over z
                 d[[3]] <- rep(zlevels[j], length(d[[1]])) # use j-th factor level of z
                 attr(d, "zm") <- d[[3]]
                 attr(d, "add_main") <- paste0(names(d)[3], "=", zlevels[j])
@@ -1014,7 +1014,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
                 numberLevels <- nlevels(x)
                 xlevels <- sort(unique(x))
                 dlist <- vector("list", numberLevels)
-                for(j in 1:length(xlevels)){ # loop over x 
+                for(j in seq_along(xlevels)){ # loop over x
                   d[[1]] <- rep(xlevels[j], length(d[[3]])) # use j-th factor level of x
                   attr(d, "xm") <- d[[1]]
                   attr(d, "add_main") <- paste0(names(d)[1], "=", xlevels[j])
@@ -1026,7 +1026,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
                 numberLevels <- n4
                 zlevels <- seq(min(z), max(z), l = n4)
                 dlist <- vector("list", numberLevels)
-                for(j in 1:length(zlevels)){ # loop over x 
+                for(j in seq_along(zlevels)){ # loop over x
                   d[[3]] <- rep(zlevels[j], length(d[[1]])) # use j-th quantile of x
                   attr(d, "zm") <- d[[1]]
                   attr(d, "add_main") <- paste0(names(d)[3], "=", round(zlevels[j], 2))
@@ -1243,10 +1243,10 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
       xpart <- unlist(strsplit(x, split = "%.{1,3}%"))
       ## find the expressions at which the split is done 
       operator <- gregexpr(pattern = "%.{1,3}%", text = x)[[1]]
-      operator <- sapply(1:length(operator), 
+      operator <- sapply(seq_along(operator),
                       function(i) substr(x, operator[i], operator[i] + attr(operator, "match.length")[i] -1 ) )
       
-      for(i in 1:length(xpart)){
+      for(i in seq_along(xpart)){
         xpart[i] <- gsub(pattern = "\\\"", replacement = "", x = xpart[i], fixed=TRUE)
         xpart[i] <- gsub(pattern = "\\", replacement = "", x = xpart[i], fixed=TRUE)
         nvar <- length(all.vars(formula(paste("Y~", xpart[i])))[-1])
@@ -1417,7 +1417,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
   
   ### get the effects to be plotted
   whichSpecified <- which 
-  if(is.null(which)) which <- 1:length(x$baselearner) 
+  if(is.null(which)) which <- seq_along(x$baselearner)
   
   if(onlySelected){
     which <- intersect(which, c(0, selected(x)))
@@ -1635,7 +1635,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       ### 3 dim plots
       # persp-plot for 3-dim effects
       if(trm$dim == 3 & pers){
-        for(j in 1:length(trm$z)){
+        for(j in seq_along(trm$z)){
           plotWithArgs(persp, args=argsPersp,
                        myargs=list(x=trm$x, y=trm$y, z=trm$value[[j]], xlab=paste("\n", trm$xlab), 
                                    ylab=paste("\n", trm$ylab), zlab=paste("\n", "coef"), 
@@ -1647,7 +1647,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       }
       # image for 3-dim effects
       if(trm$dim == 3 & !pers){
-        for(j in 1:length(trm$z)){
+        for(j in seq_along(trm$z)){
           plotWithArgs(image, args=argsImage,
                        myargs=list(x=trm$x, y=trm$y, z=trm$value[[j]], xlab=trm$xlab, ylab=trm$ylab,
                                    col = heat.colors(length(trm$x)^2), zlim=range(trm$value),
@@ -1662,7 +1662,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       
     }  ## end function myplot()
     
-    for(i in 1:length(terms)){
+    for(i in seq_along(terms)){
       
       trm <- terms[[i]] 
       
@@ -1728,7 +1728,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     
     if(!is.null(dots$ylim)) range <- dots$ylim
     
-    for(i in 1:length(terms)){
+    for(i in seq_along(terms)){
       
       # set values of predicted effect to missing if response is missing
       if(sum(is.na(x$response)) > 0) terms[[i]][is.na(x$response)] <- NA

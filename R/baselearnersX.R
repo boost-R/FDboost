@@ -522,7 +522,7 @@ bhistx <- function(x,
       if(length(value) != names(mf[1]))
         stop(sQuote("value"), " must have same length as ",
              sQuote("names(mf[1])"))
-      for (i in 1:length(value)){
+      for (i in seq_along(value)){
         cll[[i+1]] <<- as.name(value[i])
       }
       attr(mf, "names") <<- value

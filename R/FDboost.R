@@ -463,7 +463,7 @@ FDboost <- function(formula,          ### response ~ xvars
     ## insert id at end of each base-learner
     trmstrings2 <- paste(substr(trmstrings, 1 , nchar(trmstrings)-1), ", index=", id[2],")", sep = "")
     ## check if number of opening brackets is equal to number of closing brackets
-    equalBrackets <- sapply(1:length(trmstrings2), function(i)
+    equalBrackets <- sapply(seq_along(trmstrings2), function(i)
     {
       sapply(regmatches(trmstrings2[i], gregexpr("\\(", trmstrings2[i])), length) ==
         sapply(regmatches(trmstrings2[i], gregexpr("\\)", trmstrings2[i])), length)
@@ -485,7 +485,7 @@ FDboost <- function(formula,          ### response ~ xvars
     ##equalBrackets <- NULL
     if(length(trmstrings) > 0){
       ## insert index into the other base-learners of the tensor-product as well
-      for(i in 1:length(trmstrings)){
+      for(i in seq_along(trmstrings)){
         if(grepl( "%X", trmstrings2[i])){
           temp <- unlist(strsplit(trmstrings2[i], "%X"))
           temp1 <- temp[-length(temp)]
@@ -637,7 +637,7 @@ FDboost <- function(formula,          ### response ~ xvars
           stopifnot(length(response) == length(time) & length(response) == length(id))
       
       if(any(is.na(response))) warning("For non-grid observations the response should not contain missing values.")
-      if( !all(sort(unique(id)) == 1:length(unique(id))) ) stop("id has to be integers 1, 2, 3,..., N.")
+      if( !all(sort(unique(id)) == seq_along(unique(id))) ) stop("id has to be integers 1, 2, 3,..., N.")
       
       nr <- length(response) # total number of observations
       nc <- length(unique(id)) # number of trajectories
@@ -683,7 +683,7 @@ FDboost <- function(formula,          ### response ~ xvars
   
   ## check that the timevariable in timeformula and in the bhistx-base-learners have the same name
   if(any(grepl("bhistx", trmstrings))){
-    for(j in 1:length(trmstrings)){
+    for(j in seq_along(trmstrings)){
       if(any(grepl("bhistx", trmstrings[j]))){
         if(grepl("%X", trmstrings[j]) ){
           temp <- strsplit(trmstrings[[j]], "%X.*%")[[1]]
@@ -781,7 +781,7 @@ FDboost <- function(formula,          ### response ~ xvars
     get_df <- function(bl){
       split_bl <- unlist(strsplit(bl, split = "%.{1,3}%"))
       all_df <- c()
-      for(i in 1:length(split_bl)){
+      for(i in seq_along(split_bl)){
         parti <- parse(text = split_bl[i])[[1]] 
         parti <- expand.call(definition = get(as.character(parti[[1]])), call = parti)
         dfi <- parti$df # df of part i in bl 
@@ -1166,7 +1166,7 @@ FDboost <- function(formula,          ### response ~ xvars
     if(any( gsub(" ", "", strsplit(cfm[2], "\\+")[[1]]) ==  "1")){
       effectsToCheck <- 2:length(ret$baselearner)
     }else{
-      effectsToCheck <- 1:length(ret$baselearner)
+      effectsToCheck <- seq_along(ret$baselearner)
     }
     # predict each effect separately
     pred <- predict(ret, which = effectsToCheck)

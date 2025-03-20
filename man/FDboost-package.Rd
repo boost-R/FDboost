@@ -3,7 +3,6 @@
 \docType{package}
 \name{FDboost-package}
 \alias{FDboost-package}
-\alias{_PACKAGE}
 \alias{FDboost_package}
 \alias{package-FDboost}
 \title{FDboost: Boosting Functional Regression Models}

@@ -26,7 +26,7 @@ If \code{raw = TRUE} the coefficients of the model are returned.}
 
 \item{which}{a subset of base-learners for which the coefficients
 should be computed (numeric vector), 
-defaults to NULL which is the same as \code{which=1:length(object$baselearner)}.
+defaults to NULL which is the same as \code{which=seq_along(object$baselearner)}.
 In the special case of \code{which=0}, only the coefficients of the offset are returned.}
 
 \item{computeCoef}{defaults to \code{TRUE}, if \code{FALSE} only the names of the terms are returned}

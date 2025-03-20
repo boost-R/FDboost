@@ -140,7 +140,7 @@ x_plot <- list(x, x, fx[[3]])
 cols <- c("cornflowerblue", "darkseagreen", "darkred")
 opar <- par(mfrow = c(3,2))
 wch <- c(1,2,10)
-for(w in 1:length(wch)) {
+for(w in seq_along(wch)) {
   plot.mboost(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
        main = names(fac$resp$baselearner[wch[w]]))
   lines(sort(t), ft[[w]][order(t)]*max(d), col = cols[w], lty = 2)
@@ -205,7 +205,7 @@ ratio <- -max(abs(predict(fac$resp, which = 1))) / max(abs(predict(fac2$resp, wh
 
 opar <- par(mfrow = c(3,2))
 wch <- c(1,2,10)
-for(w in 1:length(wch)) {
+for(w in seq_along(wch)) {
   plot.mboost(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
                                 main = names(fac$resp$baselearner[wch[w]]))
   
@@ -300,7 +300,7 @@ x_plot <- list(x, x, fx[[3]])
 cols <- c("cornflowerblue", "darkseagreen", "darkred")
 opar <- par(mfrow = c(3,2))
 wch <- c(1,2,10)
-for(w in 1:length(wch)) {
+for(w in seq_along(wch)) {
   plot.mboost(fac$resp, which = wch[w], col = "darkgrey", ask = FALSE,
        main = names(fac$resp$baselearner[wch[w]]))
   lines(t, ft[[w]]*max(d), col = cols[w], lty = 2)
@@ -313,7 +313,7 @@ par(opar)
 # re-compose prediction
 preds <- lapply(fac, predict)
 PREDSf <- array(0, dim = c(nrow(preds$resp),nrow(preds$cov)))
-for(i in 1:ncol(preds$resp))
+for(i in seq_len(ncol(preds$resp)))
   PREDSf <- PREDSf + preds$resp[,i] \%*\% t(preds$cov[,i])
 
 opar <- par(mfrow = c(1,2))

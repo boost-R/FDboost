@@ -8,7 +8,7 @@ hmatrix(
   time,
   id,
   x,
-  argvals = 1:ncol(x),
+  argvals = seq_len(ncol(x)),
   timeLab = "t",
   idLab = "wideIndex",
   xLab = "x",
@@ -24,7 +24,7 @@ i.e. at which \code{t} the response curve is observed}
 \item{x}{matrix of functional covariate, each trajectory is in one row}
 
 \item{argvals}{set of argument values, i.e., the common gird at which the functional covariate 
-is observed, by default \code{1:ncol(x)}}
+is observed, by default \code{seq_len(ncol(x))}}
 
 \item{timeLab}{name of the time axis, by default \code{t}}
 

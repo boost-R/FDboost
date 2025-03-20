@@ -582,7 +582,7 @@ FDboost <- function(formula,          ### response ~ xvars
   allCovs <- unique(c(nameid, all.vars(formula)))
   if(length(allCovs) > 1){
     data <- data[allCovs[!allCovs %in% c(yname, nameyind)] ]
-    if( any(is.na(names(data))) ) data <- data[ !is.na(names(data)) ]
+    if( anyNA(names(data)) ) data <- data[ !is.na(names(data)) ]
   }else{
     data <- list(NULL)  # <SB> intercept-model without covariates
   } 
@@ -636,7 +636,7 @@ FDboost <- function(formula,          ### response ~ xvars
         stopifnot(all(length(response) == sapply(time, length)) & length(response) == length(id)) else
           stopifnot(length(response) == length(time) & length(response) == length(id))
       
-      if(any(is.na(response))) warning("For non-grid observations the response should not contain missing values.")
+      if(anyNA(response)) warning("For non-grid observations the response should not contain missing values.")
       if( !all(sort(unique(id)) == seq_along(unique(id))) ) stop("id has to be integers 1, 2, 3,..., N.")
       
       nr <- length(response) # total number of observations
@@ -1045,7 +1045,7 @@ FDboost <- function(formula,          ### response ~ xvars
         }
         # meanY <- sapply(1:nc, function(i) offsetFun(responseInter[,i], 1*!is.na(responseInter[,i])))
         
-        if( is.null(meanY) ||  any(is.na(meanY)) ){
+        if( is.null(meanY) || anyNA(meanY) ){
           warning("Mean offset cannot be computed by family@offset(). Use a weighted mean instead.")
           meanY <- c()
           for(i in 1:nc){

@@ -124,11 +124,11 @@ integrationWeights <- function(X1, xind, id = NULL){
   }
   
   # taking into account missing values
-  if(any(is.na(X1))){
+  if(anyNA(X1)){
     Lneu <- sapply(1:nrow(X1), function(i){
       x <- X1[i,]
       
-      if(!any(is.na(x))){
+      if(!anyNA(x)){
         l <- L[i, ] # no missing values in curve i
       }else{
         xindL <- xind # lower

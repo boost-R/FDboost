@@ -82,7 +82,7 @@ hmatrix <- function(time, id, x, argvals=1:ncol(x),
   x <- matrix(x, ncol=ncol(x), nrow=nrow(x))  
    
   #### check argvals and x
-  if( any(duplicated(argvals)) ){
+  if(anyDuplicated(argvals) > 0){
     stop("argvals contains duplicates.")
   } 
   if( is.unsorted(argvals) ){

@@ -89,7 +89,7 @@
   if(any(used_bl == "bolsc")) stop("Use bols instead of bolsc with %Xc%.")
   if(any(used_bl == "brandomc")) stop("Use brandom instead of brandomc with %Xc%.")
   if(any(used_bl == "bbsc")) stop("Use bbs instead of bbsc with %Xc%.")
-  if( (!is.null(match.call()$bl1$intercept) &&  match.call()$bl1$intercept != TRUE) |
+  if( (!is.null(match.call()$bl1$intercept) &&  match.call()$bl1$intercept != TRUE) ||
       (!is.null(match.call()$bl2$intercept) &&  match.call()$bl2$intercept != TRUE) ){
     stop("Set intercept = TRUE in base-learners used with %Xc%.")
   }
@@ -172,9 +172,9 @@
     X1 <- X1$X
     if (!is.null(l1)) K1 <- l1 * K1
     MATRIX <- options("mboost_useMatrix")$mboost_useMatrix
-    if (MATRIX & !is(X1, "Matrix"))
+    if (MATRIX && !is(X1, "Matrix"))
       X1 <- Matrix(X1)
-    if (MATRIX & !is(K1, "Matrix"))
+    if (MATRIX && !is(K1, "Matrix"))
       K1 <- Matrix(K1)
     
     X2 <- newX2(mf[, bl2$get_names(), drop = FALSE],
@@ -182,9 +182,9 @@
     K2 <- X2$K
     X2 <- X2$X
     if (!is.null(l2)) K2 <- l2 * K2
-    if (MATRIX & !is(X2, "Matrix"))
+    if (MATRIX && !is(X2, "Matrix"))
       X2 <- Matrix(X2)
-    if (MATRIX & !is(K2, "Matrix"))
+    if (MATRIX && !is(K2, "Matrix"))
       K2 <- Matrix(K2)
     suppressMessages(
       X <- kronecker(X1, Matrix(1, ncol = ncol(X2),
@@ -344,7 +344,7 @@ bl_lin_matrix_a <- function(blg, Xfun, args) {
             if( all(abs(multFactor - multFactor[1] ) < .Machine$double.eps*10^10) ) multFactor <- multFactor[1]
             
             ## case that W and w1w2 just differ by a factor 
-            if( all((W == w1w2)[w1w2 == 0]) & all((W == w1w2)[W == 0]) & ## check positions of zeros 
+            if( all((W == w1w2)[w1w2 == 0]) && all((W == w1w2)[W == 0]) && ## check positions of zeros 
                 length(multFactor) == 1 ){ # check that only 1 multiplicative factor 
               
               ## it is impossible to know whether multFactor is multiplied to w1 or w2! 
@@ -783,9 +783,9 @@ NULL
     X1 <- X1$X
     if (!is.null(l1)) K1 <- l1 * K1
     MATRIX <- options("mboost_useMatrix")$mboost_useMatrix
-    if (MATRIX & !is(X1, "Matrix"))
+    if (MATRIX && !is(X1, "Matrix"))
       X1 <- Matrix(X1)
-    if (MATRIX & !is(K1, "Matrix"))
+    if (MATRIX && !is(K1, "Matrix"))
       K1 <- Matrix(K1)
     
     X2 <- newX2(as.data.frame(mf[bl2$get_names()]),
@@ -793,9 +793,9 @@ NULL
     K2 <- X2$K
     X2 <- X2$X
     if (!is.null(l2)) K2 <- l2 * K2
-    if (MATRIX & !is(X2, "Matrix"))
+    if (MATRIX && !is(X2, "Matrix"))
       X2 <- Matrix(X2)
-    if (MATRIX & !is(K2, "Matrix"))
+    if (MATRIX && !is(K2, "Matrix"))
       K2 <- Matrix(K2)
     suppressMessages(
       K <- kronecker(K2, diag(ncol(X1))) +
@@ -912,7 +912,7 @@ NULL
       }
     }
 
-    if(args$lambda1 != 0 & args$lambda2 != 0) 
+    if(args$lambda1 != 0 && args$lambda2 != 0) 
       stop("%A0% can only be used when smoothing parameter is zero for one direction.")
     
     l1 <- args$lambda1
@@ -931,9 +931,9 @@ NULL
     X1 <- X1$X
     if (!is.null(l1)) K1 <- l1 * K1
     MATRIX <- options("mboost_useMatrix")$mboost_useMatrix
-    if (MATRIX & !is(X1, "Matrix"))
+    if (MATRIX && !is(X1, "Matrix"))
       X1 <- Matrix(X1)
-    if (MATRIX & !is(K1, "Matrix"))
+    if (MATRIX && !is(K1, "Matrix"))
       K1 <- Matrix(K1)
     
     X2 <- newX2(as.data.frame(mf[bl2$get_names()]),
@@ -941,9 +941,9 @@ NULL
     K2 <- X2$K
     X2 <- X2$X
     if (!is.null(l2)) K2 <- l2 * K2
-    if (MATRIX & !is(X2, "Matrix"))
+    if (MATRIX && !is(X2, "Matrix"))
       X2 <- Matrix(X2)
-    if (MATRIX & !is(K2, "Matrix"))
+    if (MATRIX && !is(K2, "Matrix"))
       K2 <- Matrix(K2)
     suppressMessages(
       K <- kronecker(K2, diag(ncol(X1))) +
@@ -1075,7 +1075,7 @@ NULL
       }
     }
     
-    if(args$lambda1 != 0 & args$lambda2 != 0) 
+    if(args$lambda1 != 0 && args$lambda2 != 0) 
       stop("%Xa0% can only be used when smoothing parameter is zero for one direction.")
     
     l1 <- args$lambda1
@@ -1094,9 +1094,9 @@ NULL
     X1 <- X1$X
     if (!is.null(l1)) K1 <- l1 * K1
     MATRIX <- options("mboost_useMatrix")$mboost_useMatrix
-    if (MATRIX & !is(X1, "Matrix"))
+    if (MATRIX && !is(X1, "Matrix"))
       X1 <- Matrix(X1)
-    if (MATRIX & !is(K1, "Matrix"))
+    if (MATRIX && !is(K1, "Matrix"))
       K1 <- Matrix(K1)
     
     X2 <- newX2(mf[, bl2$get_names(), drop = FALSE],
@@ -1104,9 +1104,9 @@ NULL
     K2 <- X2$K
     X2 <- X2$X
     if (!is.null(l2)) K2 <- l2 * K2
-    if (MATRIX & !is(X2, "Matrix"))
+    if (MATRIX && !is(X2, "Matrix"))
       X2 <- Matrix(X2)
-    if (MATRIX & !is(K2, "Matrix"))
+    if (MATRIX && !is(K2, "Matrix"))
       K2 <- Matrix(K2)
     suppressMessages(
       X <- kronecker(X1, Matrix(1, ncol = ncol(X2),

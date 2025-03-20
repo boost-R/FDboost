@@ -253,7 +253,7 @@ plotPredicted <- function(x, subset=NULL, posLegend="topleft", lwdObs=1, lwdPred
     
   }
   
-  if(is.character(response) | is.factor(x$response)){
+  if(is.character(response) || is.factor(x$response)){
 
     if(length(x$yind) > 1){
       message("For functional response that is not continuous only the predicted values are plotted.")
@@ -410,13 +410,13 @@ getYYhatTime <- function(object, breaks=object$yind){
 #' @export
 funRsquared <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE, ...){
   
-  if(length(object$yind)<2 | any(class(object)=="FDboostLong")){
+  if(length(object$yind)<2 || any(class(object)=="FDboostLong")){
     y <- object$response
     yhat <- object$fitted()
     time <- object$yind
     id <- object$id
     if(is.null(id)) id <- seq_along(y)
-    if(overTime & !global) {
+    if(overTime && !global) {
       overTime <- FALSE
       message("For scalar or irregualr response the functional R-squared cannot be computed over time.")
     }
@@ -457,7 +457,7 @@ funRsquared <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,
     attr(ret, "missings") <- apply(y, 2, function(x) sum(is.na(x))/length(x) )
     
   }else{ ### for each subject i
-    if(length(object$yind)<2 | any(class(object)=="FDboostLong")){
+    if(length(object$yind)<2 || any(class(object)=="FDboostLong")){
       # Mean for each subject
       mut <- tapply(y, id, mean, na.rm=TRUE  )[id]
       # numerator cannot be 0
@@ -527,13 +527,13 @@ funRsquared <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,
 funMSE <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE, 
                    relative=FALSE, root=FALSE, ...){
   
-  if(length(object$yind)<2 | any(class(object)=="FDboostLong")){
+  if(length(object$yind)<2 || any(class(object)=="FDboostLong")){
     y <- object$response
     yhat <- object$fitted()
     time <- object$yind
     id <- object$id
     if(is.null(id)) id <- seq_along(y)
-    if(overTime & !global) {
+    if(overTime && !global) {
       overTime <- FALSE
       message("For scalar or irregualr response the functional MSE cannot be computed over time.")
     }
@@ -557,7 +557,7 @@ funMSE <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,
       attr(ret, "missings") <- apply(y, 2, function(x) sum(is.na(x))/length(x))     
     }else{ 
       ### for each subject i
-      if(length(object$yind)<2 | any(class(object)=="FDboostLong")){
+      if(length(object$yind)<2 || any(class(object)=="FDboostLong")){
         ret <- tapply((y - yhat)^2, id, mean, na.rm=TRUE  )
         attr(ret, "name") <- "MSE over subjects"              
       }else{
@@ -614,13 +614,13 @@ funMSE <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,
 #' @export
 funMRD <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,  ...){
   
-  if(length(object$yind)<2 | any(class(object)=="FDboostLong")){
+  if(length(object$yind)<2 || any(class(object)=="FDboostLong")){
     y <- object$response
     yhat <- object$fitted()
     time <- object$yind
     id <- object$id
     if(is.null(id)) id <- seq_along(y)
-    if(overTime & !global) {
+    if(overTime && !global) {
       overTime <- FALSE
       message("For scalar or irregualr response the functional MRD cannot be computed over time.")
     }
@@ -648,7 +648,7 @@ funMRD <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,  ...
       attr(ret, "missings") <- apply(y, 2, function(x) sum(is.na(x))/length(x))     
     }else{ 
       ### for each subject i
-      if(length(object$yind)<2 | any(class(object)=="FDboostLong")){
+      if(length(object$yind)<2 || any(class(object)=="FDboostLong")){
         ret <- tapply( abs((y1 - yhat) / y1), id, mean, na.rm=TRUE  )
         attr(ret, "name") <- "MRD over subjects"              
       }else{
@@ -717,7 +717,7 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
   ## logCondDs <- log10(e_DstDs$values[1]) - log10(tail(e_DstDs$values, 1))
   evDs <- svd(Ds, nu = 0, nv = 0)$d^2  ## the same as eigenvalues of DstDs
   logCondDs <- log10(max(evDs)) - log10(min(evDs))
-  if(giveWarnings & logCondDs > 6 & is.null(limits)){
+  if(giveWarnings && logCondDs > 6 && is.null(limits)){
     warning("Condition number for <", xname, "> greater than 10^6 (logCondDs = ", round(logCondDs, 2),"). ", 
             "Effect identifiable only through penalty.")
   }
@@ -731,7 +731,7 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
     ind0Bs <- ((!ind0)*1) %*% Bs # matrix to check for 0 columns
     ## implementation is suitable for common grid of t, maybe with some missings
     ## common grid is assumed if Y(t) is observed at least in 80% for each point 
-    if( length(yind) < nrow(X1des) | all(table(yind) / max(id) > 0.8) ){
+    if( length(yind) < nrow(X1des) || all(table(yind) / max(id) > 0.8) ){
       if(is.null(t_unique)) t_unique <- sort(unique(yind))
       logCondDs_hist <- rep(NA, length=length(t_unique))
       for(k in seq_along(t_unique)){
@@ -792,7 +792,7 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
       }
       names(logCondDs_hist) <- round(t_unique[-length(t_unique)],2)
     }
-    if(giveWarnings & any(logCondDs_hist > 6)){
+    if(giveWarnings && any(logCondDs_hist > 6)){
       # get the first and the last entry of t, for which the condition number is >10^6
       tempL <- names(which.min(which(logCondDs_hist > 6)))
       tempU <- names(which.max(which(logCondDs_hist > 6)))
@@ -842,7 +842,7 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
   # look at overlap with whole functional covariate 
   overlapKeComplete  <- getOverlap(subset=seq_len(ncol(X1)), X1=X1, L=L, Bs=Bs, K=K)
   
-  if(giveWarnings & overlapKe >= 1){
+  if(giveWarnings && overlapKe >= 1){
     warning("Kernel overlap for <", xname, "> and the specified basis and penalty detected. ",
             "Changing basis for x-direction to <penalty='pss'> to make model identifiable through penalty. ", 
             "Coefficient surface estimate will be inherently unreliable. ", 
@@ -865,11 +865,11 @@ trace_lv <- function(A, B, tol=1e-10){
   # Rolf Larsson, Mattias Villani (2001)
   # "A distance measure between cointegration spaces"
   
-  if(NCOL(A)==0 | NCOL(B)==0){
+  if(NCOL(A)==0 || NCOL(B)==0){
     return(0)
   }
   
-  if(NROW(A) != NROW(B) | NCOL(A) > NROW(A) | NCOL(B) > NROW(B)){
+  if(NROW(A) != NROW(B) || NCOL(A) > NROW(A) || NCOL(B) > NROW(B)){
     return(NA)
   }
   
@@ -1018,9 +1018,9 @@ reweightData <- function(data, argvals, vars,
                          idvars = NULL, compress = FALSE)
 {
   
-  if(missing(argvals) & missing(vars)) 
+  if(missing(argvals) && missing(vars)) 
     stop("Either argvals or vars must be supplied.")
-  if(missing(weights) & missing(index)) 
+  if(missing(weights) && missing(index)) 
     stop("Either weights or index must be supplied.")
 
   # get names of data
@@ -1029,7 +1029,7 @@ reweightData <- function(data, argvals, vars,
   # if(missing(idvars)) idvars <- NULL
   
   # drop not used entries if both argvals and vars are given
-  if(!missing(argvals) & !missing(vars)){
+  if(!missing(argvals) && !missing(vars)){
     
     data[nd[!nd %in% c(argvals, vars, longvars, idvars)]] <- NULL
     nd <- names(data) # reset names

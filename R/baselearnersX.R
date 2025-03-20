@@ -40,7 +40,7 @@ hyper_histx <- function(mf, vary, knots = 10, boundary.knots = NULL, degree = 3,
     ret[[n]] <- knotf(getTime(mf[[n]]), 
                       knots=if(is.list(knots)) knots[[n]] else knots,
                       boundary.knots = if(is.list(boundary.knots)) boundary.knots[[n]] else boundary.knots)
-  if (cyclic & constraint != "none")
+  if (cyclic && constraint != "none")
     stop("constraints not implemented for cyclic B-splines")
   stopifnot(is.numeric(deriv) & length(deriv) == 1)
   

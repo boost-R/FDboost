@@ -255,7 +255,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
     }
   }
   
-  if(!any(class(object) == "FDboostLong") & !any(class(object) == "FDboostScalar")){
+  if(!any(class(object) == "FDboostLong") && !any(class(object) == "FDboostScalar")){
     dathelp[[object$yname]] <- matrix(object$response, ncol=object$ydim[2])
     dathelp$integration_weights <- matrix(integration_weights, ncol=object$ydim[2])
     dathelp$object_id <- object$id
@@ -783,7 +783,7 @@ validateFDboost <- function(object, response = NULL,
     nameyind <- attr(object$yind, "nameyind")
     dathelp[[nameyind]] <- object$yind
     
-    if(!any(class(object) == "FDboostLong") & !any(class(object) == "FDboostScalar")){
+    if(!any(class(object) == "FDboostLong") && !any(class(object) == "FDboostScalar")){
       dathelp[[object$yname]] <- matrix(object$response, ncol = Gy)
     }else{
       dathelp[[object$yname]] <- object$response
@@ -1287,7 +1287,7 @@ plot.validateFDboost <- function(x, riskopt=c("mean", "median"),
   }
     
   # Plot the predictions for the optimal mstop
-  if(4 %in% which | 5 %in% which){
+  if(4 %in% which || 5 %in% which){
     
     if(!is.null(x$oobpreds)){
       response <- x$response
@@ -1376,7 +1376,7 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
       return(NULL)
     }
     
-    if(commonRange & is.null(ylim)){ 
+    if(commonRange && is.null(ylim)){ 
       ylim <- range(x$predCV[which])
     }
     
@@ -1407,7 +1407,7 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
     
   }else{ # plot coefficients
     
-    if(commonRange & is.null(ylim)){
+    if(commonRange && is.null(ylim)){
       if(length(x$yind)>1){
         if(!any(sapply(lapply(x$coefCV[which], function(x) x$value), is.null))){
           ylim <- range(lapply(x$coefCV[which], function(x) x$value)) 

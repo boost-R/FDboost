@@ -538,7 +538,7 @@ FDboost <- function(formula,          ### response ~ xvars
     scalarResponse <- TRUE
     if(is.null(timeformula)) scalarNoFLAM <- TRUE
     
-    if(grepl("df", formula[3]) | !grepl("lambda", formula[3]) ){
+    if(grepl("df", formula[3]) || !grepl("lambda", formula[3]) ){
       timeformula <- ~bols(ONEtime, intercept = FALSE, df = 1)
     }else{
       timeformula <- ~bols(ONEtime, intercept = FALSE)
@@ -555,7 +555,7 @@ FDboost <- function(formula,          ### response ~ xvars
 
   }
   
-  if(scalarResponse & !identical(numInt,"equal")) 
+  if(scalarResponse && !identical(numInt,"equal")) 
     stop("Integration weights numInt must be set to 'equal' for scalar response.")
   
   ## extract time(s) from timeformula 
@@ -713,7 +713,7 @@ FDboost <- function(formula,          ### response ~ xvars
   if(length(where.c) > 0){
     # set c_df to the df/lambda in timeformula
     if( grepl("lambda", tfm) || 
-          ( grepl("bols", tfm) &  !grepl("df", tfm)) ){
+          ( grepl("bols", tfm) &&  !grepl("df", tfm)) ){
       c_lambda <- eval(parse(text = paste(tfm, "$dpp(rep(1.0,", length(time), "))$df()", sep = "")))["lambda"]
       cfm <- paste("bols(ONEtime, intercept = FALSE, lambda = ", c_lambda ,")")
     } else{
@@ -973,7 +973,7 @@ FDboost <- function(formula,          ### response ~ xvars
   ### -> use one scalar/user-specified offset like in mboost
   
   ### in case of factor or multiple time variables set offset to 0 and give a warning
-  if(is.list(time) | !is.numeric(time)) {
+  if(is.list(time) || !is.numeric(time)) {
     .offsetwarning <- is.null(offset)
     if(!.offsetwarning) {
       .offsetwarning <- (offset == "scalar")
@@ -1081,7 +1081,7 @@ FDboost <- function(formula,          ### response ~ xvars
         offset <- as.vector(matrix(offsetVec, ncol = ncol(response), nrow = nrow(response), byrow = TRUE))    
       }else{ 
         ### scalar response or mean-centered response -> one constant offset value is used
-        if(dim(response)[2] == 1 |  all(colMeans(response, na.rm = TRUE) < .Machine$double.eps *10^10)){ 
+        if(dim(response)[2] == 1 || all(colMeans(response, na.rm = TRUE) < .Machine$double.eps *10^10)){ 
           offsetVec <- offset
           predictOffset <- offset 
         }else{ 

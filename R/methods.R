@@ -109,11 +109,11 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
   dots <- list(...)
   
   # toFDboost is only meaningful for array-data
-  if(any(class(object) == "FDboostScalar") |  any(class(object) == "FDboostLong")) toFDboost <- FALSE
+  if(any(class(object) == "FDboostScalar") ||  any(class(object) == "FDboostLong")) toFDboost <- FALSE
 
   if(!is.null(dots$aggregate) && dots$aggregate[1] != "sum"){
     if(length(which) > 1 ) stop("For aggregate != 'sum', only one effect, or which=NULL are possible.")
-    if(toFDboost & class(object)[1] == "FDboost"){ 
+    if(toFDboost && class(object)[1] == "FDboost"){ 
       toFDboost <- FALSE
       warning("Set toFDboost to FALSE, as aggregate != 'sum'. Prediction is in long vector.")
     }
@@ -146,7 +146,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
       # try to get more reliable information on n (number of trajectories)
       # and on lengthYind (length of time)
       # using the hmatrix-objects in newdata if available
-      if(is.list(newdata) | is.data.frame(newdata)){
+      if(is.list(newdata) || is.data.frame(newdata)){
         classes <- lapply(newdata, class)
         alln <- c()
         alllengthYind <- c()
@@ -185,7 +185,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
       
       n <- 1
       lengthYind <- length(newdata[[nameyind]])
-      if(is.list(newdata) | is.data.frame(newdata)){
+      if(is.list(newdata) || is.data.frame(newdata)){
         classes <- lapply(newdata, class)
         alllengthYind <- c(lengthYind)
         for(i in seq_along(classes)){
@@ -289,7 +289,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
     ## predict all effects together, model-inherent offset is included automatically
     if(is.null(which)){
 
-      if(is.null(object$offsetFDboost) & !is.null(object$offsetMboost) ){ 
+      if(is.null(object$offsetFDboost) && !is.null(object$offsetMboost) ){ 
         # offset=NULL in FDboost, but not in mboost
         ## suppress the warning that the offset cannot be used if offset=NULL in FDboost
         ## as offset is predicted and included in prediction 
@@ -438,7 +438,7 @@ fitted.FDboost <- function(object, toFDboost = TRUE, ...) {
   
   if (length(args) == 0) {
     ## give back matrix for regular response and toFDboost == TRUE
-    if(toFDboost & !any(class(object) == "FDboostScalar") & !any(class(object) == "FDboostLong") ){
+    if(toFDboost && !any(class(object) == "FDboostScalar") && !any(class(object) == "FDboostLong") ){
       ret <- matrix(object$fitted(), nrow = object$ydim[1])
     }else{ # give back a long vector
       ret <- object$fitted()
@@ -564,7 +564,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
     ret$offset$main <- "offset"
     
     # For the special case of which=0, only return the coefficients of the offset
-    if(!is.null(which) & length(which)==1 && which==0){
+    if(!is.null(which) && length(which)==1 && which==0){
       if(computeCoef){
         return(ret)
       }else{
@@ -929,7 +929,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
         
         
         ## add dummy signal to data for bsignal()
-        if(grepl("bsignal", trm$get_call()) | grepl("bfpc", trm$get_call()) ){
+        if(grepl("bsignal", trm$get_call()) || grepl("bfpc", trm$get_call()) ){
           
           position_signal <- which(sapply(trm$model.frame(), 
                                           function(x) !is.null(attr(x, "signalIndex")) ))
@@ -979,7 +979,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
           dlist <- NULL
 
           ## if %X% was used in combination with factor variables make a list of data-frames
-          if(is.factor(x) & is.factor(z)){ ## both variables are factors 
+          if(is.factor(x) && is.factor(z)){ ## both variables are factors 
             numberLevels <- nlevels(x) * nlevels(z)
             xlevels <- sort(unique(x))
             zlevels <- sort(unique(z))
@@ -1050,7 +1050,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
           if(!is.matrix(predHelp)){ 
             X <- predHelp
           }else{
-            X <- if(any(trm$get_names() %in% c("ONEtime")) | 
+            X <- if(any(trm$get_names() %in% c("ONEtime")) ||
                     any(class(object)=="FDboostScalar")){ # effect constant in t 
               predHelp[,1]
             }else{ 
@@ -1110,7 +1110,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
                       z=attr(d, "zm"), zlab=varnms[3], vecStand=vecStand)
             
             ## include the second scalar covariate called z1 into the output
-            if( grepl("bhistx", trm$get_call()) & length(trm$get_names()) > 2){
+            if( grepl("bhistx", trm$get_call()) && length(trm$get_names()) > 2){
               extra_output <- list(z1=attr(d, "z1m"), z1lab=varnms[4])
               P <- c(P, extra_output)
             }
@@ -1171,7 +1171,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
       
       # <FIXME> what to do with bbs(..., by=factor)?
 
-      if(trm$dim > 3 & !grepl("bhistx", trm$get_call()) ){
+      if(trm$dim > 3 && !grepl("bhistx", trm$get_call()) ){
         warning("Can't deal with smooths with more than 3 dimensions, returning NULL for ", 
                 shrtlbls[i], ".")
         return(NULL)
@@ -1194,8 +1194,8 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
                                                                   each=length(unique(d[[vari]]))  )
           }else{
           # expand signal variable
-          if( grepl("bhist(", trm$get_call(), fixed = TRUE) | 
-              grepl("bsignal", trm$get_call()) | grepl("bfpc", trm$get_call()) ){
+          if( grepl("bhist(", trm$get_call(), fixed = TRUE) ||
+              grepl("bsignal", trm$get_call()) || grepl("bfpc", trm$get_call()) ){
             vari <- names(d)[!names(d) %in% attr(d, "varnms")]
             d[[vari]] <- d[[vari]][ rep(1:NROW(d[[vari]]), times=NROW(d[[vari]])), ]
             
@@ -1425,8 +1425,8 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
   
   # In the case that intercept and offset should be plotted and the intercept was never selected
   # plot the offset
-  if( (1 %in% whichSpecified | is.null(whichSpecified))  
-      & ! 1 %in% which & length(x$yind) > 1) which <- c(0, which)
+  if( (1 %in% whichSpecified || is.null(whichSpecified))  
+      && ! 1 %in% which && length(x$yind) > 1) which <- c(0, which)
   
   if(length(which) == 0){
     warning("Nothing selected for plotting.")
@@ -1459,14 +1459,14 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     # plot the offset as extra effect
     # case 1: the offset should be included as extra plot
     # case 2: the whole model is plotted, but the intercept-base-learner was never selected
-    if( (! includeOffset | (includeOffset & ! 1 %in% which)) & 
-         is.null(whichSpecified) & ! is.null(selected(x))){
+    if( (! includeOffset || (includeOffset && ! 1 %in% which)) &&
+         is.null(whichSpecified) && ! is.null(selected(x))){
       terms <- c(offset = list(offsetTerms), terms)
       bl_data <- c(offset = list( list(x$yind) ), bl_data)
       names(bl_data[[1]]) <- attr(x$yind, "nameyind")     
     } 
    
-    if((length(terms) > 1 || is.null(terms[[1]]$dim) || terms[[1]]$dim == 3) & ask) par(ask = TRUE)
+    if((length(terms) > 1 || is.null(terms[[1]]$dim) || terms[[1]]$dim == 3) && ask) par(ask = TRUE)
     
     if(commonRange){
       range <- range(lapply(terms, function(x) x$value ))
@@ -1506,8 +1506,8 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
                                    ylab="coef", type="l"))          
         }
         
-        if(rug & !is.factor(x = trm$x)){
-          if(grepl("bconcurrent", trm$main) | grepl("bsignal", trm$main) | grepl("bfpc", trm$main) ){
+        if(rug && !is.factor(x = trm$x)){
+          if(grepl("bconcurrent", trm$main) || grepl("bsignal", trm$main) || grepl("bfpc", trm$main) ){
             rug(attr(bl_data[[i]][[1]], "signalIndex"), ticksize = 0.02)
           }else rug(bl_data[[i]][[trm$xlab]], ticksize = 0.02)
         } 
@@ -1515,7 +1515,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       
       # plot with factor variable
       if( (!grepl("bhistx", trm$main)) && trm$dim==2 &&
-          ((is.factor(trm$x) | is.factor(trm$y)) | is.factor(trm$z)) ){
+          ((is.factor(trm$x) || is.factor(trm$y)) || is.factor(trm$z)) ){
         
         ## plot for the special case where factor is plotted in several plots 
         if(!is.null(trm$add_main)){
@@ -1591,7 +1591,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
         
       }else{
         # persp-plot for 2-dim effects
-        if(trm$dim == 2 & pers){
+        if(trm$dim == 2 && pers){
           if(length(unique(as.vector(trm$value)))==1){
             # persp() gives error if only a flat plane should be drawn
             plot(y=trm$value[1,], x=trm$x, main=trm$main, type="l", xlab=trm$ylab, 
@@ -1610,7 +1610,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
           } 
         }
         # image for 2-dim effects
-        if(trm$dim == 2 & !pers){        
+        if(trm$dim == 2 && !pers){        
           plotWithArgs(image, args=argsImage,
                        myargs=list(x=trm$y, y=trm$x, z=t(trm$value), xlab=trm$ylab, ylab=trm$xlab, 
                                    main=trm$main, col = heat.colors(length(trm$x)^2)))          
@@ -1634,7 +1634,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       }
       ### 3 dim plots
       # persp-plot for 3-dim effects
-      if(trm$dim == 3 & pers){
+      if(trm$dim == 3 && pers){
         for(j in seq_along(trm$z)){
           plotWithArgs(persp, args=argsPersp,
                        myargs=list(x=trm$x, y=trm$y, z=trm$value[[j]], xlab=paste("\n", trm$xlab), 
@@ -1646,7 +1646,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
         }
       }
       # image for 3-dim effects
-      if(trm$dim == 3 & !pers){
+      if(trm$dim == 3 && !pers){
         for(j in seq_along(trm$z)){
           plotWithArgs(image, args=argsImage,
                        myargs=list(x=trm$x, y=trm$y, z=trm$value[[j]], xlab=trm$xlab, ylab=trm$ylab,
@@ -1678,7 +1678,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       
     } # end for-loop
     
-    if(length(terms)>1 & ask) par(ask = FALSE) 
+    if(length(terms)>1 && ask) par(ask = FALSE) 
     
   ### plot smooth effects as they are estimated for the original data
   }else{
@@ -1689,7 +1689,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     offset <- attr(terms, "offset")
     
     # convert matrix into a list, each list entry for one effect
-    if(is.null(x$ydim) & !is.null(dim(terms))){
+    if(is.null(x$ydim) && !is.null(dim(terms))){
       temp <- list()
       for(i in seq_len(ncol(terms))){
         temp[[i]] <- terms[,i]
@@ -1718,7 +1718,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       terms[[1]] <- terms[[1]] + x$offset
       shrtlbls[1] <- paste("offset", "+", shrtlbls[1])
     }   
-    if(length(which) > 1 & ask) par(ask = TRUE)
+    if(length(which) > 1 && ask) par(ask = TRUE)
 
     if(commonRange){
       range <- range(terms)
@@ -1760,7 +1760,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
       }
     }
     
-    if(length(which) > 1 & ask) par(ask = FALSE) 
+    if(length(which) > 1 && ask) par(ask = FALSE) 
   }
   
 }
@@ -1809,7 +1809,7 @@ update.FDboost <- function(object, weights = NULL, oobweights = NULL, risk = NUL
   
   extras <- match.call(expand.dots = FALSE)$...
   
-  if (!is.null(risk) | !is.null(trace) | !is.null(extras$control)) {
+  if (!is.null(risk) || !is.null(trace) || !is.null(extras$control)) {
     
     cc <- as.list(call$control)
     if(length(cc)==0) cc <- list(as.symbol("boost_control"))
@@ -1931,7 +1931,7 @@ extract.blg <- function(object, what = c("design", "penalty", "index"),
                         asmatrix = FALSE, expand = FALSE, ...){
   what <- match.arg(what)
   
-  if(grepl("%O%", object$get_call()) | grepl("%Oz%", object$get_call())){
+  if(grepl("%O%", object$get_call()) || grepl("%Oz%", object$get_call())){
     object <- object$dpp( rep(1, NROW(object$model.frame()[[1]])) )    
   }else{
     object <- object$dpp(rep(1, nrow(object$model.frame())))

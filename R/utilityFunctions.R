@@ -1178,7 +1178,7 @@ reweightData <- function(data, argvals, vars,
     my_temp_idvars <- temp_idvars
     i <- 1
     ## add 0.1^1 to duplicates, 0.1^1 + 0.1^2 = 0.11 to triplicates, ...
-    while(any(duplicated(my_index_long))){ # loop until no more duplicates in the data  
+    while(anyDuplicated(my_index_long) > 0){ # loop until no more duplicates in the data
       my_temp_idvars[duplicated(my_index_long)] <- my_temp_idvars[duplicated(my_index_long)] + 0.1^i
       my_index_long[duplicated(my_index_long)] <- my_index_long[duplicated(my_index_long)] + 0.1^i
       i <- i + 1

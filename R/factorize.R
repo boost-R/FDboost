@@ -335,7 +335,7 @@ NULL
 #'
 predict.FDboost_fac <- function(object, newdata = NULL, which = NULL, ...) {
   w <- object$which(which)
-  if(any(is.na(w)))
+  if(anyNA(w))
     stop("Don't know 'which' base-learner is meant.")
   names(w) <- names(object$baselearner)[w]
   drop(sapply(w,
@@ -349,7 +349,7 @@ predict.FDboost_fac <- function(object, newdata = NULL, which = NULL, ...) {
 #' @rdname predict.FDboost_fac
 plot.FDboost_fac <- function(x, which = NULL, main = NULL, ...) {
   w <- x$which(which, usedonly = TRUE)
-  if(any(is.na(w)))
+  if(anyNA(w))
     stop(paste("Don't know which base-learner is meant by:",
          which[which.min(is.na(w))]))
   if(is.null(main))

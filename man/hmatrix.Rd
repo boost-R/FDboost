@@ -76,7 +76,7 @@ reweightData(data = list(hmat = myhmatrix), vars = "hmat", index = c(1, 1, 2))
 # ids and times in the time id matrix 
 # for bhistx baselearner, there may be an additional id variable for the tensor product
 newdat <- reweightData(data = list(hmat = myhmatrix, 
-  repIDx = rep(1:nrow(attr(myhmatrix,'x')), length(attr(myhmatrix,"argvals")))), 
+  repIDx = rep(seq_len(nrow(attr(myhmatrix,'x'))), length(attr(myhmatrix,"argvals")))), 
   vars = "hmat", index = c(1,1,2), idvars="repIDx")
 length(newdat$repIDx) 
 

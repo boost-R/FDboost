@@ -202,7 +202,7 @@ mod <- mod[75]
   cvr <- applyFolds(mod, folds = folds_bs, grid = 1:75)
 
   ## weights per observation point  
-  folds_bs_long <- folds_bs[rep(1:nrow(folds_bs), times = mod$ydim[2]), ]
+  folds_bs_long <- folds_bs[rep(seq_len(nrow(folds_bs)), times = mod$ydim[2]), ]
   attr(folds_bs_long, "type") <- "3-fold bootstrap"
   ## compute out-of-bag risk on the 3 folds for 1 to 75 boosting iterations  
   cvr3 <- cvrisk(mod, folds = folds_bs_long, grid = 1:75)

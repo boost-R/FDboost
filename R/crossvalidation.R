@@ -135,7 +135,7 @@
 #'   cvr <- applyFolds(mod, folds = folds_bs, grid = 1:75)
 #' 
 #'   ## weights per observation point  
-#'   folds_bs_long <- folds_bs[rep(1:nrow(folds_bs), times = mod$ydim[2]), ]
+#'   folds_bs_long <- folds_bs[rep(seq_len(nrow(folds_bs)), times = mod$ydim[2]), ]
 #'   attr(folds_bs_long, "type") <- "3-fold bootstrap"
 #'   ## compute out-of-bag risk on the 3 folds for 1 to 75 boosting iterations  
 #'   cvr3 <- cvrisk(mod, folds = folds_bs_long, grid = 1:75)
@@ -541,7 +541,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   oobrisk <- t(as.data.frame(oobrisk))
   ## oobrisk <- oobrisk  / colSums(OOBweights[object$id, ]) # is done in dummyfct() 
   colnames(oobrisk) <- grid
-  rownames(oobrisk) <- 1:nrow(oobrisk)
+  rownames(oobrisk) <- seq_len(nrow(oobrisk))
   attr(oobrisk, "risk") <- fam_name
   attr(oobrisk, "call") <- call
   attr(oobrisk, "mstop") <- grid
@@ -656,7 +656,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
 #'   cvr2 <- validateFDboost(mod, folds = folds_bs, grid = 1:75)
 #' 
 #'   ## weights per observation point  
-#'   folds_bs_long <- folds_bs[rep(1:nrow(folds_bs), times = mod$ydim[2]), ]
+#'   folds_bs_long <- folds_bs[rep(seq_len(nrow(folds_bs)), times = mod$ydim[2]), ]
 #'   attr(folds_bs_long, "type") <- "3-fold bootstrap"
 #'   ## compute out-of-bag risk on the 3 folds for 1 to 75 boosting iterations  
 #'   cvr3 <- cvrisk(mod, folds = folds_bs_long, grid = 1:75)
@@ -1739,7 +1739,7 @@ cvMa <- function(ydim, weights = rep(1, l = ydim[1] * ydim[2]),
   if ( (nrowY * ncolY) != n) stop("The arguments weights and ydim do not match.")
   
   ## cvMa is only a wrapper for cvLong
-  foldsMa <- cvLong(id = rep(1:nrowY, times = ncolY), weights = weights, 
+  foldsMa <- cvLong(id = rep(seq_len(nrowY), times = ncolY), weights = weights, 
                     type = type, B=B, prob = 0.5, strata = NULL) 
   return(foldsMa)
 }

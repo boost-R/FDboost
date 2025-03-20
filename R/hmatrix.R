@@ -57,7 +57,7 @@
 #' # ids and times in the time id matrix 
 #' # for bhistx baselearner, there may be an additional id variable for the tensor product
 #' newdat <- reweightData(data = list(hmat = myhmatrix, 
-#'   repIDx = rep(1:nrow(attr(myhmatrix,'x')), length(attr(myhmatrix,"argvals")))), 
+#'   repIDx = rep(seq_len(nrow(attr(myhmatrix,'x'))), length(attr(myhmatrix,"argvals")))), 
 #'   vars = "hmat", index = c(1,1,2), idvars="repIDx")
 #' length(newdat$repIDx) 
 #' 
@@ -75,7 +75,7 @@ hmatrix <- function(time, id, x, argvals=seq_len(ncol(x)),
    
   ## check that id is integer valued containing 1, 2, 3, ..., n 
   ## and that x has n rows
-  stopifnot( all(sort(unique(id)) == 1:nrow(x)) )  
+  stopifnot( all(sort(unique(id)) == seq_len(nrow(x))) )  
   stopifnot(length(time)==length(id))
     
   # convert x to a matrix, especially if x is of class AsIs

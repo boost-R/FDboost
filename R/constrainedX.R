@@ -104,8 +104,8 @@
                mboost_intern(bl2, fun = "model.frame.blg") )
   index1 <- bl1$get_index()
   index2 <- bl2$get_index()
-  if (is.null(index1)) index1 <- 1:nrow(mf)
-  if (is.null(index2)) index2 <- 1:nrow(mf)
+  if (is.null(index1)) index1 <- seq_len(nrow(mf))
+  if (is.null(index2)) index2 <- seq_len(nrow(mf))
   
   mfindex <- cbind(index1, index2)
   index <- NULL
@@ -312,8 +312,8 @@ bl_lin_matrix_a <- function(blg, Xfun, args) {
         # K2 <- args$K2 
         
         #  ## per default do not expand the marginal design matrices 
-        #  expand_index1 <- 1:nrow(X$X1)
-        #  expand_index2 <- 1:nrow(X$X2)
+        #  expand_index1 <- seq_len(nrow(X$X1))
+        #  expand_index2 <- seq_len(nrow(X$X2))
         
         ## weights-matrix W: weights are for single observations in the matrix Y
         ## but the marginal bl work either on columns or rows of Y 
@@ -375,8 +375,8 @@ bl_lin_matrix_a <- function(blg, Xfun, args) {
           ### but: this does not work correctly: problem with factor remains 
           #   ## W cannot be computed from w1 and w2, 
           #   ## -> blow up the marginal design matrices and use W with them, 
-          #   expand_index1 <- rep(1:nrow(X$X1), times = nrow(X$X2)) 
-          #   expand_index2 <- rep(1:nrow(X$X2), each = nrow(X$X1))  
+          #   expand_index1 <- rep(seq_len(nrow(X$X1)), times = nrow(X$X2)) 
+          #   expand_index2 <- rep(seq_len(nrow(X$X2)), each = nrow(X$X1))  
           #   ## all( c(W) == weights) is TRUE, ordering of weights must match to blown-up marginal design matrices 
           #   ## standardize weights to compensate for the blow-up of the marginal design-matrices  
           #   #w1 <- c(W) / mean(rowSums(W)) ## for some special cases (e.g. BS on rows): mean(rowSums(W)) == nrow(X$X2)
@@ -986,8 +986,8 @@ NULL
   
   index1 <- bl1$get_index()
   index2 <- bl2$get_index()
-  if (is.null(index1)) index1 <- 1:nrow(mf)
-  if (is.null(index2)) index2 <- 1:nrow(mf)
+  if (is.null(index1)) index1 <- seq_len(nrow(mf))
+  if (is.null(index2)) index2 <- seq_len(nrow(mf))
   
   mfindex <- cbind(index1, index2)
   index <- NULL

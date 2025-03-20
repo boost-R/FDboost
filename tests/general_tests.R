@@ -24,7 +24,7 @@ if(require(refund)){
   
   dat$Y_long <- c(dat$Y)
   dat$tvals_long <- rep(dat$tvals, each = nrow(dat$Y))
-  dat$id_long <- rep(1:nrow(dat$Y), ncol(dat$Y))
+  dat$id_long <- rep(seq_len(nrow(dat$Y)), ncol(dat$Y))
   
   # second functional covariate
   dat$s2 <- seq(0, 1, l = 15)

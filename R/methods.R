@@ -1691,7 +1691,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     # convert matrix into a list, each list entry for one effect
     if(is.null(x$ydim) & !is.null(dim(terms))){
       temp <- list()
-      for(i in 1:ncol(terms)){
+      for(i in seq_len(ncol(terms))){
         temp[[i]] <- terms[,i]
       }
       names(temp) <- colnames(terms)

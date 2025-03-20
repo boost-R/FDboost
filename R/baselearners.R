@@ -273,7 +273,7 @@ X_bsignal <- function(mf, vary, args) {
                "linear" = matrix(c(rep(1, length(xind)), xind), ncol=2),
                "constant"=  matrix(c(rep(1, length(xind))), ncol=1))
   
-  colnames(Bs) <- paste(xname, 1:ncol(Bs), sep="")
+  colnames(Bs) <- paste(xname, seq_len(ncol(Bs)), sep="")
   
   
   # use cyclic splines
@@ -288,7 +288,7 @@ X_bsignal <- function(mf, vary, args) {
                         fun = "cbs")
   }
   
-  colnames(Bs) <- paste(xname, 1:ncol(Bs), sep="")  
+  colnames(Bs) <- paste(xname, seq_len(ncol(Bs)), sep="")  
   
   ### Penalty matrix: product differences matrix
   if (args$differences > 0){
@@ -343,7 +343,7 @@ X_bsignal <- function(mf, vary, args) {
   # Design matrix is product of weighted X1 and basis expansion over xind 
   X <- (L*X1) %*% Bs
   
-  colnames(X) <- paste0(xname, 1:ncol(X))
+  colnames(X) <- paste0(xname, seq_len(ncol(X)))
  
   ## see Scheipl and Greven (2016): 
   ## Identifiability in penalized function-on-function regression models  
@@ -680,14 +680,14 @@ bsignal <- function(x, s, index = NULL, inS = c("smooth", "linear", "constant"),
   
   varnames <- all.vars(cll)
   #   if(length(mfL)==1){ 
-  #     mfL[[2]] <- 1:ncol(mfL[[1]]); cll[[3]] <- "xind" 
+  #     mfL[[2]] <- seq_len(ncol(mfL[[1]])); cll[[3]] <- "xind" 
   #     varnames <- c(all.vars(cll), "xindDefault")
   #   }
   
   # Reshape mfL so that it is the dataframe of the signal with the index as attribute
   xname <- varnames[1]
   indname <- varnames[2] 
-  if(is.null(colnames(x))) colnames(x) <- paste(xname, 1:ncol(x), sep="_")
+  if(is.null(colnames(x))) colnames(x) <- paste(xname, seq_len(ncol(x)), sep="_")
   attr(x, "signalIndex") <- s
   attr(x, "xname") <- xname
   attr(x, "indname") <- indname
@@ -870,12 +870,12 @@ X_conc <- function(mf, vary, args) {
                         fun = "cbs")
   }
   
-  colnames(Bs) <- paste(xname, 1:ncol(Bs), sep="")
+  colnames(Bs) <- paste(xname, seq_len(ncol(Bs)), sep="")
     
   # set up design matrix for concurrent model
   if(args$format=="wide"){
     listCol <- list()
-    for(i in 1:ncol(X1)){
+    for(i in seq_len(ncol(X1))){
       listCol[[i]] <- X1[,i]
     }
     X1des <- as.matrix(bdiag(listCol))
@@ -958,7 +958,7 @@ bconcurrent <- function(x, s, time, index = NULL, #by = NULL,
   attr(x, "id") <- index
   
   if(mboost_intern(x, fun = "isMATRIX") && 
-     is.null(colnames(x))) colnames(x) <- paste(xname, 1:ncol(x), sep="_")
+     is.null(colnames(x))) colnames(x) <- paste(xname, seq_len(ncol(x)), sep="_")
   attr(x, "signalIndex") <- s
   attr(x, "xname") <- xname
   attr(x, "indname") <- indname 
@@ -1176,7 +1176,7 @@ X_hist <- function(mf, vary, args) {
                "linear" = matrix(c(rep(1, length(xind)), xind), ncol = 2),
                "constant"=  matrix(c(rep(1, length(xind))), ncol = 1))
   
-  colnames(Bs) <- paste(xname, 1:ncol(Bs), sep="")
+  colnames(Bs) <- paste(xname, seq_len(ncol(Bs)), sep="")
   
   # integration weights 
   L <- args$intFun(X1=X1, xind=xind)
@@ -1188,7 +1188,7 @@ X_hist <- function(mf, vary, args) {
   #   # set up design matrix for historical model and s<=t with s and t equal to xind
   #   # expand matrix of original observations to lower triangular matrix 
   #   X1des0 <- matrix(0, ncol=ncol(X1), nrow=ncol(X1)*nrow(X1))
-  #   for(i in 1:ncol(X1des0)){
+  #   for(i in seq_len(ncol(X1des0))){
   #     #print(nrow(X1)*(i-1)+1)
   #     X1des0[(nrow(X1)*(i-1)+1):nrow(X1des0) ,i] <- X1[,i] # use fun. variable * integration weights
   #   }
@@ -1368,11 +1368,11 @@ X_hist <- function(mf, vary, args) {
   # calculate row-tensor
   # X <- (X1 %x% t(rep(1, ncol(X2))) ) * ( t(rep(1, ncol(X1))) %x% X2  )
   dimnames(Bt) <- NULL # otherwise warning "dimnames [2] mismatch..."
-  X <- X1des[,rep(1:ncol(Bs), each=ncol(Bt))] * Bt[,rep(1:ncol(Bt), times=ncol(Bs))]
+  X <- X1des[, rep(seq_len(ncol(Bs)), each=ncol(Bt))] * Bt[, rep(seq_len(ncol(Bt)), times=ncol(Bs))]
   
   if(! mboost_intern(X, fun = "isMATRIX") ) X <- matrix(X, ncol=1)
   
-  colnames(X) <- paste0(xname, 1:ncol(X))
+  colnames(X) <- paste0(xname, seq_len(ncol(X)))
   
   ### Penalty matrix: product differences matrix for smooth effect
   if(args$inS == "smooth"){
@@ -1483,7 +1483,7 @@ bhist <- function(x, s, time, index = NULL, #by = NULL,
   indname <- varnames[2]
   indnameY <- varnames[3]
   if(length(varnames)==2) indnameY <- varnames[2]
-  if(is.null(colnames(x))) colnames(x) <- paste(xname, 1:ncol(x), sep="_")
+  if(is.null(colnames(x))) colnames(x) <- paste(xname, seq_len(ncol(x)), sep="_")
   attr(x, "signalIndex") <- s
   attr(x, "xname") <- xname
   attr(x, "indname") <- indname 
@@ -1689,7 +1689,7 @@ X_fpc <- function(mf, vary, args) {
       ##stop("In bfpc the grid for the functional covariate has to be the same as in the model fit!")
       ## linear interpolation of the basis functions 
       approxEfunctions <- matrix(NA, nrow=length(xind), ncol=length(args$subset))
-      for(i in 1:ncol(klX$efunctions[ , args$subset, drop = FALSE])){
+      for(i in seq_len(ncol(klX$efunctions[, args$subset, drop = FALSE]))){
         approxEfunctions[,i] <- approx(x=args$klX$xind, y=klX$efunctions[,i], xout=xind)$y
       }
       approxMu <- approx(x=args$klX$xind, y=klX$mu, xout=xind)$y
@@ -1700,7 +1700,7 @@ X_fpc <- function(mf, vary, args) {
     
   }
 
-  colnames(X) <- paste(xname, ".PC", 1:ncol(X), sep = "")
+  colnames(X) <- paste(xname, ".PC", seq_len(ncol(X)), sep = "")
   
   ## set up the penalty matrix 
   K <- switch(args$penalty, 
@@ -1747,7 +1747,7 @@ bfpc <- function(x, s, index = NULL, df = 4,
   # Reshape mfL so that it is the dataframe of the signal with the index as attribute
   xname <- varnames[1]
   indname <- varnames[2] 
-  if(is.null(colnames(x))) colnames(x) <- paste(xname, 1:ncol(x), sep="_")
+  if(is.null(colnames(x))) colnames(x) <- paste(xname, seq_len(ncol(x)), sep="_")
   attr(x, "signalIndex") <- s
   attr(x, "xname") <- xname
   attr(x, "indname") <- indname
@@ -1879,7 +1879,7 @@ X_bbsc <- function(mf, vary, args) {
     if (vary != "") {
       by <- model.matrix(as.formula(paste("~", vary, collapse = "")),
                          data = mf)[ , -1, drop = FALSE] # drop intercept
-      DM <- lapply(1:ncol(by), function(i) {
+      DM <- lapply(seq_len(ncol(by)), function(i) {
         ret <- X * by[, i]
         colnames(ret) <- paste(colnames(ret), colnames(by)[i], sep = ":")
         ret
@@ -2386,7 +2386,7 @@ X_olsc <- function(mf, vary, args) {
     if (vary != "") {
       by <- model.matrix(as.formula(paste("~", vary, collapse = "")),
                          data = mf)[ , -1, drop = FALSE] # drop intercept
-      DM <- lapply(1:ncol(by), function(i) {
+      DM <- lapply(seq_len(ncol(by)), function(i) {
         ret <- X * by[, i]
         colnames(ret) <- paste(colnames(ret), colnames(by)[i], sep = ":")
         ret

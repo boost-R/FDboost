@@ -92,7 +92,7 @@ X_histx <- function(mf, vary, args) {
                "linear" = matrix(c(rep(1, length(xind)), xind), ncol = 2),
                "constant"=  matrix(c(rep(1, length(xind))), ncol = 1))
   
-  colnames(Bs) <- paste(xname, 1:ncol(Bs), sep="")
+  colnames(Bs) <- paste(xname, seq_len(ncol(Bs)), sep="")
   
   # integration weights 
   L <- args$intFun(X1=X1, xind=xind)
@@ -234,11 +234,11 @@ X_histx <- function(mf, vary, args) {
   # calculate row-tensor
   # X <- (X1 %x% t(rep(1, ncol(X2))) ) * ( t(rep(1, ncol(X1))) %x% X2  )
   dimnames(Bt) <- NULL # otherwise warning "dimnames [2] mismatch..."
-  X <- X1des[,rep(1:ncol(Bs), each=ncol(Bt))] * Bt[,rep(1:ncol(Bt), times=ncol(Bs))]
+  X <- X1des[, rep(seq_len(ncol(Bs)), each=ncol(Bt))] * Bt[, rep(seq_len(ncol(Bt)), times=ncol(Bs))]
   
   if(! mboost_intern(X, fun = "isMATRIX") ) X <- matrix(X, ncol=1)
   
-  colnames(X) <- paste0(xname, 1:ncol(X))
+  colnames(X) <- paste0(xname, seq_len(ncol(X)))
   
   ### Penalty matrix: product differences matrix for smooth effect
   if(args$inS == "smooth"){

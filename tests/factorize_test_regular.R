@@ -89,7 +89,7 @@ par(opar)
 # re-compose prediction
 preds <- lapply(fac, predict)
 PREDSf <- array(0, dim = c(nrow(preds$resp),nrow(preds$cov)))
-for(i in 1:ncol(preds$resp))
+for(i in seq_len(ncol(preds$resp)))
   PREDSf <- PREDSf + preds$resp[,i] %*% t(preds$cov[,i])
 
 opar <- par(mfrow = c(1,2))

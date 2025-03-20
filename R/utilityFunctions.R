@@ -752,7 +752,7 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
           logCondDs_hist[k] <- log10(max(evDs)) - log10(min(evDs))
         }
         ## matplot(xind, Bs, type="l", lwd=2, ylim=c(-2,2)); rug(xind); rug(yind, col=2, lwd=2)
-        ## matplot(knots[1:ncol(Ds_t)], t(Ds_t), type="l", lwd=1, add=TRUE)
+        ## matplot(knots[seq_len(ncol(Ds_t))], t(Ds_t), type="l", lwd=1, add=TRUE)
         ## lines(t_unique, logCondDs_hist-6, col=2, lwd=4)
       }
       names(logCondDs_hist) <- round(t_unique,2)
@@ -836,11 +836,11 @@ check_ident <- function(X1, L, Bs, K, xname, penalty,
     overlapKe <- max(cumOverlapKe, na.rm = TRUE) #cumOverlapKe[[length(cumOverlapKe)]]
     
   }else{ # overlap between whole matrix X and penalty
-    overlapKe <- getOverlap(subset=1:ncol(X1), X1=X1, L=L, Bs=Bs, K=K)
+    overlapKe <- getOverlap(subset=seq_len(ncol(X1)), X1=X1, L=L, Bs=Bs, K=K)
   }
   
   # look at overlap with whole functional covariate 
-  overlapKeComplete  <- getOverlap(subset=1:ncol(X1), X1=X1, L=L, Bs=Bs, K=K)
+  overlapKeComplete  <- getOverlap(subset=seq_len(ncol(X1)), X1=X1, L=L, Bs=Bs, K=K)
   
   if(giveWarnings & overlapKe >= 1){
     warning("Kernel overlap for <", xname, "> and the specified basis and penalty detected. ",

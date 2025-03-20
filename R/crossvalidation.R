@@ -506,14 +506,14 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   OOBweights[folds > 0] <- 0
   
   if (isTRUE(all.equal(papply, mclapply))) {
-    oobrisk <- papply(1:ncol(folds),
+    oobrisk <- papply(seq_len(ncol(folds)),
                       function(i) try(dummyfct(weights = folds[, i],
                                                oobweights = OOBweights[, i]),
                                       silent = TRUE),
                       mc.preschedule = mc.preschedule,
                       ...)
   } else {
-    oobrisk <- papply(1:ncol(folds),
+    oobrisk <- papply(seq_len(ncol(folds)),
                       function(i) try(dummyfct(weights = folds[, i],
                                                oobweights = OOBweights[, i]),
                                       silent = TRUE),
@@ -895,11 +895,11 @@ validateFDboost <- function(object, response = NULL,
   
   ### computation of models on partitions of data
   if(Sys.info()["sysname"]=="Linux"){
-    modRisk <- mclapply(1:ncol(folds),
+    modRisk <- mclapply(seq_len(ncol(folds)),
                         function(i) dummyfct(weights = folds[, i],
                                              oobweights = OOBweights[, i]), ...)
   }else{
-    modRisk <- mclapply(1:ncol(folds),
+    modRisk <- mclapply(seq_len(ncol(folds)),
                         function(i) dummyfct(weights = folds[, i], 
                                              oobweights = OOBweights[, i]), mc.cores = 1)
   }

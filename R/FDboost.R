@@ -461,7 +461,7 @@ FDboost <- function(formula,          ### response ~ xvars
   equalBrackets <- NULL
   if(length(trmstrings) > 0){
     ## insert id at end of each base-learner
-    trmstrings2 <- paste(substr(trmstrings, 1 , nchar(trmstrings)-1), ", index=", id[2],")", sep = "")
+    trmstrings2 <- paste0(substr(trmstrings, 1 , nchar(trmstrings)-1), ", index=", id[2],")")
     ## check if number of opening brackets is equal to number of closing brackets
     equalBrackets <- sapply(seq_along(trmstrings2), function(i)
     {
@@ -493,7 +493,7 @@ FDboost <- function(formula,          ### response ~ xvars
           ## delete all trailing whitespace
           trim.trailing <- function (x) sub("\\s+$", "", x) 
           temp1 <- trim.trailing(temp1)
-          temp1 <- paste(substr(temp1, 1 , nchar(temp1)-1), ", index=", id[2],")", sep = "")
+          temp1 <- paste0(substr(temp1, 1 , nchar(temp1)-1), ", index=", id[2],")")
           trmstrings2[i] <- paste0(paste0(temp1, collapse = " %X"), " %X", temp[length(temp)]) 
         } 
         ## do not add index to base-learners bhistx()
@@ -714,10 +714,10 @@ FDboost <- function(formula,          ### response ~ xvars
     # set c_df to the df/lambda in timeformula
     if( grepl("lambda", tfm) || 
           ( grepl("bols", tfm) &&  !grepl("df", tfm)) ){
-      c_lambda <- eval(parse(text = paste(tfm, "$dpp(rep(1.0,", length(time), "))$df()", sep = "")))["lambda"]
+      c_lambda <- eval(parse(text = paste0(tfm, "$dpp(rep(1.0,", length(time), "))$df()")))["lambda"]
       cfm <- paste("bols(ONEtime, intercept = FALSE, lambda = ", c_lambda ,")")
     } else{
-      c_df <- eval(parse(text=paste(tfm, "$dpp(rep(1.0,", length(time), "))$df()", sep = "")))["df"]
+      c_df <- eval(parse(text=paste0(tfm, "$dpp(rep(1.0,", length(time), "))$df()")))["df"]
       cfm <- paste("bols(ONEtime, intercept = FALSE, df = ", c_df ,")")
     }
   }
@@ -737,8 +737,8 @@ FDboost <- function(formula,          ### response ~ xvars
     } else{
       which_equalBrackets <- which(equalBrackets)
     }
-    xfmTemp <- paste(substr(xfm[which_equalBrackets], 1 , 
-                        nchar(xfm[which_equalBrackets]) - 1 ), ")", sep = "") # , index=id is done in the beginning
+    xfmTemp <- paste0(substr(xfm[which_equalBrackets], 1 , 
+                        nchar(xfm[which_equalBrackets]) - 1 ), ")") # , index=id is done in the beginning
     xfm[which_equalBrackets] <- xfmTemp
     rm(xfmTemp)
     tmp <- outer(xfm, tfm, function(x, y) paste(x, y, sep = "%X%"))

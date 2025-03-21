@@ -1045,7 +1045,7 @@ reweightData <- function(data, argvals, vars,
   # check names
   if(length(whichNot) != 0) 
     stop(paste0("Could not find ", 
-                paste(c(argvals, vars, idvars, longvars)[whichNot], collapse = ", "),
+                toString(c(argvals, vars, idvars, longvars)[whichNot]),
                 " in data."))
   
   # check for hmatrix and delete in argvals or vars if present

@@ -1258,12 +1258,12 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
           temp[1] <- unlist(strsplit(temp[1], "(", fixed=TRUE))[1]
           if(substr(temp[2], 1, 1)==" ") temp[2] <- substr(temp[2], 2, nchar(temp[2]))
           if(length(commaSep) == 1){ 
-            xpart[i] <- paste(temp[1], "(", temp[2], sep="")
+            xpart[i] <- paste0(temp[1], "(", temp[2])
           }else{
-            xpart[i] <- paste(temp[1], "(", temp[2], ")", sep="")
+            xpart[i] <- paste0(temp[1], "(", temp[2], ")")
           }
         }else{
-          if(length(commaSep) > 1){ xpart[i] <- paste(commaSep[1], ")", sep="")}
+          if(length(commaSep) > 1){ xpart[i] <- paste0(commaSep[1], ")")}
         }
         #xpart[i] <- if(length(commaSep)==1){
         #  paste(paste(commaSep[1:nvar], collapse=","), sep="")
@@ -1641,7 +1641,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
                                    ylab=paste("\n", trm$ylab), zlab=paste("\n", "coef"), 
                                    theta=30, phi=30, ticktype="detailed", 
                                    zlim=range(trm$value), col=getColPersp(trm$value[[j]]), 
-                                   main= paste(trm$zlab ,"=", round(trm$z[j],2), ": ", trm$main, sep=""))
+                                   main= paste0(trm$zlab ,"=", round(trm$z[j],2), ": ", trm$main))
           )         
         }
       }
@@ -1651,7 +1651,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
           plotWithArgs(image, args=argsImage,
                        myargs=list(x=trm$x, y=trm$y, z=trm$value[[j]], xlab=trm$xlab, ylab=trm$ylab,
                                    col = heat.colors(length(trm$x)^2), zlim=range(trm$value),
-                                   main= paste(trm$zlab ,"=", round(trm$z[j],2), ": ", trm$main, sep="")))
+                                   main= paste0(trm$zlab ,"=", round(trm$z[j],2), ": ", trm$main)))
           plotWithArgs(contour, args=argsContour,
                        myargs=list(trm$x, trm$y, trm$value[[j]], xlab=trm$xlab, add = TRUE))
           if(rug){
@@ -1889,7 +1889,7 @@ update.FDboost <- function(object, weights = NULL, oobweights = NULL, risk = NUL
       
       if(any( !grepl("\\(",singleBls) )) 
         stop(paste0("update can not deal with the following base-learner(s) without brackets: ", 
-                    paste(singleBls[!grepl("\\(",singleBls)], collapse=", "), ".\n",
+                    toString(singleBls[!grepl("\\(",singleBls)]), ".\n",
                     "Please build such base-learners within the FDboost call or ",  
                     "update corresponding baselearner(s) manually and supply a new formula to the update function."))
       

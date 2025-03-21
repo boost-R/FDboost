@@ -273,7 +273,7 @@ X_bsignal <- function(mf, vary, args) {
                "linear" = matrix(c(rep(1, length(xind)), xind), ncol=2),
                "constant"=  matrix(c(rep(1, length(xind))), ncol=1))
   
-  colnames(Bs) <- paste(xname, seq_len(ncol(Bs)), sep="")
+  colnames(Bs) <- paste0(xname, seq_len(ncol(Bs)))
   
   
   # use cyclic splines
@@ -288,7 +288,7 @@ X_bsignal <- function(mf, vary, args) {
                         fun = "cbs")
   }
   
-  colnames(Bs) <- paste(xname, seq_len(ncol(Bs)), sep="")  
+  colnames(Bs) <- paste0(xname, seq_len(ncol(Bs)))
   
   ### Penalty matrix: product differences matrix
   if (args$differences > 0){
@@ -701,7 +701,7 @@ bsignal <- function(x, s, index = NULL, inS = c("smooth", "linear", "constant"),
   
   if(is.null(Z) && 
        all( abs(rowMeans(x, na.rm = TRUE)-mean(rowMeans(x, na.rm = TRUE))) < .Machine$double.eps *10^10)){
-    message(paste("All trajectories in ", xname, " have the same mean. Coefficient function is centered.", sep=""))
+    message(paste0("All trajectories in ", xname, " have the same mean. Coefficient function is centered."))
   }
   
   #   mf <- mfL
@@ -870,7 +870,7 @@ X_conc <- function(mf, vary, args) {
                         fun = "cbs")
   }
   
-  colnames(Bs) <- paste(xname, seq_len(ncol(Bs)), sep="")
+  colnames(Bs) <- paste0(xname, seq_len(ncol(Bs)))
     
   # set up design matrix for concurrent model
   if(args$format=="wide"){
@@ -1176,7 +1176,7 @@ X_hist <- function(mf, vary, args) {
                "linear" = matrix(c(rep(1, length(xind)), xind), ncol = 2),
                "constant"=  matrix(c(rep(1, length(xind))), ncol = 1))
   
-  colnames(Bs) <- paste(xname, seq_len(ncol(Bs)), sep="")
+  colnames(Bs) <- paste0(xname, seq_len(ncol(Bs)))
   
   # integration weights 
   L <- args$intFun(X1=X1, xind=xind)
@@ -1700,7 +1700,7 @@ X_fpc <- function(mf, vary, args) {
     
   }
 
-  colnames(X) <- paste(xname, ".PC", seq_len(ncol(X)), sep = "")
+  colnames(X) <- paste0(xname, ".PC", seq_len(ncol(X)))
   
   ## set up the penalty matrix 
   K <- switch(args$penalty, 
@@ -2337,8 +2337,8 @@ X_olsc <- function(mf, vary, args) {
     contr <- NULL
   } else {
     ### set up model matrix
-    fm <- paste("~ ", paste(colnames(mf)[colnames(mf) != vary],
-                            collapse = "+"), sep = "")
+    fm <- paste0("~ ", paste(colnames(mf)[colnames(mf) != vary],
+                            collapse = "+"))
     fac <- sapply(mf[colnames(mf) != vary], is.factor)
     DUMMY <- FALSE
     if (any(fac)){

@@ -1189,7 +1189,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
         #print(attr(d, "varnms"))
         vari <- names(d)[1]
         if(is.factor(d[[vari]])){
-          d[[vari]] <- d[[vari]][ rep(1:NROW(d[[vari]]), times=length(d[[attr(object$yind ,"nameyind")]]) ) ]
+          d[[vari]] <- d[[vari]][ rep(seq_len(NROW(d[[vari]])), times=length(d[[attr(object$yind ,"nameyind")]]) ) ]
           if(trm$dim>1) d[[attr(object$yind ,"nameyind")]] <- rep(d[[attr(object$yind ,"nameyind")]], 
                                                                   each=length(unique(d[[vari]]))  )
           }else{
@@ -1197,11 +1197,11 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
           if( grepl("bhist(", trm$get_call(), fixed = TRUE) | 
               grepl("bsignal", trm$get_call()) | grepl("bfpc", trm$get_call()) ){
             vari <- names(d)[!names(d) %in% attr(d, "varnms")]
-            d[[vari]] <- d[[vari]][ rep(1:NROW(d[[vari]]), times=NROW(d[[vari]])), ]
+            d[[vari]] <- d[[vari]][ rep(seq_len(NROW(d[[vari]])), times=NROW(d[[vari]])), ]
             
           }else{ # expand scalar variable
             vari <- names(d)[1]
-            if(vari!=attr(object$yind ,"nameyind")) d[[vari]] <- d[[vari]][ rep(1:NROW(d[[vari]]), times=NROW(d[[vari]])) ]
+            if(vari!=attr(object$yind ,"nameyind")) d[[vari]] <- d[[vari]][ rep(seq_len(NROW(d[[vari]])), times=NROW(d[[vari]])) ]
           } 
           # expand yind 
           if(trm$dim>1) d[[attr(object$yind ,"nameyind")]] <- rep(d[[attr(object$yind ,"nameyind")]], 

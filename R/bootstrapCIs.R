@@ -404,7 +404,7 @@ bootstrapCI <- function(object, which = NULL,
     lapply(listOfQuantiles[isSurface], 
            function(x){ 
              
-             retL <- lapply(1:nrow(x), function(i) 
+             retL <- lapply(seq_len(nrow(x)), function(i) 
                matrix(x[i,], nrow = length(attr(x, "y"))))
              names(retL) <- levels
              return(retL)

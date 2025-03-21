@@ -125,7 +125,7 @@ integrationWeights <- function(X1, xind, id = NULL){
   
   # taking into account missing values
   if(anyNA(X1)){
-    Lneu <- sapply(1:nrow(X1), function(i){
+    Lneu <- sapply(seq_len(nrow(X1)), function(i){
       x <- X1[i,]
       
       if(!anyNA(x)){
@@ -840,7 +840,7 @@ X_conc <- function(mf, vary, args) {
   
   ## <FIXME> is that line still necessary? 
   ## important for prediction, otherwise id=NULL and yind is multiplied accordingly
-  if(is.null(id)) id <- 1:nrow(X1)
+  if(is.null(id)) id <- seq_len(nrow(X1))
   
   ## check yind 
   if(args$format=="long" && length(yind)!=length(id)) stop(xname, ": Index of response and id do not have the same length")
@@ -1156,7 +1156,7 @@ X_hist <- function(mf, vary, args) {
   ## <FIXME> is that line still necessary? should it be there in long and wide format?
   ###### EXTRA LINE in comparison to X_hist
   ## important for prediction, otherwise id=NULL and yind is multiplied accordingly
-  if(is.null(id)) id <- 1:nrow(X1)
+  if(is.null(id)) id <- seq_len(nrow(X1))
   
   ## check yind 
   if(args$format=="long" && length(yind)!=length(id)) stop(xname, ": Index of response and id do not have the same length")
@@ -2519,9 +2519,9 @@ bolsc <- function(..., by = NULL, index = NULL, intercept = TRUE, df = NULL,
   if(is.null(index)){
     
     if(is.null(weights)){ ## use weights 
-      w <- 1:nrow(mf)
+      w <- seq_len(nrow(mf))
     }else{
-      w <- rep(1:nrow(mf), weights)
+      w <- rep(seq_len(nrow(mf)), weights)
     }
     
     temp <- X_olsc(mf[w, , drop = FALSE], vary, 
@@ -2531,9 +2531,9 @@ bolsc <- function(..., by = NULL, index = NULL, intercept = TRUE, df = NULL,
   }else{
     
     if(is.null(weights)){  ## use weights
-      w <- 1:nrow(mf[index, , drop = FALSE])
+      w <- seq_len(nrow(mf[index, , drop = FALSE]))
     }else{
-      w <- rep(1:nrow(mf[index, , drop = FALSE]), weights)
+      w <- rep(seq_len(nrow(mf[index, , drop = FALSE])), weights)
     }
     
     temp <- X_olsc(mf = (mf[index, , drop = FALSE])[w, , drop = FALSE], vary = vary, 

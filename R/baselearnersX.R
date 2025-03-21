@@ -92,7 +92,7 @@ X_histx <- function(mf, vary, args) {
                "linear" = matrix(c(rep(1, length(xind)), xind), ncol = 2),
                "constant"=  matrix(c(rep(1, length(xind))), ncol = 1))
   
-  colnames(Bs) <- paste(xname, seq_len(ncol(Bs)), sep="")
+  colnames(Bs) <- paste0(xname, seq_len(ncol(Bs)))
   
   # integration weights 
   L <- args$intFun(X1=X1, xind=xind)

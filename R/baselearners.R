@@ -236,7 +236,7 @@ hyper_signal <- function(mf, vary, inS="smooth", knots = 10, boundary.knots = NU
    
   ret <- knotf(s, knots, boundary.knots)
   
-  if (cyclic & constraint != "none")
+  if (cyclic && constraint != "none")
     stop("constraints not implemented for cyclic B-splines")
   stopifnot(is.numeric(deriv) & length(deriv) == 1)
   
@@ -1116,7 +1116,7 @@ hyper_hist <- function(mf, vary, knots = 10, boundary.knots = NULL, degree = 3,
       boundary.knots[[n]]
     else boundary.knots)
   
-  if (cyclic & constraint != "none")
+  if (cyclic && constraint != "none")
     stop("constraints not implemented for cyclic B-splines")
   stopifnot(is.numeric(deriv) & length(deriv) == 1)
   
@@ -1474,7 +1474,7 @@ bhist <- function(x, s, time, index = NULL, #by = NULL,
   # compare range of index signal and index response
   # minimal value of the signal-index has to be smaller than the response-index
   if(!is.function(limits)){
-    if(limits=="s<=t" & min(s) > min(time) ) stop("Index of response has values before index of signal.")
+    if(limits=="s<=t" && min(s) > min(time) ) stop("Index of response has values before index of signal.")
   }
   
   # Reshape mfL so that it is the dataframe of the signal with 

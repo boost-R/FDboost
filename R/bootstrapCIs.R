@@ -227,7 +227,7 @@ bootstrapCI <- function(object, which = NULL,
   }
     
   # 'catch' error caused by using the cvrisk function for inner and outer resampling
-  if(identical(resampling_fun_outer, cvrisk) & 
+  if(identical(resampling_fun_outer, cvrisk) && 
      identical(resampling_fun_inner, cvrisk)) 
     stop("Please specify a different outer resampling function.")
   
@@ -312,18 +312,18 @@ bootstrapCI <- function(object, which = NULL,
     }
 
     aty <- NA
-    if(isSurface[i] | isFacEffect[i]) aty <- coefs[[1]]$smterms[[i]]$y 
+    if(isSurface[i] || isFacEffect[i]) aty <- coefs[[1]]$smterms[[i]]$y 
     if(isFacSpecEffect[i]) aty <- coefs[[1]]$smterms[[i]][[1]]$y 
 
     # format functional factors
-    if(is.list(listOfCoefs[[i]]) & is.factor(atx)){
+    if(is.list(listOfCoefs[[i]]) && is.factor(atx)){
       
       # combine each factor level
       listOfCoefs[[i]] <- lapply(seq_along(levels(droplevels(atx))),
                                  function(faclevnr) t(sapply(listOfCoefs[[i]], function(x) x[faclevnr,])))
       isSurface[i] <- FALSE
       
-    }else if(is.list(listOfCoefs[[i]]) & !isFacSpecEffect[i]){ # effect surfaces
+    }else if(is.list(listOfCoefs[[i]]) && !isFacSpecEffect[i]){ # effect surfaces
       
       listOfCoefs[[i]] <- do.call("rbind", lapply(listOfCoefs[[i]],c))
       
@@ -378,7 +378,7 @@ bootstrapCI <- function(object, which = NULL,
   for(i in seq_along(listOfCoefs)){
     
     # for matrix object
-    if(is.matrix(listOfCoefs[[i]]) & !is.list(listOfCoefs[[i]])){
+    if(is.matrix(listOfCoefs[[i]]) && !is.list(listOfCoefs[[i]])){
       
       listOfQuantiles[[i]] <- apply(listOfCoefs[[i]], 2, quantile, probs = levels)
       attr(listOfQuantiles[[i]], "x") <- attr(listOfCoefs[[i]], "x")
@@ -520,7 +520,7 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
   if(length(which)>1) par(ask=ask)
   
   # find common range for all effects 
-  if(commonRange & is.null(ylim)){
+  if(commonRange && is.null(ylim)){
     ylim <- range(x$raw_results) 
     if(any(is.infinite(ylim))) ylim <- NULL
   }
@@ -548,7 +548,7 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
       }else{ 
         ## temp$dim == 1 like in scalar response with bsignal()
         ## put each fold into one list entry 
-        if(length(x$yind) <= 1 & x$family != "Binomial Distribution (similar to glm)"){ 
+        if(length(x$yind) <= 1 && x$family != "Binomial Distribution (similar to glm)"){ 
           # scalar response and not Binomial
           temp$value <- split(temp_CI, rep(1:x$B_outer, each = length(temp_CI)/x$B_outer))
         }else{
@@ -559,7 +559,7 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
       
     }else{
  
-      if(is.null(temp$numberLevels) & is.factor(temp$x)){
+      if(is.null(temp$numberLevels) && is.factor(temp$x)){
         
         ## for time-varying factor effects
         temp$value <- temp_CI
@@ -573,7 +573,7 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
       }
     }    
     
-    if(!is.null(temp$dim) && temp$dim == 2 & !is.factor(temp$x)){
+    if(!is.null(temp$dim) && temp$dim == 2 && !is.factor(temp$x)){
       temp$value <- lapply(temp$value, function(xx) 
         matrix(xx, ncol = sqrt(length(xx)), nrow = sqrt(length(xx)), byrow = FALSE) )
     }

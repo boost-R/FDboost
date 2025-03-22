@@ -305,7 +305,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   
   if(any(!grepl("\\(", singleBls))) 
     stop(paste0("applyFolds can not deal with the following base-learner(s) without brackets: ", 
-                paste(singleBls[!grepl("\\(", singleBls)], collapse = ", ")))
+                toString(singleBls[!grepl("\\(", singleBls)])))
   
   
   ## check if data includes all variables
@@ -321,7 +321,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
         any( grepl(w, object$baselearner[[i]]$get_names() ) )) return(i))
       )[1])
     
-    stop(paste0("base-learner(s) ", paste(unlist(list(1,2)), collapse = ", "), 
+    stop(paste0("base-learner(s) ", toString(unlist(list(1,2))), 
                 " contain(s) variables, which are not part of the data object."))
     
   }
@@ -914,7 +914,7 @@ validateFDboost <- function(object, response = NULL,
     # stop() or warning()?
     if(sum(!modFitted) > sum(modFitted)) warning("More than half of the models could not be fitted.")
     
-    warning("Model fit did not work in fold ", paste(which(!modFitted), collapse = ", "))
+    warning("Model fit did not work in fold ", toString(which(!modFitted)))
     modRisk <- modRisk[modFitted]
     OOBweights <- OOBweights[,modFitted]   
     folds <- folds[,modFitted]
@@ -1585,7 +1585,7 @@ plot_bootstrapped_coef <- function(temp, l,
                                    xlab=paste("\n", temp$xlab), ylab=paste("\n", temp$ylab), 
                                    zlab=paste("\n", "coef"), 
                                    zlim=if(any(is.null(ylim))) range(matvec, na.rm=TRUE) else ylim,  
-                                   main=paste(temp$main, " at ", probs[k]*100, "%-quantile", sep=""), 
+                                   main=paste0(temp$main, " at ", probs[k]*100, "%-quantile"), 
                                    col=getColPersp(tempZ)))
         
         }
@@ -1620,7 +1620,7 @@ plot_bootstrapped_coef <- function(temp, l,
                        myargs=list(x=temp$y, y=temp$x, z=t(tempZ), xlab=paste("\n", temp$xlab), 
                                    ylab=paste("\n", temp$ylab), zlim=c(min(matvec, na.rm=TRUE),
                                                                        max(matvec, na.rm=TRUE)),
-                                   main=paste(temp$main, " at ", probs[k]*100, "%-quantile", sep=""), 
+                                   main=paste0(temp$main, " at ", probs[k]*100, "%-quantile"), 
                                    col = heat.colors(length(temp$x)^2) 
                                    )
           )
@@ -1643,7 +1643,7 @@ plot_bootstrapped_coef <- function(temp, l,
           myRow <- t(temp$value[[which(quantx[j]==temp$x)]])
                      
           plot_curves(x_i = temp$y, y_i = myRow, xlab_i = temp$ylab, 
-                      main_i = paste(temp$main, " at ", temp$xlab,"=" ,quantx[j], sep = ""), 
+                      main_i = paste0(temp$main, " at ", temp$xlab,"=" ,quantx[j]), 
                       ylim_i = ylim)
           
         }else{
@@ -1651,8 +1651,8 @@ plot_bootstrapped_coef <- function(temp, l,
           myRow <- sapply(temp$value, function(x) x[quantx[j]==temp$x & quantz[j]==temp$z, ]) # first column
           
           plot_curves(x_i = temp$y, y_i = myRow, xlab_i = temp$ylab, 
-                      main_i = paste(temp$main, " at ", temp$xlab, "=" , quantx[j], ", " , 
-                                     temp$zlab, "=", quantz[j], sep = ""), 
+                      main_i = paste0(temp$main, " at ", temp$xlab, "=" , quantx[j], ", " , 
+                                     temp$zlab, "=", quantz[j]), 
                       ylim_i = ylim)
         } 
       }
@@ -1713,7 +1713,7 @@ cvLong <- function(id, weights = rep(1, l=length(id)),
                 B = B, prob = prob, strata = strata)
     foldsLong <- folds[id, , drop = FALSE] * weights
   }
-  attr(foldsLong, "type") <- paste(B, "-fold ", type, sep = "")  
+  attr(foldsLong, "type") <- paste0(B, "-fold ", type)
   return(foldsLong)
   
 }

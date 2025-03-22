@@ -544,7 +544,7 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
     if(!is.list(temp_CI)){
       
       if(temp$dim >= 2){
-        temp$value <- split(temp_CI, seq(nrow(temp_CI)))
+        temp$value <- split(temp_CI, seq_len(nrow(temp_CI)))
       }else{ 
         ## temp$dim == 1 like in scalar response with bsignal()
         ## put each fold into one list entry 

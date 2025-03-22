@@ -1666,7 +1666,7 @@ X_fpc <- function(mf, vary, args) {
     args$klX$xind <- xind
     
     ## only use part of the eigen-functions! 
-    args$subset <- 1:min(ncol(klX$scores), args$npc.max)
+    args$subset <- seq_len(min(ncol(klX$scores), args$npc.max))
     ## args$a <- max(xind) - min(xind)
     
     ## scores \xi_{ik}: rows i=1,..., N and columns k=1,...,K

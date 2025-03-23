@@ -12,7 +12,7 @@
 #' @export 
 o_control <- function(k_min=20, rule=2, silent=TRUE, cyclic=FALSE, knots=NULL) { 
   RET <- list(k_min=k_min, rule=rule, silent=silent, cyclic=cyclic, knots=knots)
-  class(RET) <- c("offset_control")
+  class(RET) <- "offset_control"
   RET
 }
 

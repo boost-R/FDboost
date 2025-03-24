@@ -456,7 +456,7 @@ FDboost <- function(formula,          ### response ~ xvars
   ### save formula of FDboost before it is changed
   formulaFDboost <- formula
   
-  tf <- terms.formula(formula, specials = c("c"))
+  tf <- terms.formula(formula, specials = "c")
   trmstrings <- attr(tf, "term.labels")
   equalBrackets <- NULL
   if(length(trmstrings) > 0){

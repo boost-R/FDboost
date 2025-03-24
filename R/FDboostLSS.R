@@ -209,7 +209,7 @@ cvrisk.FDboostLSS <- function(object, folds = cvLong(id = object[[1]]$id,
   ## set up grid according to defaults of cvrisk.nc_mboostLSS and cvrisk.mboostLSS
   if(is.null(grid)){
     
-    if(any(class(object) == "nc_mboostLSS")){
+    if(inherits(object, "nc_mboostLSS")){
       grid <- 1:sum(mstop(object))
     }else{
       grid <- make.grid(mstop(object))

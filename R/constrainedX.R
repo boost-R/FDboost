@@ -211,7 +211,7 @@
       ## use whole matrices of marginal effects for constraints as Almond suggested  
       C <- t(X) %*% cbind(rep(1, nrow(X)), X1, X2)    
       qr_C <- qr(C)  ## , tol = 1e-10 ## time?
-      if( any(class(qr_C) == "sparseQR") ){
+      if( inherits(qr_C, "sparseQR") ){
         rank_C <- qr_C@Dim[2]
       }else{
         rank_C <- qr_C$rank 

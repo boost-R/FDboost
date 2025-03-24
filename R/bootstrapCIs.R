@@ -186,7 +186,7 @@ bootstrapCI <- function(object, which = NULL,
   type_inner <- match.arg(type_inner)
   
   ########## check for scalar response #########
-  scalarResp <- "FDboostScalar" %in% class(object)
+  scalarResp <- inherits(object, "FDboostScalar")
 
   ########## define outer resampling function if NULL #########
   if(is.null(resampling_fun_outer)){
@@ -498,7 +498,7 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
                              ylim = NULL, ...)
 {
   
-  stopifnot(class(x) == "bootstrapCI")
+  stopifnot(inherits(x, "bootstrapCI"))
   
   boot_offset <- 0 
   
@@ -598,7 +598,7 @@ plot.bootstrapCI <- function(x, which = NULL, pers = TRUE,
 print.bootstrapCI <- function(x, ...)
 {
 
-  stopifnot(class(x)=="bootstrapCI")
+  stopifnot(inherits(x, "bootstrapCI"))
 
   cat("\n")
      

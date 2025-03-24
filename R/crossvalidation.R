@@ -1248,7 +1248,7 @@ plot.validateFDboost <- function(x, riskopt=c("mean", "median"),
             c(min(c(0, ylim[1] * ifelse(ylim[1] < 0, 2, 0.5))), 
               riskMean[paste(mOptMean)]), lty = 2)
       legend("topright", legend=paste(c(mOptMean)),
-             lty=c(2), col=c("black"))
+             lty=2, col="black")
       
     }
 
@@ -1261,7 +1261,7 @@ plot.validateFDboost <- function(x, riskopt=c("mean", "median"),
               riskMedian[paste(mOptMedian)]), lty = 2)
       
       legend("topright", legend=paste(c(mOptMedian)),
-             lty=c(2), col=c("black"))
+             lty=2, col="black")
     }
     
   }

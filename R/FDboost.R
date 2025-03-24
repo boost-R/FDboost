@@ -465,8 +465,8 @@ FDboost <- function(formula,          ### response ~ xvars
     ## check if number of opening brackets is equal to number of closing brackets
     equalBrackets <- sapply(seq_along(trmstrings2), function(i)
     {
-      sapply(regmatches(trmstrings2[i], gregexpr("\\(", trmstrings2[i])), length) ==
-        sapply(regmatches(trmstrings2[i], gregexpr("\\)", trmstrings2[i])), length)
+      lengths(regmatches(trmstrings2[i], gregexpr("\\(", trmstrings2[i]))) ==
+        lengths(regmatches(trmstrings2[i], gregexpr("\\)", trmstrings2[i])))
     })
   }
   
@@ -621,7 +621,7 @@ FDboost <- function(formula,          ### response ~ xvars
       nr <- nrow(response)
       if(!is.list(time))
         stopifnot(ncol(response) == length(time)) else
-          stopifnot(all(ncol(response) == sapply(time[sapply(time, is.vector)], length)))
+          stopifnot(all(ncol(response) == lengths(time[sapply(time, is.vector)])))
       nc <- ncol(response)
       dresponse <- as.vector(response) # column-wise stacking of response 
       ## convert characters to factor 
@@ -633,7 +633,7 @@ FDboost <- function(formula,          ### response ~ xvars
       stopifnot(is.null(dim(response))) ## stopifnot(is.vector(response))
       # check length of response and its time and index
       if(is.list(time))
-        stopifnot(all(length(response) == sapply(time, length)) & length(response) == length(id)) else
+        stopifnot(all(length(response) == lengths(time)) & length(response) == length(id)) else
           stopifnot(length(response) == length(time) & length(response) == length(id))
       
       if(anyNA(response)) warning("For non-grid observations the response should not contain missing values.")
@@ -944,7 +944,7 @@ FDboost <- function(formula,          ### response ~ xvars
   ### multiply integration weights numInt to weights and w
   if(is.numeric(numInt)){
     .numInt_len_check <- if(is.list(time))
-      all(length(numInt) == sapply(time, length))  else 
+      all(length(numInt) == lengths(time))  else 
         length(numInt) == length(time)
     if(!.numInt_len_check) 
       stop("Length of integration weights and time vector are not equal.")

@@ -474,12 +474,12 @@ FDboost <- function(formula,          ### response ~ xvars
   if(inherits(try(id), "try-error")) stop("id must either be NULL or a formula object.")
   if(missing(timeformula) || inherits(try(timeformula),  "try-error")) 
     stop("timeformula must either be NULL or a formula object.")
-    stopifnot(class(formula) == "formula")
-  if(!is.null(timeformula)) stopifnot(class(timeformula) == "formula")
+    stopifnot(inherits(formula, "formula"))
+  if(!is.null(timeformula)) stopifnot(inherits(timeformula, "formula"))
   
   ## insert the id variable into the formula, to treat it like the other variables
   if(!is.null(id)){
-    stopifnot(class(id) == "formula")
+    stopifnot(inherits(id, "formula"))
     ##tf <- terms.formula(formula, specials = c("c"))
     ##trmstrings <- attr(tf, "term.labels")
     ##equalBrackets <- NULL

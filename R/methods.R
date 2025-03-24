@@ -104,12 +104,12 @@ print.FDboost <- function(x, ...) {
 # predict function: wrapper for predict.mboost()
 predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TRUE, ...){
   
-  stopifnot(any(class(object) == "FDboost")) 
+  stopifnot(inherits(object, "FDboost"))
   # print("Prediction FDboost") 
   dots <- list(...)
   
   # toFDboost is only meaningful for array-data
-  if(any(class(object) == "FDboostScalar") ||  any(class(object) == "FDboostLong")) toFDboost <- FALSE
+  if(inherits(object, c("FDboostScalar", "FDboostLong"))) toFDboost <- FALSE
 
   if(!is.null(dots$aggregate) && dots$aggregate[1] != "sum"){
     if(length(which) > 1 ) stop("For aggregate != 'sum', only one effect, or which=NULL are possible.")
@@ -438,7 +438,7 @@ fitted.FDboost <- function(object, toFDboost = TRUE, ...) {
   
   if (length(args) == 0) {
     ## give back matrix for regular response and toFDboost == TRUE
-    if(toFDboost && !any(class(object) == "FDboostScalar") && !any(class(object) == "FDboostLong") ){
+    if(toFDboost && !inherits(object, "FDboostScalar") && !inherits(object, "FDboostLong") ){
       ret <- matrix(object$fitted(), nrow = object$ydim[1])
     }else{ # give back a long vector
       ret <- object$fitted()
@@ -478,7 +478,7 @@ fitted.FDboost <- function(object, toFDboost = TRUE, ...) {
 ### residuals (the current negative gradient)
 residuals.FDboost <- function(object, ...){
   
-  if(!any(class(object)=="FDboostLong")){
+  if(!inherits(object, "FDboostLong")){
     resid <- matrix(object$resid())
     ydim <- ifelse(is.null(object$ydim[1]), NROW(resid), object$ydim[1])
     resid <- matrix(resid, nrow = ydim)
@@ -1050,8 +1050,8 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
           if(!is.matrix(predHelp)){ 
             X <- predHelp
           }else{
-            X <- if(any(trm$get_names() %in% "ONEtime") ||
-                    any(class(object)=="FDboostScalar")){ # effect constant in t 
+            X <- if(any(trm$get_names() %in% c("ONEtime")) ||
+                    inherits(object, "FDboostScalar")){ # effect constant in t 
               predHelp[,1]
             }else{ 
               predHelp[1,] # smooth intercept/ concurrent effect                
@@ -1622,7 +1622,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
             if(grepl("bhist", trm$main)){
               rug(x$yind, ticksize = 0.02)
             }else{
-              ifelse(grepl("by", trm$main) | ( !any(class(x)=="FDboostLong") && grepl("%X", trm$main) ) ,
+              ifelse(grepl("by", trm$main) | ( !inherits(x, "FDboostLong") && grepl("%X", trm$main) ) ,
                      rug(bl_data[[i]][[3]], ticksize = 0.02),
                      rug(bl_data[[i]][[2]], ticksize = 0.02))
             }

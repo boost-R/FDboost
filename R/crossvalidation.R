@@ -172,7 +172,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
     stop("The folds-matrix must have one row per observed trajectory.")
   }
   
-  if(any(class(object) == "FDboostLong")){ # irregular response
+  if(inherits(object, "FDboostLong")){ # irregular response
     nObs <- length(unique(object$id)) # number of curves
     Gy <- NULL # number of time-points per curve
   }else{ # regular response / scalar response 
@@ -201,7 +201,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   }else{
     
     if(numInt == "Riemann"){ # use the integration scheme specified in applyFolds
-      if(!any(class(object) == "FDboostLong")){
+      if(!inherits(object, "FDboostLong")){
         integration_weights <- as.vector(integrationWeights(X1 = matrix(object$response, 
                                                                         ncol = object$ydim[2]), object$yind))
       }else{
@@ -216,7 +216,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   
   ### get yind in long format
   yindLong <- object$yind
-  if(!any(class(object) == "FDboostLong")){
+  if(!inherits(object, "FDboostLong")){
     yindLong <- rep(object$yind, each = nObs)
   }
   ### compute ("length of each trajectory")^-1 in the response
@@ -255,7 +255,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
     }
   }
   
-  if(!any(class(object) == "FDboostLong") && !any(class(object) == "FDboostScalar")){
+  if(!inherits(object, "FDboostLong") && !inherits(object, "FDboostScalar")){
     dathelp[[object$yname]] <- matrix(object$response, ncol=object$ydim[2])
     dathelp$integration_weights <- matrix(integration_weights, ncol=object$ydim[2])
     dathelp$object_id <- object$id
@@ -279,13 +279,13 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   names_variables <- names_variables[names_variables != nameyind]
   names_variables <- names_variables[names_variables != "ONEx"]
   names_variables <- names_variables[names_variables != "ONEtime"]
-  if(!any(class(object) == "FDboostLong")) names_variables <- c(object$yname, "integration_weights", names_variables)
+  if(!inherits(object, "FDboostLong")) names_variables <- c(object$yname, "integration_weights", names_variables)
   
-  length_variables <- if("FDboostScalar" %in% class(object)) 
+  length_variables <- if(inherits(object, "FDboostScalar")) 
     lapply(dathelp[names_variables], length) else
       lapply(dathelp[names_variables], NROW)
   names_variables_long <- names_variables[ length_variables == length(object$id) ]
-  nothmatrix <- ! sapply(dathelp[names_variables_long], function(x) any(class(x) == "hmatrix" ))
+  nothmatrix <- ! sapply(dathelp[names_variables_long], is.hmatrix)
   names_variables_long <- names_variables_long[ nothmatrix ]
   if(identical(names_variables_long, character(0))) names_variables_long <- NULL
   
@@ -330,7 +330,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   fitfct <- function(weights, oobweights){
     
     ## get data according to weights
-    if(any(class(object) == "FDboostLong")){
+    if(inherits(object, "FDboostLong")){
       dat_weights <- reweightData(data = dathelp, vars = names_variables, 
                                   longvars = c(object$yname, nameyind, "integration_weights", names_variables_long),  
                                   weights = weights, idvars = c(attr(object$id, "nameid"), index_names),
@@ -403,7 +403,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
       }
 
       ## get data according to oobweights
-      if(any(class(object) == "FDboostLong")){
+      if(inherits(object, "FDboostLong")){
         dathelp$lengthTi1 <- c(lengthTi1)
         dat_oobweights <- reweightData(data = dathelp, vars = c(names_variables, "lengthTi1"),  
                                        longvars = c(object$yname, nameyind, 
@@ -449,7 +449,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
           invokeRestart( "muffleWarning" )  
       }
       
-      if(any(class(object) == "FDboostLong")){
+      if(inherits(object, "FDboostLong")){
         
         if(numInt == "equal"){ 
           oobwstand <- dat_oobweights$integration_weights * (1/sum(dat_oobweights$integration_weights))
@@ -715,7 +715,7 @@ validateFDboost <- function(object, response = NULL,
     stop("The folds-matrix must have one row per observed trajectory.")
   }
   
-  if(any(class(object) == "FDboostLong")){ # irregular response
+  if(inherits(object, "FDboostLong")){ # irregular response
     nObs <- length(unique(object$id)) # number of curves
     Gy <- NULL # number of time-points per curve
   }else{ # regular response / scalar response 
@@ -739,7 +739,7 @@ validateFDboost <- function(object, response = NULL,
   # intWeights <- model.weights(object) 
   # weights are rescaled in mboost, see mboost:::rescale_weights  
   if(!is.null(object$callEval$numInt) && object$callEval$numInt == "Riemann"){
-    if(!any(class(object) == "FDboostLong")){
+    if(!inherits(object, "FDboostLong")){
       intWeights <- as.vector(integrationWeights(X1 = matrix(object$response, 
                               ncol = object$ydim[2]), object$yind))
     }else{
@@ -761,7 +761,7 @@ validateFDboost <- function(object, response = NULL,
   
   ### get yind in long format
   yindLong <- object$yind
-  if(!any(class(object) == "FDboostLong")){
+  if(!inherits(object, "FDboostLong")){
     yindLong <- rep(object$yind, each = nObs)
   }
   ### compute ("length of each trajectory")^-1 in the response
@@ -783,7 +783,7 @@ validateFDboost <- function(object, response = NULL,
     nameyind <- attr(object$yind, "nameyind")
     dathelp[[nameyind]] <- object$yind
     
-    if(!any(class(object) == "FDboostLong") && !any(class(object) == "FDboostScalar")){
+    if(!inherits(object, "FDboostLong") && !inherits(object, "FDboostScalar")){
       dathelp[[object$yname]] <- matrix(object$response, ncol = Gy)
     }else{
       dathelp[[object$yname]] <- object$response
@@ -801,7 +801,7 @@ validateFDboost <- function(object, response = NULL,
     # call$control <- boost_control(risk="oobag")
     # call$oobweights <- oobweights[id]
     if(refitSmoothOffset == FALSE && is.null(call$offset) ){
-      if(!any(class(object) == "FDboostLong")){
+      if(!inherits(object, "FDboostLong")){
         call$offset <- matrix(object$offset, ncol = Gy)[1, ]
       }else{
         call$offset <- object$offset
@@ -908,7 +908,7 @@ validateFDboost <- function(object, response = NULL,
   # str(modRisk, max.level=5)
   
   # check whether model fit worked in all iterations
-  modFitted <- sapply(modRisk, function(x) class(x) == "list")
+  modFitted <- sapply(modRisk, is.list)
   if(any(!modFitted)){
     
     # stop() or warning()?
@@ -962,7 +962,7 @@ validateFDboost <- function(object, response = NULL,
     oobpreds0 <- lapply(modRisk, function(x) x$predGrid)
     oobpreds <- matrix(nrow = nrow(oobpreds0[[1]]), ncol = ncol(oobpreds0[[1]]))
     
-    if(any(class(object) == "FDboostLong")){
+    if(inherits(object, "FDboostLong")){
       for(i in seq_along(oobpreds0)){ # i runs over observed trajectories, i.e. over id
         oobpreds[id == i, ]  <- oobpreds0[[i]][id == i, ] 
       }
@@ -1068,7 +1068,7 @@ validateFDboost <- function(object, response = NULL,
             # offset is vector of length yind or numeric of length 1 for constant offset
             ret <- modRisk[[g]]$mod[optimalMstop]$predictOffset(object$yind) 
             # regular data or scalar response
-            if(!any(class(object) == "FDboostLong")){
+            if(!inherits(object, "FDboostLong")){
               if( length(ret) == 1 ) ret <- rep(ret, modRisk[[1]]$mod$ydim[2])
             # irregular data
             }else{ 
@@ -1077,13 +1077,13 @@ validateFDboost <- function(object, response = NULL,
           }else{ # other effects
             ret <- predict(modRisk[[g]]$mod[optimalMstop], which = l-1) # model g
             if(!(l-1) %in% selected(modRisk[[g]]$mod[optimalMstop]) ){ # effect was never chosen
-              if(!any(class(object) == "FDboostLong")){
+              if(!inherits(object, "FDboostLong")){
                 ret <- matrix(0, ncol=modRisk[[1]]$mod$ydim[2], nrow=modRisk[[1]]$mod$ydim[1])
               }else{
                 ret <- matrix(0, nrow = length(object$id), ncol=1)
               } 
             }
-            if(!any(class(object) == "FDboostLong")){
+            if(!inherits(object, "FDboostLong")){
               ret <- ret[g,] # save g-th row = preds for g-th observations
             }else{
               ret <- ret[object$id == g] # save preds of g-th observations
@@ -1112,7 +1112,7 @@ validateFDboost <- function(object, response = NULL,
               oobrisk0 = oobrisk0, 
               oobmse0 = oobmse0,
               oobmrd0 = oobmrd0, 
-              format = if(any(class(object) == "FDboostLong")) "FDboostLong" else "FDboost", 
+              format = if(inherits(object, "FDboostLong")) "FDboostLong" else "FDboost", 
               fun_ret = if(is.null(fun)) NULL else lapply(modRisk, function(x) x$fun_ret) )
   
   rm(modRisk)
@@ -1354,7 +1354,7 @@ plotPredCoef <- function(x, which = NULL, pers = TRUE,
                          probs = c(0.25, 0.5, 0.75), # quantiles of variables to use for plotting
                          ylim = NULL, ...){
   
-  stopifnot(any(class(x) == "validateFDboost"))
+  stopifnot(inherits(x, "validateFDboost"))
 
   if(is.null(which)) which <- seq_along(x$coefCV)
   

@@ -148,7 +148,7 @@ stabsel.FDboost <- function(x, refitSmoothOffset = TRUE,
   }
   
   ## for scalar response and/or scalar offset, use the more efficient cvrisk()
-  if( any(class(x) == "FDboostScalar" )  ) refitSmoothOffset <- FALSE
+  if( inherits(x, "FDboostScalar" )  ) refitSmoothOffset <- FALSE
   if( !is.null(x$call$offset) && x$call$offset == "scalar" ) refitSmoothOffset <- FALSE
 
   if(refitSmoothOffset){

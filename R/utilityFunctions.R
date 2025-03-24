@@ -224,9 +224,9 @@ funplot <- function(x, y, id=NULL, rug=TRUE, ...){
 ### function to plot the observed response and the predicted values of a model
 plotPredicted <- function(x, subset=NULL, posLegend="topleft", lwdObs=1, lwdPred=1, ...){
   
-  stopifnot("FDboost" %in% class(x))
+  stopifnot(inherits(x, "FDboost"))
   
-  if(any(class(x) == "FDboostScalar")){
+  if(inherits(x, "FDboostScalar")){
     
     if(is.null(subset)) subset <- seq_along(x$response)
     response <- x$response[subset, drop=FALSE] 
@@ -235,7 +235,7 @@ plotPredicted <- function(x, subset=NULL, posLegend="topleft", lwdObs=1, lwdPred
     
   }else{
     
-    if(!any(class(x) == "FDboostLong")){
+    if(!inherits(x, "FDboostLong")){
       if(is.null(subset)) subset <- 1:x$ydim[1]
       response <- matrix(x$response, nrow=x$ydim[1], ncol=x$ydim[2])[subset, , drop=FALSE] 
       pred <- fitted(x)[subset, , drop=FALSE]
@@ -292,9 +292,9 @@ plotPredicted <- function(x, subset=NULL, posLegend="topleft", lwdObs=1, lwdPred
 ### function to plot the residuals
 plotResiduals <- function(x, subset=NULL, posLegend="topleft", ...){
   
-  stopifnot("FDboost" %in% class(x))
+  stopifnot(inherits(x, "FDboost"))
   
-  if(any(class(x) == "FDboostScalar")){
+  if(inherits(x, "FDboostScalar")){
     
     if(is.null(subset)) subset <- seq_along(x$response)
     response <- x$response[subset, drop=FALSE] 
@@ -302,7 +302,7 @@ plotResiduals <- function(x, subset=NULL, posLegend="topleft", ...){
     
   }else{
     
-    if(!any(class(x) == "FDboostLong")){ ## wide format
+    if(!inherits(x, "FDboostLong")){ ## wide format
       if(is.null(subset)) subset <- 1:x$ydim[1]
       resid <- matrix(x$resid(), nrow = x$ydim[1])[subset, , drop=FALSE]
       yind <- x$yind
@@ -410,7 +410,7 @@ getYYhatTime <- function(object, breaks=object$yind){
 #' @export
 funRsquared <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE, ...){
   
-  if(length(object$yind)<2 || any(class(object)=="FDboostLong")){
+  if(length(object$yind)<2 || inherits(object, "FDboostLong")){
     y <- object$response
     yhat <- object$fitted()
     time <- object$yind
@@ -457,7 +457,7 @@ funRsquared <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,
     attr(ret, "missings") <- apply(y, 2, function(x) sum(is.na(x))/length(x) )
     
   }else{ ### for each subject i
-    if(length(object$yind)<2 || any(class(object)=="FDboostLong")){
+    if(length(object$yind)<2 || inherits(object, "FDboostLong")){
       # Mean for each subject
       mut <- tapply(y, id, mean, na.rm=TRUE  )[id]
       # numerator cannot be 0
@@ -527,7 +527,7 @@ funRsquared <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,
 funMSE <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE, 
                    relative=FALSE, root=FALSE, ...){
   
-  if(length(object$yind)<2 || any(class(object)=="FDboostLong")){
+  if(length(object$yind)<2 || inherits(object, "FDboostLong")){
     y <- object$response
     yhat <- object$fitted()
     time <- object$yind
@@ -557,7 +557,7 @@ funMSE <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,
       attr(ret, "missings") <- apply(y, 2, function(x) sum(is.na(x))/length(x))     
     }else{ 
       ### for each subject i
-      if(length(object$yind)<2 || any(class(object)=="FDboostLong")){
+      if(length(object$yind)<2 || inherits(object, "FDboostLong")){
         ret <- tapply((y - yhat)^2, id, mean, na.rm=TRUE  )
         attr(ret, "name") <- "MSE over subjects"              
       }else{
@@ -614,7 +614,7 @@ funMSE <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,
 #' @export
 funMRD <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,  ...){
   
-  if(length(object$yind)<2 || any(class(object)=="FDboostLong")){
+  if(length(object$yind)<2 || inherits(object, "FDboostLong")){
     y <- object$response
     yhat <- object$fitted()
     time <- object$yind
@@ -648,7 +648,7 @@ funMRD <- function(object, overTime=TRUE, breaks=object$yind, global=FALSE,  ...
       attr(ret, "missings") <- apply(y, 2, function(x) sum(is.na(x))/length(x))     
     }else{ 
       ### for each subject i
-      if(length(object$yind)<2 || any(class(object)=="FDboostLong")){
+      if(length(object$yind)<2 || inherits(object, "FDboostLong")){
         ret <- tapply( abs((y1 - yhat) / y1), id, mean, na.rm=TRUE  )
         attr(ret, "name") <- "MRD over subjects"              
       }else{
@@ -1049,7 +1049,7 @@ reweightData <- function(data, argvals, vars,
                 " in data."))
   
   # check for hmatrix and delete in argvals or vars if present
-  whichHmat <- sapply(data[vars], function(x) "hmatrix" %in% class(x))
+  whichHmat <- sapply(data[vars], is.hmatrix)
   
   # get dimensions of data
   dimd <- lapply(data, dim)
@@ -1137,7 +1137,7 @@ reweightData <- function(data, argvals, vars,
       ## subset hmatrix
       newHmats[[j]] <- subset_hmatrix(data[[nhm[j]]], index = index, compress = compress)
       
-      if( any(class(data[[nhm[j]]]) == "AsIs") ){
+      if( inherits(data[[nhm[j]]], "AsIs") ){
         newHmats[[j]] <- I(newHmats[[j]])
       }
       

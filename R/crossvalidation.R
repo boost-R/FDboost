@@ -800,7 +800,7 @@ validateFDboost <- function(object, response = NULL,
     # Using the offset of object with the following settings 
     # call$control <- boost_control(risk="oobag")
     # call$oobweights <- oobweights[id]
-    if(refitSmoothOffset == FALSE && is.null(call$offset) ){
+    if(!refitSmoothOffset && is.null(call$offset) ){
       if(!inherits(object, "FDboostLong")){
         call$offset <- matrix(object$offset, ncol = Gy)[1, ]
       }else{

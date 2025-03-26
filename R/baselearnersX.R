@@ -32,7 +32,7 @@ hyper_histx <- function(mf, vary, knots = 10, boundary.knots = NULL, degree = 3,
     stop("variable names and knot names must be the same")
   if (is.list(boundary.knots)) if(!all(names(boundary.knots) %in% nm))
     stop("variable names and boundary.knot names must be the same")
-  if (!identical(center, FALSE) && cyclic)
+  if (!isFALSE(center) && cyclic)
     stop("centering of cyclic covariates not yet implemented")
   ret <- vector(mode = "list", length = length(nm))
   names(ret) <- nm

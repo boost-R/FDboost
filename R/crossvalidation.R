@@ -354,8 +354,8 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
       
       for(i in seq_along(namesFac)){
         
-      if(length(levels(droplevels(dathelp[[namesFac[i]]]))) != 
-         length(levels(droplevels(dat_weights[[namesFac[i]]]))))
+      if(nlevels(droplevels(dathelp[[namesFac[i]]])) !=
+         nlevels(droplevels(dat_weights[[namesFac[i]]])))
         stop(paste0("The factor variable '", namesFac[i], "' has unobserved levels in the training data. ",
                     "Make sure that training data in each fold contains all factor levels."))
         

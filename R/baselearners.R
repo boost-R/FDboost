@@ -229,7 +229,7 @@ hyper_signal <- function(mf, vary, inS="smooth", knots = 10, boundary.knots = NU
   #     stop("variable names and knot names must be the same")
   #   if (is.list(boundary.knots)) if(!all(names(boundary.knots) %in% nm))
   #     stop("variable names and boundary.knot names must be the same")
-  if (!identical(center, FALSE) && cyclic)
+  if (!isFALSE(center) && cyclic)
     stop("centering of cyclic covariates not yet implemented")
   #    ret <- vector(mode = "list", length = length(nm))
   #    names(ret) <- nm
@@ -363,7 +363,7 @@ X_bsignal <- function(mf, vary, args) {
   
   #####################################################
   ####### K <- crossprod(K) has been computed before!
-  if (!identical(args$center, FALSE)) {
+  if (!isFALSE(args$center)) {
 
     ### L = \Gamma \Omega^1/2 in Section 2.3. of
     ### Fahrmeir et al. (2004, Stat Sinica); "spectralDecomp"
@@ -1102,7 +1102,7 @@ hyper_hist <- function(mf, vary, knots = 10, boundary.knots = NULL, degree = 3,
   #     stop("variable names and knot names must be the same")
   #   if (is.list(boundary.knots)) if(!all(names(boundary.knots) %in% nm))
   #     stop("variable names and boundary.knot names must be the same")
-  if (!identical(center, FALSE) && cyclic)
+  if (!isFALSE(center) && cyclic)
     stop("centering of cyclic covariates not yet implemented")
   #    ret <- vector(mode = "list", length = length(nm))
   #    names(ret) <- nm
@@ -1990,7 +1990,7 @@ X_bbsc <- function(mf, vary, args) {
     if (vary != "" && ncol(by) > 1){       # build block diagonal penalty
       suppressMessages(K <- kronecker(diag(ncol(by)), K))
     }
-    if (!identical(args$center, FALSE)) {
+    if (!isFALSE(args$center)) {
       ### L = \Gamma \Omega^1/2 in Section 2.3. of Fahrmeir et al.
       ### (2004, Stat Sinica), always
       L <- eigen(K, symmetric = TRUE)
@@ -2010,7 +2010,7 @@ X_bbsc <- function(mf, vary, args) {
   ### <SB> Calculate constraints
 
   ## for center = TRUE, design matrix does not contain constant part 
-  if(args$center != FALSE){ 
+  if(!isFALSE(args$center)){ 
     
     ## center the columns of the design matrix 
     ## Z contains column means

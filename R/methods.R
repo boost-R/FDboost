@@ -1050,7 +1050,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
           if(!is.matrix(predHelp)){ 
             X <- predHelp
           }else{
-            X <- if(any(trm$get_names() %in% c("ONEtime")) ||
+            X <- if(any(trm$get_names() %in% "ONEtime") ||
                     inherits(object, "FDboostScalar")){ # effect constant in t 
               predHelp[,1]
             }else{ 

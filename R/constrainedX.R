@@ -89,8 +89,8 @@
   if(any(used_bl == "bolsc")) stop("Use bols instead of bolsc with %Xc%.")
   if(any(used_bl == "brandomc")) stop("Use brandom instead of brandomc with %Xc%.")
   if(any(used_bl == "bbsc")) stop("Use bbs instead of bbsc with %Xc%.")
-  if( (!is.null(match.call()$bl1$intercept) &&  match.call()$bl1$intercept != TRUE) ||
-      (!is.null(match.call()$bl2$intercept) &&  match.call()$bl2$intercept != TRUE) ){
+  if( (!is.null(match.call()$bl1$intercept) && !isTRUE(match.call()$bl1$intercept)) ||
+      (!is.null(match.call()$bl2$intercept) && !isTRUE(match.call()$bl2$intercept)) ){
     stop("Set intercept = TRUE in base-learners used with %Xc%.")
   }
   

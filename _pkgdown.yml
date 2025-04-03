@@ -1,0 +1,5 @@
+url: https://boost-R.github.io/FDboost
+
+template:
+  bootstrap: 5
+  light-switch: true

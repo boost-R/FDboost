@@ -266,7 +266,7 @@ factorize.FDboost <- function(x, newdata = NULL, newweights = 1, blwise = TRUE, 
     e[[i]]$ens <- unlist(lapply(cf[[i]], asplit, 2), recursive = FALSE)
     e[[i]]$ens <- Map( function(x, cls) {
       bm <- list(model = x)
-      class(bm) <- gsub("bl", "bm", cls)
+      class(bm) <- gsub("bl", "bm", cls, fixed = TRUE)
       bm
     },
     x = e[[i]]$ens[bl_order[[i]]],

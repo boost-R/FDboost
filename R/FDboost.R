@@ -465,8 +465,8 @@ FDboost <- function(formula,          ### response ~ xvars
     ## check if number of opening brackets is equal to number of closing brackets
     equalBrackets <- sapply(seq_along(trmstrings2), function(i)
     {
-      lengths(regmatches(trmstrings2[i], gregexpr("\\(", trmstrings2[i]))) ==
-        lengths(regmatches(trmstrings2[i], gregexpr("\\)", trmstrings2[i])))
+      lengths(regmatches(trmstrings2[i], gregexpr("(", trmstrings2[i], fixed = TRUE))) ==
+        lengths(regmatches(trmstrings2[i], gregexpr(")", trmstrings2[i], fixed = TRUE)))
     })
   }
   
@@ -486,8 +486,8 @@ FDboost <- function(formula,          ### response ~ xvars
     if(length(trmstrings) > 0){
       ## insert index into the other base-learners of the tensor-product as well
       for(i in seq_along(trmstrings)){
-        if(grepl( "%X", trmstrings2[i])){
-          temp <- unlist(strsplit(trmstrings2[i], "%X"))
+        if(grepl( "%X", trmstrings2[i], fixed = TRUE)){
+          temp <- unlist(strsplit(trmstrings2[i], "%X", fixed = TRUE))
           temp1 <- temp[-length(temp)]
           ## http://stackoverflow.com/questions/2261079
           ## delete all trailing whitespace
@@ -497,13 +497,13 @@ FDboost <- function(formula,          ### response ~ xvars
           trmstrings2[i] <- paste0(paste0(temp1, collapse = " %X"), " %X", temp[length(temp)]) 
         } 
         ## do not add index to base-learners bhistx()
-        if( grepl("bhistx", trmstrings[i]) ) trmstrings2[i] <- trmstrings[i] 
+        if( grepl("bhistx", trmstrings[i], fixed = TRUE) ) trmstrings2[i] <- trmstrings[i] 
         ##  do not add an index if an index is already part of the formula
         if( grepl("index[[:blank:]]*=", trmstrings[i]) ) trmstrings2[i] <- trmstrings[i]
         ##  do not add an index if an index for %A%, %A0%, %O%
-        if( grepl("%A%", trmstrings[i]) ) trmstrings2[i] <- trmstrings[i]
-        if( grepl("%A0%", trmstrings[i]) ) trmstrings2[i] <- trmstrings[i]
-        if( grepl("%O%", trmstrings[i]) ) trmstrings2[i] <- trmstrings[i]
+        if( grepl("%A%", trmstrings[i], fixed = TRUE) ) trmstrings2[i] <- trmstrings[i]
+        if( grepl("%A0%", trmstrings[i], fixed = TRUE) ) trmstrings2[i] <- trmstrings[i]
+        if( grepl("%O%", trmstrings[i], fixed = TRUE) ) trmstrings2[i] <- trmstrings[i]
         ##  do not add an index for base-learner that do not have brackets
         if( i %in% which(!equalBrackets) ) trmstrings2[i] <- trmstrings[i]
       }
@@ -538,7 +538,7 @@ FDboost <- function(formula,          ### response ~ xvars
     scalarResponse <- TRUE
     if(is.null(timeformula)) scalarNoFLAM <- TRUE
     
-    if(grepl("df", formula[3]) || !grepl("lambda", formula[3]) ){
+    if(grepl("df", formula[3], fixed = TRUE) || !grepl("lambda", formula[3], fixed = TRUE) ){
       timeformula <- ~bols(ONEtime, intercept = FALSE, df = 1)
     }else{
       timeformula <- ~bols(ONEtime, intercept = FALSE)
@@ -671,23 +671,23 @@ FDboost <- function(formula,          ### response ~ xvars
 
   ## get formula over time
   tfm <- paste(deparse(timeformula), collapse = "")
-  tfm <- strsplit(tfm, "~")[[1]]
-  tfm <- strsplit(tfm[2], "\\+")[[1]]
+  tfm <- strsplit(tfm, "~", fixed = TRUE)[[1]]
+  tfm <- strsplit(tfm[2], "+", fixed = TRUE)[[1]]
   
   ## get formula in covariates 
   cfm <- paste(deparse(formula), collapse = "") 
-  cfm <- strsplit(cfm, "~")[[1]]
+  cfm <- strsplit(cfm, "~", fixed = TRUE)[[1]]
   cfm0 <- cfm
   #xfm <- strsplit(cfm[2], "\\+")[[1]]
   xfm <- trmstrings
   
   ## check that the timevariable in timeformula and in the bhistx-base-learners have the same name
-  if(any(grepl("bhistx", trmstrings))){
+  if(any(grepl("bhistx", trmstrings, fixed = TRUE))){
     for(j in seq_along(trmstrings)){
-      if(any(grepl("bhistx", trmstrings[j]))){
-        if(grepl("%X", trmstrings[j]) ){
+      if(any(grepl("bhistx", trmstrings[j], fixed = TRUE))){
+        if(grepl("%X", trmstrings[j], fixed = TRUE) ){
           temp <- strsplit(trmstrings[[j]], "%X.*%")[[1]]
-          temp <- temp[ grepl("bhistx", temp) ]
+          temp <- temp[ grepl("bhistx", temp, fixed = TRUE) ]
           ## pryr::standardise_call(quote(bhistx(X1h, df=3))) 
           temp_name <- all.vars(formula(paste("~", temp)))[1]
         }else{
@@ -707,13 +707,13 @@ FDboost <- function(formula,          ### response ~ xvars
     }
   }
     
-  yfm <- strsplit(cfm[1], "\\+")[[1]] ## name of response 
+  yfm <- strsplit(cfm[1], "+", fixed = TRUE)[[1]] ## name of response 
   
   ## set up formula for effects constant in time
   if(length(where.c) > 0){
     # set c_df to the df/lambda in timeformula
-    if( grepl("lambda", tfm) || 
-          ( grepl("bols", tfm) &&  !grepl("df", tfm)) ){
+    if( grepl("lambda", tfm, fixed = TRUE) || 
+          ( grepl("bols", tfm, fixed = TRUE) &&  !grepl("df", tfm, fixed = TRUE)) ){
       c_lambda <- eval(parse(text = paste0(tfm, "$dpp(rep(1.0,", length(time), "))$df()")))["lambda"]
       cfm <- paste("bols(ONEtime, intercept = FALSE, lambda = ", c_lambda ,")")
     } else{
@@ -745,20 +745,20 @@ FDboost <- function(formula,          ### response ~ xvars
   }
 
   # do not expand an effect bconcurrent() or bhist() with timeformula
-  if( length(c(grep("bconcurrent", tmp), grep("bhis", tmp)) ) > 0 ) 
-    tmp[c(grep("bconcurrent", tmp), grep("bhist", tmp))] <- xfm[c(grep("bconcurrent", tmp), grep("bhist", tmp))]  
+  if (any(grepl("bconcurrent|bhis", tmp)))
+    tmp[c(grep("bconcurrent", tmp, fixed = TRUE), grep("bhist", tmp, fixed = TRUE))] <- xfm[c(grep("bconcurrent", tmp, fixed = TRUE), grep("bhist", tmp, fixed = TRUE))]  
   
   ## do not expand effects in formula including %A% with timeformula
-  if( length(grep("%A%", xfm)) > 0 ) 
-    tmp[grep("%A%", xfm)] <- xfm[grep("%A%", xfm)]
+  if( any(grepl("%A%", xfm, fixed = TRUE)) ) 
+    tmp[grep("%A%", xfm, fixed = TRUE)] <- xfm[grep("%A%", xfm, fixed = TRUE)]
   
   ## do not expand effects in formula including %A0% with timeformula
-  if( length(grep("%A0%", xfm)) > 0 ) 
-    tmp[grep("%A0%", xfm)] <- xfm[grep("%A0%", xfm)]
+  if( any(grepl("%A0%", xfm, fixed = TRUE)) ) 
+    tmp[grep("%A0%", xfm, fixed = TRUE)] <- xfm[grep("%A0%", xfm, fixed = TRUE)]
   
   ## do not expand effects in formula including %O% with timeformula
-  if( length(grep("%O%", xfm)) > 0 ) 
-    tmp[grep("%O%", xfm)] <- xfm[grep("%O%", xfm)]
+  if( any(grepl("%O%", xfm, fixed = TRUE)) ) 
+    tmp[grep("%O%", xfm, fixed = TRUE)] <- xfm[grep("%O%", xfm, fixed = TRUE)]
   
   ## expand with a constant effect in t-direction 
   if(length(where.c) > 0){
@@ -833,11 +833,11 @@ FDboost <- function(formula,          ### response ~ xvars
 
   ### replace "1" with intercept base learner
   formula_intercept <- FALSE
-  if ( any( gsub(" ", "", strsplit(cfm0[2], "\\+")[[1]]) ==  "1")){
+  if ( any( gsub(" ", "", strsplit(cfm0[2], "+", fixed = TRUE)[[1]], fixed = TRUE) ==  "1")){
     formula_intercept <- TRUE
     ## use df or lambda as in timeformula 
-    if( any(grepl("lambda", deparse(timeformula))) || 
-        any(( grepl("bols", deparse(timeformula)) &  !grepl("df", deparse(timeformula)))) ){
+    if( any(grepl("lambda", deparse(timeformula), fixed = TRUE)) || 
+        any(( grepl("bols", deparse(timeformula), fixed = TRUE) &  !grepl("df", deparse(timeformula), fixed = TRUE))) ){
       tmp <- c("bols(ONEx, intercept = FALSE, lambda = 0)", tmp)
     } else{
       tmp <- c("bols(ONEx, intercept = FALSE, df = 1)", tmp)
@@ -879,9 +879,9 @@ FDboost <- function(formula,          ### response ~ xvars
       ## get the limits argument
       current_bl <- attr(terms_fm_bhist, "variables")[[places_bhist[pl] + 1]]
       # for base-learner with interaction, find bhistx / bhist
-      if(any(grepl("%X", current_bl))){ 
+      if(any(grepl("%X", current_bl, fixed = TRUE))){ 
         #current_bl <- current_bl[ grepl("bhist", current_bl) ]
-        arg_limits <- eval(as.call(as.list(current_bl[grepl("bhist", current_bl)])[[1]])$limits) 
+        arg_limits <- eval(as.call(as.list(current_bl[grepl("bhist", current_bl, fixed = TRUE)])[[1]])$limits) 
       }else{
         # limits argument of bhist / bhistx 
         arg_limits <- eval(as.call(current_bl)$limits)
@@ -1163,7 +1163,7 @@ FDboost <- function(formula,          ### response ~ xvars
   if(check0 && length(ret$baselearner) > 1 && is.null(id) && dim(response)[2] != 1){
     
     # do not check the smooth intercept
-    if(any( gsub(" ", "", strsplit(cfm[2], "\\+")[[1]]) ==  "1")){
+    if(any( gsub(" ", "", strsplit(cfm[2], "+", fixed = TRUE)[[1]], fixed = TRUE) ==  "1")){
       effectsToCheck <- 2:length(ret$baselearner)
     }else{
       effectsToCheck <- seq_along(ret$baselearner)

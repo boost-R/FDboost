@@ -51,7 +51,7 @@ jobs:
       - name: Install additional LaTeX packages
         run: |
           tlmgr update --self
-          tlmgr install preprint
+          tlmgr install preprint dsfont
 
       - uses: r-lib/actions/check-r-package@v2
         with:

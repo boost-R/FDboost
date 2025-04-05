@@ -48,6 +48,11 @@ jobs:
 
       - uses: r-lib/actions/setup-tinytex@v2
 
+      - name: Install additional LaTeX packages
+        run: |
+          tlmgr update --self
+          tlmgr install authblk
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true

@@ -232,9 +232,9 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
         indname <- attr(object$baselearner[[i]]$get_data()[[xname]], "indname")  # does not work for %X% 
         ## if two ore more base-learners are connected by %X%, find the functional variable 
         ## the loop is necessary if more than one functioal covaraites are used in the same bl
-        if(grepl("%X", names(object$baselearner)[i])){
-          form <- strsplit(object$baselearner[[i]]$get_call(), "%X")[[1]]
-          findFun <- grepl("bhist", form) | grepl("bconcurrent", form) | grepl("bsignal", form) | grepl("bfpc", form)
+        if(grepl("%X", names(object$baselearner)[i], fixed = TRUE)){
+          form <- strsplit(object$baselearner[[i]]$get_call(), "%X", fixed = TRUE)[[1]]
+          findFun <- grepl("bhist", form, fixed = TRUE) | grepl("bconcurrent", form, fixed = TRUE) | grepl("bsignal", form, fixed = TRUE) | grepl("bfpc", form, fixed = TRUE)
           xname <- c()
           indname <- c()
           for(j in which(findFun)){
@@ -282,7 +282,7 @@ predict.FDboost <- function(object, newdata = NULL, which = NULL, toFDboost = TR
     # offset of length>1 is not used in prediction, 
     # important when offset=NULL in FDboost() but not in mboost()
     muffleWarning1 <- function(w){
-      if( any( grepl( "User-specified offset is not a scalar", w) ) )
+      if( any( grepl("User-specified offset is not a scalar", w, fixed = TRUE) ) )
         invokeRestart( "muffleWarning" )  
     }
 
@@ -603,7 +603,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
         numberLevels <- 1  
 
         ### generate data in the case of an bhistx()-bl
-        if(grepl("bhistx", trm$get_call())){
+        if(grepl("bhistx", trm$get_call(), fixed = TRUE)){
           ng <- n2
           # get hmatrix-object
           position_hmatrix <- which(sapply(trm$model.frame(), is.hmatrix))
@@ -614,10 +614,10 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
           tvals <- seq(min(tvals), max(tvals), length = ng)
           tvals <- rep(tvals, each = ng)
 
-          if( grepl("%X", trm$get_call()) ){
+          if( grepl("%X", trm$get_call(), fixed = TRUE) ){
             split_bl <- strsplit(trm$get_call(), split = "%.{1,3}%")[[1]]
             ## save the position of bhistx() 
-            position_bhistx <- which(grepl("bhistx", split_bl))
+            position_bhistx <- grep("bhistx", split_bl, fixed = TRUE)
             
             if(length(split_bl) == 2){ # one %X%
               if(position_bhistx == 1){
@@ -667,7 +667,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
           attr(d, "ym") <- seq(min(tvals), max(tvals), length = ng)
           
           ## for a tensor product term: add the scalar factors to d
-          if( grepl("%X", trm$get_call()) ){
+          if( grepl("%X", trm$get_call(), fixed = TRUE) ){
             if(position_hmatrix == 1){  
               position_z <- 2
             }else{ 
@@ -827,7 +827,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
             }else{ ### functional response 
               
               ## not bhist 
-              if( ! grepl("bhist", trm$get_call()) ){
+              if( ! grepl("bhist", trm$get_call(), fixed = TRUE) ){
                 
                 ## y (time variable, usually second variable)
                 ## important in case of by-variables, then yind is third variable 
@@ -929,7 +929,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
         
         
         ## add dummy signal to data for bsignal()
-        if(grepl("bsignal", trm$get_call()) || grepl("bfpc", trm$get_call()) ){
+        if (grepl("bsignal|bfpc", trm$get_call())) {
           
           position_signal <- which(sapply(trm$model.frame(), 
                                           function(x) !is.null(attr(x, "signalIndex")) ))
@@ -944,7 +944,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
         ## as they cannot be included into the variable x(s)
         ## use intFun() to compute the integration weights
         # ls(environment(trm$dpp))
-        if(grepl("bhist", trm$get_call()) ){
+        if(grepl("bhist", trm$get_call(), fixed = TRUE) ){
           ## temp <- I(diag(ng)/integrationWeightsLeft(diag(ng), d[[varnms[1]]]))
           ## use intFun() of the bl to compute the integration weights
           temp <- environment(trm$dpp)$args$intFun(diag(ng), d[[attr(object$yind, "nameyind")]])
@@ -956,7 +956,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
         }
         
         ## add dummy signal to data for bconcurrent()
-        if(grepl("bconcurrent", trm$get_call())){
+        if(grepl("bconcurrent", trm$get_call(), fixed = TRUE)){
           d[[ trm$get_names()[1] ]] <- I(matrix(rep(1.0, ng^2), ncol=ng))
         }
         
@@ -975,7 +975,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
         
         
         # if %X% was used in combination with factor variables make a list of data-frames
-        if(!inherits(object, "FDboostLong") && grepl("%X", trm$get_call())){
+        if(!inherits(object, "FDboostLong") && grepl("%X", trm$get_call(), fixed = TRUE)){
           dlist <- NULL
 
           ## if %X% was used in combination with factor variables make a list of data-frames
@@ -1068,7 +1068,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
            
             ## for bhist(), multiply with standardisation weights if necessary
             ## you need the args$vecStand from the prediction of X, constructed here
-            if(grepl("bhist", trm$get_call())){
+            if(grepl("bhist", trm$get_call(), fixed = TRUE)){
               myargsHist <- myargs  ## use the args found in makeDataGrid() 
 
               ## this should only occur for more than two %X%
@@ -1110,13 +1110,13 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
                       z=attr(d, "zm"), zlab=varnms[3], vecStand=vecStand)
             
             ## include the second scalar covariate called z1 into the output
-            if( grepl("bhistx", trm$get_call()) && length(trm$get_names()) > 2){
+            if( grepl("bhistx", trm$get_call(), fixed = TRUE) && length(trm$get_names()) > 2){
               extra_output <- list(z1=attr(d, "z1m"), z1lab=varnms[4])
               P <- c(P, extra_output)
             }
             
             ## save the arguments of stand and limits as part of returned object
-            if(grepl("bhist", trm$get_call())){
+            if(grepl("bhist", trm$get_call(), fixed = TRUE)){
               P$stand <- myargsHist$stand
               P$limits <- myargsHist$limits
             }
@@ -1151,8 +1151,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
       
       trm <- object$baselearner[[i]]
       trm$dim <- length(trm$get_names())
-      if(any(grepl("ONEx", trm$get_names()), 
-             grepl("ONEtime", trm$get_names()))) trm$dim <- trm$dim - 1
+      if(any(grepl("ONE(x|time)", trm$get_names()))) trm$dim <- trm$dim - 1
       
       ### give error for bl1 %X% bl2 %X% bl3
       #if( grepl("bhistx", trm$get_call()) & trm$dim > 2){
@@ -1160,18 +1159,18 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
       #}
           
       ## add 1 to dimension of bhist and bhistx, otherwise dim is only 1  
-      if( grepl("bhist", trm$get_call()) ){
+      if( grepl("bhist", trm$get_call(), fixed = TRUE) ){
         trm$dim <- trm$dim + 1
       }
       
       # If a by-variable was specified, reduce number of dimensions
       # as smooth linear effect in several groups can be plotted in one plot 
-      if( grepl("by =", trm$get_call()) && grepl("bols", trm$get_call()) || 
-            grepl("by =", trm$get_call()) && grepl("bbs", trm$get_call()) ) trm$dim <- trm$dim - 1
+      if( grepl("by =", trm$get_call(), fixed = TRUE) && grepl("bols", trm$get_call(), fixed = TRUE) ||
+            grepl("by =", trm$get_call(), fixed = TRUE) && grepl("bbs", trm$get_call(), fixed = TRUE) ) trm$dim <- trm$dim - 1
       
       # <FIXME> what to do with bbs(..., by=factor)?
 
-      if(trm$dim > 3 && !grepl("bhistx", trm$get_call()) ){
+      if(trm$dim > 3 && !grepl("bhistx", trm$get_call(), fixed = TRUE) ){
         warning("Can't deal with smooths with more than 3 dimensions, returning NULL for ", 
                 shrtlbls[i], ".")
         return(NULL)
@@ -1180,12 +1179,12 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
       d <- makeDataGrid(trm)
       
       ### <FIXME> better solution for %X% in base-learner!!!
-      if(!is.null(object$ydim) && any(grepl("%X", trm$get_call())) 
-         && !any(grepl("bhistx", trm$get_call())) ) trm$dim <- trm$dim - 1
+      if(!is.null(object$ydim) && any(grepl("%X", trm$get_call(), fixed = TRUE)) 
+         && !any(grepl("bhistx", trm$get_call(), fixed = TRUE)) ) trm$dim <- trm$dim - 1
       
       ## it is necessary to expand the dataframe!
       if(!grepl("bhistx(", trm$get_call(), fixed=TRUE) && 
-         inherits(object, "FDboostLong") && !grepl("bconcurrent", trm$get_call())){
+         inherits(object, "FDboostLong") && !grepl("bconcurrent", trm$get_call(), fixed = TRUE)){
         #print(attr(d, "varnms"))
         vari <- names(d)[1]
         if(is.factor(d[[vari]])){
@@ -1194,8 +1193,7 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
                                                                   each=length(unique(d[[vari]]))  )
           }else{
           # expand signal variable
-          if( grepl("bhist(", trm$get_call(), fixed = TRUE) ||
-              grepl("bsignal", trm$get_call()) || grepl("bfpc", trm$get_call()) ){
+          if (grepl("bhist\\(|bsignal|bfpc", trm$get_call())) {
             vari <- names(d)[!names(d) %in% attr(d, "varnms")]
             d[[vari]] <- d[[vari]][ rep(seq_len(NROW(d[[vari]])), times=NROW(d[[vari]])), ]
             
@@ -1211,14 +1209,14 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
       
       ###### just return the data, that is used for the prediction
       if(returnData){
-        if(grepl("bhist", trm$get_call())){
+        if(grepl("bhist", trm$get_call(), fixed = TRUE)){
           message("If argument stand is specified !=\"no\", the standardization will be part of the predicted coefficient.")
         } 
         return(d)
       }
       
       if( !is.null(attr(d, "numberLevels")) && attr(d, "numberLevels") > 1){
-        if( grepl("bhistx", trm$get_call()) ) trm$dim <- 2
+        if( grepl("bhistx", trm$get_call(), fixed = TRUE) ) trm$dim <- 2
         ## get smooth coefficient estimates for several factor levels
         # P <- getP(d[[1]], trm = trm, myargs = attr(d, "myargsHist"))
         P <- lapply(d, getP, trm = trm, myargs = attr(d, "myargsHist")) 
@@ -1250,11 +1248,11 @@ coef.FDboost <- function(object, raw = FALSE, which = NULL,
         xpart[i] <- gsub(pattern = "\\\"", replacement = "", x = xpart[i], fixed=TRUE)
         xpart[i] <- gsub(pattern = "\\", replacement = "", x = xpart[i], fixed=TRUE)
         nvar <- length(all.vars(formula(paste("Y~", xpart[i])))[-1])
-        commaSep <- unlist(strsplit(xpart[i], ","))  
+        commaSep <- unlist(strsplit(xpart[i], ",", fixed = TRUE))  
         
         # shorten the name to first variable and delete x= if present
-        if(grepl("=", commaSep[1])){
-          temp <- unlist(strsplit(commaSep[1], "="))
+        if(grepl("=", commaSep[1], fixed = TRUE)){
+          temp <- unlist(strsplit(commaSep[1], "=", fixed = TRUE))
           temp[1] <- unlist(strsplit(temp[1], "(", fixed=TRUE))[1]
           if(substr(temp[2], 1, 1)==" ") temp[2] <- substr(temp[2], 2, nchar(temp[2]))
           if(length(commaSep) == 1){ 
@@ -1479,7 +1477,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     ## trm <- terms[[i]] 
     myplot <- function(trm, range_i = NULL){
       
-      if(grepl("bhist", trm$main)){
+      if(grepl("bhist", trm$main, fixed = TRUE)){
         # set 0 to NA so that beta only has values in its domain
         # get the limits-function
         limits <- trm$limits
@@ -1507,14 +1505,14 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
         }
         
         if(rug && !is.factor(x = trm$x)){
-          if(grepl("bconcurrent", trm$main) || grepl("bsignal", trm$main) || grepl("bfpc", trm$main) ){
+          if (grepl("bconcurrent|bsignal|bfpc", trm$main)) {
             rug(attr(bl_data[[i]][[1]], "signalIndex"), ticksize = 0.02)
           }else rug(bl_data[[i]][[trm$xlab]], ticksize = 0.02)
         } 
       } 
       
       # plot with factor variable
-      if( (!grepl("bhistx", trm$main)) && trm$dim==2 &&
+      if( (!grepl("bhistx", trm$main, fixed = TRUE)) && trm$dim==2 &&
           ((is.factor(trm$x) || is.factor(trm$y)) || is.factor(trm$z)) ){
         
         ## plot for the special case where factor is plotted in several plots 
@@ -1619,14 +1617,14 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
           
           if(rug){
             ##points(expand.grid(bl_data[[i]][[1]], bl_data[[i]][[2]]))
-            if(grepl("bhist", trm$main)){
+            if(grepl("bhist", trm$main, fixed = TRUE)){
               rug(x$yind, ticksize = 0.02)
             }else{
-              ifelse(grepl("by", trm$main) | ( !inherits(x, "FDboostLong") && grepl("%X", trm$main) ) ,
+              ifelse(grepl("by", trm$main, fixed = TRUE) | ( !inherits(x, "FDboostLong") && grepl("%X", trm$main, fixed = TRUE) ) ,
                      rug(bl_data[[i]][[3]], ticksize = 0.02),
                      rug(bl_data[[i]][[2]], ticksize = 0.02))
             }
-            ifelse(grepl("bsignal", trm$main) | grepl("bfpc", trm$main) | grepl("bhist", trm$main),
+            ifelse(grepl("bsignal|bfpc|bhist", trm$main),
                    rug(attr(bl_data[[i]][[1]], "signalIndex"), ticksize = 0.02, side=2),
                    rug(bl_data[[i]][[1]], ticksize = 0.02, side=2))
           }
@@ -1714,7 +1712,7 @@ plot.FDboost <- function(x, raw = FALSE, rug = TRUE, which = NULL,
     time <- x$yind
     
     # include the offset in the plot of the intercept
-    if( includeOffset && 1 %in% which && grepl("ONEx", shrtlbls[1]) ){
+    if( includeOffset && 1 %in% which && grepl("ONEx", shrtlbls[1], fixed = TRUE) ){
       terms[[1]] <- terms[[1]] + x$offset
       shrtlbls[1] <- paste("offset", "+", shrtlbls[1])
     }   
@@ -1880,16 +1878,16 @@ update.FDboost <- function(object, weights = NULL, oobweights = NULL, risk = NUL
       
       ### check for brackets
       singleBls <- gsub("\\s", "", unlist(lapply(strsplit(
-        strsplit(object$formulaFDboost, "~")[[1]][2], # split formula
-        "\\+")[[1]], # split additive terms
+        strsplit(object$formulaFDboost, "~", fixed = TRUE)[[1]][2], # split formula
+        "+", fixed = TRUE)[[1]], # split additive terms
         function(y) strsplit(y, split = "%.{1,3}%")) # split single baselearners
       )) 
       
       singleBls <- singleBls[singleBls!="1"]
       
-      if(any( !grepl("\\(",singleBls) )) 
+      if(any( !grepl("(",singleBls, fixed = TRUE) )) 
         stop(paste0("update can not deal with the following base-learner(s) without brackets: ", 
-                    toString(singleBls[!grepl("\\(",singleBls)]), ".\n",
+                    toString(singleBls[!grepl("(", singleBls, fixed = TRUE)]), ".\n",
                     "Please build such base-learners within the FDboost call or ",  
                     "update corresponding baselearner(s) manually and supply a new formula to the update function."))
       
@@ -1931,7 +1929,7 @@ extract.blg <- function(object, what = c("design", "penalty", "index"),
                         asmatrix = FALSE, expand = FALSE, ...){
   what <- match.arg(what)
   
-  if(grepl("%O%", object$get_call()) || grepl("%Oz%", object$get_call())){
+  if (grepl("%O%|%Oz%", object$get_call())) {
     object <- object$dpp( rep(1, NROW(object$model.frame()[[1]])) )    
   }else{
     object <- object$dpp(rep(1, nrow(object$model.frame())))

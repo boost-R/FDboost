@@ -351,7 +351,7 @@ getYYhatTime <- function(object, breaks=object$yind){
     newdata <- list()
     for(j in seq_along(object$baselearner)){
       datVarj <- object$baselearner[[j]]$get_data()
-      if(grepl("bconcurrent", names(object$baselearner)[j])){
+      if(grepl("bconcurrent", names(object$baselearner)[j], fixed = TRUE)){
         datVarj <- t(apply(datVarj[[1]], 1, function(x) approx(object$yind, x, xout=time)$y))
         datVarj <- list(datVarj)
       } 

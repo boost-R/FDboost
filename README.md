@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/boost-R/FDboost/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/boost-R/FDboost/actions/workflows/R-CMD-check.yaml)
 [![CRAN status](https://www.r-pkg.org/badges/version/FDboost)](https://CRAN.R-project.org/package=FDboost)
 [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/FDboost)](https://www.r-pkg.org/pkg/FDboost)
 

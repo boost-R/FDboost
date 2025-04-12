@@ -6,3 +6,8 @@ README.md
 ^doc$
 ^Meta$
 ^figure$
+^\.gitignore$
+^\.github$
+^_pkgdown\.yml$
+^pkgdown$
+^\.lintr$

@@ -235,7 +235,7 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   
   # Function to suppress the warning of missings in the response
   h <- function(w){
-    if( any( grepl( "response contains missing values;", w) ) ) 
+    if( any( grepl( "response contains missing values;", w, fixed = TRUE) ) ) 
       invokeRestart( "muffleWarning" )  
   }
   
@@ -296,16 +296,16 @@ applyFolds <- function(object, folds = cv(rep(1, length(unique(object$id))), typ
   # the probelm with such base-learners is that their data is not contained in object$data
   # using object$baselearner[[j]]$get_data() is difficult as this can be blow up by index for %X%
   singleBls <- gsub("\\s", "", unlist(lapply(strsplit(
-    strsplit(object$formulaFDboost, "~")[[1]][2], # split formula
-                                      "\\+")[[1]], # split additive terms
+    strsplit(object$formulaFDboost, "~", fixed = TRUE)[[1]][2], # split formula
+                                      "+", fixed = TRUE)[[1]], # split additive terms
     function(y) strsplit(y, split = "%.{1,3}%")) # split single baselearners
   )) 
   
   singleBls <- singleBls[singleBls != "1"]
   
-  if(any(!grepl("\\(", singleBls))) 
+  if(any(!grepl("(", singleBls, fixed = TRUE))) 
     stop(paste0("applyFolds can not deal with the following base-learner(s) without brackets: ", 
-                toString(singleBls[!grepl("\\(", singleBls)])))
+                toString(singleBls[!grepl("(", singleBls, fixed = TRUE)])))
   
   
   ## check if data includes all variables
@@ -701,9 +701,9 @@ validateFDboost <- function(object, response = NULL,
               msg = "'validateFDboost' is deprecated. Use 'applyFolds' and 'bootstrapCI' instead.")
   
   names_bl <- names(object$baselearner)
-  if(any(grepl("brandomc", names_bl))) message("For brandomc, the transformation matrix Z is fixed over all folds.")
-  if(any(grepl("bolsc", names_bl))) message("For bolsc, the transformation matrix Z is fixed over all folds.")
-  if(any(grepl("bbsc", names_bl))) message("For bbsc, the transformation matrix Z is fixed over all folds.")
+  if(any(grepl("brandomc", names_bl, fixed = TRUE))) message("For brandomc, the transformation matrix Z is fixed over all folds.")
+  if(any(grepl("bolsc", names_bl, fixed = TRUE))) message("For bolsc, the transformation matrix Z is fixed over all folds.")
+  if(any(grepl("bbsc", names_bl, fixed = TRUE))) message("For bbsc, the transformation matrix Z is fixed over all folds.")
   
   type <- attr(folds, "type")
   if(is.null(type)) type <- "unknown"
@@ -755,7 +755,7 @@ validateFDboost <- function(object, response = NULL,
   
   # Function to suppress the warning of missings in the response
   h <- function(w){
-    if( any( grepl( "response contains missing values;", w) ) ) 
+    if( any( grepl( "response contains missing values;", w, fixed = TRUE) ) ) 
       invokeRestart( "muffleWarning" )  
   }
   
@@ -956,7 +956,7 @@ validateFDboost <- function(object, response = NULL,
   }
   
   ## only makes sense for type="curves" with leaving-out one curve per fold!!
-  if(grepl( "curves", type)){
+  if(grepl( "curves", type, fixed = TRUE)){
     # predict response for all mstops in grid out of bag
     # predictions for each response are in a vector!
     oobpreds0 <- lapply(modRisk, function(x) x$predGrid)
@@ -1061,7 +1061,7 @@ validateFDboost <- function(object, response = NULL,
     
     ### predictions of terms based on the coefficients for each model
     # only makes sense for type="curves" with leaving-out one curve per fold!!
-    if(grepl("curves", type)){
+    if(grepl("curves", type, fixed = TRUE)){
       for(l in 1:(length(modRisk[[1]]$mod$baselearner)+1)){
         predCV[[l]] <- t(sapply(seq_along(modRisk), function(g){
           if(l == 1){ # save offset of model
@@ -1561,7 +1561,7 @@ plot_bootstrapped_coef <- function(temp, l,
     quanty <- quantile(temp$y, probs=probs, type=1)
     
     # set lower triangular matrix to NA for historic effect
-    if(grepl("bhist", temp$main)){
+    if(grepl("bhist", temp$main, fixed = TRUE)){
       for(k in seq_along(temp$value)){
         temp$value[[k]][temp$value[[k]]==0] <- NA
       }
@@ -1675,9 +1675,9 @@ cvrisk.FDboost <- function(object, folds = cvLong(id=object$id, weights=model.we
   if(!length(unique(object$offset)) == 1) message("The smooth offset is fixed over all folds.")
   
   names_bl <- names(object$baselearner)
-  if(any(grepl("brandomc", names_bl))) message("For brandomc, the transformation matrix Z is fixed over all folds.")
-  if(any(grepl("bolsc", names_bl))) message("For bolsc, the transformation matrix Z is fixed over all folds.")
-  if(any(grepl("bbsc", names_bl))) message("For bbsc, the transformation matrix Z is fixed over all folds.")
+  if(any(grepl("brandomc", names_bl, fixed = TRUE))) message("For brandomc, the transformation matrix Z is fixed over all folds.")
+  if(any(grepl("bolsc", names_bl, fixed = TRUE))) message("For bolsc, the transformation matrix Z is fixed over all folds.")
+  if(any(grepl("bbsc", names_bl, fixed = TRUE))) message("For bbsc, the transformation matrix Z is fixed over all folds.")
   
   class(object) <- "mboost"
   

@@ -11,3 +11,9 @@ README.md
 ^_pkgdown\.yml$
 ^pkgdown$
 ^\.lintr$
+^FDboost\.Rcheck$
+^FDboost\.Rcheck/
+^.*\.tar\.gz$
+^\.codex$
+^docs$
+^docs/

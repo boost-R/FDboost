@@ -7,3 +7,8 @@
 /vignettes/*.gz
 doc
 Meta
+FDboost.Rcheck/
+*.tar.gz
+.codex
+Rplots.pdf
+docs/

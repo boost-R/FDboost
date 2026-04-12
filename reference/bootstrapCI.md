@@ -149,7 +149,7 @@ bootCIs <- bootstrapCI(m1[200], B_inner = 2, B_outer = 5)
 
 # look at stopping iterations
 bootCIs$mstops
-#> [1]  26 200 173 177 200
+#> [1]  71 200 200  43  40
 
 # plot bootstrapped coefficient estimates
 plot(bootCIs, ask = FALSE)

@@ -14,7 +14,7 @@
 
 \item{newdata}{optionally, a data frame or list
 in which to look for variables with which to predict.
-See \code{\link{predict.mboost}}.}
+See \code{\link[mboost]{predict.mboost}}.}
 
 \item{which}{a subset of base-learner components to take into
 account for computing predictions or coefficients. Different

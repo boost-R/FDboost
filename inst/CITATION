@@ -8,8 +8,8 @@ to cite functional linear array models use Brockhaus et al. (2015);
 to cite models with historical effects use Brockhaus et al. (2017b);
 to cite models with factor-specific historical effects use Ruegamer (2018).")
 
-citEntry(
- entry = "manual",
+bibentry(
+ bibtype = "Manual",
  title = "FDboost: Boosting Functional Regression Models",
  author = "Sarah Brockhaus and David Ruegamer",
  year = year,
@@ -18,8 +18,8 @@ citEntry(
 )
 
 
-citEntry(
- entry = "Article",
+bibentry(
+ bibtype = "Article",
  title = "The Functional Linear Array Model",
  author = "Sarah Brockhaus, Fabian Scheipl, Torsten Hothorn, and Sonja Greven",
  journal = "Statistical Modelling",
@@ -31,8 +31,8 @@ citEntry(
 ) 
 
 
-citEntry(
- entry = "Article",
+bibentry(
+ bibtype = "Article",
  author = "Sarah Brockhaus and Michael Melcher and Friedrich Leisch, and Sonja Greven",
  title = "Boosting flexible functional regression models with a high number of functional historical effects",
  journal = "Statistics and Computing",
@@ -43,8 +43,8 @@ citEntry(
  textVersion = "Brockhaus, S., Melcher, M., Leisch, F., and Greven, S. (2017b), Boosting flexible functional regression models with a high number of functional historical effects. Statistics and Computing, 27(4), 913-926."
 )
 
-citEntry(
- entry = "Article",
+bibentry(
+ bibtype = "Article",
  author = "David Ruegamer, Sarah Brockhaus, Kornelia Gentsch, Klaus Scherer, and Sonja Greven",
  title = "Boosting factor-specific functional historical models for the detection of synchronization in bioelectrical signals",
  journal = "Journal of the Royal Statistical Society: Series C (Applied Statistics)",

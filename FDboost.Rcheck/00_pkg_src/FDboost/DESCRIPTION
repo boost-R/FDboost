@@ -1,0 +1,45 @@
+Type: Package
+Package: FDboost
+Title: Boosting Functional Regression Models
+Version: 1.1-4
+Date: 2026-03-24
+Authors@R: c(
+    person("Sarah", "Brockhaus", , "Sarah.Brockhaus@stat.uni-muenchen.de", role = "aut",
+           comment = c(ORCID = "0000-0001-9484-7488")),
+    person("David", "Ruegamer", , "david.ruegamer@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-8772-9202")),
+    person("Almond", "Stoecker", , "almond.stoecker@hu-berlin.de", role = "aut",
+           comment = c(ORCID = "0000-0001-9160-2397")),
+    person("Torsten", "Hothorn", role = "ctb",
+           comment = c(ORCID = "0000-0001-8301-0471")),
+    person("with contributions by many others", "(see inst/CONTRIBUTIONS)", role = "ctb")
+  )
+Description: Regression models for functional data, i.e.,
+    scalar-on-function, function-on-scalar and function-on-function
+    regression models, are fitted by a component-wise gradient boosting
+    algorithm.  For a manual on how to use 'FDboost', see Brockhaus,
+    Ruegamer, Greven (2017) <doi:10.18637/jss.v094.i10>.
+License: GPL-2
+URL: https://github.com/boost-R/FDboost
+BugReports: https://github.com/boost-R/FDboost/issues
+Depends: mboost (>= 2.9-0), R (>= 3.5.0)
+Imports: gamboostLSS (>= 2.0-0), graphics, grDevices, MASS, Matrix,
+        methods, mgcv, stabs, stats, utils, zoo
+Suggests: fda, fields, ggplot2, knitr, mapdata, maps, refund, testthat
+VignetteBuilder: knitr
+Encoding: UTF-8
+Packaged: 2026-04-12 16:21:02 UTC; david
+RoxygenNote: 7.3.2
+Collate: 'aaa.R' 'FDboost-package.R' 'FDboost.R' 'baselearners.R'
+        'baselearnersX.R' 'bootstrapCIs.R' 'clr_functions.R'
+        'constrainedX.R' 'crossvalidation.R' 'factorize.R'
+        'FDboostLSS.R' 'hmatrix.R' 'methods.R' 'stabsel.R'
+        'utilityFunctions.R'
+NeedsCompilation: no
+Author: Sarah Brockhaus [aut] (ORCID: <https://orcid.org/0000-0001-9484-7488>),
+  David Ruegamer [aut, cre] (ORCID:
+    <https://orcid.org/0000-0002-8772-9202>),
+  Almond Stoecker [aut] (ORCID: <https://orcid.org/0000-0001-9160-2397>),
+  Torsten Hothorn [ctb] (ORCID: <https://orcid.org/0000-0001-8301-0471>),
+  with contributions by many others (see inst/CONTRIBUTIONS) [ctb]
+Maintainer: David Ruegamer <david.ruegamer@gmail.com>

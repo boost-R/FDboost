@@ -1,0 +1,1556 @@
+Hmm ... looks like a package
+Converting parsed Rd's to LaTeX ....
+Creating pdf output from LaTeX ...
+
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+LaTeX2e <2024-06-01> patch level 2
+L3 programming layer <2024-05-27>
+(./Rd2.tex
+(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2024/02/08 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/bk10.clo))
+(/usr/local/lib/R/share/texmf/tex/latex/Rd.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))))
+(/usr/share/texlive/texmf-dist/tex/latex/base/makeidx.sty)
+Writing index file Rd2.idx
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+No file Rd2.aux.
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+No file Rd2.toc.
+
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-
+dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips
+/inconsolata/i4-t1-0.enc}]
+[2]
+Overfull \hbox (23.53716pt too wide) in paragraph at lines 122--125
+\T1/ptm/m/n/10 sion in Bayes Hilbert Spaces with an Ap-pli-ca-tion to Gen-der E
+co-nomics. arXiv preprint arXiv:2110.11771. 
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd)
+[3{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}]
+
+Package hyperref Warning: Glyph not defined in PU encoding,
+(hyperref)                removing `\Rpercent' on input line 183.
+
+
+Package hyperref Warning: Glyph not defined in PU encoding,
+(hyperref)                removing `\Rpercent' on input line 183.
+
+
+Overfull \hbox (35.25021pt too wide) in paragraph at lines 242--242
+ []\T1/zi4/m/n/9 ######## Example for function-on-scalar-regression with intera
+ction effect of two scalar covariates[] 
+
+[4]
+[5]
+[6]
+[7]
+[8]
+Overfull \hbox (3.6778pt too wide) in paragraph at lines 512--513
+[]\T1/ptm/m/n/10 the grid over which the op-ti-mal num-ber of boost-ing it-er-a
+-tions (mstop) is searched. 
+
+Overfull \hbox (16.28871pt too wide) in paragraph at lines 535--537
+[]\T1/ptm/m/n/10 logical, de-faults to []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 .
+ Only used to force a mean-ing-ful be-haviour of []\T1/zi4/m/n/10 applyFolds
+
+[9]
+[10]
+[11]
+[12]
+Overfull \hbox (21.64857pt too wide) in paragraph at lines 769--775
+[]\T1/ptm/m/n/10 Note that a spe-cial []\T1/zi4/m/n/10 contrasts.arg []\T1/ptm/
+m/n/10 ex-ists in pack-age []\T1/zi4/m/n/10 mboost[]\T1/ptm/m/n/10 , namely "co
+ntr.dummy".
+
+[13]
+[14]
+[15]
+Overfull \hbox (40.40863pt too wide) in paragraph at lines 944--947
+[]\T1/ptm/m/n/10 by de-fault, []\T1/zi4/m/n/10 penalty="ps"[]\T1/ptm/m/n/10 , t
+he dif-fer-ence penalty for P-splines is used, for []\T1/zi4/m/n/10 penalty="ps
+s"
+
+[16]
+Overfull \hbox (9.74408pt too wide) in paragraph at lines 1013--1013
+ []\T1/zi4/m/n/9 data1 <- suppressWarnings(pffrSim(scenario = c("int", "ff"), l
+imits = function(s,t){ s <= t },[] 
+
+Overfull \hbox (20.23795pt too wide) in paragraph at lines 1045--1045
+ []  \T1/zi4/m/n/9 appl1 <- applyFolds(mod, folds = cv(rep(1, length(unique(mod
+$id))), type = "bootstrap", B = 5))[] 
+
+[17]
+Overfull \hbox (40.2796pt too wide) in paragraph at lines 1083--1086
+\T1/zi4/m/n/10 1950:2019)[]\T1/ptm/m/n/10 ), cor-re-spond-ing to the years for 
+the rows of []\T1/zi4/m/n/10 birth_densities []\T1/ptm/m/n/10 and []\T1/zi4/m/n
+/10 birth_densities_clr[]\T1/ptm/m/n/10 . 
+
+Overfull \hbox (8.6075pt too wide) in paragraph at lines 1092--1097
+\T1/ptm/m/n/10 ([]\T1/zi4/m/n/10 birth_densities_clr[]\T1/ptm/m/n/10 ) serve as
+ re-sponse, see also the vi-gnette "FDboost_density-on-scalar_births".
+
+Overfull \hbox (23.53716pt too wide) in paragraph at lines 1120--1123
+\T1/ptm/m/n/10 sion in Bayes Hilbert Spaces with an Ap-pli-ca-tion to Gen-der E
+co-nomics. arXiv preprint arXiv:2110.11771. 
+
+[18]
+Overfull \hbox (6.75635pt too wide) in paragraph at lines 1137--1137
+ []\T1/zi4/m/n/9 funplot(1:12, birthDistribution$birth_densities[1:70, ], ylab 
+= "densities", xlab = "month",[] 
+
+Overfull \hbox (15.75635pt too wide) in paragraph at lines 1139--1139
+ []\T1/zi4/m/n/9 funplot(1:12, birthDistribution$birth_densities[71:140, ], yla
+b = "densities", xlab = "month",[] 
+
+Overfull \hbox (2.24715pt too wide) in paragraph at lines 1176--1176
+ []\T1/zi4/m/n/9 funplot(1:12, predictions[71:140, ], ylab = "predictions", xla
+b = "month", ylim = pred_ylim,[] 
+
+[19]
+[20]
+Overfull \hbox (9.93916pt too wide) in paragraph at lines 1253--1255
+[]\T1/ptm/m/n/10 further ar-gu-ments passed to [][][]\T1/zi4/m/n/10 applyFolds[
+][][] []\T1/ptm/m/n/10 if the de-fault for []\T1/zi4/m/n/10 resampling_fun_oute
+r
+
+[21]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[22]
+Overfull \hbox (6.73795pt too wide) in paragraph at lines 1380--1380
+ []\T1/zi4/m/n/9 mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 
+40, df = 4, check.ident = FALSE)[] 
+
+[23]
+[24]
+Overfull \hbox (20.3702pt too wide) in paragraph at lines 1507--1514
+[]\T1/zi4/m/n/10 bsignal(..., inS = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 linear\TS1/
+zi4/m/n/10 '\T1/zi4/m/n/10 ) []\T1/ptm/m/n/10 for first ([]\T1/zi4/m/n/10 diffe
+rence = 1[]\T1/ptm/m/n/10 ) and sec-ond ([]\T1/zi4/m/n/10 difference
+
+[25]
+[26]
+Overfull \hbox (6.73795pt too wide) in paragraph at lines 1667--1667
+ []\T1/zi4/m/n/9 mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 
+40, df = 4, check.ident = FALSE)[] 
+
+[27]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[28]
+[29]
+Overfull \hbox (23.53716pt too wide) in paragraph at lines 1839--1842
+\T1/ptm/m/n/10 sion in Bayes Hilbert Spaces with an Ap-pli-ca-tion to Gen-der E
+co-nomics. arXiv preprint arXiv:2110.11771. 
+
+[30]
+Overfull \hbox (23.79735pt too wide) in paragraph at lines 1887--1891
+[]\T1/ptm/m/n/10 Takes a fit-ted []\T1/zi4/m/n/10 FDboost[]\T1/ptm/m/n/10 -obje
+ct pro-duced by [][][]\T1/zi4/m/n/10 FDboost[][][]() []\T1/ptm/m/n/10 and re-tu
+rns es-ti-mated co-ef-fi-cient func-tions/surfaces
+
+Overfull \hbox (45.64853pt too wide) in paragraph at lines 1919--1923
+\T1/ptm/m/n/10 vec-tor), de-faults to NULL which is the same as []\T1/zi4/m/n/1
+0 which=seq_along(object$baselearner)[]\T1/ptm/m/n/10 .
+
+[31]
+[32]
+Overfull \hbox (3.82648pt too wide) in paragraph at lines 2041--2042
+[]\T1/ptm/m/n/10 To anal-yse the func-tional re-la-tion-ship be-tween elec-troe
+n-cephalog-ra-phy (EEG) and fa-cial elec-tromyo-
+
+[33]
+[34]
+[35]
+[36]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[37]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[38]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[39]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[40]
+[41]
+[42]
+Overfull \hbox (15.28809pt too wide) in paragraph at lines 2583--2585
+[]\T1/ptm/m/n/10 parameters for the es-ti-ma-tion of the off-set, de-faults to 
+[]\T1/zi4/m/n/10 o_control()[]\T1/ptm/m/n/10 , see [][][]\T1/zi4/m/n/10 o_contr
+ol[][][][]\T1/ptm/m/n/10 . 
+
+[43]
+Overfull \hbox (15.24875pt too wide) in paragraph at lines 2658--2661
+[]\T1/ptm/m/n/10 (Nonlinear) ef-fects of scalar co-vari-ates that are con-stant
+ over $\OML/cmm/m/it/10 t$\T1/ptm/m/n/10 , e.g., $\OML/cmm/m/it/10 f\OT1/cmr/m/
+n/10 (\OML/cmm/m/it/10 z[]\OT1/cmr/m/n/10 )$\T1/ptm/m/n/10 , spec-i-fied as []\
+T1/zi4/m/n/10 c(bbs(z))[]\T1/ptm/m/n/10 ,
+
+Overfull \hbox (13.95007pt too wide) in paragraph at lines 2671--2677
+[]\T1/ptm/m/n/10 Function-on-function re-gres-sion terms of func-tional co-vari
+-ates []\T1/zi4/m/n/10 x []\T1/ptm/m/n/10 with in-te-gra-tion lim-its $\OT1/cmr
+/m/n/10 [\OML/cmm/m/it/10 l\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )
+\OML/cmm/m/it/10 ; u\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )]$
+
+Overfull \hbox (17.69626pt too wide) in paragraph at lines 2671--2677
+\T1/ptm/m/n/10 de-pend-ing on $\OML/cmm/m/it/10 t$\T1/ptm/m/n/10 , e.g., $[][] 
+\OML/cmm/m/it/10 l\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\OML/cmm/
+m/it/10 ; u\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )]\OML/cmm/m/it/1
+0 x[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 ^^L\O
+T1/cmr/m/n/10 (\OML/cmm/m/it/10 s; t\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 ds$\T1/pt
+m/m/n/10 , spec-i-fied as []\T1/zi4/m/n/10 bhist(x, s = s, time = t, limits)[]\
+T1/ptm/m/n/10 .
+
+Overfull \hbox (2.75526pt too wide) in paragraph at lines 2671--2677
+\T1/ptm/m/n/10 The []\T1/zi4/m/n/10 limits []\T1/ptm/m/n/10 ar-gu-ment de-fault
+s to []\T1/zi4/m/n/10 "s<=t" []\T1/ptm/m/n/10 which yields a his-tor-i-cal ef-f
+ect with lim-its $\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 min\OT1/cmr/m/n/10 (\OML/cm
+m/m/it/10 t\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 ; t\OT1/cmr/m/n/10 ]$\T1/ptm/m/n/1
+0 ,
+
+Overfull \hbox (3.51947pt too wide) in paragraph at lines 2683--2687
+\T1/ptm/m/n/10 base-learner []\T1/zi4/m/n/10 bhistx []\T1/ptm/m/n/10 should be 
+used in-stead of []\T1/zi4/m/n/10 bhist[]\T1/ptm/m/n/10 , e.g., []\T1/zi4/m/n/1
+0 bhistx(x, limits) %X% bolsc(z)[]\T1/ptm/m/n/10 ,
+
+[44]
+[45]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[46]
+Overfull \hbox (6.73795pt too wide) in paragraph at lines 2849--2849
+ []\T1/zi4/m/n/9 mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 
+40, df = 4, check.ident = FALSE)[] 
+
+Overfull \hbox (11.23795pt too wide) in paragraph at lines 2854--2854
+ []\T1/zi4/m/n/9 mod2s <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots =
+ 40, df = 4, check.ident = FALSE)[] 
+
+Overfull \hbox (11.23795pt too wide) in paragraph at lines 2862--2862
+ []\T1/zi4/m/n/9 mod2f <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots =
+ 40, df = 4, check.ident = FALSE)[] 
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+[47]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[48]
+[49]
+Overfull \hbox (0.44884pt too wide) in paragraph at lines 3029--3036
+\T1/ptm/m/n/10 which sets up a base-learner for the scalar 1. Or you can use []
+\T1/zi4/m/n/10 timeformula=NULL[]\T1/ptm/m/n/10 ,
+
+Overfull \hbox (10.68826pt too wide) in paragraph at lines 3029--3036
+\T1/ptm/m/n/10 then the scalar re-sponse is treated as scalar. Anal-o-gously to
+ []\T1/zi4/m/n/10 formula[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 timeformula
+
+Overfull \hbox (10.9877pt too wide) in paragraph at lines 3044--3046
+[]\T1/ptm/m/n/10 a list of pa-ram-e-ters con-trol-ling the al-go-rithm. For mor
+e de-tails see [][][]\T1/zi4/m/n/10 boost_control[][][][]\T1/ptm/m/n/10 . 
+
+[50]
+[51]
+[52]
+[53]
+[54]
+[55]
+[56]
+[57]
+Overfull \hbox (18.43932pt too wide) in paragraph at lines 3537--3541
+[]\T1/zi4/m/n/10 getArgvals[]\T1/ptm/m/n/10 . Or the names of the dif-fer-ent v
+ari-ables []\T1/zi4/m/n/10 getTimeLab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 getIdL
+ab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 getXLab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/1
+0 getArgvalsLab[]\T1/ptm/m/n/10 . 
+
+[58]
+Overfull \hbox (15.93932pt too wide) in paragraph at lines 3598--3602
+[]\T1/zi4/m/n/10 getArgvals[]\T1/ptm/m/n/10 . Or the names of the dif-fer-ent v
+ari-ables []\T1/zi4/m/n/10 getTimeLab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 getIdL
+ab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 getXLab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/1
+0 getArgvalsLab
+
+[59]
+[60]
+[61]
+[62]
+[63]
+[64]
+[65]
+[66]
+[67]
+Overfull \hbox (18.58824pt too wide) in paragraph at lines 4099--4104
+[]\T1/ptm/m/n/10 logical, de-faults to []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 ,
+ If []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 , per-spec-tive plots ([][][]\T1/zi4/
+m/n/10 persp[][][][]\T1/ptm/m/n/10 ) for 2- and 3-dimensional
+
+[68]
+[69]
+[70]
+[71]
+[72]
+Overfull \hbox (18.0597pt too wide) in paragraph at lines 4384--4384
+ []  \T1/zi4/m/n/10 folds = cvLong(x$id, weights = rep(1, l = length(x$id)), ty
+pe = "subsampling", B = B),[] 
+
+[73]
+[74]
+Overfull \hbox (11.28871pt too wide) in paragraph at lines 4536--4538
+[]\T1/ptm/m/n/10 logical, de-faults to []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 . 
+Only used to force a mean-ing-ful be-haviour of []\T1/zi4/m/n/10 applyFolds
+
+[75]
+[76]
+[77]
+[78]
+Overfull \hbox (8.34941pt too wide) in paragraph at lines 4726--4729
+[]\T1/ptm/m/n/10 DEPRECATED! The func-tion []\T1/zi4/m/n/10 validateFDboost() [
+]\T1/ptm/m/n/10 is dep-re-cated, use [][][]\T1/zi4/m/n/10 applyFolds[][][] []\T
+1/ptm/m/n/10 and [][][]\T1/zi4/m/n/10 bootstrapCI[][][]
+
+Overfull \hbox (3.6778pt too wide) in paragraph at lines 4758--4759
+[]\T1/ptm/m/n/10 the grid over which the op-ti-mal num-ber of boost-ing it-er-a
+-tions (mstop) is searched. 
+
+[79]
+Overfull \hbox (15.31848pt too wide) in paragraph at lines 4789--4796
+\T1/ptm/m/n/10 op-tion []\T1/zi4/m/n/10 refitSmoothOffset []\T1/ptm/m/n/10 the 
+off-set is re-fit-ted on each fold. Note, that the func-tion []\T1/zi4/m/n/10 v
+alidateFDboost
+
+[80]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[81]
+[82]
+No file Rd2.ind.
+
+[83] (/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.aux)
+
+Package rerunfilecheck Warning: File `Rd2.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+(see the transcript file for additional information)
+pdfTeX warning (dest): name{Rfn.stabsel} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.predict.mboost} has been referenced but does no
+t exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.contour} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.image} has been referenced but does not exist, 
+replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.persp} has been referenced but does not exist, 
+replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.gam} has been referenced but does not exist, re
+placed by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.approx} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.matplot} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.mboostLSS} has been referenced but does not exi
+st, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.boost.Rul.control} has been referenced but does
+ not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.GaussianLSS} has been referenced but does not e
+xist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.Families} has been referenced but does not exis
+t, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.pffr} has been referenced but does not exist, r
+eplaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.Family} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn..Rpcent.O.Rpcent.} has been referenced but does
+ not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.mboost} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.extract} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.cvrisk.mboostLSS} has been referenced but does 
+not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.ffpc} has been referenced but does not exist, r
+eplaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.fpca.sc} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.bols} has been referenced but does not exist, r
+eplaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.brandom} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.bbs} has been referenced but does not exist, re
+placed by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.cvrisk} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.mclapply} has been referenced but does not exis
+t, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.baselearners} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn..Rpcent.X.Rpcent.} has been referenced but does
+ not exist, replaced by a fixed one
+
+</usr/share/texlive/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/tim
+es/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Rd2.pdf (83 pages, 354484 bytes).
+Transcript written on Rd2.log.
+This is makeindex, version 2.17 [TeX Live 2025/dev] (kpathsea + Thai support).
+Scanning input file Rd2.idx....done (220 entries accepted, 0 rejected).
+Sorting entries.....done (2041 comparisons).
+Generating output file Rd2.ind....done (268 lines written, 0 warnings).
+Output written in Rd2.ind.
+Transcript written in Rd2.ilg.
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+LaTeX2e <2024-06-01> patch level 2
+L3 programming layer <2024-05-27>
+(./Rd2.tex
+(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2024/02/08 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/bk10.clo))
+(/usr/local/lib/R/share/texmf/tex/latex/Rd.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))))
+(/usr/share/texlive/texmf-dist/tex/latex/base/makeidx.sty)
+Writing index file Rd2.idx
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.aux)
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.out)
+(/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.out)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+(/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.toc
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-
+dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips
+/inconsolata/i4-t1-0.enc}])
+[2]
+[3]
+Overfull \hbox (23.53716pt too wide) in paragraph at lines 122--125
+\T1/ptm/m/n/10 sion in Bayes Hilbert Spaces with an Ap-pli-ca-tion to Gen-der E
+co-nomics. arXiv preprint arXiv:2110.11771. 
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd)
+[4{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}]
+
+Package hyperref Warning: Glyph not defined in PU encoding,
+(hyperref)                removing `\Rpercent' on input line 183.
+
+
+Package hyperref Warning: Glyph not defined in PU encoding,
+(hyperref)                removing `\Rpercent' on input line 183.
+
+
+Overfull \hbox (35.25021pt too wide) in paragraph at lines 242--242
+ []\T1/zi4/m/n/9 ######## Example for function-on-scalar-regression with intera
+ction effect of two scalar covariates[] 
+
+[5]
+[6]
+[7]
+[8]
+[9]
+Overfull \hbox (3.6778pt too wide) in paragraph at lines 512--513
+[]\T1/ptm/m/n/10 the grid over which the op-ti-mal num-ber of boost-ing it-er-a
+-tions (mstop) is searched. 
+
+Overfull \hbox (16.28871pt too wide) in paragraph at lines 535--537
+[]\T1/ptm/m/n/10 logical, de-faults to []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 .
+ Only used to force a mean-ing-ful be-haviour of []\T1/zi4/m/n/10 applyFolds
+
+[10]
+[11]
+[12]
+[13]
+Overfull \hbox (21.64857pt too wide) in paragraph at lines 769--775
+[]\T1/ptm/m/n/10 Note that a spe-cial []\T1/zi4/m/n/10 contrasts.arg []\T1/ptm/
+m/n/10 ex-ists in pack-age []\T1/zi4/m/n/10 mboost[]\T1/ptm/m/n/10 , namely "co
+ntr.dummy".
+
+[14]
+[15]
+[16]
+Overfull \hbox (40.40863pt too wide) in paragraph at lines 944--947
+[]\T1/ptm/m/n/10 by de-fault, []\T1/zi4/m/n/10 penalty="ps"[]\T1/ptm/m/n/10 , t
+he dif-fer-ence penalty for P-splines is used, for []\T1/zi4/m/n/10 penalty="ps
+s"
+
+[17]
+Overfull \hbox (9.74408pt too wide) in paragraph at lines 1013--1013
+ []\T1/zi4/m/n/9 data1 <- suppressWarnings(pffrSim(scenario = c("int", "ff"), l
+imits = function(s,t){ s <= t },[] 
+
+Overfull \hbox (20.23795pt too wide) in paragraph at lines 1045--1045
+ []  \T1/zi4/m/n/9 appl1 <- applyFolds(mod, folds = cv(rep(1, length(unique(mod
+$id))), type = "bootstrap", B = 5))[] 
+
+[18]
+Overfull \hbox (40.2796pt too wide) in paragraph at lines 1083--1086
+\T1/zi4/m/n/10 1950:2019)[]\T1/ptm/m/n/10 ), cor-re-spond-ing to the years for 
+the rows of []\T1/zi4/m/n/10 birth_densities []\T1/ptm/m/n/10 and []\T1/zi4/m/n
+/10 birth_densities_clr[]\T1/ptm/m/n/10 . 
+
+Overfull \hbox (8.6075pt too wide) in paragraph at lines 1092--1097
+\T1/ptm/m/n/10 ([]\T1/zi4/m/n/10 birth_densities_clr[]\T1/ptm/m/n/10 ) serve as
+ re-sponse, see also the vi-gnette "FDboost_density-on-scalar_births".
+
+Overfull \hbox (23.53716pt too wide) in paragraph at lines 1120--1123
+\T1/ptm/m/n/10 sion in Bayes Hilbert Spaces with an Ap-pli-ca-tion to Gen-der E
+co-nomics. arXiv preprint arXiv:2110.11771. 
+
+[19]
+Overfull \hbox (6.75635pt too wide) in paragraph at lines 1137--1137
+ []\T1/zi4/m/n/9 funplot(1:12, birthDistribution$birth_densities[1:70, ], ylab 
+= "densities", xlab = "month",[] 
+
+Overfull \hbox (15.75635pt too wide) in paragraph at lines 1139--1139
+ []\T1/zi4/m/n/9 funplot(1:12, birthDistribution$birth_densities[71:140, ], yla
+b = "densities", xlab = "month",[] 
+
+Overfull \hbox (2.24715pt too wide) in paragraph at lines 1176--1176
+ []\T1/zi4/m/n/9 funplot(1:12, predictions[71:140, ], ylab = "predictions", xla
+b = "month", ylim = pred_ylim,[] 
+
+[20]
+[21]
+Overfull \hbox (9.93916pt too wide) in paragraph at lines 1253--1255
+[]\T1/ptm/m/n/10 further ar-gu-ments passed to [][][]\T1/zi4/m/n/10 applyFolds[
+][][] []\T1/ptm/m/n/10 if the de-fault for []\T1/zi4/m/n/10 resampling_fun_oute
+r
+
+[22]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[23]
+Overfull \hbox (6.73795pt too wide) in paragraph at lines 1380--1380
+ []\T1/zi4/m/n/9 mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 
+40, df = 4, check.ident = FALSE)[] 
+
+[24]
+[25]
+Overfull \hbox (20.3702pt too wide) in paragraph at lines 1507--1514
+[]\T1/zi4/m/n/10 bsignal(..., inS = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 linear\TS1/
+zi4/m/n/10 '\T1/zi4/m/n/10 ) []\T1/ptm/m/n/10 for first ([]\T1/zi4/m/n/10 diffe
+rence = 1[]\T1/ptm/m/n/10 ) and sec-ond ([]\T1/zi4/m/n/10 difference
+
+[26]
+[27]
+Overfull \hbox (6.73795pt too wide) in paragraph at lines 1667--1667
+ []\T1/zi4/m/n/9 mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 
+40, df = 4, check.ident = FALSE)[] 
+
+[28]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[29]
+[30]
+Overfull \hbox (23.53716pt too wide) in paragraph at lines 1839--1842
+\T1/ptm/m/n/10 sion in Bayes Hilbert Spaces with an Ap-pli-ca-tion to Gen-der E
+co-nomics. arXiv preprint arXiv:2110.11771. 
+
+[31]
+Overfull \hbox (23.79735pt too wide) in paragraph at lines 1887--1891
+[]\T1/ptm/m/n/10 Takes a fit-ted []\T1/zi4/m/n/10 FDboost[]\T1/ptm/m/n/10 -obje
+ct pro-duced by [][][]\T1/zi4/m/n/10 FDboost[][][]() []\T1/ptm/m/n/10 and re-tu
+rns es-ti-mated co-ef-fi-cient func-tions/surfaces
+
+Overfull \hbox (45.64853pt too wide) in paragraph at lines 1919--1923
+\T1/ptm/m/n/10 vec-tor), de-faults to NULL which is the same as []\T1/zi4/m/n/1
+0 which=seq_along(object$baselearner)[]\T1/ptm/m/n/10 .
+
+[32]
+[33]
+Overfull \hbox (3.82648pt too wide) in paragraph at lines 2041--2042
+[]\T1/ptm/m/n/10 To anal-yse the func-tional re-la-tion-ship be-tween elec-troe
+n-cephalog-ra-phy (EEG) and fa-cial elec-tromyo-
+
+[34]
+[35]
+[36]
+[37]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[38]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[39]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[40]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[41]
+[42]
+[43]
+Overfull \hbox (15.28809pt too wide) in paragraph at lines 2583--2585
+[]\T1/ptm/m/n/10 parameters for the es-ti-ma-tion of the off-set, de-faults to 
+[]\T1/zi4/m/n/10 o_control()[]\T1/ptm/m/n/10 , see [][][]\T1/zi4/m/n/10 o_contr
+ol[][][][]\T1/ptm/m/n/10 . 
+
+[44]
+Overfull \hbox (15.24875pt too wide) in paragraph at lines 2658--2661
+[]\T1/ptm/m/n/10 (Nonlinear) ef-fects of scalar co-vari-ates that are con-stant
+ over $\OML/cmm/m/it/10 t$\T1/ptm/m/n/10 , e.g., $\OML/cmm/m/it/10 f\OT1/cmr/m/
+n/10 (\OML/cmm/m/it/10 z[]\OT1/cmr/m/n/10 )$\T1/ptm/m/n/10 , spec-i-fied as []\
+T1/zi4/m/n/10 c(bbs(z))[]\T1/ptm/m/n/10 ,
+
+Overfull \hbox (13.95007pt too wide) in paragraph at lines 2671--2677
+[]\T1/ptm/m/n/10 Function-on-function re-gres-sion terms of func-tional co-vari
+-ates []\T1/zi4/m/n/10 x []\T1/ptm/m/n/10 with in-te-gra-tion lim-its $\OT1/cmr
+/m/n/10 [\OML/cmm/m/it/10 l\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )
+\OML/cmm/m/it/10 ; u\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )]$
+
+Overfull \hbox (17.69626pt too wide) in paragraph at lines 2671--2677
+\T1/ptm/m/n/10 de-pend-ing on $\OML/cmm/m/it/10 t$\T1/ptm/m/n/10 , e.g., $[][] 
+\OML/cmm/m/it/10 l\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\OML/cmm/
+m/it/10 ; u\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )]\OML/cmm/m/it/1
+0 x[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 ^^L\O
+T1/cmr/m/n/10 (\OML/cmm/m/it/10 s; t\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 ds$\T1/pt
+m/m/n/10 , spec-i-fied as []\T1/zi4/m/n/10 bhist(x, s = s, time = t, limits)[]\
+T1/ptm/m/n/10 .
+
+Overfull \hbox (2.75526pt too wide) in paragraph at lines 2671--2677
+\T1/ptm/m/n/10 The []\T1/zi4/m/n/10 limits []\T1/ptm/m/n/10 ar-gu-ment de-fault
+s to []\T1/zi4/m/n/10 "s<=t" []\T1/ptm/m/n/10 which yields a his-tor-i-cal ef-f
+ect with lim-its $\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 min\OT1/cmr/m/n/10 (\OML/cm
+m/m/it/10 t\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 ; t\OT1/cmr/m/n/10 ]$\T1/ptm/m/n/1
+0 ,
+
+Overfull \hbox (3.51947pt too wide) in paragraph at lines 2683--2687
+\T1/ptm/m/n/10 base-learner []\T1/zi4/m/n/10 bhistx []\T1/ptm/m/n/10 should be 
+used in-stead of []\T1/zi4/m/n/10 bhist[]\T1/ptm/m/n/10 , e.g., []\T1/zi4/m/n/1
+0 bhistx(x, limits) %X% bolsc(z)[]\T1/ptm/m/n/10 ,
+
+[45]
+[46]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[47]
+Overfull \hbox (6.73795pt too wide) in paragraph at lines 2849--2849
+ []\T1/zi4/m/n/9 mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 
+40, df = 4, check.ident = FALSE)[] 
+
+Overfull \hbox (11.23795pt too wide) in paragraph at lines 2854--2854
+ []\T1/zi4/m/n/9 mod2s <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots =
+ 40, df = 4, check.ident = FALSE)[] 
+
+Overfull \hbox (11.23795pt too wide) in paragraph at lines 2862--2862
+ []\T1/zi4/m/n/9 mod2f <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots =
+ 40, df = 4, check.ident = FALSE)[] 
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+[48]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[49]
+[50]
+Overfull \hbox (0.44884pt too wide) in paragraph at lines 3029--3036
+\T1/ptm/m/n/10 which sets up a base-learner for the scalar 1. Or you can use []
+\T1/zi4/m/n/10 timeformula=NULL[]\T1/ptm/m/n/10 ,
+
+Overfull \hbox (10.68826pt too wide) in paragraph at lines 3029--3036
+\T1/ptm/m/n/10 then the scalar re-sponse is treated as scalar. Anal-o-gously to
+ []\T1/zi4/m/n/10 formula[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 timeformula
+
+Overfull \hbox (10.9877pt too wide) in paragraph at lines 3044--3046
+[]\T1/ptm/m/n/10 a list of pa-ram-e-ters con-trol-ling the al-go-rithm. For mor
+e de-tails see [][][]\T1/zi4/m/n/10 boost_control[][][][]\T1/ptm/m/n/10 . 
+
+[51]
+[52]
+[53]
+[54]
+[55]
+[56]
+[57]
+[58]
+Overfull \hbox (18.43932pt too wide) in paragraph at lines 3537--3541
+[]\T1/zi4/m/n/10 getArgvals[]\T1/ptm/m/n/10 . Or the names of the dif-fer-ent v
+ari-ables []\T1/zi4/m/n/10 getTimeLab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 getIdL
+ab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 getXLab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/1
+0 getArgvalsLab[]\T1/ptm/m/n/10 . 
+
+[59]
+Overfull \hbox (15.93932pt too wide) in paragraph at lines 3598--3602
+[]\T1/zi4/m/n/10 getArgvals[]\T1/ptm/m/n/10 . Or the names of the dif-fer-ent v
+ari-ables []\T1/zi4/m/n/10 getTimeLab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 getIdL
+ab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 getXLab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/1
+0 getArgvalsLab
+
+[60]
+[61]
+[62]
+[63]
+[64]
+[65]
+[66]
+[67]
+[68]
+Overfull \hbox (18.58824pt too wide) in paragraph at lines 4099--4104
+[]\T1/ptm/m/n/10 logical, de-faults to []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 ,
+ If []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 , per-spec-tive plots ([][][]\T1/zi4/
+m/n/10 persp[][][][]\T1/ptm/m/n/10 ) for 2- and 3-dimensional
+
+[69]
+[70]
+[71]
+[72]
+[73]
+Overfull \hbox (18.0597pt too wide) in paragraph at lines 4384--4384
+ []  \T1/zi4/m/n/10 folds = cvLong(x$id, weights = rep(1, l = length(x$id)), ty
+pe = "subsampling", B = B),[] 
+
+[74]
+[75]
+Overfull \hbox (11.28871pt too wide) in paragraph at lines 4536--4538
+[]\T1/ptm/m/n/10 logical, de-faults to []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 . 
+Only used to force a mean-ing-ful be-haviour of []\T1/zi4/m/n/10 applyFolds
+
+[76]
+[77]
+[78]
+[79]
+Overfull \hbox (8.34941pt too wide) in paragraph at lines 4726--4729
+[]\T1/ptm/m/n/10 DEPRECATED! The func-tion []\T1/zi4/m/n/10 validateFDboost() [
+]\T1/ptm/m/n/10 is dep-re-cated, use [][][]\T1/zi4/m/n/10 applyFolds[][][] []\T
+1/ptm/m/n/10 and [][][]\T1/zi4/m/n/10 bootstrapCI[][][]
+
+Overfull \hbox (3.6778pt too wide) in paragraph at lines 4758--4759
+[]\T1/ptm/m/n/10 the grid over which the op-ti-mal num-ber of boost-ing it-er-a
+-tions (mstop) is searched. 
+
+[80]
+Overfull \hbox (15.31848pt too wide) in paragraph at lines 4789--4796
+\T1/ptm/m/n/10 op-tion []\T1/zi4/m/n/10 refitSmoothOffset []\T1/ptm/m/n/10 the 
+off-set is re-fit-ted on each fold. Note, that the func-tion []\T1/zi4/m/n/10 v
+alidateFDboost
+
+[81]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[82]
+[83] (/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.ind
+[84]
+
+LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
+(Font)              using `T1/zi4/m/n' instead on input line 24.
+
+
+
+[85]
+
+[86]) (/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+Package rerunfilecheck Warning: File `Rd2.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+(see the transcript file for additional information)
+pdfTeX warning (dest): name{Rfn.stabsel} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.predict.mboost} has been referenced but does no
+t exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.contour} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.image} has been referenced but does not exist, 
+replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.persp} has been referenced but does not exist, 
+replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.gam} has been referenced but does not exist, re
+placed by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.approx} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.matplot} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.mboostLSS} has been referenced but does not exi
+st, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.boost.Rul.control} has been referenced but does
+ not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.GaussianLSS} has been referenced but does not e
+xist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.Families} has been referenced but does not exis
+t, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.pffr} has been referenced but does not exist, r
+eplaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.Family} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn..Rpcent.O.Rpcent.} has been referenced but does
+ not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.mboost} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.extract} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.cvrisk.mboostLSS} has been referenced but does 
+not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.ffpc} has been referenced but does not exist, r
+eplaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.fpca.sc} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.bols} has been referenced but does not exist, r
+eplaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.brandom} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.bbs} has been referenced but does not exist, re
+placed by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.cvrisk} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.mclapply} has been referenced but does not exis
+t, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.baselearners} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn..Rpcent.X.Rpcent.} has been referenced but does
+ not exist, replaced by a fixed one
+
+</usr/share/texlive/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/tim
+es/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Rd2.pdf (86 pages, 370940 bytes).
+Transcript written on Rd2.log.
+This is makeindex, version 2.17 [TeX Live 2025/dev] (kpathsea + Thai support).
+Scanning input file Rd2.idx....done (220 entries accepted, 0 rejected).
+Sorting entries.....done (2041 comparisons).
+Generating output file Rd2.ind....done (268 lines written, 0 warnings).
+Output written in Rd2.ind.
+Transcript written in Rd2.ilg.
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+LaTeX2e <2024-06-01> patch level 2
+L3 programming layer <2024-05-27>
+(./Rd2.tex
+(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2024/02/08 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/bk10.clo))
+(/usr/local/lib/R/share/texmf/tex/latex/Rd.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))))
+(/usr/share/texlive/texmf-dist/tex/latex/base/makeidx.sty)
+Writing index file Rd2.idx
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.aux)
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.out)
+(/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.out)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+(/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.toc
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-
+dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips
+/inconsolata/i4-t1-0.enc}])
+[2]
+[3]
+Overfull \hbox (23.53716pt too wide) in paragraph at lines 122--125
+\T1/ptm/m/n/10 sion in Bayes Hilbert Spaces with an Ap-pli-ca-tion to Gen-der E
+co-nomics. arXiv preprint arXiv:2110.11771. 
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd)
+[4{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}]
+
+Package hyperref Warning: Glyph not defined in PU encoding,
+(hyperref)                removing `\Rpercent' on input line 183.
+
+
+Package hyperref Warning: Glyph not defined in PU encoding,
+(hyperref)                removing `\Rpercent' on input line 183.
+
+
+Overfull \hbox (35.25021pt too wide) in paragraph at lines 242--242
+ []\T1/zi4/m/n/9 ######## Example for function-on-scalar-regression with intera
+ction effect of two scalar covariates[] 
+
+[5]
+[6]
+[7]
+[8]
+[9]
+Overfull \hbox (3.6778pt too wide) in paragraph at lines 512--513
+[]\T1/ptm/m/n/10 the grid over which the op-ti-mal num-ber of boost-ing it-er-a
+-tions (mstop) is searched. 
+
+Overfull \hbox (16.28871pt too wide) in paragraph at lines 535--537
+[]\T1/ptm/m/n/10 logical, de-faults to []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 .
+ Only used to force a mean-ing-ful be-haviour of []\T1/zi4/m/n/10 applyFolds
+
+[10]
+[11]
+[12]
+[13]
+Overfull \hbox (21.64857pt too wide) in paragraph at lines 769--775
+[]\T1/ptm/m/n/10 Note that a spe-cial []\T1/zi4/m/n/10 contrasts.arg []\T1/ptm/
+m/n/10 ex-ists in pack-age []\T1/zi4/m/n/10 mboost[]\T1/ptm/m/n/10 , namely "co
+ntr.dummy".
+
+[14]
+[15]
+[16]
+Overfull \hbox (40.40863pt too wide) in paragraph at lines 944--947
+[]\T1/ptm/m/n/10 by de-fault, []\T1/zi4/m/n/10 penalty="ps"[]\T1/ptm/m/n/10 , t
+he dif-fer-ence penalty for P-splines is used, for []\T1/zi4/m/n/10 penalty="ps
+s"
+
+[17]
+Overfull \hbox (9.74408pt too wide) in paragraph at lines 1013--1013
+ []\T1/zi4/m/n/9 data1 <- suppressWarnings(pffrSim(scenario = c("int", "ff"), l
+imits = function(s,t){ s <= t },[] 
+
+Overfull \hbox (20.23795pt too wide) in paragraph at lines 1045--1045
+ []  \T1/zi4/m/n/9 appl1 <- applyFolds(mod, folds = cv(rep(1, length(unique(mod
+$id))), type = "bootstrap", B = 5))[] 
+
+[18]
+Overfull \hbox (40.2796pt too wide) in paragraph at lines 1083--1086
+\T1/zi4/m/n/10 1950:2019)[]\T1/ptm/m/n/10 ), cor-re-spond-ing to the years for 
+the rows of []\T1/zi4/m/n/10 birth_densities []\T1/ptm/m/n/10 and []\T1/zi4/m/n
+/10 birth_densities_clr[]\T1/ptm/m/n/10 . 
+
+Overfull \hbox (8.6075pt too wide) in paragraph at lines 1092--1097
+\T1/ptm/m/n/10 ([]\T1/zi4/m/n/10 birth_densities_clr[]\T1/ptm/m/n/10 ) serve as
+ re-sponse, see also the vi-gnette "FDboost_density-on-scalar_births".
+
+Overfull \hbox (23.53716pt too wide) in paragraph at lines 1120--1123
+\T1/ptm/m/n/10 sion in Bayes Hilbert Spaces with an Ap-pli-ca-tion to Gen-der E
+co-nomics. arXiv preprint arXiv:2110.11771. 
+
+[19]
+Overfull \hbox (6.75635pt too wide) in paragraph at lines 1137--1137
+ []\T1/zi4/m/n/9 funplot(1:12, birthDistribution$birth_densities[1:70, ], ylab 
+= "densities", xlab = "month",[] 
+
+Overfull \hbox (15.75635pt too wide) in paragraph at lines 1139--1139
+ []\T1/zi4/m/n/9 funplot(1:12, birthDistribution$birth_densities[71:140, ], yla
+b = "densities", xlab = "month",[] 
+
+Overfull \hbox (2.24715pt too wide) in paragraph at lines 1176--1176
+ []\T1/zi4/m/n/9 funplot(1:12, predictions[71:140, ], ylab = "predictions", xla
+b = "month", ylim = pred_ylim,[] 
+
+[20]
+[21]
+Overfull \hbox (9.93916pt too wide) in paragraph at lines 1253--1255
+[]\T1/ptm/m/n/10 further ar-gu-ments passed to [][][]\T1/zi4/m/n/10 applyFolds[
+][][] []\T1/ptm/m/n/10 if the de-fault for []\T1/zi4/m/n/10 resampling_fun_oute
+r
+
+[22]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[23]
+Overfull \hbox (6.73795pt too wide) in paragraph at lines 1380--1380
+ []\T1/zi4/m/n/9 mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 
+40, df = 4, check.ident = FALSE)[] 
+
+[24]
+[25]
+Overfull \hbox (20.3702pt too wide) in paragraph at lines 1507--1514
+[]\T1/zi4/m/n/10 bsignal(..., inS = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 linear\TS1/
+zi4/m/n/10 '\T1/zi4/m/n/10 ) []\T1/ptm/m/n/10 for first ([]\T1/zi4/m/n/10 diffe
+rence = 1[]\T1/ptm/m/n/10 ) and sec-ond ([]\T1/zi4/m/n/10 difference
+
+[26]
+[27]
+Overfull \hbox (6.73795pt too wide) in paragraph at lines 1667--1667
+ []\T1/zi4/m/n/9 mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 
+40, df = 4, check.ident = FALSE)[] 
+
+[28]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[29]
+[30]
+Overfull \hbox (23.53716pt too wide) in paragraph at lines 1839--1842
+\T1/ptm/m/n/10 sion in Bayes Hilbert Spaces with an Ap-pli-ca-tion to Gen-der E
+co-nomics. arXiv preprint arXiv:2110.11771. 
+
+[31]
+Overfull \hbox (23.79735pt too wide) in paragraph at lines 1887--1891
+[]\T1/ptm/m/n/10 Takes a fit-ted []\T1/zi4/m/n/10 FDboost[]\T1/ptm/m/n/10 -obje
+ct pro-duced by [][][]\T1/zi4/m/n/10 FDboost[][][]() []\T1/ptm/m/n/10 and re-tu
+rns es-ti-mated co-ef-fi-cient func-tions/surfaces
+
+Overfull \hbox (45.64853pt too wide) in paragraph at lines 1919--1923
+\T1/ptm/m/n/10 vec-tor), de-faults to NULL which is the same as []\T1/zi4/m/n/1
+0 which=seq_along(object$baselearner)[]\T1/ptm/m/n/10 .
+
+[32]
+[33]
+Overfull \hbox (3.82648pt too wide) in paragraph at lines 2041--2042
+[]\T1/ptm/m/n/10 To anal-yse the func-tional re-la-tion-ship be-tween elec-troe
+n-cephalog-ra-phy (EEG) and fa-cial elec-tromyo-
+
+[34]
+[35]
+[36]
+[37]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[38]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[39]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[40]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[41]
+[42]
+[43]
+Overfull \hbox (15.28809pt too wide) in paragraph at lines 2583--2585
+[]\T1/ptm/m/n/10 parameters for the es-ti-ma-tion of the off-set, de-faults to 
+[]\T1/zi4/m/n/10 o_control()[]\T1/ptm/m/n/10 , see [][][]\T1/zi4/m/n/10 o_contr
+ol[][][][]\T1/ptm/m/n/10 . 
+
+[44]
+Overfull \hbox (15.24875pt too wide) in paragraph at lines 2658--2661
+[]\T1/ptm/m/n/10 (Nonlinear) ef-fects of scalar co-vari-ates that are con-stant
+ over $\OML/cmm/m/it/10 t$\T1/ptm/m/n/10 , e.g., $\OML/cmm/m/it/10 f\OT1/cmr/m/
+n/10 (\OML/cmm/m/it/10 z[]\OT1/cmr/m/n/10 )$\T1/ptm/m/n/10 , spec-i-fied as []\
+T1/zi4/m/n/10 c(bbs(z))[]\T1/ptm/m/n/10 ,
+
+Overfull \hbox (13.95007pt too wide) in paragraph at lines 2671--2677
+[]\T1/ptm/m/n/10 Function-on-function re-gres-sion terms of func-tional co-vari
+-ates []\T1/zi4/m/n/10 x []\T1/ptm/m/n/10 with in-te-gra-tion lim-its $\OT1/cmr
+/m/n/10 [\OML/cmm/m/it/10 l\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )
+\OML/cmm/m/it/10 ; u\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )]$
+
+Overfull \hbox (17.69626pt too wide) in paragraph at lines 2671--2677
+\T1/ptm/m/n/10 de-pend-ing on $\OML/cmm/m/it/10 t$\T1/ptm/m/n/10 , e.g., $[][] 
+\OML/cmm/m/it/10 l\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\OML/cmm/
+m/it/10 ; u\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )]\OML/cmm/m/it/1
+0 x[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 ^^L\O
+T1/cmr/m/n/10 (\OML/cmm/m/it/10 s; t\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 ds$\T1/pt
+m/m/n/10 , spec-i-fied as []\T1/zi4/m/n/10 bhist(x, s = s, time = t, limits)[]\
+T1/ptm/m/n/10 .
+
+Overfull \hbox (2.75526pt too wide) in paragraph at lines 2671--2677
+\T1/ptm/m/n/10 The []\T1/zi4/m/n/10 limits []\T1/ptm/m/n/10 ar-gu-ment de-fault
+s to []\T1/zi4/m/n/10 "s<=t" []\T1/ptm/m/n/10 which yields a his-tor-i-cal ef-f
+ect with lim-its $\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 min\OT1/cmr/m/n/10 (\OML/cm
+m/m/it/10 t\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 ; t\OT1/cmr/m/n/10 ]$\T1/ptm/m/n/1
+0 ,
+
+Overfull \hbox (3.51947pt too wide) in paragraph at lines 2683--2687
+\T1/ptm/m/n/10 base-learner []\T1/zi4/m/n/10 bhistx []\T1/ptm/m/n/10 should be 
+used in-stead of []\T1/zi4/m/n/10 bhist[]\T1/ptm/m/n/10 , e.g., []\T1/zi4/m/n/1
+0 bhistx(x, limits) %X% bolsc(z)[]\T1/ptm/m/n/10 ,
+
+[45]
+[46]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[47]
+Overfull \hbox (6.73795pt too wide) in paragraph at lines 2849--2849
+ []\T1/zi4/m/n/9 mod2 <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots = 
+40, df = 4, check.ident = FALSE)[] 
+
+Overfull \hbox (11.23795pt too wide) in paragraph at lines 2854--2854
+ []\T1/zi4/m/n/9 mod2s <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots =
+ 40, df = 4, check.ident = FALSE)[] 
+
+Overfull \hbox (11.23795pt too wide) in paragraph at lines 2862--2862
+ []\T1/zi4/m/n/9 mod2f <- FDboost(heatan ~ bsignal(UVVIS, uvvis.lambda, knots =
+ 40, df = 4, check.ident = FALSE)[] 
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+[48]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[49]
+[50]
+Overfull \hbox (0.44884pt too wide) in paragraph at lines 3029--3036
+\T1/ptm/m/n/10 which sets up a base-learner for the scalar 1. Or you can use []
+\T1/zi4/m/n/10 timeformula=NULL[]\T1/ptm/m/n/10 ,
+
+Overfull \hbox (10.68826pt too wide) in paragraph at lines 3029--3036
+\T1/ptm/m/n/10 then the scalar re-sponse is treated as scalar. Anal-o-gously to
+ []\T1/zi4/m/n/10 formula[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 timeformula
+
+Overfull \hbox (10.9877pt too wide) in paragraph at lines 3044--3046
+[]\T1/ptm/m/n/10 a list of pa-ram-e-ters con-trol-ling the al-go-rithm. For mor
+e de-tails see [][][]\T1/zi4/m/n/10 boost_control[][][][]\T1/ptm/m/n/10 . 
+
+[51]
+[52]
+[53]
+[54]
+[55]
+[56]
+[57]
+[58]
+Overfull \hbox (18.43932pt too wide) in paragraph at lines 3537--3541
+[]\T1/zi4/m/n/10 getArgvals[]\T1/ptm/m/n/10 . Or the names of the dif-fer-ent v
+ari-ables []\T1/zi4/m/n/10 getTimeLab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 getIdL
+ab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 getXLab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/1
+0 getArgvalsLab[]\T1/ptm/m/n/10 . 
+
+[59]
+Overfull \hbox (15.93932pt too wide) in paragraph at lines 3598--3602
+[]\T1/zi4/m/n/10 getArgvals[]\T1/ptm/m/n/10 . Or the names of the dif-fer-ent v
+ari-ables []\T1/zi4/m/n/10 getTimeLab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 getIdL
+ab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 getXLab[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/1
+0 getArgvalsLab
+
+[60]
+[61]
+[62]
+[63]
+[64]
+[65]
+[66]
+[67]
+[68]
+Overfull \hbox (18.58824pt too wide) in paragraph at lines 4099--4104
+[]\T1/ptm/m/n/10 logical, de-faults to []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 ,
+ If []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 , per-spec-tive plots ([][][]\T1/zi4/
+m/n/10 persp[][][][]\T1/ptm/m/n/10 ) for 2- and 3-dimensional
+
+[69]
+[70]
+[71]
+[72]
+[73]
+Overfull \hbox (18.0597pt too wide) in paragraph at lines 4384--4384
+ []  \T1/zi4/m/n/10 folds = cvLong(x$id, weights = rep(1, l = length(x$id)), ty
+pe = "subsampling", B = B),[] 
+
+[74]
+[75]
+Overfull \hbox (11.28871pt too wide) in paragraph at lines 4536--4538
+[]\T1/ptm/m/n/10 logical, de-faults to []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 . 
+Only used to force a mean-ing-ful be-haviour of []\T1/zi4/m/n/10 applyFolds
+
+[76]
+[77]
+[78]
+[79]
+Overfull \hbox (8.34941pt too wide) in paragraph at lines 4726--4729
+[]\T1/ptm/m/n/10 DEPRECATED! The func-tion []\T1/zi4/m/n/10 validateFDboost() [
+]\T1/ptm/m/n/10 is dep-re-cated, use [][][]\T1/zi4/m/n/10 applyFolds[][][] []\T
+1/ptm/m/n/10 and [][][]\T1/zi4/m/n/10 bootstrapCI[][][]
+
+Overfull \hbox (3.6778pt too wide) in paragraph at lines 4758--4759
+[]\T1/ptm/m/n/10 the grid over which the op-ti-mal num-ber of boost-ing it-er-a
+-tions (mstop) is searched. 
+
+[80]
+Overfull \hbox (15.31848pt too wide) in paragraph at lines 4789--4796
+\T1/ptm/m/n/10 op-tion []\T1/zi4/m/n/10 refitSmoothOffset []\T1/ptm/m/n/10 the 
+off-set is re-fit-ted on each fold. Note, that the func-tion []\T1/zi4/m/n/10 v
+alidateFDboost
+
+[81]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[82]
+[83] (/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.ind
+[84]
+
+LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
+(Font)              using `T1/zi4/m/n' instead on input line 24.
+
+
+
+[85]
+
+[86]) (/tmp/RtmpDXcg33/Rd2pdf427b609c71/Rd2.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ )
+(see the transcript file for additional information)
+pdfTeX warning (dest): name{Rfn.stabsel} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.predict.mboost} has been referenced but does no
+t exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.contour} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.image} has been referenced but does not exist, 
+replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.persp} has been referenced but does not exist, 
+replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.gam} has been referenced but does not exist, re
+placed by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.approx} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.matplot} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.mboostLSS} has been referenced but does not exi
+st, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.boost.Rul.control} has been referenced but does
+ not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.GaussianLSS} has been referenced but does not e
+xist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.Families} has been referenced but does not exis
+t, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.pffr} has been referenced but does not exist, r
+eplaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.Family} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn..Rpcent.O.Rpcent.} has been referenced but does
+ not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.mboost} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.extract} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.cvrisk.mboostLSS} has been referenced but does 
+not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.ffpc} has been referenced but does not exist, r
+eplaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.fpca.sc} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.bols} has been referenced but does not exist, r
+eplaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.brandom} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.bbs} has been referenced but does not exist, re
+placed by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.cvrisk} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.mclapply} has been referenced but does not exis
+t, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.baselearners} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn..Rpcent.X.Rpcent.} has been referenced but does
+ not exist, replaced by a fixed one
+
+</usr/share/texlive/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/tim
+es/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Rd2.pdf (86 pages, 372163 bytes).
+Transcript written on Rd2.log.
+Saving output to ‘FDboost-manual.pdf’ ...
+Done
+You may want to clean up by 'rm -Rf /tmp/RtmpDXcg33/Rd2pdf427b609c71'

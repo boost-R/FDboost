@@ -312,7 +312,7 @@ NULL
 #' @param object,x a model-factor given as a \code{FDboost_fac} object
 #' @param newdata optionally, a data frame or list
 #' in which to look for variables with which to predict.
-#' See \code{\link{predict.mboost}}.
+#' See \code{\link[mboost]{predict.mboost}}.
 #' @param which a subset of base-learner components to take into
 #' account for computing predictions or coefficients. Different
 #' components are never aggregated to a joint prediction, but always

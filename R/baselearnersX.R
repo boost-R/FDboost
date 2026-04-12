@@ -395,8 +395,8 @@ X_histx <- function(mf, vary, args) {
 #' ## the interaction effect is in this case not necessary
 #' n <- 100
 #' nygrid <- 35
-#' data1 <- pffrSim(scenario = c("int", "ff"), limits = function(s,t){ s <= t }, 
-#'                 n = n, nygrid = nygrid)
+#' data1 <- suppressWarnings(pffrSim(scenario = c("int", "ff"), limits = function(s,t){ s <= t }, 
+#'                 n = n, nygrid = nygrid))
 #' data1$X1 <- scale(data1$X1, scale = FALSE) ## center functional covariate                  
 #' dataList <- as.list(data1)
 #' dataList$tvals <- attr(data1, "yindex")

@@ -86,7 +86,7 @@ to bootstrap confidence intervals are biased towards zero.
 \note{
 Note that parallelization can be achieved by defining
 the \code{resampling_fun_outer} or \code{_inner} accordingly.
-See, e.g., \code{\link{cvrisk}} on how to parallelize resampling
+See, e.g., \code{\link[mboost]{cvrisk}} on how to parallelize resampling
 functions or the examples below. Also note that by defining
 a custum inner or outer resampling function the respective
 argument \code{B_inner} or \code{B_outer} is ignored.
@@ -104,7 +104,7 @@ if(require(refund)){
 # model with linear functional effect, use bsignal()
 # Y(t) = f(t) + \int X1(s)\beta(s,t)ds + eps
 set.seed(2121)
-data1 <- pffrSim(scenario = "ff", n = 40)
+data1 <- suppressWarnings(pffrSim(scenario = "ff", n = 40))
 data1$X1 <- scale(data1$X1, scale = FALSE)
 dat_list <- as.list(data1)
 dat_list$t <- attr(data1, "yindex")

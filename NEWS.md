@@ -1,3 +1,10 @@
+# FDboost 1.1-4 (2026-03-24)
+
+## Bug fixes
+
+- Suppressed deprecation warnings from `refund::pffrSim()` in examples to keep checks clean with recent `refund` versions.
+- Stabilized `tests/general_tests.R` by forcing serial evaluation (`mc.cores = 1`) to avoid parallel `applyFolds()` crashes on some check platforms.
+
 # FDboost 1.1.0 (2022-07-12)
 
 ## Miscellaneous

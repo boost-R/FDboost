@@ -256,7 +256,7 @@ if(require(refund)){
 # model with linear functional effect, use bsignal()
 # Y(t) = f(t) + \int X1(s)\beta(s,t)ds + eps
 set.seed(2121)
-data1 <- pffrSim(scenario = "ff", n = 40)
+data1 <- suppressWarnings(pffrSim(scenario = "ff", n = 40))
 data1$X1 <- scale(data1$X1, scale = FALSE)
 dat_list <- as.list(data1)
 dat_list$t <- attr(data1, "yindex")
@@ -294,7 +294,7 @@ set.seed(2121)
 mylimits <- function(s, t){
   (s < t) | (s == t)
 }
-data2 <- pffrSim(scenario = "ff", n = 40, limits = mylimits)
+data2 <- suppressWarnings(pffrSim(scenario = "ff", n = 40, limits = mylimits))
 data2$X1 <- scale(data2$X1, scale = FALSE)
 dat2_list <- as.list(data2)
 dat2_list$t <- attr(data2, "yindex")

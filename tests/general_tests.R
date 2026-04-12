@@ -10,10 +10,14 @@ library(gamboostLSS)
 
 if(require(refund)){
   
+  old_mc_cores <- getOption("mc.cores")
+  options(mc.cores = 1L)
+  on.exit(options(mc.cores = old_mc_cores), add = TRUE)
+  
   ## simulate a small data set 
   print("simulate data")
   set.seed(230)
-  pffr_data <- pffrSim(n = 25, nxgrid = 21, nygrid = 19)
+  pffr_data <- suppressWarnings(pffrSim(n = 25, nxgrid = 21, nygrid = 19))
   pffr_data$X1 <- scale(pffr_data$X1, scale = FALSE)
   
   dat <- as.list(pffr_data)
@@ -207,7 +211,6 @@ fof <- FDboost(UVVIS ~ bsignal(NIR, nir.lambda, knots = 9, df = 9),
                timeformula = ~ bbs(uvvis.lambda), data = fuelSubset)
 
 pred <- predict(fof, newdata = fuelSubset)
-
 
 
 

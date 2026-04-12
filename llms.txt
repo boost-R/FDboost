@@ -1,0 +1,181 @@
+# FDboost
+
+`FDboost` Boosting Functional Regression Models.
+
+The package FDboost fits regression models for functional data, i.e.,
+scalar-on-function, function-on-scalar, and function-on-function
+regression models, by a component-wise gradient boosting algorithm.
+Furthermore, it can be used to fit density-on-scalar regression models.
+
+## Using FDboost
+
+For installation instructions see below.
+
+Instructions on how to use `FDboost` can be found in various places:
+
+- Read the tutorial paper <doi:10.18637/jss.v094.i10>
+- Have a look at the manual, which also contains example code
+- Check the vignettes:
+  - [function-on-function
+    regression](https://cran.r-project.org/web/packages/FDboost/vignettes/FLAM_canada.pdf)
+  - [scalar-on-function
+    regression](https://cran.r-project.org/web/packages/FDboost/vignettes/FLAM_fuel.pdf)
+  - [function-on-scalar
+    regression](https://cran.r-project.org/web/packages/FDboost/vignettes/FLAM_viscosity.pdf)
+  - [density-on-scalar
+    regression](https://github.com/Eva2703/FDboost/blob/BayesSpace/vignettes/density-on-scalar_birth.pdf)
+
+## Issues & Feature Requests
+
+For issues, bugs, feature requests etc. please use the [GitHub
+Issues](https://github.com/boost-R/FDboost/issues).
+
+## Installation
+
+Install the last release from [CRAN](https://cran.r-project.org):
+
+``` r
+install.packages("FDboost")
+```
+
+Install the development version from [GitHub](https://github.com/):
+
+``` r
+# install.packages("pak")
+pak::pak("boost-R/FDboost")
+```
+
+# Package index
+
+## All functions
+
+- [`FDboost-package`](https://boost-R.github.io/FDboost/reference/FDboost-package.md)
+  [`FDboost_package`](https://boost-R.github.io/FDboost/reference/FDboost-package.md)
+  [`package-FDboost`](https://boost-R.github.io/FDboost/reference/FDboost-package.md)
+  : FDboost: Boosting Functional Regression Models
+- [`FDboost()`](https://boost-R.github.io/FDboost/reference/FDboost.md)
+  : Model-based Gradient Boosting for Functional Response
+- [`FDboostLSS()`](https://boost-R.github.io/FDboost/reference/FDboostLSS.md)
+  : Model-based Gradient Boosting for Functional GAMLSS
+- [`FDboost_fac-class`](https://boost-R.github.io/FDboost/reference/FDboost_fac-class.md)
+  : \`FDboost_fac\` S3 class for factorized FDboost model components
+- [`` `%A%` ``](https://boost-R.github.io/FDboost/reference/anisotropic_Kronecker.md)
+  [`` `%A0%` ``](https://boost-R.github.io/FDboost/reference/anisotropic_Kronecker.md)
+  [`` `%Xa0%` ``](https://boost-R.github.io/FDboost/reference/anisotropic_Kronecker.md)
+  : Kronecker product or row tensor product of two base-learners with
+  anisotropic penalty
+- [`applyFolds()`](https://boost-R.github.io/FDboost/reference/applyFolds.md)
+  [`cvrisk(`*`<FDboost>`*`)`](https://boost-R.github.io/FDboost/reference/applyFolds.md)
+  [`cvLong()`](https://boost-R.github.io/FDboost/reference/applyFolds.md)
+  [`cvMa()`](https://boost-R.github.io/FDboost/reference/applyFolds.md)
+  : Cross-Validation and Bootstrapping over Curves
+- [`bbsc()`](https://boost-R.github.io/FDboost/reference/bbsc.md)
+  [`bolsc()`](https://boost-R.github.io/FDboost/reference/bbsc.md)
+  [`brandomc()`](https://boost-R.github.io/FDboost/reference/bbsc.md) :
+  Constrained Base-learners for Scalar Covariates
+- [`bhistx()`](https://boost-R.github.io/FDboost/reference/bhistx.md) :
+  Base-learners for Functional Covariates
+- [`birthDistribution`](https://boost-R.github.io/FDboost/reference/birthDistribution.md)
+  : Densities of live births in Germany
+- [`bootstrapCI()`](https://boost-R.github.io/FDboost/reference/bootstrapCI.md)
+  : Function to compute bootstrap confidence intervals
+- [`bsignal()`](https://boost-R.github.io/FDboost/reference/bsignal.md)
+  [`bconcurrent()`](https://boost-R.github.io/FDboost/reference/bsignal.md)
+  [`bhist()`](https://boost-R.github.io/FDboost/reference/bsignal.md)
+  [`bfpc()`](https://boost-R.github.io/FDboost/reference/bsignal.md) :
+  Base-learners for Functional Covariates
+- [`clr()`](https://boost-R.github.io/FDboost/reference/clr.md) : Clr
+  and inverse clr transformation
+- [`coef(`*`<FDboost>`*`)`](https://boost-R.github.io/FDboost/reference/coef.FDboost.md)
+  : Coefficients of boosted functional regression model
+- [`cvrisk(`*`<FDboostLSS>`*`)`](https://boost-R.github.io/FDboost/reference/cvrisk.FDboostLSS.md)
+  : Cross-validation for FDboostLSS
+- [`emotion`](https://boost-R.github.io/FDboost/reference/emotion.md) :
+  EEG and EMG recordings in a computerised gambling study
+- [`extract(`*`<blg>`*`)`](https://boost-R.github.io/FDboost/reference/extract.blg.md)
+  : Extract information of a base-learner
+- [`factorize()`](https://boost-R.github.io/FDboost/reference/factorize.md)
+  : Factorize tensor product model
+- [`fitted(`*`<FDboost>`*`)`](https://boost-R.github.io/FDboost/reference/fitted.FDboost.md)
+  : Fitted values of a boosted functional regression model
+- [`fuelSubset`](https://boost-R.github.io/FDboost/reference/fuelSubset.md)
+  : Spectral data of fossil fuels
+- [`funMRD()`](https://boost-R.github.io/FDboost/reference/funMRD.md) :
+  Functional MRD
+- [`funMSE()`](https://boost-R.github.io/FDboost/reference/funMSE.md) :
+  Functional MSE
+- [`funRsquared()`](https://boost-R.github.io/FDboost/reference/funRsquared.md)
+  : Functional R-squared
+- [`funplot()`](https://boost-R.github.io/FDboost/reference/funplot.md)
+  : Plot functional data with linear interpolation of missing values
+- [`getTime()`](https://boost-R.github.io/FDboost/reference/getTime.md)
+  [`getId()`](https://boost-R.github.io/FDboost/reference/getTime.md)
+  [`getX()`](https://boost-R.github.io/FDboost/reference/getTime.md)
+  [`getArgvals()`](https://boost-R.github.io/FDboost/reference/getTime.md)
+  [`getTimeLab()`](https://boost-R.github.io/FDboost/reference/getTime.md)
+  [`getIdLab()`](https://boost-R.github.io/FDboost/reference/getTime.md)
+  [`getXLab()`](https://boost-R.github.io/FDboost/reference/getTime.md)
+  [`getArgvalsLab()`](https://boost-R.github.io/FDboost/reference/getTime.md)
+  : Generic functions to asses attributes of functional data objects
+- [`getTime(`*`<hmatrix>`*`)`](https://boost-R.github.io/FDboost/reference/getTime.hmatrix.md)
+  [`getId(`*`<hmatrix>`*`)`](https://boost-R.github.io/FDboost/reference/getTime.hmatrix.md)
+  [`getX(`*`<hmatrix>`*`)`](https://boost-R.github.io/FDboost/reference/getTime.hmatrix.md)
+  [`getArgvals(`*`<hmatrix>`*`)`](https://boost-R.github.io/FDboost/reference/getTime.hmatrix.md)
+  [`getTimeLab(`*`<hmatrix>`*`)`](https://boost-R.github.io/FDboost/reference/getTime.hmatrix.md)
+  [`getIdLab(`*`<hmatrix>`*`)`](https://boost-R.github.io/FDboost/reference/getTime.hmatrix.md)
+  [`getXLab(`*`<hmatrix>`*`)`](https://boost-R.github.io/FDboost/reference/getTime.hmatrix.md)
+  [`getArgvalsLab(`*`<hmatrix>`*`)`](https://boost-R.github.io/FDboost/reference/getTime.hmatrix.md)
+  : Extract attributes of hmatrix
+- [`` `%Xc%` ``](https://boost-R.github.io/FDboost/reference/grapes-Xc-grapes.md)
+  : Constrained row tensor product
+- [`hmatrix()`](https://boost-R.github.io/FDboost/reference/hmatrix.md)
+  : A S3 class for univariate functional data on a common grid
+- [`integrationWeights()`](https://boost-R.github.io/FDboost/reference/integrationWeights.md)
+  [`integrationWeightsLeft()`](https://boost-R.github.io/FDboost/reference/integrationWeights.md)
+  : Functions to compute integration weights
+- [`is.hmatrix()`](https://boost-R.github.io/FDboost/reference/is.hmatrix.md)
+  : Test to class of hmatrix
+- [`o_control()`](https://boost-R.github.io/FDboost/reference/o_control.md)
+  : Function to control estimation of smooth offset
+- [`plot(`*`<FDboost>`*`)`](https://boost-R.github.io/FDboost/reference/plot.FDboost.md)
+  [`plotPredicted()`](https://boost-R.github.io/FDboost/reference/plot.FDboost.md)
+  [`plotResiduals()`](https://boost-R.github.io/FDboost/reference/plot.FDboost.md)
+  : Plot the fit or the coefficients of a boosted functional regression
+  model
+- [`plot(`*`<bootstrapCI>`*`)`](https://boost-R.github.io/FDboost/reference/plot.bootstrapCI.md)
+  [`print(`*`<bootstrapCI>`*`)`](https://boost-R.github.io/FDboost/reference/plot.bootstrapCI.md)
+  : Methods for objects of class bootstrapCI
+- [`mstop(`*`<validateFDboost>`*`)`](https://boost-R.github.io/FDboost/reference/plot.validateFDboost.md)
+  [`print(`*`<validateFDboost>`*`)`](https://boost-R.github.io/FDboost/reference/plot.validateFDboost.md)
+  [`plot(`*`<validateFDboost>`*`)`](https://boost-R.github.io/FDboost/reference/plot.validateFDboost.md)
+  [`plotPredCoef()`](https://boost-R.github.io/FDboost/reference/plot.validateFDboost.md)
+  : Methods for objects of class validateFDboost
+- [`predict(`*`<FDboost>`*`)`](https://boost-R.github.io/FDboost/reference/predict.FDboost.md)
+  : Prediction for boosted functional regression model
+- [`predict(`*`<FDboost_fac>`*`)`](https://boost-R.github.io/FDboost/reference/predict.FDboost_fac.md)
+  [`plot(`*`<FDboost_fac>`*`)`](https://boost-R.github.io/FDboost/reference/predict.FDboost_fac.md)
+  : Prediction and plotting for factorized FDboost model components
+- [`residuals(`*`<FDboost>`*`)`](https://boost-R.github.io/FDboost/reference/residuals.FDboost.md)
+  : Residual values of a boosted functional regression model
+- [`reweightData()`](https://boost-R.github.io/FDboost/reference/reweightData.md)
+  : Function to Reweight Data
+- [`stabsel(`*`<FDboost>`*`)`](https://boost-R.github.io/FDboost/reference/stabsel.FDboost.md)
+  : Stability Selection
+- [`` `[`( ``*`<hmatrix>`*`)`](https://boost-R.github.io/FDboost/reference/sub-.hmatrix.md)
+  : Extract or replace parts of a hmatrix-object
+- [`subset_hmatrix()`](https://boost-R.github.io/FDboost/reference/subset_hmatrix.md)
+  : Subsets hmatrix according to an index
+- [`summary(`*`<FDboost>`*`)`](https://boost-R.github.io/FDboost/reference/summary.FDboost.md)
+  [`print(`*`<FDboost>`*`)`](https://boost-R.github.io/FDboost/reference/summary.FDboost.md)
+  : Print and summary of a boosted functional regression model
+- [`truncateTime()`](https://boost-R.github.io/FDboost/reference/truncateTime.md)
+  : Function to truncate time in functional data
+- [`update(`*`<FDboost>`*`)`](https://boost-R.github.io/FDboost/reference/update.FDboost.md)
+  : Function to update FDboost objects
+- [`validateFDboost()`](https://boost-R.github.io/FDboost/reference/validateFDboost.md)
+  : Cross-Validation and Bootstrapping over Curves
+- [`viscosity`](https://boost-R.github.io/FDboost/reference/viscosity.md)
+  : Viscosity of resin over time
+- [`wide2long()`](https://boost-R.github.io/FDboost/reference/wide2long.md)
+  : Transform id and time of wide format into long format
+
